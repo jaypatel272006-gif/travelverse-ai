@@ -151,6 +151,22 @@ export const IndiaExplorer = () => {
     'Co-Pilot: Awaiting trajectory requests...'
   ]);
   const [isCopilotTyping, setIsCopilotTyping] = useState(false);
+  const [isFullscreenHUD, setIsFullscreenHUD] = useState(false);
+  const [hudSpeed, setHudSpeed] = useState(72);
+
+  // Speed simulator for HUD mode driving telemetry
+  useEffect(() => {
+    if (!isFullscreenHUD) return;
+    const interval = setInterval(() => {
+      setHudSpeed(prev => {
+        const delta = Math.floor(Math.random() * 5) - 2;
+        const next = prev + delta;
+        return Math.min(Math.max(next, 58), 92);
+      });
+    }, 1200);
+    setHudSpeed(72);
+    return () => clearInterval(interval);
+  }, [isFullscreenHUD]);
 
   // Handlers
   const handleToggleShrine = (shrine) => {
@@ -552,6 +568,18 @@ export const IndiaExplorer = () => {
                       <span className="text-[8px] font-mono text-slate-500 uppercase block mb-1">Highway Culinary Stops</span>
                       <p className="text-slate-700 dark:text-slate-300 font-mono">🍛 {ROAD_TRIP_CIRCUITS[activeCircuit].food}</p>
                     </div>
+                  </div>
+
+                  {/* Windshield HUD Trigger Button */}
+                  <div className="border-t border-slate-100 dark:border-white/5 pt-4 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setIsFullscreenHUD(true)}
+                      className="px-5 py-3 bg-slate-950 border border-teal-500/30 hover:border-teal-500 text-teal-400 font-mono font-bold text-xs rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-teal-500/5 hover:scale-[1.02]"
+                    >
+                      <Compass size={13} className="animate-spin duration-10000" />
+                      ACTIVATE WINDSHIELD HUD MODE
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -973,6 +1001,96 @@ export const IndiaExplorer = () => {
         </div>
 
       </div>
+
+      {/* Fullscreen Windshield HUD Mode overlay */}
+      <AnimatePresence>
+        {isFullscreenHUD && (
+          <div className="fixed inset-0 z-50 bg-black flex flex-col justify-between p-8 text-emerald-400 font-mono select-none">
+            {/* Mirror Toggle & Close Header */}
+            <div className="flex justify-between items-center w-full relative z-10">
+              <div className="flex flex-col items-start text-left">
+                <span className="text-[9px] uppercase tracking-widest text-emerald-600 font-bold">HUD SYSTEM ACTIVATED</span>
+                <span className="text-[8.5px] text-emerald-500 font-semibold border border-emerald-500/20 px-2 py-0.5 rounded bg-emerald-500/5 mt-0.5">
+                  WINDSHIELD PROJECTION HUD_V1.1
+                </span>
+              </div>
+              
+              <button
+                type="button"
+                onClick={() => setIsFullscreenHUD(false)}
+                className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-500 rounded-xl text-emerald-400 hover:text-emerald-305 font-bold text-xs uppercase tracking-wide cursor-pointer transition-all"
+              >
+                Close HUD
+              </button>
+            </div>
+
+            {/* Mirrored Driving Dashboard Display */}
+            <div 
+              className="flex-1 flex flex-col items-center justify-center gap-8 transition-transform duration-300"
+              style={{ transform: 'scaleX(-1)' }} // Mirror horizontally to reflect off windshield!
+            >
+              {/* Speedometer dial */}
+              <div className="flex flex-col items-center justify-center relative">
+                <div className="w-56 h-56 rounded-full border-4 border-dashed border-emerald-500/20 flex flex-col items-center justify-center relative animate-pulse duration-[5s]">
+                  <span className="text-8xl font-black tracking-tighter text-emerald-400 font-mono">
+                    {hudSpeed}
+                  </span>
+                  <span className="text-xs uppercase tracking-widest text-emerald-500 font-bold mt-1">KM/H</span>
+                </div>
+                {/* Altitude warning badge inside dial */}
+                <div className="absolute -bottom-3 bg-black border border-emerald-500/40 px-3 py-1 rounded-full text-[9px] font-bold text-emerald-400 uppercase tracking-widest">
+                  {ROAD_TRIP_CIRCUITS[activeCircuit].name.includes('Leh') || ROAD_TRIP_CIRCUITS[activeCircuit].name.includes('Spiti') 
+                    ? '⚠️ ALTITUDE WARNING: 3,000M+' 
+                    : '⚡ SECTOR EN ROUTE'
+                  }
+                </div>
+              </div>
+
+              {/* Route Telemetry Columns */}
+              <div className="grid grid-cols-3 gap-8 w-full max-w-2xl text-center mt-4">
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] uppercase tracking-wider text-emerald-600 font-bold">Route Code</span>
+                  <span className="text-lg font-black text-emerald-400 mt-1 uppercase">
+                    {activeCircuit === 'leh' ? 'LEH_LOOP_22' : (activeCircuit === 'spiti' ? 'SPITI_CIR_05' : 'DESERT_CIR_14')}
+                  </span>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] uppercase tracking-wider text-emerald-600 font-bold">EV Charger Stations</span>
+                  <span className="text-lg font-black text-emerald-400 mt-1 uppercase">
+                    {activeCircuit === 'leh' ? 'Active Leh/Kaza' : (activeCircuit === 'spiti' ? 'Kaza Solar' : 'Plazas High')}
+                  </span>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <span className="text-[9px] uppercase tracking-wider text-emerald-600 font-bold">Compass Head</span>
+                  <span className="text-lg font-black text-emerald-400 mt-1 animate-pulse">
+                    N 015° NE
+                  </span>
+                </div>
+              </div>
+
+              {/* Nearest Rest Stop and details */}
+              <div className="text-center max-w-md bg-emerald-500/5 border border-emerald-500/10 p-4 rounded-2xl w-full">
+                <span className="text-[8px] uppercase tracking-widest text-emerald-600 font-bold block mb-1">Upcoming Waypoint Station</span>
+                <h5 className="font-bold text-sm text-emerald-400 uppercase">
+                  {activeCircuit === 'leh' ? 'Sarchu base corridor - 42 km' : (activeCircuit === 'spiti' ? 'Reckong Peo - 28 km' : 'Udaipur Sector - 56 km')}
+                </h5>
+                <p className="text-[10px] text-emerald-500 font-semibold mt-1">
+                  Advice: {ROAD_TRIP_CIRCUITS[activeCircuit].food.split('at')[0]}
+                </p>
+              </div>
+            </div>
+
+            {/* Windshield Positioning Instructions */}
+            <div className="w-full text-center relative z-10 flex flex-col items-center justify-center">
+              <span className="text-[9px] uppercase tracking-widest text-emerald-700 font-bold max-w-sm leading-relaxed">
+                ℹ️ PLACE PHONE FLAT ON DASHBOARD UNDER WINDSHIELD. GLASS REFLECTION WILL REVERSE THE HUD CORRECTLY.
+              </span>
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

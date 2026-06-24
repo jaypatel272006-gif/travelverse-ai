@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera } from 'lucide-react';
+import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
 import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../utils/countriesApi';
@@ -12,10 +12,30 @@ export const DestinationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { saveItinerary, user, isInWishlist, toggleWishlist, showToast, customPhotos, updateDestinationPhoto } = useApp();
+  
+  // 360 Panoramic and Holoportal States
   const [previewAngle, setPreviewAngle] = useState(0);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isEditPhotoOpen, setIsEditPhotoOpen] = useState(false);
   const [customPhotoUrl, setCustomPhotoUrl] = useState('');
+  const [isFullscreen360, setIsFullscreen360] = useState(false);
+  const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef({ x: 0, y: 0 });
+  const [gyroPermission, setGyroPermission] = useState('unknown');
+
+  // Web Audio Drone Synth Ref
+  const audioCtxRef = useRef(null);
+  const oscRef = useRef(null);
+  const gainRef = useRef(null);
+
+  // AI Neural Guides States
+  const [selectedGuide, setSelectedGuide] = useState('aarav');
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   // Loading and Data states
   const [loading, setLoading] = useState(true);
@@ -97,6 +117,265 @@ export const DestinationDetails = () => {
     const compiled = generateDetailedItinerary(cityData.name, estimatedDays, travelerTier, selectedInterests, travelStyle, pace);
     setGeneratedItinerary(compiled.days);
   }, [cityData, estimatedDays, travelerTier, selectedInterests, travelStyle, pace]);
+
+  // AI Neural Guide Profiles Config
+  const guides = {
+    aarav: {
+      name: "Aarav Sharma",
+      role: "Heritage Historian & Mythologist",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+      intro: "Namaste. I decode the timelines, architectural alignments, and sacred mythologies of this quadrant.",
+      accent: "en-IN",
+      presets: [
+        "What is the historical significance of this place?",
+        "Are there specific temple rules or customs to follow?",
+        "Explain the local architecture style."
+      ],
+      responses: {
+        history: `This region possesses centuries of deep spiritual history. Its ancient coordinates were mapped according to cosmological alignments to channel positive planetary currents.`,
+        taboos: `Please ensure you remove footwear before entering any temple or sacred threshold. It is customary to cover your shoulders and knees. Circular walks around shrines must always be clockwise.`,
+        default: `The history here is rich and profound. From its early founders to its medieval dynasties, this area remains a spiritual pillar. Let me know which dynasty or custom you'd like to investigate.`
+      }
+    },
+    nisha: {
+      name: "Nisha Patel",
+      role: "Culinary Alchemist",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+      intro: "Hello! I map local culinary tracks, spice blends, and hidden street food kitchens.",
+      accent: "en-IN",
+      presets: [
+        "What local dishes must I absolutely try?",
+        "Is there a secret street food spot nearby?",
+        "Tell me about regional spices used here."
+      ],
+      responses: {
+        food: `You must try the cardamom-infused local tea, fresh clay-oven flatbreads, and regional vegetable stews. They are absolute masterpieces of taste!`,
+        spicy: `The local recipes use a combination of cumin, ginger, and turmeric. If your travel DNA prefers mild spice, tell the cook 'no extra green chilis'.`,
+        default: `Every dish here carries the soul of the region. Ask me about street food tasting tours, regional breakfast items, or vegetarian specialties!`
+      }
+    },
+    vikram: {
+      name: "Vikram Rathore",
+      role: "Extremophile Adventure Guide",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80",
+      intro: "Hey explorer. I calibrate mountain tracks, weather-fatigue advisories, and landscape photography spots.",
+      accent: "en-GB",
+      presets: [
+        "Where is the best photography vantage point?",
+        "Are there any safety warnings or physical checks?",
+        "Suggest a quick trekking route."
+      ],
+      responses: {
+        vantage: `For the ultimate drone-like view, hike up the eastern path at exactly 05:40 AM. The mountain mist clears just enough for a stunning golden-hour reflection.`,
+        safety: `Pay close attention to altitude sickness and weather fronts. Stay hydrated, carry a thermal layers kit, and never trek past dusk without emergency radio links.`,
+        default: `Safety and preparation are the keys to exploration. Let me know if you need to optimize your climbing paths, physical exertion indexes, or hiking gear list.`
+      }
+    }
+  };
+
+  // Seed default message on guide change or initialization
+  useEffect(() => {
+    if (!cityData) return;
+    const guideData = guides[selectedGuide];
+    setChatMessages([
+      { sender: 'guide', text: `[${guideData.name} initialized] ${guideData.intro}` }
+    ]);
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  }, [selectedGuide, cityData]);
+
+  // Voice speech synthesis helper
+  const speakResponse = (text, accent) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+
+    // Remove brackets or special markers for speech
+    const cleanText = text.replace(/\[.*?\]/g, '').trim();
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const voices = window.speechSynthesis.getVoices();
+    
+    let matchedVoice = voices.find(v => v.lang.toLowerCase().includes(accent.toLowerCase()));
+    if (!matchedVoice) {
+      matchedVoice = voices.find(v => v.lang.startsWith('en'));
+    }
+    
+    if (matchedVoice) utterance.voice = matchedVoice;
+    utterance.lang = accent;
+    utterance.rate = 0.95;
+
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleAskGuide = (questionText) => {
+    if (!questionText.trim()) return;
+
+    const userMsg = { sender: 'user', text: questionText };
+    setChatMessages(prev => [...prev, userMsg]);
+    setChatInput('');
+    setIsSpeaking(true); // animate waveform while thinking
+
+    setTimeout(() => {
+      const q = questionText.toLowerCase();
+      const guideData = guides[selectedGuide];
+      let reply = "";
+
+      if (q.includes('history') || q.includes('ancient') || q.includes('old') || q.includes('dynasty') || q.includes('myth')) {
+        reply = guideData.responses.history || guideData.responses.default;
+      } else if (q.includes('food') || q.includes('eat') || q.includes('dish') || q.includes('cuisine') || q.includes('taste') || q.includes('spice')) {
+        reply = guideData.responses.food || guideData.responses.spicy || guideData.responses.default;
+      } else if (q.includes('safety') || q.includes('warn') || q.includes('danger') || q.includes('climb') || q.includes('height')) {
+        reply = guideData.responses.safety || guideData.responses.default;
+      } else if (q.includes('photo') || q.includes('vantage') || q.includes('sunset') || q.includes('view')) {
+        reply = guideData.responses.vantage || guideData.responses.default;
+      } else if (q.includes('rule') || q.includes('custom') || q.includes('taboo') || q.includes('dress') || q.includes('respect')) {
+        reply = guideData.responses.taboos || guideData.responses.default;
+      } else {
+        reply = `As your TravelVerse ${guideData.role}, I advise that ${cityData.name} holds many mysteries. ` + guideData.responses.default;
+      }
+
+      const guideMsg = { sender: 'guide', text: reply };
+      setChatMessages(prev => [...prev, guideMsg]);
+
+      if (isVoiceEnabled) {
+        speakResponse(reply, guideData.accent);
+      } else {
+        setIsSpeaking(false);
+      }
+    }, 1000);
+  };
+
+  // Web Audio ambient synthesizer
+  const startAmbientSynth = () => {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      
+      const ctx = new AudioCtx();
+      audioCtxRef.current = ctx;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscRef.current = osc;
+      gainRef.current = gain;
+
+      // Create a warm, low drone matching the theme
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(selectedGuide === 'aarav' ? 110 : (selectedGuide === 'nisha' ? 147 : 98), ctx.currentTime);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(250, ctx.currentTime);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      gain.gain.setValueAtTime(0.0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 1.5);
+      
+      osc.start();
+    } catch (err) {
+      console.warn("Failed creating ambient audio context:", err);
+    }
+  };
+
+  const stopAmbientSynth = () => {
+    if (gainRef.current && audioCtxRef.current) {
+      const ctx = audioCtxRef.current;
+      gainRef.current.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 0.5);
+      setTimeout(() => {
+        try {
+          if (oscRef.current) oscRef.current.stop();
+          if (audioCtxRef.current) audioCtxRef.current.close();
+        } catch (e) {}
+        oscRef.current = null;
+        audioCtxRef.current = null;
+        gainRef.current = null;
+      }, 600);
+    }
+  };
+
+  // Sync ambient audio with state
+  useEffect(() => {
+    if (isAudioPlaying) {
+      startAmbientSynth();
+    } else {
+      stopAmbientSynth();
+    }
+    return () => stopAmbientSynth();
+  }, [isAudioPlaying]);
+
+  // Request Gyroscope permissions (mainly for iOS 13+)
+  const requestGyroPermission = async () => {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        const state = await DeviceOrientationEvent.requestPermission();
+        setGyroPermission(state);
+        if (state === 'granted') {
+          window.addEventListener('deviceorientation', handleDeviceOrientation);
+          showToast('Device Gyroscope connected to Holoportal.', 'success');
+        }
+      } catch (err) {
+        console.error("Gyroscope permission error:", err);
+        setGyroPermission('denied');
+      }
+    } else {
+      // Android / Desktop default
+      setGyroPermission('granted');
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+  };
+
+  const handleDeviceOrientation = (e) => {
+    if (e.gamma === null) return;
+    // Map left-right tilt (gamma) and front-back tilt (beta)
+    const x = Math.min(Math.max(e.gamma * 6, -300), 300);
+    const y = Math.min(Math.max((e.beta - 50) * 6, -200), 200);
+    setTiltOffset({ x, y });
+  };
+
+  useEffect(() => {
+    if (isFullscreen360 && gyroPermission === 'granted') {
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+    return () => {
+      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+  }, [isFullscreen360, gyroPermission]);
+
+  // Drag interaction handlers
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    dragStart.current = {
+      x: e.clientX || (e.touches && e.touches[0].clientX) || 0,
+      y: e.clientY || (e.touches && e.touches[0].clientY) || 0
+    };
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+    const dx = clientX - dragStart.current.x;
+    const dy = clientY - dragStart.current.y;
+    
+    setDragOffset(prev => ({
+      x: Math.min(Math.max(prev.x + dx, -400), 400),
+      y: Math.min(Math.max(prev.y + dy, -300), 300)
+    }));
+    dragStart.current = { x: clientX, y: clientY };
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
 
   const handleInterestToggle = (tag) => {
     setSelectedInterests(prev =>
@@ -277,16 +556,28 @@ export const DestinationDetails = () => {
             .animate-audio-bar-3 { animation: audio-bar-grow 0.9s ease infinite 0.4s; }
           `}</style>
 
-          {/* Virtual 360 Preview */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left">
+          {/* Virtual 360 Preview with Holographic Device-Tilt Portal */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left animate-in fade-in duration-300">
             <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
               <span>PREVIEW: VIRTUAL_360_HOTSPOTS</span>
             </div>
-            <div>
-              <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 00 // ATMOSPHERIC RADAR</span>
-              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
-                <Globe size={18} className="text-teal-400 animate-spin duration-10000" /> Virtual 360° Preview
-              </h3>
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 00 // ATMOSPHERIC RADAR</span>
+                <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
+                  <Globe size={18} className="text-teal-400 animate-spin duration-10000" /> Virtual 360° Preview
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsFullscreen360(true);
+                  requestGyroPermission();
+                }}
+                className="px-3.5 py-1.5 rounded-xl border border-teal-500/25 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 text-[10px] font-mono font-bold uppercase transition-all flex items-center gap-1 cursor-pointer"
+              >
+                <Maximize2 size={11} /> Holographic Portal
+              </button>
             </div>
             
             <div className="relative h-64 rounded-2xl overflow-hidden border border-white/5 bg-slate-950 group">
@@ -315,8 +606,8 @@ export const DestinationDetails = () => {
                   <span className="font-bold text-xs">{isAudioPlaying ? '⏸' : '▶'}</span>
                 </button>
                 <div className="flex flex-col text-left">
-                  <span className="text-[8px] font-bold text-slate-400 uppercase font-mono tracking-wider">AMBIENT AUDIO</span>
-                  <span className="text-[10px] font-bold text-teal-400">{isAudioPlaying ? 'STREAMING ATMO_WAVES' : 'MUTED'}</span>
+                  <span className="text-[8px] font-bold text-slate-400 uppercase font-mono tracking-wider">AMBIENT DRONE</span>
+                  <span className="text-[10px] font-bold text-teal-400">{isAudioPlaying ? 'SYNTH ACTIVE' : 'MUTED'}</span>
                 </div>
                 {isAudioPlaying && (
                   <div className="flex items-end gap-0.5 h-3 ml-2">
@@ -343,6 +634,268 @@ export const DestinationDetails = () => {
                   PAN R ▶
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Fullscreen Holographic 360° Portal Overlay */}
+          <AnimatePresence>
+            {isFullscreen360 && (
+              <div className="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-between overflow-hidden select-none">
+                {/* Background Panoramic Image */}
+                <div 
+                  className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden"
+                  onMouseDown={handleDragStart}
+                  onMouseMove={handleDragMove}
+                  onMouseUp={handleDragEnd}
+                  onMouseLeave={handleDragEnd}
+                  onTouchStart={handleDragStart}
+                  onTouchMove={handleDragMove}
+                  onTouchEnd={handleDragEnd}
+                >
+                  <img
+                    src={displayImage}
+                    alt="Holographic View"
+                    className="absolute w-[150vw] h-[150vh] max-w-none object-cover opacity-90 transition-transform duration-200 pointer-events-none"
+                    style={{
+                      left: '-25vw',
+                      top: '-25vh',
+                      transform: `translate(${dragOffset.x + tiltOffset.x}px, ${dragOffset.y + tiltOffset.y}px) scale(1.15)`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-radial-gradient from-transparent via-slate-950/10 to-slate-950/80 pointer-events-none" />
+                </div>
+
+                {/* Laser scan lines & grid overlays */}
+                <div className="absolute inset-0 opacity-15 pointer-events-none bg-[linear-gradient(to_right,#0ea5e9_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e9_1px,transparent_1px)] bg-[size:40px_40px]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#020617_90%)] pointer-events-none" />
+                
+                {/* Neon circular scopes */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-[80vw] h-[80vw] sm:w-[500px] sm:h-[500px] rounded-full border border-teal-500/20 flex items-center justify-center relative animate-pulse duration-[8s]">
+                    <div className="absolute inset-0 rounded-full border border-sky-400/10 scale-110" />
+                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-teal-500/10 animate-spin duration-[60s]" />
+                    <div className="w-10 h-10 border border-teal-400/40 relative">
+                      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-teal-400/40" />
+                      <div className="absolute left-1/2 top-0 w-[1px] h-full bg-teal-400/40" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Top UI Panel */}
+                <div className="relative z-10 w-full p-6 bg-gradient-to-b from-slate-950/90 to-transparent flex justify-between items-start backdrop-blur-sm">
+                  <div className="flex flex-col gap-1.5 text-left">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping" />
+                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest font-black">HOLOGRAPHIC PORTAL LNK_360</span>
+                    </div>
+                    <h2 className="font-display font-black text-2xl text-white uppercase tracking-wider">{cityData.name} Sector</h2>
+                    <span className="text-[10px] font-mono text-slate-400">TELEMETRY: X={Math.round(dragOffset.x + tiltOffset.x)} Y={Math.round(dragOffset.y + tiltOffset.y)}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsFullscreen360(false);
+                      setDragOffset({ x: 0, y: 0 });
+                      setTiltOffset({ x: 0, y: 0 });
+                    }}
+                    className="p-3 bg-slate-900/60 border border-white/10 hover:border-rose-500/50 hover:bg-slate-900 rounded-2xl text-rose-400 hover:text-rose-300 transition-all cursor-pointer flex items-center justify-center shadow-lg"
+                  >
+                    <Minimize2 size={16} />
+                  </button>
+                </div>
+
+                {/* Bottom UI Dashboard */}
+                <div className="relative z-10 w-full p-6 bg-gradient-to-t from-slate-950/95 to-transparent flex flex-col sm:flex-row justify-between items-center gap-4 backdrop-blur-sm">
+                  {/* Environmental Telemetry */}
+                  <div className="flex gap-6 text-[10px] font-mono text-slate-350">
+                    <div className="flex flex-col items-start">
+                      <span className="text-slate-500 uppercase">GYRO STACK</span>
+                      <span className="font-bold text-teal-400">{gyroPermission === 'granted' ? 'CONNECTED' : 'DISCONNECTED'}</span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-slate-500 uppercase">ELEVATION</span>
+                      <span className="font-bold text-teal-400">3,250m Sector</span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-slate-500 uppercase">ATMOSPHERE</span>
+                      <span className="font-bold text-teal-400">{isAudioPlaying ? 'SYNTH ACTIVE' : 'MUTED'}</span>
+                    </div>
+                  </div>
+
+                  {/* Gyro Sync CTA & Audio Toggle */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                      className={`px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
+                        isAudioPlaying
+                          ? 'bg-teal-500/10 border-teal-500 text-teal-400'
+                          : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {isAudioPlaying ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                      {isAudioPlaying ? 'Mute Drone' : 'Drone Audio'}
+                    </button>
+
+                    {gyroPermission !== 'granted' && (
+                      <button
+                        type="button"
+                        onClick={requestGyroPermission}
+                        className="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-400 hover:to-sky-400 text-slate-950 rounded-xl text-xs font-mono font-bold shadow-lg shadow-teal-500/20 cursor-pointer uppercase"
+                      >
+                        Request Gyro Sync
+                      </button>
+                    )}
+                    
+                    <span className="hidden sm:inline text-[9px] font-mono text-slate-500 uppercase border border-slate-800/40 px-3 py-2.5 rounded-xl bg-slate-900/20">
+                      🖱️ Drag mouse or Tilt Phone to Pan
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* 🎙️ SECTION 01 // NEURAL LOCAL GUIDES WITH VOICE SYNTHESIS */}
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5 text-left animate-in fade-in duration-300">
+            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
+              <span>NEURAL: COMM_GUIDES</span>
+            </div>
+            <div>
+              <span className="text-[9px] font-mono text-indigo-555 dark:text-indigo-400 font-bold tracking-widest uppercase">🎙️ SECTION 01 // NEURAL CORRIDORS</span>
+              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
+                <Cpu size={18} className="text-indigo-400 animate-pulse" /> Local AI Guide Avatars
+              </h3>
+            </div>
+
+            {/* Guide Avatar Selectors */}
+            <div className="grid grid-cols-3 gap-3">
+              {Object.keys(guides).map((key) => {
+                const guide = guides[key];
+                const isSelected = selectedGuide === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setSelectedGuide(key)}
+                    className={`p-3 rounded-2xl border text-left flex flex-col sm:flex-row items-center gap-3 transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-indigo-500/10 border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.15)] text-indigo-900 dark:text-indigo-300'
+                        : 'border-slate-200 dark:border-teal-500/10 hover:bg-slate-50 dark:hover:bg-slate-850/50'
+                    }`}
+                  >
+                    <img
+                      src={guide.avatar}
+                      alt={guide.name}
+                      className={`w-10 h-10 rounded-xl object-cover border-2 shrink-0 ${
+                        isSelected ? 'border-indigo-400' : 'border-slate-300 dark:border-slate-800'
+                      }`}
+                    />
+                    <div className="flex flex-col text-center sm:text-left overflow-hidden">
+                      <span className="font-display font-black text-[11px] truncate">{guide.name.split(' ')[0]}</span>
+                      <span className="text-[8px] font-mono text-slate-400 font-semibold truncate uppercase">{guide.role.split(' ')[0]}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Neural Chat Logs & Waveforms */}
+            <div className="flex flex-col gap-4 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 p-4 rounded-2xl min-h-[160px] max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
+              {chatMessages.map((msg, idx) => (
+                <div 
+                  key={idx} 
+                  className={`flex flex-col gap-1 max-w-[85%] ${
+                    msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start text-left'
+                  }`}
+                >
+                  <span className="text-[7.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">
+                    {msg.sender === 'user' ? user?.name || 'Explorer' : guides[selectedGuide].role}
+                  </span>
+                  <div 
+                    className={`px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                      msg.sender === 'user'
+                        ? 'bg-teal-500/15 text-slate-900 dark:text-teal-200 border border-teal-500/20 rounded-tr-none'
+                        : 'bg-indigo-500/10 text-slate-800 dark:text-indigo-200 border border-indigo-500/20 rounded-tl-none'
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                </div>
+              ))}
+              
+              {/* Waveform playing graphic */}
+              {isSpeaking && (
+                <div className="flex items-center gap-1.5 self-start pl-2">
+                  <span className="text-[8px] font-mono text-indigo-400 font-bold uppercase tracking-wider animate-pulse">Voice streaming:</span>
+                  <div className="flex items-end gap-0.5 h-3">
+                    <span className="w-[1.5px] h-2 bg-indigo-400 rounded-full animate-audio-bar-1" />
+                    <span className="w-[1.5px] h-3 bg-indigo-400 rounded-full animate-audio-bar-2" />
+                    <span className="w-[1.5px] h-1 bg-indigo-400 rounded-full animate-audio-bar-3" />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Guide Presets Trigger Buttons */}
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[8.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">Neural Presets</span>
+              <div className="flex flex-wrap gap-2">
+                {guides[selectedGuide].presets.map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleAskGuide(preset)}
+                    className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-teal-500/10 bg-white dark:bg-slate-900/30 hover:border-indigo-400/50 hover:bg-indigo-500/5 text-slate-650 dark:text-slate-350 text-[10px] font-semibold text-left transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <ChevronRight size={10} className="text-indigo-400 shrink-0" />
+                    {preset}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Input Bar */}
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAskGuide(chatInput)}
+                  placeholder={`Ask ${guides[selectedGuide].name.split(' ')[0]} anything...`}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-400 transition-all text-slate-800 dark:text-slate-250"
+                />
+                
+                {/* Voice toggle button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsVoiceEnabled(!isVoiceEnabled);
+                    if (isSpeaking && window.speechSynthesis) {
+                      window.speechSynthesis.cancel();
+                      setIsSpeaking(false);
+                    }
+                  }}
+                  className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg border transition-all cursor-pointer ${
+                    isVoiceEnabled
+                      ? 'bg-indigo-500/15 border-indigo-500/35 text-indigo-400'
+                      : 'border-slate-800 text-slate-500 hover:text-white'
+                  }`}
+                  title={isVoiceEnabled ? "Mute Speech Voice" : "Enable Speech Voice"}
+                >
+                  {isVoiceEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleAskGuide(chatInput)}
+                className="px-5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-mono font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md shadow-indigo-500/15"
+              >
+                <Send size={12} /> Transmit
+              </button>
             </div>
           </div>
 
