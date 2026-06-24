@@ -904,6 +904,25 @@ export const AppContextProvider = ({ children }) => {
     });
   };
 
+  // Dynamic helpers to parse stamps and pilgrimage progress for missions
+  const getSpiritualStamps = () => {
+    try {
+      const saved = localStorage.getItem('tv_spiritual_stamps');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const getJyotirlingas = () => {
+    try {
+      const saved = localStorage.getItem('tv_jyotirlinga_progress');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  };
+
   // Dynamic Gamified Achievement System
   const achievements = [
     {
@@ -961,6 +980,38 @@ export const AppContextProvider = ({ children }) => {
       description: 'Cached 3 or more itineraries in your mission control.',
       icon: '🚀',
       unlocked: itineraries.length >= 3
+    },
+    {
+      id: 'ach-9',
+      title: 'Char Dham Path Complete',
+      description: 'Explore the 4 cardinal spiritual checkpoints: Badrinath, Dwarka, Puri, and Rameshwaram.',
+      icon: '🔱',
+      unlocked: ['badrinath', 'dwarka', 'puri', 'rameshwaram'].every(name =>
+        getSpiritualStamps().some(s => s.toLowerCase().includes(name))
+      )
+    },
+    {
+      id: 'ach-10',
+      title: 'Maha-Jyotirlinga Master',
+      description: 'Visit all 12 sacred Jyotirlinga shrines dedicated to Lord Shiva.',
+      icon: '🕉️',
+      unlocked: getJyotirlingas().length >= 12
+    },
+    {
+      id: 'ach-11',
+      title: 'UNESCO Heritage Sovereign',
+      description: 'Add heritage coordinates to your dashboard: Agra, Hampi, or Ellora.',
+      icon: '🏛️',
+      unlocked: wishlist.destinations.some(d => ['agra', 'hampi', 'ellora'].some(x => d.name.toLowerCase().includes(x))) ||
+                itineraries.some(i => ['agra', 'hampi', 'ellora'].some(x => i.destination.toLowerCase().includes(x)))
+    },
+    {
+      id: 'ach-12',
+      title: 'Saurashtra & Desert Pathfinder',
+      description: 'Explore Dwarka, Somnath, or Rann of Kutch.',
+      icon: '🦁',
+      unlocked: wishlist.destinations.some(d => ['dwarka', 'somnath', 'kutch'].some(x => d.name.toLowerCase().includes(x))) ||
+                itineraries.some(i => ['dwarka', 'somnath', 'kutch'].some(x => i.destination.toLowerCase().includes(x)))
     }
   ];
 

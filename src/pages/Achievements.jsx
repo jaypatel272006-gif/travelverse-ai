@@ -113,6 +113,67 @@ export const Achievements = () => {
             ))}
           </div>
 
+          {/* Explorer Missions & Milestones Dashboard */}
+          <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 text-white shadow-xl text-left flex flex-col gap-4">
+            <div>
+              <span className="text-[9px] font-mono text-teal-400 uppercase tracking-widest font-black">ACTIVE MISSION CONSOLE</span>
+              <h3 className="font-display font-extrabold text-base text-white mt-0.5 flex items-center gap-2">
+                <Compass className="text-teal-400 animate-pulse" size={18} /> OS Explorer Missions
+              </h3>
+            </div>
+            
+            <div className="flex flex-col gap-3.5 mt-2">
+              {[
+                { 
+                  title: 'Complete Char Dham Pilgrimage', 
+                  desc: 'Unlock by checking off Badrinath, Dwarka, Rameshwaram, and Puri inside the Spiritual tab.', 
+                  badgeId: 'ach-9'
+                },
+                { 
+                  title: 'Complete 12 Jyotirlingas', 
+                  desc: 'Check off all twelve light-shrines dedicated to Lord Shiva in the Spiritual tab.', 
+                  badgeId: 'ach-10'
+                },
+                { 
+                  title: 'Heritage Sovereign: Visit 3 UNESCO Sites', 
+                  desc: 'Wishlist or plan trips to Agra, Hampi, or Ellora.', 
+                  badgeId: 'ach-11'
+                },
+                { 
+                  title: 'Saurashtra & Desert Pathfinder', 
+                  desc: 'Wishlist or plan trips to Dwarka, Somnath, or Rann of Kutch.', 
+                  badgeId: 'ach-12'
+                }
+              ].map((m, idx) => {
+                const badge = achievements.find(a => a.id === m.badgeId);
+                const isUnlocked = badge ? badge.unlocked : false;
+                return (
+                  <div key={idx} className="flex gap-4 p-4 rounded-2xl bg-slate-950 border border-white/5 items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl">{badge ? badge.icon : '🚀'}</div>
+                      <div>
+                        <h4 className="font-display font-extrabold text-xs text-white">{m.title}</h4>
+                        <p className="text-[10px] text-slate-405 mt-1 max-w-md">{m.desc}</p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      {isUnlocked ? (
+                        <span className="text-[9px] bg-teal-500/10 border border-teal-500/35 text-teal-400 px-2.5 py-1 rounded-full font-mono font-bold uppercase tracking-wide">
+                          COMPLETED
+                        </span>
+                      ) : (
+                        <span className="text-[9px] bg-slate-900 border border-white/10 text-slate-500 px-2.5 py-1 rounded-full font-mono font-bold uppercase tracking-wide">
+                          IN PROGRESS
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Badges Grid list */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 shadow-xl text-left flex flex-col gap-4">
             <h3 className="font-display font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">

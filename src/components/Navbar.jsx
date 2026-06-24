@@ -1,15 +1,118 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Heart, User, LogOut, Compass, Sparkles, Map, CloudSun, CalendarDays, Landmark, Layers } from 'lucide-react';
+import { Menu, X, Sun, Moon, Heart, User, LogOut, Compass, Sparkles, Map, CloudSun, CalendarDays, Landmark, Layers, Mic, MicOff } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const Navbar = () => {
-  const { theme, toggleTheme, user, logout, wishlist } = useApp();
+  const { theme, toggleTheme, user, logout, wishlist, setActiveTheme, showToast } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showEnginesMenu, setShowEnginesMenu] = useState(false);
   const navigate = useNavigate();
+
+  const [isListening, setIsListening] = useState(false);
+  const [voiceTooltip, setVoiceTooltip] = useState('Voice Commands');
+
+  const startVoiceControl = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast('Speech recognition not supported in this browser. Please use Google Chrome or Microsoft Edge.', 'error');
+      return;
+    }
+
+    const rec = new SpeechRecognition();
+    rec.lang = 'en-US';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+
+    rec.onstart = () => {
+      setIsListening(true);
+      setVoiceTooltip('Listening...');
+      showToast('Speech recognition active. Speak command.', 'info');
+    };
+
+    rec.onend = () => {
+      setIsListening(false);
+      setVoiceTooltip('Voice Commands');
+    };
+
+    rec.onerror = (e) => {
+      setIsListening(false);
+      setVoiceTooltip('Voice Commands');
+      if (e.error === 'not-allowed') {
+        showToast('Microphone permission blocked. Please enable permissions.', 'error');
+      } else {
+        showToast('Speech recognition error occurred.', 'error');
+      }
+    };
+
+    rec.onresult = (e) => {
+      const transcript = e.results[0][0].transcript.toLowerCase();
+      showToast(`Voice query: "${transcript}"`, 'success');
+
+      // Commands routing
+      if (transcript.includes('flight') || transcript.includes('plane') || transcript.includes('ticket')) {
+        navigate('/flights');
+        showToast('Navigating to Flights tracker...');
+      } else if (transcript.includes('india') || transcript.includes('explorer') || transcript.includes('360')) {
+        navigate('/india-explorer');
+        showToast('Navigating to India 360 Explorer...');
+      } else if (transcript.includes('spiritual') || transcript.includes('temple') || transcript.includes('shrine') || transcript.includes('pilgrim')) {
+        navigate('/spiritual');
+        showToast('Navigating to Spiritual Shrines...');
+      } else if (transcript.includes('map') || transcript.includes('location') || transcript.includes('marker')) {
+        navigate('/maps');
+        showToast('Navigating to Explorer Maps...');
+      } else if (transcript.includes('dna') || transcript.includes('personality') || transcript.includes('quiz')) {
+        navigate('/personality-lab');
+        showToast('Navigating to Travel DNA Lab...');
+      } else if (transcript.includes('achieve') || transcript.includes('mission') || transcript.includes('badge')) {
+        navigate('/achievements');
+        showToast('Navigating to Explorer Missions...');
+      } else if (transcript.includes('itinerary') || transcript.includes('plan')) {
+        navigate('/planner');
+        showToast('Navigating to AI Itinerary Planner...');
+      } else if (transcript.includes('dream') || transcript.includes('generator')) {
+        navigate('/dream-trip');
+        showToast('Navigating to Dream Trip AI...');
+      } else if (transcript.includes('earth') || transcript.includes('globe') || transcript.includes('twin')) {
+        navigate('/earth-engine');
+        showToast('Navigating to Digital Earth Twin...');
+      } else if (transcript.includes('utilities') || transcript.includes('tool')) {
+        navigate('/utilities');
+        showToast('Navigating to Travel Utilities...');
+      } else if (transcript.includes('live') || transcript.includes('radar')) {
+        navigate('/live-explorer');
+        showToast('Navigating to Live Radar feed...');
+      } else if (transcript.includes('wishlist') || transcript.includes('cache')) {
+        navigate('/wishlist');
+        showToast('Navigating to Wishlist ledger...');
+      } else if (transcript.includes('home') || transcript.includes('space') || transcript.includes('station')) {
+        navigate('/');
+        showToast('Returning to Home space terminal...');
+      } else if (transcript.includes('theme cyberpunk') || transcript.includes('cyberpunk')) {
+        setActiveTheme('cyberpunk');
+        showToast('Active layout updated: Cyberpunk 2100.');
+      } else if (transcript.includes('theme space') || transcript.includes('space theme')) {
+        setActiveTheme('space');
+        showToast('Active layout updated: Space Station.');
+      } else if (transcript.includes('theme luxury') || transcript.includes('luxury theme')) {
+        setActiveTheme('luxury');
+        showToast('Active layout updated: Zenith Luxury.');
+      } else if (transcript.includes('theme temple') || transcript.includes('temple theme')) {
+        setActiveTheme('temple');
+        showToast('Active layout updated: Sacred Temple.');
+      } else if (transcript.includes('theme ocean') || transcript.includes('ocean theme')) {
+        setActiveTheme('ocean');
+        showToast('Active layout updated: Ocean Wave.');
+      } else {
+        showToast(`Command not routed. Try saying "show flights" or "theme cyberpunk".`, 'error');
+      }
+    };
+
+    rec.start();
+  };
 
   // Total wishlist item count
   const wishlistCount = Object.values(wishlist).reduce((total, arr) => total + arr.length, 0);
@@ -113,6 +216,23 @@ export const Navbar = () => {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Floating Voice Mic Trigger */}
+          <button
+            type="button"
+            onClick={startVoiceControl}
+            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center relative ${
+              isListening 
+                ? 'bg-rose-500/10 border-rose-500 text-rose-500 shadow-[0_0_15px_rgba(239,68,68,0.25)] animate-pulse' 
+                : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300'
+            }`}
+            title={voiceTooltip}
+          >
+            {isListening ? <Mic size={15} className="animate-bounce" /> : <Mic size={15} />}
+            {isListening && (
+              <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500 animate-ping" />
+            )}
+          </button>
+
           {/* Light/Dark mode toggle */}
           <button
             onClick={toggleTheme}

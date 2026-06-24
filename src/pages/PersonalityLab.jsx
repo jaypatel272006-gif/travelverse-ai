@@ -183,6 +183,99 @@ export const PersonalityLab = () => {
               Based on your answers, our AI master twin engine has calibrated your traveler genome index. These settings have been injected directly into your global search routing algorithms.
             </p>
 
+            {/* Animated DNA Double-Helix */}
+            <div className="w-full flex flex-col items-center justify-center p-6 bg-slate-900 border border-slate-800 rounded-3xl relative overflow-hidden h-40">
+              {/* Background scan lines */}
+              <div className="absolute inset-0 bg-cyber-grid opacity-10 pointer-events-none" />
+              
+              <svg className="w-full h-full max-w-sm" viewBox="0 0 400 100">
+                <defs>
+                  {/* Glowing filters */}
+                  <filter id="glow-teal" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                  <filter id="glow-rose" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                
+                {/* Horizontal bonds connecting strands */}
+                {Array.from({ length: 15 }).map((_, i) => {
+                  const x = 35 + i * 24;
+                  
+                  // Calculate dynamic Y values to simulate a double-helix wave oscillation
+                  return (
+                    <g key={i}>
+                      {/* Connection bar */}
+                      <line
+                        x1={x}
+                        y1={50}
+                        x2={x}
+                        y2={50}
+                        stroke="rgba(45, 212, 191, 0.25)"
+                        strokeWidth="1.5"
+                      >
+                        <animate
+                          attributeName="y1"
+                          values={`${25 + Math.sin(i * 0.55) * 20};${75 - Math.sin(i * 0.55) * 20};${25 + Math.sin(i * 0.55) * 20}`}
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                        <animate
+                          attributeName="y2"
+                          values={`${75 - Math.sin(i * 0.55) * 20};${25 + Math.sin(i * 0.55) * 20};${75 - Math.sin(i * 0.55) * 20}`}
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                      
+                      {/* Strand Node A */}
+                      <circle
+                        cx={x}
+                        cy={50}
+                        r="3.5"
+                        fill="#2dd4bf"
+                        filter="url(#glow-teal)"
+                      >
+                        <animate
+                          attributeName="cy"
+                          values={`${25 + Math.sin(i * 0.55) * 20};${75 - Math.sin(i * 0.55) * 20};${25 + Math.sin(i * 0.55) * 20}`}
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      
+                      {/* Strand Node B */}
+                      <circle
+                        cx={x}
+                        cy={50}
+                        r="3.5"
+                        fill="#f43f5e"
+                        filter="url(#glow-rose)"
+                      >
+                        <animate
+                          attributeName="cy"
+                          values={`${75 - Math.sin(i * 0.55) * 20};${25 + Math.sin(i * 0.55) * 20};${75 - Math.sin(i * 0.55) * 20}`}
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                    </g>
+                  );
+                })}
+              </svg>
+              
+              {/* Telemetry overlay labels */}
+              <div className="absolute top-2.5 left-4 font-mono text-[8px] text-slate-500 uppercase tracking-widest font-black">
+                GENOME MAPPING SYSTEM // BASE_PAIR_COUNT: 15
+              </div>
+              <div className="absolute bottom-2.5 right-4 font-mono text-[8px] text-teal-400 uppercase tracking-widest font-bold">
+                DNA SYNC STATE: HIGH_STABILITY
+              </div>
+            </div>
+
             {/* Scores breakdown */}
             <div className="grid grid-cols-2 gap-4 font-mono text-xs text-slate-400 mt-2">
               <div className="flex flex-col gap-1.5 p-3 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-white/5">
