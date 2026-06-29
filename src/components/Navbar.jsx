@@ -88,6 +88,9 @@ export const Navbar = () => {
       } else if (transcript.includes('wishlist') || transcript.includes('cache')) {
         navigate('/wishlist');
         showToast('Navigating to Wishlist ledger...');
+      } else if (transcript.includes('road') || transcript.includes('drive') || transcript.includes('car')) {
+        navigate('/road-trip-os');
+        showToast('Navigating to Road Trip OS...');
       } else if (transcript.includes('home') || transcript.includes('space') || transcript.includes('station')) {
         navigate('/');
         showToast('Returning to Home space terminal...');
@@ -137,7 +140,8 @@ export const Navbar = () => {
     { path: '/hotels', label: 'Stations & Lodges', icon: <span className="text-[12px]">🏨</span> },
     { path: '/packages', label: 'Packages Ledger', icon: <CalendarDays size={12} /> },
     { path: '/weather', label: 'Atmosphere advisor', icon: <CloudSun size={12} /> },
-    { path: '/maps', label: 'Explorer Map', icon: <Map size={12} /> }
+    { path: '/maps', label: 'Explorer Map', icon: <Map size={12} /> },
+    { path: '/road-trip-os', label: 'Road Trip OS', icon: <span className="text-[12px]">🚗</span> }
   ];
 
   const handleLogout = () => {
