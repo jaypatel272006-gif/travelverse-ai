@@ -1090,8 +1090,7 @@ export const DestinationDetails = () => {
                 </div>
               </div>
             </div>
-          )}   </div>
-          </div>
+          )}
 
           {/* Travel Advisories (Visa, Safety & Climate) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
