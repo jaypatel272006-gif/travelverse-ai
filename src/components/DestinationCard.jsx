@@ -110,9 +110,12 @@ export const DestinationCard = ({ destination }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-85" />
 
         {/* Region Tag */}
-        <div className="absolute top-4 left-4 flex gap-1.5 flex-wrap max-w-[80%]">
-          <span className="px-3 py-1 text-[11px] font-semibold tracking-wide uppercase bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 rounded-full shadow-sm">
+        <div className="absolute top-4 left-4 flex gap-2 flex-wrap max-w-[80%] items-center">
+          <span className="px-3 py-1 text-[10px] font-semibold tracking-wide uppercase bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 rounded-full shadow-sm">
             {region}
+          </span>
+          <span className="px-2.5 py-1 text-[8px] font-bold font-mono uppercase bg-emerald-500/85 text-white backdrop-blur-sm rounded-full shadow-sm flex items-center gap-1">
+            <span className="w-1 h-1 rounded-full bg-white animate-pulse" /> Sourced Live Data
           </span>
         </div>
 
