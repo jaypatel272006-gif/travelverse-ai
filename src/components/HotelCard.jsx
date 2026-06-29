@@ -61,12 +61,33 @@ export const HotelCard = ({ hotel, onBook }) => {
           {/* Header */}
           <div className="flex justify-between items-start gap-4 mb-2">
             <div>
-              <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100 hover:text-teal-655 dark:hover:text-teal-400 transition-colors">
-                {hotel.name}
-              </h4>
-              <div className="flex items-center gap-1 mt-1 text-slate-555">
-                <MapPin size={13} className="text-slate-400" />
-                <span className="text-xs font-medium">{hotel.location || hotel.destination}</span>
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100 hover:text-teal-655 dark:hover:text-teal-400 transition-colors my-0">
+                  {hotel.name}
+                </h4>
+                {hotel.isLiveVerified ? (
+                  <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Verified
+                  </span>
+                ) : (
+                  <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded flex items-center gap-1">
+                    🤖 AI Suggestion
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-slate-555 flex-wrap">
+                <div className="flex items-center gap-1">
+                  <MapPin size={13} className="text-slate-400" />
+                  <span className="text-xs font-medium">{hotel.location || hotel.destination}</span>
+                </div>
+                {hotel.website && (
+                  <>
+                    <span className="text-slate-300 dark:text-slate-700">•</span>
+                    <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="text-xs text-teal-605 dark:text-teal-400 hover:underline font-mono font-bold">
+                      Official Website
+                    </a>
+                  </>
+                )}
               </div>
             </div>
             
@@ -77,9 +98,17 @@ export const HotelCard = ({ hotel, onBook }) => {
             </div>
           </div>
 
-          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed font-semibold">
+          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3 leading-relaxed font-semibold">
             {hotel.description}
           </p>
+
+          {/* Cancellation Policy */}
+          {hotel.cancellationPolicy && (
+            <div className="mb-3.5 text-xs text-rose-500 dark:text-rose-400 font-semibold font-mono flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <span>Policy: {hotel.cancellationPolicy}</span>
+            </div>
+          )}
 
           {/* Amenities Grid */}
           <div className="flex flex-wrap gap-2 mb-5">
