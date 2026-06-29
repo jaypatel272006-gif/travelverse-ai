@@ -9,7 +9,16 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showEnginesMenu, setShowEnginesMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const [isListening, setIsListening] = useState(false);
   const [voiceTooltip, setVoiceTooltip] = useState('Voice Commands');
@@ -151,8 +160,12 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 py-3">
-      <div className="max-w-7xl mx-auto rounded-2xl glass shadow-lg border border-white/20 dark:border-slate-800/40 px-6 py-2.5 flex items-center justify-between">
+    <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-500 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-2' : 'py-3.5'}`}>
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-500 ${
+        isScrolled 
+          ? 'glass shadow-2xl border-white/20 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 px-5 py-2' 
+          : 'glass shadow-lg border-white/20 dark:border-slate-800/40 px-6 py-2.5'
+      } flex items-center justify-between`}>
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 select-none group shrink-0">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
