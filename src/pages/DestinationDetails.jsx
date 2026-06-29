@@ -1018,7 +1018,10 @@ export const DestinationDetails = () => {
                   </div>
                 ))}
               </div>
-                     {/* Dossier Information Overview */}
+            </div>
+          )}
+          
+          {/* Dossier Information Overview */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl relative overflow-hidden flex flex-col gap-6">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <div>
