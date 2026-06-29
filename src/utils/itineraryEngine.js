@@ -235,7 +235,8 @@ const REAL_HOTELS_ENGINE = {
 
 // Helper to resolve real operational hotels for other destinations
 const getRealHotel = (city, tier) => {
-  const key = city.toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
+  const safeCity = city && typeof city === 'string' ? city : 'Delhi';
+  const key = safeCity.toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
   
   // Resolve map keys
   let lookupKey = key;
@@ -255,7 +256,7 @@ const getRealHotel = (city, tier) => {
   }
   
   // Universal procedural solver with real-world formatting
-  const formattedCity = city.charAt(0).toUpperCase() + city.slice(1);
+  const formattedCity = safeCity.charAt(0).toUpperCase() + safeCity.slice(1);
   if (budgetKey === 'luxury') {
     return { name: `Taj Resort & Spa, ${formattedCity}`, link: 'https://www.tajhotels.com/', desc: 'Premium 5-star palace hospitality and luxury spa.' };
   }
@@ -363,11 +364,12 @@ const localRecommendations = {
  * Generate a highly realistic daily travel agenda matching travel style and pace
  */
 export function generateDetailedItinerary(destination, duration, budgetType, interests, travelStyle, pace) {
-  const normKey = destination.toLowerCase().trim();
+  const safeDest = destination && typeof destination === 'string' ? destination : 'Delhi';
+  const normKey = safeDest.toLowerCase().trim();
   const rec = localRecommendations[normKey] || {
-    cafes: [`Local Café de ${destination}`, `Central Coffee Roasters of ${destination}`],
-    restaurants: [`Traditional Specialty Diner of ${destination}`, `Regional Heritage Kitchen`, `Hidden Alley Bistro`],
-    attractions: [`Historic Landmark Palace`, `${destination} City Promenade`, `Old Quarter Cathedral`, `Local Heritage Museum`],
+    cafes: [`Local Café de ${safeDest}`, `Central Coffee Roasters of ${safeDest}`],
+    restaurants: [`Traditional Specialty Diner of ${safeDest}`, `Regional Heritage Kitchen`, `Hidden Alley Bistro`],
+    attractions: [`Historic Landmark Palace`, `${safeDest} City Promenade`, `Old Quarter Cathedral`, `Local Heritage Museum`],
     gems: [`Historic Backstreet Alley Sanctuary`, `Old Quarter Botanical Walkway`, `Architectural Archway ruins`],
     views: [`Panoramic City Observatory Peak`, `Central Bridge viewpoint at twilight`, `Hilltop Fortress viewpoint`],
     emergency: `Local Central Hospital Medical Hub. Dial regional emergency lines for trauma services.`,
@@ -375,7 +377,7 @@ export function generateDetailedItinerary(destination, duration, budgetType, int
   };
 
   // Resolve real hotel for this destination & budget tier
-  const activeHotel = getRealHotel(destination, budgetType);
+  const activeHotel = getRealHotel(safeDest, budgetType);
 
   // Read granular local storage preferences
   const isJain = localStorage.getItem('tv_food_jain') === 'true';
