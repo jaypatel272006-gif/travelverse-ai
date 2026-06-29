@@ -1066,9 +1066,11 @@ export const DestinationDetails = () => {
           </div>
 
           {/* Sacred Site Etiquette & Guidelines Widget */}
-          {['varanasi', 'dwarka', 'puri', 'rameshwaram', 'badrinath', 'ayodhya', 'rishikesh', 'haridwar', 'somnath', 'kedarnath', 'hampi', 'ellora'].some(
-            shrine => cityData?.name?.toLowerCase().includes(shrine)
-          ) && (
+          {(['varanasi', 'dwarka', 'puri', 'rameshwaram', 'badrinath', 'ayodhya', 'rishikesh', 'haridwar', 'somnath', 'kedarnath', 'hampi', 'ellora', 'vaishnodevi', 'tirupati', 'meenakshi', 'goldentemple', 'bodhgaya', 'mahakaleshwar', 'shirdi', 'mecca', 'medina', 'westernwall', 'mountkailash', 'patnasahib', 'anandpursahib', 'sarnath', 'bomjesus', 'velankanni', 'palitana', 'ranakpur'].some(
+            shrine => cityData?.name?.toLowerCase().includes(shrine) || cityData?.id?.toLowerCase().includes(shrine)
+          ) || 
+          cityData?.tags?.some(t => ['spiritual', 'temple', 'shrine', 'pilgrimage', 'holy', 'sacred', 'religion'].includes(t.toLowerCase())) ||
+          cityData?.description?.toLowerCase().match(/(temple|holy|sacred|shrine|pilgrimage|mosque|church|cathedral|synagogue|gurudwara)/i)) && (
             <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/25 text-left flex flex-col gap-4">
               <div>
                 <span className="text-[9px] font-mono text-amber-500 font-bold tracking-widest uppercase">🕌 SACRED PROTOCOLS ACTIVATED</span>
