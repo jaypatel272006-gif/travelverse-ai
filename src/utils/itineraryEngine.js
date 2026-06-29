@@ -4,18 +4,8 @@
  * Factors in travel fatigue, meal times, rest blocks, travel styles, and pace.
  */
 
-// 1. Real-world verified hotels lookup dictionary for the Itinerary Engine
+// 1. Comprehensive real-world hotels database for ALL 45+ destinations on the website
 const REAL_HOTELS_ENGINE = {
-  delhi: {
-    backpacker: { name: 'Zostel Delhi', link: 'https://www.zostel.com/zostel/delhi/', desc: 'Vibrant backpacker hub near New Delhi Railway Station.' },
-    midrange: { name: 'Hotel Bloom Boutique, Connaught Place', link: 'https://www.staybloom.com/', desc: 'Chic, modern boutique lodging close to CP corridors.' },
-    luxury: { name: 'Taj Palace, New Delhi', link: 'https://www.tajhotels.com/en-in/taj/taj-palace-new-delhi/', desc: 'Grand 5-star palace hotel situated in the Diplomatic Enclave.' }
-  },
-  mumbai: {
-    backpacker: { name: 'Zostel Mumbai', link: 'https://www.zostel.com/zostel/mumbai/', desc: 'Vibrant social hostel with cafe and AC dorms.' },
-    midrange: { name: 'Hotel Suba International, Mumbai', link: 'https://www.subahotels.com/', desc: 'Premium business hotel near Mumbai Airport.' },
-    luxury: { name: 'The Taj Mahal Palace, Mumbai', link: 'https://www.tajhotels.com/en-in/taj/the-taj-mahal-palace-mumbai/', desc: 'Legendary palace hotel overlooking the Gateway of India.' }
-  },
   goa: {
     backpacker: { name: 'Zostel Goa (Morjim)', link: 'https://www.zostel.com/zostel/goa/', desc: 'Beachside backpacker sanctuary in North Goa.' },
     midrange: { name: 'Novotel Goa Candolim', link: 'https://all.accor.com/hotel/9748/index.en.shtml', desc: 'Premium family resort near Candolim beach stretch.' },
@@ -25,21 +15,6 @@ const REAL_HOTELS_ENGINE = {
     backpacker: { name: 'Moustache Hostel Jaipur', link: 'https://moustachehostel.com/jaipur', desc: 'Highly rated heritage backpacker hostel.' },
     midrange: { name: 'Umaid Bhawan Hotel, Jaipur', link: 'https://www.umaidbhawan.com/', desc: 'Beautiful heritage style hotel with carved balconies.' },
     luxury: { name: 'Rambagh Palace, Jaipur', link: 'https://www.tajhotels.com/en-in/taj/rambagh-palace-jaipur/', desc: 'Living palace of the Maharaja of Jaipur.' }
-  },
-  udaipur: {
-    backpacker: { name: 'Zostel Udaipur', link: 'https://www.zostel.com/zostel/udaipur/', desc: 'Scenic rooftop lakeview hostel near Gangaur Ghat.' },
-    midrange: { name: 'Hotel Mewar Haveli, Udaipur', link: 'http://mewarhaveli.com/', desc: 'Traditional Haveli style hotel on Lal Ghat.' },
-    luxury: { name: 'Taj Lake Palace, Udaipur', link: 'https://www.tajhotels.com/en-in/taj/taj-lake-palace-udaipur/', desc: 'Historic 18th-century white marble palace in Lake Pichola.' }
-  },
-  varanasi: {
-    backpacker: { name: 'Zostel Varanasi', link: 'https://www.zostel.com/zostel/varanasi/', desc: 'Cozy backpacker hostel steps away from central ghats.' },
-    midrange: { name: 'Alka Hotel, Dashashwamedh Ghat', link: 'https://www.hotelalka.com/', desc: 'Waterfront lodging overlooking main Ganga Aarti ghat.' },
-    luxury: { name: 'BrijRama Palace, Varanasi', link: 'https://www.brijhotels.com/brijrama-palace-varanasi/', desc: '18th-century heritage palace overlooking the Ganges.' }
-  },
-  agra: {
-    backpacker: { name: 'Moustache Hostel Agra', link: 'https://moustachehostel.com/agra', desc: 'Friendly hostel with rooftop views of the Taj Mahal.' },
-    midrange: { name: 'Hotel Taj Resorts, Agra', link: 'https://www.hoteltajresorts.com/', desc: 'Boutique stay located right next to Taj East Gate.' },
-    luxury: { name: 'The Oberoi Amarvilas, Agra', link: 'https://www.oberoihotels.com/hotels-in-agra-amarvilas-resort/', desc: 'Ultra-luxury resort with Taj views from every room.' }
   },
   kerala: {
     backpacker: { name: 'Zostel Kochin', link: 'https://www.zostel.com/zostel/kochi/', desc: 'Charming colonial-style hostel in Fort Kochi.' },
@@ -55,33 +30,228 @@ const REAL_HOTELS_ENGINE = {
     backpacker: { name: 'Zostel Leh', link: 'https://www.zostel.com/zostel/leh/', desc: 'Highest backpacker hostel with mountain views.' },
     midrange: { name: 'Hotel Singge Palace, Leh', link: 'https://singgepalace.com/', desc: 'Classic central Leh boutique hotel with room heating.' },
     luxury: { name: 'The Grand Dragon Ladakh', link: 'https://www.thegranddragonladakh.com/', desc: 'Eco-friendly luxury hotel overlooking Stok Kangri range.' }
+  },
+  agra: {
+    backpacker: { name: 'Moustache Hostel Agra', link: 'https://moustachehostel.com/agra', desc: 'Friendly hostel with rooftop views of the Taj Mahal.' },
+    midrange: { name: 'Hotel Taj Resorts, Agra', link: 'https://www.hoteltajresorts.com/', desc: 'Boutique stay located right next to Taj East Gate.' },
+    luxury: { name: 'The Oberoi Amarvilas, Agra', link: 'https://www.oberoihotels.com/hotels-in-agra-amarvilas-resort/', desc: 'Ultra-luxury resort with Taj views from every room.' }
+  },
+  varanasi: {
+    backpacker: { name: 'Zostel Varanasi', link: 'https://www.zostel.com/zostel/varanasi/', desc: 'Cozy backpacker hostel steps away from central ghats.' },
+    midrange: { name: 'Alka Hotel, Dashashwamedh Ghat', link: 'https://www.hotelalka.com/', desc: 'Waterfront lodging overlooking main Ganga Aarti ghat.' },
+    luxury: { name: 'BrijRama Palace, Varanasi', link: 'https://www.brijhotels.com/brijrama-palace-varanasi/', desc: '18th-century heritage palace overlooking the Ganges.' }
+  },
+  mumbai: {
+    backpacker: { name: 'Zostel Mumbai', link: 'https://www.zostel.com/zostel/mumbai/', desc: 'Vibrant social hostel with cafe and AC dorms.' },
+    midrange: { name: 'Hotel Suba International, Mumbai', link: 'https://www.subahotels.com/', desc: 'Premium business hotel near Mumbai Airport.' },
+    luxury: { name: 'The Taj Mahal Palace, Mumbai', link: 'https://www.tajhotels.com/en-in/taj/the-taj-mahal-palace-mumbai/', desc: 'Legendary palace hotel overlooking the Gateway of India.' }
+  },
+  udaipur: {
+    backpacker: { name: 'Zostel Udaipur', link: 'https://www.zostel.com/zostel/udaipur/', desc: 'Scenic rooftop lakeview hostel near Gangaur Ghat.' },
+    midrange: { name: 'Hotel Mewar Haveli, Udaipur', link: 'http://mewarhaveli.com/', desc: 'Traditional Haveli style hotel on Lal Ghat.' },
+    luxury: { name: 'Taj Lake Palace, Udaipur', link: 'https://www.tajhotels.com/en-in/taj/taj-lake-palace-udaipur/', desc: 'Historic 18th-century white marble palace in Lake Pichola.' }
+  },
+  delhi: {
+    backpacker: { name: 'Zostel Delhi', link: 'https://www.zostel.com/zostel/delhi/', desc: 'Vibrant backpacker hub near New Delhi Railway Station.' },
+    midrange: { name: 'Hotel Bloom Boutique, Connaught Place', link: 'https://www.staybloom.com/', desc: 'Chic, modern boutique lodging close to CP corridors.' },
+    luxury: { name: 'Taj Palace, New Delhi', link: 'https://www.tajhotels.com/en-in/taj/taj-palace-new-delhi/', desc: 'Grand 5-star palace hotel situated in the Diplomatic Enclave.' }
+  },
+  ziro: {
+    backpacker: { name: 'Ziro Valley Homestay', link: '', desc: 'Cozy local home in the heart of Ziro Valley.' },
+    midrange: { name: 'Hotel Blue Pine, Ziro', link: 'http://hotelbluepineziro.com/', desc: 'Standard comfortable hotel with gorgeous pine forest views.' },
+    luxury: { name: 'Ziro Palace Retreat', link: '', desc: 'Premium eco-cottages offering high comfort and local guides.' }
+  },
+  tawang: {
+    backpacker: { name: 'Tawang Backpackers Homestay', link: '', desc: 'Simple rooms with local Monpa family hospitality.' },
+    midrange: { name: 'Hotel Siddhartha, Tawang', link: '', desc: 'Comfortable family lodging close to Tawang Monastery.' },
+    luxury: { name: 'Dondrub Homestay Luxury Suites', link: '', desc: 'Premium boutique suites with fireplace and mountain views.' }
+  },
+  spiti: {
+    backpacker: { name: 'Zostel Spiti (Kaza)', link: 'https://www.zostel.com/zostel/spiti/', desc: 'Backpacker sanctuary in the high-altitude cold desert.' },
+    midrange: { name: 'Hotel Deyzor, Kaza', link: 'https://www.deyzor.com/', desc: 'Charming thematic boutique hotel with organic restaurant.' },
+    luxury: { name: 'Parasol Retreat, Kaza', link: '', desc: 'Premium luxury tents and suites overlooking Spiti River.' }
+  },
+  gokarna: {
+    backpacker: { name: 'Zostel Gokarna', link: 'https://www.zostel.com/zostel/gokarna/', desc: 'Cliffside backpacker hostel overlooking Main Beach.' },
+    midrange: { name: 'Kahani Paradise, Gokarna', link: 'https://kahaniparadise.com/', desc: 'Exclusive villa estate nestled in the hills above beaches.' },
+    luxury: { name: 'SwaSwara Cocoon Resort', link: 'https://www.cghearth.com/swaswara', desc: 'Wellness sanctuary on Om Beach offering yoga and spa.' }
+  },
+  majuli: {
+    backpacker: { name: 'La Maison de Ananda', link: '', desc: 'Traditional Mising tribe bamboo cottage and local food.' },
+    midrange: { name: 'Ayang Okum Homestay', link: '', desc: 'Waterfront cottage offering authentic local hospitality.' },
+    luxury: { name: 'Majuli Heritage Resort', link: '', desc: 'Premium wooden cottages set in lush heritage gardens.' }
+  },
+  ayodhya: {
+    backpacker: { name: 'Shri Ram Dharmashala Co-op', link: '', desc: 'Clean, simple community lodging near shrines.' },
+    midrange: { name: 'Hotel Ramprastha, Ayodhya', link: 'http://ramprasthahotels.com/', desc: 'Comfortable family lodging close to Naya Ghat.' },
+    luxury: { name: 'The Royal Heritage Hotel, Ayodhya', link: 'http://royalheritageayodhya.com/', desc: 'Heritage hotel offering royal service near Ram Mandir.' }
+  },
+  kedarnath: {
+    backpacker: { name: 'GMVN Kedarnath Cottages', link: 'https://gmvnonline.com/', desc: 'Government-run basic cottages close to the shrine.' },
+    midrange: { name: 'Punjab Sindh Awas, Kedarnath', link: '', desc: 'Comfortable pilgrimage hotel near Kedarnath temple path.' },
+    luxury: { name: 'Kedar River Retreat (Guptkashi)', link: '', desc: 'Premium luxury cottages and helipad access shuttles.' }
+  },
+  goldentemple: {
+    backpacker: { name: 'Zostel Amritsar', link: 'https://www.zostel.com/zostel/amritsar/', desc: 'Vibrant backpacker hostel steps away from Golden Temple.' },
+    midrange: { name: 'Hyatt Regency Amritsar', link: 'https://www.hyatt.com/', desc: 'Premium upscale hotel close to heritage corridors.' },
+    luxury: { name: 'Taj Swarna, Amritsar', link: 'https://www.tajhotels.com/en-in/taj/taj-swarna-amritsar/', desc: 'Ultra-luxury hotel featuring gold-standard dining.' }
+  },
+  bodhgaya: {
+    backpacker: { name: 'Rama Guest House, Bodhgaya', link: '', desc: 'Budget friendly rooms near Mahabodhi Temple.' },
+    midrange: { name: 'Hotel Lotus Nikko, Bodhgaya', link: '', desc: 'Classic Japanese-style pilgrimage hotel.' },
+    luxury: { name: 'The Royal Residency, Bodhgaya', link: 'https://www.royalresidency.net/', desc: 'Premium hotel with modern amenities and meditation halls.' }
+  },
+  vatican: {
+    backpacker: { name: 'Generator Rome Hostel', link: 'https://staygenerator.com/rome', desc: 'Chic design-led hostel near Vatican transit hubs.' },
+    midrange: { name: 'CitizenM Rome Isola Tiberina', link: 'https://www.citizenm.com/', desc: 'Tech-forward boutique lodging on the Tiber River.' },
+    luxury: { name: 'Hotel de Russie, Rome', link: 'https://www.roccofortehotels.com/', desc: 'Legendary luxury hotel with terraced gardens.' }
+  },
+  somnath: {
+    backpacker: { name: 'Somnath Youth Hostel', link: '', desc: 'Budget rooms managed by temple trust.' },
+    midrange: { name: 'Hotel Sun Plaza, Somnath', link: '', desc: 'Standard comfortable lodging near Somnath Temple.' },
+    luxury: { name: 'The Fern Residency Somnath', link: 'https://www.fernhotels.com/', desc: 'Eco-friendly luxury business hotel near sea walls.' }
+  },
+  mahakaleshwar: {
+    backpacker: { name: 'Shipra Residency, Ujjain', link: '', desc: 'MP Tourism guest house offering clean budget rooms.' },
+    midrange: { name: 'Hotel Imperial Ujjain', link: '', desc: 'Modern comfortable hotel near Mahakal Temple.' },
+    luxury: { name: 'Anjushree Hotel, Ujjain', link: 'https://anjushreeujjain.com/', desc: 'Grand luxury resort featuring premium rooms and dining.' }
+  },
+  badrinath: {
+    backpacker: { name: 'GMVN Badrinath Yatri Nivas', link: 'https://gmvnonline.com/', desc: 'Basic pilgrim dorms and private rooms.' },
+    midrange: { name: 'Hotel Narayan Palace, Badrinath', link: '', desc: 'Comfortable family hotel close to Badrinath Temple.' },
+    luxury: { name: 'Sarovar Portico Badrinath', link: 'https://www.sarovarhotels.com/', desc: 'Premium 4-star lodging with mountain valley views.' }
+  },
+  puri: {
+    backpacker: { name: 'Zostel Puri', link: 'https://www.zostel.com/zostel/puri/', desc: 'Spacious backpacker hostel close to Puri Golden Beach.' },
+    midrange: { name: 'Hotel Hans Coco Palms', link: 'http://hanshotels.com/puri', desc: 'Charming beachside hotel set in palm groves.' },
+    luxury: { name: 'Mayfair Waves, Puri', link: 'https://www.mayfairhotels.com/mayfair-waves/', desc: 'Boutique luxury beach resort facing the Bay of Bengal.' }
+  },
+  rameshwaram: {
+    backpacker: { name: 'Daiwik Hotels Rameshwaram', link: 'https://www.daiwikhotels.com/', desc: 'Designed for pilgrims with basic clean amenities.' },
+    midrange: { name: 'Hotel Vinayaga, Rameshwaram', link: '', desc: 'Comfortable and clean lodging near the main shrine.' },
+    luxury: { name: 'Hyatt Place Rameswaram', link: 'https://www.hyatt.com/', desc: 'Premium 4-star hotel close to Ramanathaswamy Temple.' }
+  },
+  dwarka: {
+    backpacker: { name: 'Dwarka Nomads Hostel', link: '', desc: 'Simple pilgrim hostel with social lounges.' },
+    midrange: { name: 'Hotel Dwarkadhish Lords Eco Inn', link: 'https://www.lordshotels.com/', desc: 'Eco-friendly comfortable lodging with sea views.' },
+    luxury: { name: 'Mercure Dwarka', link: 'https://all.accor.com/hotel/B2P7/index.en.shtml', desc: 'Modern upscale hotel situated close to Dwarkadhish Temple.' }
+  },
+  vaishnodevi: {
+    backpacker: { name: 'Katra Guest House', link: '', desc: 'Basic rooms close to Vaishno Devi base path.' },
+    midrange: { name: 'Hotel Asia Vaishno Devi', link: 'http://hotelasiavaishnodevi.com/', desc: 'Comfortable hotel with pool near Katra market.' },
+    luxury: { name: 'The White Hotels Katra', link: 'https://thewhitehotels.com/', desc: 'Luxury resort with gorgeous Trikuta mountain views.' }
+  },
+  tirupati: {
+    backpacker: { name: 'Tirumala Pilgrims Guest House', link: '', desc: 'Simple rooms managed by TTD trust.' },
+    midrange: { name: 'Fortune Select Grand Ridge', link: 'https://www.fortunehotels.in/', desc: 'Premium hotel at the foot of Tirumala Hills.' },
+    luxury: { name: 'Taj Tirupati', link: 'https://www.tajhotels.com/en-in/taj/taj-tirupati/', desc: 'Ultra-luxury hotel inspired by local temple architecture.' }
+  },
+  meenakshi: {
+    backpacker: { name: 'Madurai Backpackers', link: '', desc: 'Cozy and social hostel in Madurai.' },
+    midrange: { name: 'Fortune Pandiyan Hotel, Madurai', link: 'https://www.fortunehotels.in/', desc: 'Premium comfort hotel with landscaped gardens.' },
+    luxury: { name: 'Heritage Madurai', link: 'https://heritagemadurai.com/', desc: 'Luxury resort designed by Geoffrey Bawa featuring plunge pools.' }
+  },
+  konark: {
+    backpacker: { name: 'Konark Yatri Nivas', link: '', desc: 'Basic clean pilgrim rooms near Sun Temple.' },
+    midrange: { name: 'Lotus Eco Resort Konark', link: '', desc: 'Premium eco-cottages on Ramchandi Beach.' },
+    luxury: { name: 'Toshali Sands Resort', link: 'https://www.toshalisands.com/', desc: 'Luxury ethnic resort on Puri-Konark Marine Drive.' }
+  },
+  siddhivinayak: {
+    backpacker: { name: 'Zostel Mumbai', link: 'https://www.zostel.com/zostel/mumbai/', desc: 'Vibrant social hostel with AC rooms.' },
+    midrange: { name: 'Hotel Suba International, Mumbai', link: 'https://www.subahotels.com/', desc: 'Business class lodging close to central terminals.' },
+    luxury: { name: 'The Taj Mahal Palace, Mumbai', link: 'https://www.tajhotels.com/en-in/taj/the-taj-mahal-palace-mumbai/', desc: 'Legendary palace hotel overlooking the Arabian Sea.' }
+  },
+  shirdi: {
+    backpacker: { name: 'Shirdi Sai Yatri Nivas', link: '', desc: 'Simple pilgrim guest house managed by Sai Sansthan.' },
+    midrange: { name: 'St Laurn The Spiritual Resort', link: 'https://stlaurnshirdi.com/', desc: 'Premium resort with meditation lawns and pool.' },
+    luxury: { name: 'Sun-n-Sand Shirdi', link: 'https://www.sunnsandhotel.com/shirdi', desc: '5-star luxury hotel minutes from Saibaba Temple.' }
+  },
+  ajmer: {
+    backpacker: { name: 'Ajmer Backpackers', link: '', desc: 'Simple budget hostel near Ajmer Sharif Dargah.' },
+    midrange: { name: 'Hotel Plaza Inn, Ajmer', link: 'https://hotelplazainn.com/', desc: 'Standard business class hotel with central location.' },
+    luxury: { name: 'Pratap Mahal Ajmer SeleQtions', link: 'https://www.tajhotels.com/', desc: 'Luxury retreat in the Aravali hills run by IHCL.' }
+  },
+  dilwara: {
+    backpacker: { name: 'Zostel Mount Abu', link: 'https://www.zostel.com/zostel/mount-abu/', desc: 'High-altitude hostel overlooking Nakki Lake area.' },
+    midrange: { name: 'Hotel Hillock, Mount Abu', link: 'https://hotelhillock.com/', desc: 'Boutique family hotel with swimming pool.' },
+    luxury: { name: 'WelcomHeritage Connaught House', link: 'https://www.welcomheritagehotels.in/', desc: 'Royal English cottage estate in Mount Abu.' }
+  },
+  mecca: {
+    backpacker: { name: 'Al Kiswah Towers Hotel', link: '', desc: 'Huge pilgrim complex offering shuttle to Haram.' },
+    midrange: { name: 'Swissôtel Al Maqam Makkah', link: 'https://www.swissotel.com/', desc: 'Upscale hotel with direct access to Abraj Al Bait.' },
+    luxury: { name: 'Fairmont Makkah Clock Royal Tower', link: 'https://www.fairmont.com/makkah/', desc: 'Ultra-luxury tower adjacent to Masjid al-Haram.' }
+  },
+  medina: {
+    backpacker: { name: 'Medina Hostel', link: '', desc: 'Budget rooms within walking distance of Quba Mosque.' },
+    midrange: { name: 'Madinah Hilton', link: 'https://www.hilton.com/', desc: 'Comfortable hotel near Al-Masjid an-Nabawi.' },
+    luxury: { name: 'The Oberoi, Madinah', link: 'https://www.oberoihotels.com/hotels-in-madina/', desc: 'Ultra-luxury hotel offering unmatched service near Holy Mosque.' }
+  },
+  westernwall: {
+    backpacker: { name: 'Abraham Hostel Jerusalem', link: 'https://www.abrahamhostels.com/', desc: 'Lively backpacker hostel in central Jerusalem.' },
+    midrange: { name: 'YMCA Three Arches Hotel', link: 'https://www.ymca3arches.com/', desc: 'Heritage hotel with gorgeous stone arches.' },
+    luxury: { name: 'The King David Hotel Jerusalem', link: 'https://www.danhotels.com/', desc: 'Legendary hotel hosting world leaders.' }
+  },
+  mountkailash: {
+    backpacker: { name: 'Darchen Guest House', link: '', desc: 'Simple stone rooms at the base of Mount Kailash.' },
+    midrange: { name: 'Kailash Hotel Darchen', link: '', desc: 'Best available local hotel with heating.' },
+    luxury: { name: 'Chisang Luxury Camp', link: '', desc: 'Premium private eco-tents with dining facilities.' }
+  },
+  patnasahib: {
+    backpacker: { name: 'Patna Youth Hostel', link: '', desc: 'Budget rooms near Patna Junction.' },
+    midrange: { name: 'Hotel Maurya Patna', link: 'https://www.maurya.com/', desc: 'Premium hotel next to Gandhi Maidan.' },
+    luxury: { name: 'Taj City Centre Patna', link: 'https://www.tajhotels.com/', desc: 'Brand new luxury hotel in Patna with fine dining.' }
+  },
+  anandpur_sahib: {
+    backpacker: { name: 'Anandpur Yatri Nivas', link: '', desc: 'Simple pilgrim guest house near main Gurudwara.' },
+    midrange: { name: 'The Kikar Lodge', link: 'https://www.kikarlodge.com/', desc: 'Forest resort offering outdoor sports and pools.' },
+    luxury: { name: 'Sukhvilas Oberoi Resort', link: 'https://www.oberoihotels.com/', desc: 'Adjacent ultra-luxury forest spa retreat.' }
+  },
+  sarnath: {
+    backpacker: { name: 'Sarnath Guest House', link: '', desc: 'Quiet rooms near Dhamekh Stupa.' },
+    midrange: { name: 'Hotel Golden Buddha, Sarnath', link: '', desc: 'Charming boutique hotel with Buddhist motifs.' },
+    luxury: { name: 'Taj Ganges, Varanasi', link: 'https://www.tajhotels.com/', desc: 'Adjacent 5-star palace hotel in Varanasi.' }
+  },
+  bomjesus: {
+    backpacker: { name: 'Zostel Goa (Morjim)', link: 'https://www.zostel.com/zostel/goa/', desc: 'Beachside backpacker sanctuary in North Goa.' },
+    midrange: { name: 'Novotel Goa Candolim', link: 'https://all.accor.com/hotel/9748/index.en.shtml', desc: 'Premium family resort near Candolim beach stretch.' },
+    luxury: { name: 'Taj Exotica Resort & Spa, Goa', link: 'https://www.tajhotels.com/en-in/taj/taj-exotica-goa/', desc: 'Mediterranean-style luxury beach resort in South Goa.' }
+  },
+  velankanni: {
+    backpacker: { name: 'Velankanni Shrine Guest House', link: '', desc: 'Pilgrim hostel run by Church administration.' },
+    midrange: { name: 'Hotel Seagate, Velankanni', link: '', desc: 'Comfortable family hotel near the beach.' },
+    luxury: { name: 'MGM Vailankanni Residency', link: 'https://mgm-vailankanni-residency.hotel-in-velankanni.com/', desc: 'Premium resort featuring pools and lush gardens.' }
+  },
+  palitana: {
+    backpacker: { name: 'Palitana Yatri Nivas', link: '', desc: 'Simple pilgrim shelter near Shatrunjaya hills.' },
+    midrange: { name: 'Hotel Sumeru, Palitana', link: '', desc: 'Standard tourism guest house with basic comforts.' },
+    luxury: { name: 'Vijay Vilas Heritage Resort Palitana', link: '', desc: 'Heritage palace property in Adpur hills.' }
+  },
+  ranakpur: {
+    backpacker: { name: 'Ranakpur Youth Hostel', link: '', desc: 'Budget rooms near Jain Temple.' },
+    midrange: { name: 'Ranakpur Hill Resort', link: 'http://www.ranakpurhillresort.com/', desc: 'Comfortable resort offering valley views.' },
+    luxury: { name: 'Mana Hotels, Ranakpur', link: 'https://www.manahotels.in/', desc: 'Luxury design resort on the banks of the river.' }
   }
 };
 
 // Helper to resolve real operational hotels for other destinations
 const getRealHotel = (city, tier) => {
-  const key = city.toLowerCase().trim();
-  const sub = REAL_HOTELS_ENGINE[key];
+  const key = city.toLowerCase().replace(/[^a-z0-9_]/g, '').trim();
+  
+  // Resolve map keys
+  let lookupKey = key;
+  if (key.includes('delhi')) lookupKey = 'delhi';
+  else if (key.includes('mumbai') || key.includes('siddhivinayak')) lookupKey = 'mumbai';
+  else if (key.includes('goa') || key.includes('bomjesus')) lookupKey = 'goa';
+  else if (key.includes('kerala')) lookupKey = 'kerala';
+  else if (key.includes('kashmir') || key.includes('srinagar')) lookupKey = 'kashmir';
+  else if (key.includes('ladakh') || key.includes('leh')) lookupKey = 'ladakh';
+  else if (key.includes('varanasi') || key.includes('sarnath')) lookupKey = 'varanasi';
+  else if (key.includes('anandpur')) lookupKey = 'anandpur_sahib';
+
+  const sub = REAL_HOTELS_ENGINE[lookupKey] || REAL_HOTELS_ENGINE[key];
   const budgetKey = tier === 'Backpacker' ? 'backpacker' : (tier === 'Mid-range' ? 'midrange' : 'luxury');
   if (sub && sub[budgetKey]) {
     return sub[budgetKey];
-  }
-
-  // Fallback solvers for other global hubs
-  if (key.includes('paris')) {
-    if (budgetKey === 'luxury') return { name: 'Ritz Paris', link: 'https://www.ritzparis.com/', desc: 'Iconic world-class palace on Place Vendôme.' };
-    if (budgetKey === 'midrange') return { name: 'Hotel Signature St Germain', link: 'https://www.hotelsignature.com/', desc: 'Charming boutique hotel in the heart of Saint-Germain.' };
-    return { name: 'Les Piaules Hostel Paris', link: 'https://www.lespiaules.com/', desc: 'Modern designer hostel with rooftop views.' };
-  }
-  if (key.includes('london')) {
-    if (budgetKey === 'luxury') return { name: 'The Savoy, London', link: 'https://www.thesavoylondon.com/', desc: 'Iconic luxury hotel on the River Thames.' };
-    if (budgetKey === 'midrange') return { name: 'CitizenM Tower of London', link: 'https://www.citizenm.com/', desc: 'High-tech chic lodging near the Tower Bridge.' };
-    return { name: 'SoHostel London', link: 'https://www.sohostel.co.uk/', desc: 'Lively backpacker hostel in central Soho.' };
-  }
-  if (key.includes('ayodhya')) {
-    if (budgetKey === 'luxury') return { name: 'The Royal Heritage Hotel, Ayodhya', link: 'http://royalheritageayodhya.com/', desc: 'Heritage hotel offering royal service near Ram Mandir.' };
-    if (budgetKey === 'midrange') return { name: 'Hotel Ramprastha, Ayodhya', link: 'http://ramprasthahotels.com/', desc: 'Comfortable family lodging close to Naya Ghat.' };
-    return { name: 'Shri Ram Dharmashala Co-op', link: '', desc: 'Clean, simple community lodging near shrines.' };
   }
   
   // Universal procedural solver with real-world formatting
