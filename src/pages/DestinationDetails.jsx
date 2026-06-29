@@ -1018,17 +1018,19 @@ export const DestinationDetails = () => {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* Dossier Information Overview */}
+                     {/* Dossier Information Overview */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl relative overflow-hidden flex flex-col gap-6">
-            <div>
-              <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 01 // OVERVIEW SUMMARY</span>
-              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Geographical Dossier</h3>
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <div>
+                <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 01 // OVERVIEW SUMMARY</span>
+                <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide my-0">Geographical Dossier</h3>
+              </div>
+              <span className="px-2 py-0.5 text-[8.5px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1 shrink-0">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> Live Sourced API Data
+              </span>
             </div>
             
-            <p className="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-semibold">
+            <p className="text-xs text-slate-600 dark:text-slate-355 leading-relaxed font-semibold">
               {cityData.overview}
             </p>
 
@@ -1058,6 +1060,37 @@ export const DestinationDetails = () => {
                 <span className="text-teal-555 dark:text-teal-400 font-black">{countryData.latlng[0].toFixed(2)}°N, {countryData.latlng[1].toFixed(2)}°E</span>
               </div>
             </div>
+          </div>
+
+          {/* Sacred Site Etiquette & Guidelines Widget */}
+          {['varanasi', 'dwarka', 'puri', 'rameshwaram', 'badrinath', 'ayodhya', 'rishikesh', 'haridwar', 'somnath', 'kedarnath', 'hampi', 'ellora'].some(
+            shrine => cityData?.name?.toLowerCase().includes(shrine)
+          ) && (
+            <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/25 text-left flex flex-col gap-4">
+              <div>
+                <span className="text-[9px] font-mono text-amber-500 font-bold tracking-widest uppercase">🕌 SACRED PROTOCOLS ACTIVATED</span>
+                <h3 className="font-display font-black text-lg text-slate-900 dark:text-amber-400 mt-1 uppercase my-0">Spiritual Site Guidelines</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
+                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">👗 DRESS CODE PROTOCOL</span>
+                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Traditional conservative attire recommended. Keep shoulders and knees fully covered. Footwear prohibited past temple boundary.</p>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
+                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">🕒 OPENING / DARSHAN TIMINGS</span>
+                  <p className="text-slate-700 dark:text-slate-200 font-semibold">05:00 AM – 12:00 PM and 04:00 PM – 09:30 PM daily. Queue waiting times fluctuate from 45 mins to 3 hours.</p>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
+                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">📸 PHOTOGRAPHY RULES</span>
+                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Strictly prohibited inside the inner sanctum. Cameras and mobile phones must be deposited in secure lockers near gates.</p>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
+                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">♿ ACCESSIBILITY</span>
+                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Wheelchair assistance and rampways available at the main gate. Golf cart shuttles operational for senior citizens.</p>
+                </div>
+              </div>
+            </div>
+          )}   </div>
           </div>
 
           {/* Travel Advisories (Visa, Safety & Climate) */}
