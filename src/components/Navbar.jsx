@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Heart, User, LogOut, Compass, Sparkles, Map, CloudSun, CalendarDays, Landmark, Layers, Mic, MicOff } from 'lucide-react';
@@ -12,7 +12,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
     };
