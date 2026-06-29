@@ -38,6 +38,7 @@ const RecognitionEngine = lazy(() => import('./pages/RecognitionEngine').then(m 
 const PersonalityLab = lazy(() => import('./pages/PersonalityLab').then(m => ({ default: m.PersonalityLab })));
 const TravelUtilities = lazy(() => import('./pages/TravelUtilities').then(m => ({ default: m.TravelUtilities })));
 const Achievements = lazy(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
+const RoadTripOS = lazy(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
 
 // Scroll to top helper
 const ScrollToTop = () => {
@@ -139,6 +140,7 @@ function App() {
                 <Route path="/personality-lab" element={<PageTransition><PersonalityLab /></PageTransition>} />
                 <Route path="/utilities" element={<PageTransition><TravelUtilities /></PageTransition>} />
                 <Route path="/achievements" element={<PageTransition><Achievements /></PageTransition>} />
+                <Route path="/road-trip-os" element={<PageTransition><RoadTripOS /></PageTransition>} />
               </Routes>
             </AnimatePresence>
           </Suspense>
