@@ -6,7 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Search, Sparkles, MapPin, Calendar, Users, Shield, Award, Landmark, 
+  Search, X, Sparkles, MapPin, Calendar, Users, Shield, Award, Landmark, 
   TrendingUp, Radio, Activity, CloudRain, Compass, AlertTriangle, ArrowRight, 
   PlaneTakeoff, Heart, Globe, Settings, Play, Square, Eye, Leaf, ShieldAlert, 
   BookOpen, Share2, Layers, Cpu, Music, Zap, Flame, UserCheck, CheckCircle2,
@@ -368,7 +368,31 @@ export const Home = () => {
 
   const handleHeroSearch = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return;
+
+    if (query.includes('flight') || query.includes('plane') || query.includes('ticket')) {
+      navigate('/flights');
+      showToast('Navigating to Flights tracker...');
+    } else if (query.includes('road') || query.includes('drive') || query.includes('car')) {
+      navigate('/road-trip-os');
+      showToast('Navigating to Road Trip OS...');
+    } else if (query.includes('spiritual') || query.includes('temple') || query.includes('pilgrim')) {
+      navigate('/spiritual');
+      showToast('Navigating to Spiritual Shrines...');
+    } else if (query.includes('map') || query.includes('location')) {
+      navigate('/maps');
+      showToast('Navigating to Explorer Maps...');
+    } else if (query.includes('dna') || query.includes('quiz') || query.includes('personality')) {
+      navigate('/personality-lab');
+      showToast('Navigating to Travel DNA Lab...');
+    } else if (query.includes('achieve') || query.includes('mission') || query.includes('badge')) {
+      navigate('/achievements');
+      showToast('Navigating to Explorer Missions...');
+    } else if (query.includes('utilities') || query.includes('tool')) {
+      navigate('/utilities');
+      showToast('Navigating to Travel Utilities...');
+    } else {
       navigate(`/destinations?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
@@ -654,13 +678,37 @@ export const Home = () => {
     <div className="flex flex-col gap-12 py-4 overflow-x-hidden text-slate-800 dark:text-slate-100 transition-colors duration-500">
       
       {/* Dynamic View Mode HUD Bar */}
-      <div className="w-full flex justify-between items-center bg-slate-900/60 border border-white/15 p-4 rounded-2xl shadow-xl backdrop-blur-md relative z-30 flex-wrap gap-4 text-left">
+      <div className="w-full flex flex-col md:flex-row justify-between items-center bg-slate-900/60 border border-white/15 p-4 rounded-2xl shadow-xl backdrop-blur-md relative z-30 gap-4 text-left">
         <div className="flex items-center gap-2.5">
           <div className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse" />
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-300">
             QUANTUM SYSTEM WORKSPACE
           </span>
         </div>
+
+        {/* Global Spotlight-Style Command Search Bar */}
+        <form onSubmit={handleHeroSearch} className="flex-1 max-w-lg w-full relative z-45 mx-2">
+          <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-950/80 border border-white/10 w-full focus-within:border-teal-500 transition-all">
+            <Search className="text-teal-400 shrink-0" size={14} />
+            <input
+              type="text"
+              placeholder="Search destinations or systems (e.g. flights, road trip, DNA quiz)..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-transparent border-none outline-none text-white text-xs w-full placeholder-slate-500 focus:ring-0 focus:outline-none font-mono"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="text-slate-500 hover:text-white cursor-pointer"
+              >
+                <X size={13} />
+              </button>
+            )}
+          </div>
+        </form>
+
         <div className="flex gap-2 bg-slate-950/80 p-1.5 rounded-xl border border-white/5">
           <button
             onClick={() => { setUse3DUniverse(true); showToast('Calibrating space coordinates: 3D Universe Active.', 'success'); }}
