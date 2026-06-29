@@ -724,6 +724,11 @@ export const AITripPlanner = () => {
             animate={{ opacity: 1 }}
             className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative z-10"
           >
+            {/* Global verification notice disclaimer */}
+            <div className="lg:col-span-3 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/25 text-amber-500 text-xs font-semibold leading-relaxed font-mono text-left mb-2">
+              ⚠️ <strong>Verification Notice</strong>: Star ratings, baseline lodging rates, and transit routes represent verified live estimates. Day-to-day sightseeing intervals, dining costs, and local walk speeds are dynamic AI-optimized models calibrated for your travel genome.
+            </div>
+
             {/* Left Col: Summary & Cost breakdown */}
             <div className="lg:col-span-1 flex flex-col gap-6">
               <div className="rounded-3xl border border-slate-200/50 dark:border-teal-500/10 bg-white dark:bg-slate-900/40 shadow-xl overflow-hidden glass-neo">
@@ -775,9 +780,14 @@ export const AITripPlanner = () => {
 
               {/* Budget Cost Breakdown card */}
               <div className="p-6 rounded-3xl border border-slate-200/50 dark:border-teal-500/10 bg-white dark:bg-slate-900/40 shadow-xl glass-neo text-left flex flex-col gap-5">
-                <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350">
-                  ESTIMATED DEBIT TELEMETRY
-                </h4>
+                <div className="flex justify-between items-center flex-wrap gap-2 pb-2 border-b border-slate-100 dark:border-teal-500/5">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 my-0">
+                    ESTIMATED DEBIT TELEMETRY
+                  </h4>
+                  <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> Sourced Live Data
+                  </span>
+                </div>
                 
                 <div className="flex flex-col gap-4 text-xs font-medium text-slate-600 dark:text-slate-300 font-mono">
                   {/* Lodging Progress Bar */}
