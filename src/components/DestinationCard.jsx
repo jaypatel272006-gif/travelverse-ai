@@ -68,7 +68,7 @@ export const DestinationCard = ({ destination }) => {
           ? '0 25px 50px -12px rgba(45, 212, 191, 0.15)' 
           : '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
       }}
-      className="group relative flex flex-col h-full rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900/50 transition-all duration-300 select-none"
+      className="group relative flex flex-col h-full rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900/50 transition-all duration-300 select-none border-gradient-glow"
     >
       {/* Glare Overlay */}
       {isHovered && (
@@ -194,7 +194,7 @@ export const DestinationCard = ({ destination }) => {
           </Link>
           <Link
             to={`/planner?destination=${name}`}
-            className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:bg-teal-600 dark:hover:bg-teal-400 hover:text-white dark:hover:text-slate-900 transition-colors duration-200"
+            className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:bg-teal-600 dark:hover:bg-teal-400 hover:text-white dark:hover:text-slate-900 transition-all duration-200 btn-press-spring"
           >
             Plan Itinerary
           </Link>
