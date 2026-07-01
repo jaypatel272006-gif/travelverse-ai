@@ -501,15 +501,16 @@ export const DestinationDetails = () => {
         }
       `}</style>
       
-      {/* Back to navigation button */}
-      <div className="flex items-center gap-3">
-        <Link
-          to="/destinations"
-          className="p-2 border border-slate-200 dark:border-teal-500/20 hover:border-teal-500/50 bg-white dark:bg-slate-900/40 rounded-xl text-slate-600 dark:text-teal-400 transition-all flex items-center gap-1 text-xs font-mono font-bold"
-        >
-          <ArrowLeft size={14} /> BACK TO DIRECTORY
-        </Link>
-      </div>
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest bg-slate-100 dark:bg-slate-900/10 p-3 rounded-2xl border border-slate-200 dark:border-white/5">
+        <Link to="/" className="hover:text-teal-400 transition-colors">HOME</Link>
+        <span>&gt;</span>
+        <Link to="/destinations" className="hover:text-teal-400 transition-colors">DESTINATIONS</Link>
+        <span>&gt;</span>
+        <span className="text-slate-405">{countryData.name}</span>
+        <span>&gt;</span>
+        <span className="text-teal-650 dark:text-teal-400">{cityData.name}</span>
+      </nav>
 
       {/* Hero Parallax Area */}
       <div className="relative h-[300px] sm:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-teal-500/10">
