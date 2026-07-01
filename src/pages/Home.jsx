@@ -224,6 +224,7 @@ export const Home = () => {
   const [activeTab, setActiveTab] = useState('mission-control');
   const [use3DUniverse, setUse3DUniverse] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchFocusIndex, setSearchFocusIndex] = useState(-1);
   
   // Interactive Canvas & Soundscape Refs
   const audioCtxRef = useRef(null);
