@@ -138,6 +138,46 @@ export const AIAssistantWidget = () => {
               </button>
             </div>
 
+            {/* Quick Action Navigation Bar */}
+            <div className="px-4 py-2 bg-slate-900 border-b border-teal-500/10 flex gap-2 overflow-x-auto scrollbar-none whitespace-nowrap text-[9px] font-mono font-black shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = '/planner';
+                }}
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+              >
+                ✈️ PLAN TRIP
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = '/road-trip-os';
+                }}
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+              >
+                🚗 ROAD TRIP
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleSend('Give me a quick budget breakdown template');
+                }}
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+              >
+                💰 BUDGETS
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleSend('Show emergency helpline numbers');
+                }}
+                className="px-2.5 py-1 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg hover:bg-rose-500/20 cursor-pointer"
+              >
+                🚨 EMERGENCY HELP
+              </button>
+            </div>
+
             {/* Chat Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 scrollbar-thin">
               {messages.map((m) => (
