@@ -51,6 +51,65 @@ export const DestinationDetails = () => {
   const [travelStyle, setTravelStyle] = useState('Solo');
   const [pace, setPace] = useState('Balanced');
 
+  // Local helper for destination travel snapshot dossiers
+  const getTravelSnapshot = (targetId) => {
+    switch (targetId) {
+      case 'dest-goa':
+        return {
+          bestMonths: 'November - February',
+          avgBudget: '₹35,000 - ₹55,000',
+          duration: '4 - 5 Days',
+          travelerType: 'Couples, Groups, Solo',
+          language: 'Konkani, Hindi, English',
+          currency: 'INR (₹)',
+          safetyRating: '⭐⭐⭐⭐☆ (High)',
+          accessibility: 'Airport / Rail Link',
+          climate: 'Tropical / Coastal',
+          highlights: 'Beaches, Portuguese Architecture, Water Sports, Nightlife'
+        };
+      case 'dest-jaipur':
+        return {
+          bestMonths: 'October - March',
+          avgBudget: '₹40,000 - ₹65,000',
+          duration: '3 - 4 Days',
+          travelerType: 'Families, History Buffs, Couples',
+          language: 'Hindi, Rajasthani, English',
+          currency: 'INR (₹)',
+          safetyRating: '⭐⭐⭐⭐☆ (High)',
+          accessibility: 'International Airport / Rail',
+          climate: 'Semi-arid / Warm',
+          highlights: 'Forts, Royal Palaces, Shopping, Culinary Feasts'
+        };
+      case 'dest-delhi':
+        return {
+          bestMonths: 'October - March',
+          avgBudget: '₹30,000 - ₹50,000',
+          duration: '2 - 3 Days',
+          travelerType: 'Foodies, Shoppers, History Buffs',
+          language: 'Hindi, Punjabi, English',
+          currency: 'INR (₹)',
+          safetyRating: '⭐⭐⭐☆☆ (Moderate)',
+          accessibility: 'Metro / Airport / Rail',
+          climate: 'Extreme / Continental',
+          highlights: 'Red Fort, Qutub Minar, Chandni Chowk Street Food'
+        };
+      default:
+        return {
+          bestMonths: 'October - March',
+          avgBudget: '₹35,000 - ₹60,000',
+          duration: '3 - 5 Days',
+          travelerType: 'Solo, Couples, Families',
+          language: 'Hindi, English',
+          currency: 'INR (₹)',
+          safetyRating: '⭐⭐⭐⭐☆ (High)',
+          accessibility: 'Rail / Road Networks',
+          climate: 'Moderate / Varied',
+          highlights: 'Local Landmarks, Heritage sites, Food trails'
+        };
+    }
+  };
+  const snapshot = getTravelSnapshot(id);
+
   // Reviews States
   const [reviews, setReviews] = useState([]);
   const [reviewerName, setReviewerName] = useState(user?.name || '');
