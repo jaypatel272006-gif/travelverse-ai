@@ -426,6 +426,22 @@ export const Dashboard = () => {
     'Enter natural language commands below.'
   ]);
 
+  // Redirect to login if user is not signed in
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return (
+      <div className="w-full min-h-[400px] flex flex-col justify-center items-center gap-4 text-slate-500 font-mono text-xs">
+        <div className="w-10 h-10 rounded-full border-2 border-teal-500 border-t-transparent animate-spin" />
+        <span className="animate-pulse tracking-widest uppercase text-teal-400 font-bold">RE-ESTABLISHING COGNITIVE CONNECTIVITY...</span>
+      </div>
+    );
+  }
+
   // --- PERSISTENCE SYNCS ---
   useEffect(() => {
     localStorage.setItem('tv_workspace_presets', JSON.stringify(workspacePresets));
