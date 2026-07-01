@@ -571,6 +571,60 @@ export const DestinationDetails = () => {
         <span className="text-teal-650 dark:text-teal-400">{cityData.name}</span>
       </nav>
 
+      {/* Travel Snapshot dossier */}
+      <div className="w-full p-5 rounded-3xl bg-slate-900/60 border border-teal-500/10 shadow-xl relative overflow-hidden text-slate-100">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/5 blur-3xl pointer-events-none" />
+        <div className="flex items-center gap-2 mb-3.5">
+          <Cpu className="text-teal-400 animate-pulse" size={14} />
+          <h3 className="font-mono text-[9px] font-bold text-teal-400 uppercase tracking-widest">
+            COGNITIVE CORRELATION: TRAVEL SNAPSHOT
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
+          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
+            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">📅 BEST MONTHS</span>
+            <span className="text-[11px] font-bold text-white block">{snapshot.bestMonths}</span>
+          </div>
+          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
+            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">💰 AVG BUDGET</span>
+            <span className="text-[11px] font-bold text-white block">{snapshot.avgBudget}</span>
+          </div>
+          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
+            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">⏳ TRIP DURATION</span>
+            <span className="text-[11px] font-bold text-white block">{snapshot.duration}</span>
+          </div>
+          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
+            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">👤 TRAVELER TYPE</span>
+            <span className="text-[11px] font-bold text-white block">{snapshot.travelerType}</span>
+          </div>
+          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
+            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">🛡️ SAFETY RATING</span>
+            <span className="text-[11px] font-bold text-white block">{snapshot.safetyRating}</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mt-3.5 pt-3.5 border-t border-white/5">
+          <div className="text-left text-[10px]">
+            <span className="text-slate-400 font-mono">🗣️ LOCAL LANGUAGES:</span> <span className="text-white font-bold">{snapshot.language}</span>
+          </div>
+          <div className="text-left text-[10px]">
+            <span className="text-slate-400 font-mono">🪙 CURRENCY USED:</span> <span className="text-white font-bold">{snapshot.currency}</span>
+          </div>
+          <div className="text-left text-[10px]">
+            <span className="text-slate-400 font-mono">⛅ CLIMATE TYPE:</span> <span className="text-white font-bold">{snapshot.climate}</span>
+          </div>
+          <div className="text-left text-[10px]">
+            <span className="text-slate-400 font-mono">🛞 ACCESSIBILITY:</span> <span className="text-white font-bold">{snapshot.accessibility}</span>
+          </div>
+        </div>
+
+        <div className="mt-3.5 p-3 bg-teal-500/5 rounded-2xl border border-teal-500/10 text-left text-[10px]">
+          <span className="text-teal-400 font-mono font-bold uppercase tracking-wider block mb-0.5">⚡ TOP HIGHLIGHTS DOSSIER</span>
+          <span className="text-slate-300 font-medium">{snapshot.highlights}</span>
+        </div>
+      </div>
+
       {/* Hero Parallax Area */}
       <div className="relative h-[300px] sm:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-teal-500/10">
         <img
