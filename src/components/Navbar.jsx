@@ -160,14 +160,14 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-500 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-2' : 'py-3.5'}`}>
-      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-500 ${
+    <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-2.5' : 'py-4'}`}>
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 backdrop-blur-lg border ${
         isScrolled 
-          ? 'glass shadow-2xl border-white/20 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 px-5 py-2' 
-          : 'glass shadow-lg border-white/20 dark:border-slate-800/40 px-6 py-2.5'
+          ? 'bg-white/75 dark:bg-slate-950/75 border-slate-200/50 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] px-6 py-2.5' 
+          : 'bg-white/90 dark:bg-slate-950/90 border-slate-200/30 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-6 py-3.5'
       } flex items-center justify-between`}>
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2 select-none group shrink-0">
+        <Link to="/" className="flex items-center gap-2 select-none group shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
             <Sparkles size={18} className="animate-pulse" />
           </div>
@@ -182,21 +182,21 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation Link Menu */}
-        <div className="hidden xl:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-1.5">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${
+                `flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none ${
                   isActive
-                    ? 'bg-teal-500/10 text-teal-600 dark:bg-teal-400/10 dark:text-teal-400'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/40'
+                    ? 'bg-gradient-to-r from-teal-500/10 to-sky-500/10 text-teal-655 dark:text-teal-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-teal-500/15 font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 border border-transparent'
                 }`
               }
             >
               {link.icon}
-              {link.label}
+              <span>{link.label}</span>
             </NavLink>
           ))}
 
@@ -208,7 +208,7 @@ export const Navbar = () => {
           >
             <button 
               type="button"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-500 outline-none"
             >
               <Layers size={14} className="text-teal-400 animate-pulse" />
               <span>OS Engines</span>
