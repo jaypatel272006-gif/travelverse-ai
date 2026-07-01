@@ -290,7 +290,9 @@ export const Home = () => {
   const [passportXp, setPassportXp] = useState(1200);
 
   // Discovery Feed swiper index
-  const [feedIndex, setFeedIndex] = useState(0  const testimonials = [
+  const [feedIndex, setFeedIndex] = useState(0);
+
+  const testimonials = [
     {
       name: 'Sarah Jenkins',
       role: 'Adventure Blogger',
@@ -318,7 +320,6 @@ export const Home = () => {
       country: '🇬🇧 UK',
       destination: 'Srinagar, India'
     }
-  ];
   ];
 
   const moodsList = [
