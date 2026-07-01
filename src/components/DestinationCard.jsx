@@ -5,9 +5,32 @@ import { Star, Heart, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const DestinationCard = ({ destination }) => {
-  const { isInWishlist, toggleWishlist, customPhotos } = useApp();
+  const { isInWishlist, toggleWishlist, customPhotos, showToast } = useApp();
   const { id, name, image, region, country, rating, reviewsCount, price, tags, description } = destination;
   const isWishlisted = isInWishlist('destinations', id);
+
+  // Local helper for season and duration
+  const getSeasonAndDuration = (targetId) => {
+    switch (targetId) {
+      case 'dest-goa':
+        return { season: 'Nov - Feb', duration: '4-5 Days' };
+      case 'dest-jaipur':
+        return { season: 'Oct - Mar', duration: '3-4 Days' };
+      case 'dest-delhi':
+        return { season: 'Oct - Mar', duration: '2-3 Days' };
+      case 'dest-agra':
+        return { season: 'Nov - Feb', duration: '2 Days' };
+      case 'dest-leh':
+        return { season: 'May - Sep', duration: '7-9 Days' };
+      case 'dest-kerala':
+        return { season: 'Sep - Mar', duration: '6-8 Days' };
+      case 'dest-varanasi':
+        return { season: 'Oct - Mar', duration: '2-3 Days' };
+      default:
+        return { season: 'Oct - Mar', duration: '4-5 Days' };
+    }
+  };
+  const { season, duration } = getSeasonAndDuration(id);
 
   // 3D Tilt State
   const cardRef = useRef(null);
