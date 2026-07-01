@@ -1349,8 +1349,41 @@ export const DestinationDetails = () => {
         </div>
 
         {/* Right Side (1 Column): Estimated Credits Calculator & Itinerary Generator */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
+        <div className="lg:col-span-1 flex flex-col gap-6 sticky top-6 self-start">
           
+          {/* Voyager Hub Booking Sticky Panel */}
+          <div className="p-6 rounded-3xl bg-slate-900 border border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left card-premium-hover">
+            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-400 font-bold select-none">
+              <span>BOOKING_CORRIDOR</span>
+            </div>
+            <h4 className="font-display font-black text-xs uppercase tracking-wider text-teal-350 flex items-center gap-1.5 font-bold">
+              <MapPin size={13} className="text-teal-400" /> Voyager Hub Booking
+            </h4>
+            
+            <div className="flex flex-col gap-3.5 text-xs font-semibold text-slate-300 font-mono">
+              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400">ESTIMATED BUDGET</span>
+                <span className="text-sm font-black text-teal-400">₹{calculatedCosts.total.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400">LOCAL CLIMATE</span>
+                <span className="text-sm font-black text-sky-400">24°C // SUNNY</span>
+              </div>
+              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
+                <span className="text-[9px] font-bold text-slate-400">RECOMMENDED LODGING</span>
+                <span className="text-[10px] text-slate-205 uppercase font-black">Taj Villa Res.</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                window.location.href = `/planner?dest=${cityData.name}`;
+              }}
+              className="w-full py-3 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-2xl text-xs font-mono font-black uppercase tracking-wider transition-all duration-300 transform active:scale-95 shadow-lg shadow-teal-500/20 flex items-center justify-center gap-1 cursor-pointer"
+            >
+              Plan Your Journey →
+            </button>
+          </div>
           {/* Credits budget Matrix Estimator */}
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
