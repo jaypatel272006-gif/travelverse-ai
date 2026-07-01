@@ -732,18 +732,13 @@ export const Home = () => {
       <div className="w-full flex flex-col md:flex-row justify-between items-center bg-slate-900/60 border border-white/15 p-4 rounded-2xl shadow-xl backdrop-blur-md relative z-30 gap-4 text-left">
         <div className="flex items-center gap-2.5">
           <div className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse" />
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-300">
-            QUANTUM SYSTEM WORKSPACE
-          </span>
-        </div>
-
-        {/* Global Spotlight-Style Command Search Bar */}
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-3        {/* Global Spotlight-Style Command Search Bar */}
         <form onSubmit={handleHeroSearch} className="flex-1 max-w-lg w-full relative z-45 mx-2">
-          <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-950/80 border border-white/10 w-full focus-within:border-teal-500 transition-all">
-            <Search className="text-teal-400 shrink-0" size={14} />
+          <div className="flex items-center gap-3 px-5 py-3 rounded-full bg-slate-950/70 border border-white/10 w-full focus-within:border-teal-500 focus-within:bg-slate-950 focus-within:shadow-[0_0_25px_rgba(20,184,166,0.15)] transition-all duration-300">
+            <Search className={`text-teal-400 shrink-0 ${searchQuery ? 'animate-pulse scale-110' : ''}`} size={15} />
             <input
               type="text"
-              placeholder="Search destinations or systems (e.g. flights, road trip, DNA quiz)..."
+              placeholder="Teleport to... (e.g. Goa, Jaipur, flights, road trip)"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setSearchFocusIndex(-1); }}
               onFocus={() => setIsSearchFocused(true)}
@@ -755,23 +750,24 @@ export const Home = () => {
               <button
                 type="button"
                 onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
-                className="text-slate-500 hover:text-white cursor-pointer"
+                className="text-slate-500 hover:text-white cursor-pointer transition-colors duration-200"
               >
-                <X size={13} />
+                <X size={14} />
               </button>
             )}
           </div>
+          
           {isSearchFocused && !searchQuery && (
-            <div className="absolute top-full left-0 right-0 mt-2 p-3 rounded-2xl bg-slate-950/95 border border-white/10 shadow-2xl z-50 flex flex-col gap-3.5 text-left backdrop-blur-md">
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[92vw] md:w-full mt-3 p-4 rounded-3xl bg-slate-955/98 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-55 flex flex-col gap-4 text-left backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
               <div>
-                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-1.5">🔥 Popular Searches</span>
-                <div className="flex flex-wrap gap-1.5">
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-2 font-mono">🔥 Popular Teleport Coordinates</span>
+                <div className="flex flex-wrap gap-2">
                   {['Goa', 'Jaipur', 'Varanasi', 'Leh'].map(term => (
                     <button
                       key={term}
                       type="button"
                       onClick={() => setSearchQuery(term)}
-                      className="px-2.5 py-1 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-lg text-[10px] font-mono font-semibold text-slate-300 transition-colors cursor-pointer"
+                      className="px-3.5 py-1.5 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-full text-[10px] font-mono font-bold transition-all duration-200 cursor-pointer"
                     >
                       {term}
                     </button>
@@ -779,15 +775,15 @@ export const Home = () => {
                 </div>
               </div>
 
-              <div className="border-t border-white/5 pt-2">
-                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-1.5">⏳ Recent Searches</span>
-                <div className="flex flex-wrap gap-1.5">
+              <div className="border-t border-white/5 pt-3">
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-2 font-mono">⏳ Recent Log Entries</span>
+                <div className="flex flex-wrap gap-2">
                   {['Agra', 'Delhi'].map(term => (
                     <button
                       key={term}
                       type="button"
                       onClick={() => setSearchQuery(term)}
-                      className="px-2.5 py-1 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-lg text-[10px] font-mono font-semibold text-slate-300 transition-colors cursor-pointer"
+                      className="px-3.5 py-1.5 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-full text-[10px] font-mono font-bold transition-all duration-200 cursor-pointer"
                     >
                       {term}
                     </button>
@@ -796,15 +792,17 @@ export const Home = () => {
               </div>
             </div>
           )}
+          
           {searchQuery && (
-            <div className="absolute top-full left-0 right-0 mt-2 p-2.5 rounded-2xl bg-slate-950/95 border border-white/10 shadow-2xl z-50 flex flex-col gap-1 text-left max-h-[300px] overflow-y-auto backdrop-blur-md">
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-[92vw] md:w-full mt-3 p-3 rounded-3xl bg-slate-955/98 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-55 flex flex-col gap-1 text-left max-h-[320px] overflow-y-auto backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
               {totalSearchResults.length === 0 ? (
-                <div className="p-4 text-center text-[10px] font-mono text-slate-550">
-                  ⚠️ NO COORDINATES RESOLVED
+                <div className="p-5 text-center text-[10px] font-mono text-slate-500 flex flex-col items-center gap-1.5">
+                  <span>⚠️ INDEX MATCH EMPTY</span>
+                  <span className="text-[8px] text-slate-600 uppercase">System could not resolve telemetry input</span>
                 </div>
               ) : (
                 <>
-                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest px-2.5 py-1 block">Resolved Telemetry Coordinates</span>
+                  <span className="text-[8.5px] font-bold text-slate-500 uppercase tracking-widest px-3 py-1.5 block font-mono">Resolved Telemetry Coordinates</span>
                   {totalSearchResults.map((result, i) => {
                     const isFocused = i === searchFocusIndex;
                     if (result.type === 'destination') {
@@ -813,16 +811,16 @@ export const Home = () => {
                           key={result.id}
                           to={result.link}
                           onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
-                          className={`flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-all ${
-                            isFocused ? 'bg-white/10 border-l-2 border-teal-450 pl-3 font-bold text-teal-400' : ''
+                          className={`flex items-center gap-3.5 p-2.5 hover:bg-white/5 rounded-2xl transition-all duration-200 ${
+                            isFocused ? 'bg-white/10 border-l-2 border-teal-450 pl-4 font-bold text-teal-400' : ''
                           }`}
                         >
-                          <img src={result.image} alt={result.name} className="w-8 h-8 rounded-lg object-cover" />
+                          <img src={result.image} alt={result.name} className="w-9 h-9 rounded-xl object-cover shadow-md" />
                           <div className="flex-1">
-                            <p className="text-xs font-bold text-white">{result.name}</p>
-                            <p className="text-[9px] text-slate-400 font-mono uppercase">{result.sub}</p>
+                            <p className="text-xs font-bold text-white leading-tight">{result.name}</p>
+                            <p className="text-[9px] text-slate-500 font-mono uppercase mt-0.5">{result.sub}</p>
                           </div>
-                          <ArrowRight size={14} className="text-slate-500" />
+                          <ArrowRight size={14} className="text-slate-500 transition-transform duration-200 group-hover:translate-x-0.5" />
                         </Link>
                       );
                     } else {
@@ -831,8 +829,8 @@ export const Home = () => {
                           key={result.id}
                           to={result.link}
                           onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
-                          className={`flex items-center gap-2 px-3 py-2 hover:bg-teal-500/10 rounded-xl transition-all text-teal-400 font-mono text-[10px] uppercase font-bold ${
-                            isFocused ? 'bg-teal-500/20 border-l-2 border-teal-455 pl-4 text-teal-300' : ''
+                          className={`flex items-center gap-2.5 px-4 py-2.5 hover:bg-teal-500/10 rounded-2xl transition-all duration-200 text-teal-400 font-mono text-[10px] uppercase font-bold ${
+                            isFocused ? 'bg-teal-500/20 border-l-2 border-teal-455 pl-5 text-teal-300' : ''
                           }`}
                         >
                           ⚙️ {result.name}
