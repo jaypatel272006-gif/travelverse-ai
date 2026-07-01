@@ -732,7 +732,12 @@ export const Home = () => {
       <div className="w-full flex flex-col md:flex-row justify-between items-center bg-slate-900/60 border border-white/15 p-4 rounded-2xl shadow-xl backdrop-blur-md relative z-30 gap-4 text-left">
         <div className="flex items-center gap-2.5">
           <div className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse" />
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-3        {/* Global Spotlight-Style Command Search Bar */}
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-300">
+            QUANTUM SYSTEM WORKSPACE
+          </span>
+        </div>
+
+        {/* Global Spotlight-Style Command Search Bar */}
         <form onSubmit={handleHeroSearch} className="flex-1 max-w-lg w-full relative z-45 mx-2">
           <div className="flex items-center gap-3 px-5 py-3 rounded-full bg-slate-950/70 border border-white/10 w-full focus-within:border-teal-500 focus-within:bg-slate-950 focus-within:shadow-[0_0_25px_rgba(20,184,166,0.15)] transition-all duration-300">
             <Search className={`text-teal-400 shrink-0 ${searchQuery ? 'animate-pulse scale-110' : ''}`} size={15} />
