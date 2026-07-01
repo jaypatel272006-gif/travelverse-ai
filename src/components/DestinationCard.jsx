@@ -250,6 +250,6 @@ export const DestinationCard = ({ destination }) => {
           </div>
         </div>
       </div>
-    </motion.div>ion.div>
+    </motion.div>
   );
 };
