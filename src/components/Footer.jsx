@@ -77,58 +77,99 @@ export const Footer = () => {
           </ul>
         </div>
 
-        {/* Agency details */}
+        {/* Company & Support */}
         <div>
-          <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">TravelVerse HQ</h4>
+          <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">Company</h4>
           <ul className="flex flex-col gap-3.5 text-sm">
-            <li className="flex items-center gap-2.5">
-              <MapPin size={16} className="text-teal-400 shrink-0" />
-              <span>789 Wanderlust Blvd, Suite 100, San Francisco, CA</span>
+            <li>
+              <Link to="/contact" className="hover:text-teal-450 transition-colors">Contact Support</Link>
             </li>
-            <li className="flex items-center gap-2.5">
-              <Phone size={16} className="text-teal-400 shrink-0" />
-              <span>+1 (800) 555-PLAN</span>
+            <li>
+              <a href="#" className="hover:text-teal-450 transition-colors">Careers & Openings</a>
             </li>
-            <li className="flex items-center gap-2.5">
-              <Mail size={16} className="text-teal-400 shrink-0" />
-              <span>support@travelverse.ai</span>
+            <li>
+              <a href="#" className="hover:text-teal-450 transition-colors">About TravelVerse</a>
+            </li>
+            <li>
+              <a href="#" className="hover:text-teal-450 transition-colors">Partner Program</a>
             </li>
           </ul>
         </div>
 
-        {/* Newsletter Signup */}
+        {/* Navigation Engines */}
         <div>
-          <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">Newsletter</h4>
-          <p className="text-sm text-slate-450 mb-4 leading-relaxed">
-            Subscribe to get notifications on budget flight warnings and special luxury packages.
-          </p>
-          <form onSubmit={handleSubscribe} className="relative w-full">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-teal-500 transition-colors pr-12"
-            />
-            <button
-              type="submit"
-              className="absolute right-1.5 top-1.5 p-2 bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors flex items-center justify-center shadow-md"
-              aria-label="Subscribe"
-            >
-              <Send size={14} />
-            </button>
-          </form>
+          <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">Travel Engines</h4>
+          <ul className="flex flex-col gap-3.5 text-sm">
+            <li>
+              <Link to="/road-trip-os" className="hover:text-teal-450 transition-colors">Road Trip OS</Link>
+            </li>
+            <li>
+              <Link to="/india-explorer" className="hover:text-teal-450 transition-colors">Religious Tourism</Link>
+            </li>
+            <li>
+              <Link to="/planner" className="hover:text-teal-450 transition-colors">AI Planner Portal</Link>
+            </li>
+            <li>
+              <Link to="/dashboard" className="hover:text-teal-450 transition-colors">Explorer Dashboard</Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Newsletter & App Download */}
+        <div className="flex flex-col gap-5 text-left">
+          <div>
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Newsletter</h4>
+            <p className="text-xs text-slate-450 mb-3.5 leading-relaxed">
+              Subscribe to get notifications on budget flight warnings and special luxury packages.
+            </p>
+            <form onSubmit={handleSubscribe} className="relative w-full">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-teal-500 transition-colors pr-12"
+              />
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1.5 p-2 bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors flex items-center justify-center shadow-md cursor-pointer"
+                aria-label="Subscribe"
+              >
+                <Send size={14} />
+              </button>
+            </form>
+          </div>
+          
+          <div className="flex flex-col gap-2 pt-2 border-t border-slate-800/60">
+            <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">GET THE OPERATING SYSTEM</span>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => showToast('Native Android Package download starting...', 'info')}
+                className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 border border-slate-700 hover:border-teal-500/30 rounded-xl text-[10px] font-mono font-bold text-white transition-all cursor-pointer grow justify-center"
+              >
+                📥 ANDROID APK
+              </button>
+              <button
+                type="button"
+                onClick={() => showToast('iOS Simulator client build starting...', 'info')}
+                className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 border border-slate-700 hover:border-teal-500/30 rounded-xl text-[10px] font-mono font-bold text-white transition-all cursor-pointer grow justify-center"
+              >
+                📥 IOS CLIENT
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
         <p>© 2026 TravelVerse AI Inc. Crafted with modern design principles for maximum conversions.</p>
-        <div className="flex gap-6">
+        <div className="flex gap-6 flex-wrap">
           <a href="#" className="hover:underline">Privacy Policy</a>
           <a href="#" className="hover:underline">Terms of Service</a>
           <a href="#" className="hover:underline">Sitemap</a>
         </div>
       </div>
-    </footer>
+    </footer>>
   );
 };
