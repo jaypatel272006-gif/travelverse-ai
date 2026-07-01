@@ -248,6 +248,7 @@ export const Dashboard = () => {
 
   // Navigation state (OS Tabs)
   const [dashboardTab, setDashboardTab] = useState('workspace'); 
+  const [unlockedStamps, setUnlockedStamps] = useState(['Delhi', 'Agra']); 
 
   // Profile Edit state
   const [isEditing, setIsEditing] = useState(false);
