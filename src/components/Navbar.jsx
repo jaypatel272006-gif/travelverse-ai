@@ -237,12 +237,12 @@ export const Navbar = () => {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Floating Voice Mic Trigger */}
           <button
             type="button"
             onClick={startVoiceControl}
-            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center relative ${
+            className={`p-2.5 rounded-xl border transition-all duration-300 cursor-pointer flex items-center justify-center relative focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95] ${
               isListening 
                 ? 'bg-rose-500/10 border-rose-500 text-rose-500 shadow-[0_0_15px_rgba(239,68,68,0.25)] animate-pulse' 
                 : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300'
@@ -258,7 +258,7 @@ export const Navbar = () => {
           {/* Light/Dark mode toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-colors"
+            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
@@ -267,7 +267,7 @@ export const Navbar = () => {
           {/* Wishlist Icon */}
           <Link
             to="/wishlist"
-            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 relative transition-colors"
+            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 relative transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
           >
             <Heart size={15} />
             {wishlistCount > 0 && (
@@ -282,7 +282,7 @@ export const Navbar = () => {
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                className="flex items-center gap-2 p-1.5 pr-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-55 dark:hover:bg-slate-800/60 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.03] active:scale-[0.97]"
               >
                 <img
                   src={user.avatar}
