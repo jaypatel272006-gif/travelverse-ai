@@ -249,6 +249,13 @@ export const Dashboard = () => {
   // Navigation state (OS Tabs)
   const [dashboardTab, setDashboardTab] = useState('workspace'); 
   const [unlockedStamps, setUnlockedStamps] = useState(['Delhi', 'Agra']); 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); 
 
   // Profile Edit state
   const [isEditing, setIsEditing] = useState(false);
