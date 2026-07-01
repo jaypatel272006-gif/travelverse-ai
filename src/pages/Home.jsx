@@ -225,6 +225,14 @@ export const Home = () => {
   const [use3DUniverse, setUse3DUniverse] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchFocusIndex, setSearchFocusIndex] = useState(-1);
+  const [heroMouse, setHeroMouse] = useState({ x: 50, y: 50 });
+
+  const handleHeroMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setHeroMouse({ x, y });
+  };
   
   // Interactive Canvas & Soundscape Refs
   const audioCtxRef = useRef(null);
