@@ -171,9 +171,14 @@ export const Navbar = () => {
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
             <Sparkles size={18} className="animate-pulse" />
           </div>
-          <span className="font-display font-extrabold text-xl tracking-tight text-slate-800 dark:text-slate-100 bg-clip-text">
-            Travel<span className="text-teal-600 dark:text-teal-400">Verse</span>
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-display font-extrabold text-xl tracking-tight text-slate-800 dark:text-slate-100 bg-clip-text">
+              Travel<span className="text-teal-600 dark:text-teal-400">Verse</span>
+            </span>
+            <span className="px-1.5 py-0.5 text-[7.5px] font-black font-mono tracking-widest bg-gradient-to-r from-teal-500 to-sky-400 text-slate-950 rounded uppercase shadow-[0_0_8px_rgba(45,212,191,0.4)] animate-pulse">
+              2100 OS
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation Link Menu */}
