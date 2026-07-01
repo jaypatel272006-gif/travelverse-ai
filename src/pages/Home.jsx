@@ -290,30 +290,35 @@ export const Home = () => {
   const [passportXp, setPassportXp] = useState(1200);
 
   // Discovery Feed swiper index
-  const [feedIndex, setFeedIndex] = useState(0);
-
-  const testimonials = [
+  const [feedIndex, setFeedIndex] = useState(0  const testimonials = [
     {
       name: 'Sarah Jenkins',
       role: 'Adventure Blogger',
       avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80',
       comment: 'TravelVerse AI completely changed how I plan my trips. The day-by-day itineraries are so detailed, and the weather recommendations saved me from a massive downpour in Goa!',
-      rating: 5
+      rating: 5,
+      country: '🇺🇸 USA',
+      destination: 'Goa, India'
     },
     {
       name: 'David Chen',
       role: 'Tech Lead & Family Traveler',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80',
       comment: 'The budget estimator chart is spot on. I managed to organize a 10-day trip to Kerala for my family of four and stayed perfectly within our mid-range budget bounds.',
-      rating: 5
+      rating: 5,
+      country: '🇨🇦 Canada',
+      destination: 'Kerala, India'
     },
     {
       name: 'Elena Rostova',
       role: 'Solo Explorer',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80',
       comment: 'I love keeping track of my wishlist flights and hotels in the user dashboard. It coordinates the savings targets automatically. A truly premium travel product!',
-      rating: 4.8
+      rating: 5,
+      country: '🇬🇧 UK',
+      destination: 'Srinagar, India'
     }
+  ];
   ];
 
   const moodsList = [
