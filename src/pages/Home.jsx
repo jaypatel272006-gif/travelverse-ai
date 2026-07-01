@@ -223,6 +223,7 @@ export const Home = () => {
   // OS Tab state
   const [activeTab, setActiveTab] = useState('mission-control');
   const [use3DUniverse, setUse3DUniverse] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   
   // Interactive Canvas & Soundscape Refs
   const audioCtxRef = useRef(null);
@@ -701,6 +702,8 @@ export const Home = () => {
               placeholder="Search destinations or systems (e.g. flights, road trip, DNA quiz)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
               className="bg-transparent border-none outline-none text-white text-xs w-full placeholder-slate-500 focus:ring-0 focus:outline-none font-mono"
             />
             {searchQuery && (
@@ -713,6 +716,41 @@ export const Home = () => {
               </button>
             )}
           </div>
+          {isSearchFocused && !searchQuery && (
+            <div className="absolute top-full left-0 right-0 mt-2 p-3 rounded-2xl bg-slate-950/95 border border-white/10 shadow-2xl z-50 flex flex-col gap-3.5 text-left backdrop-blur-md">
+              <div>
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-1.5">🔥 Popular Searches</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Goa', 'Jaipur', 'Varanasi', 'Leh'].map(term => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setSearchQuery(term)}
+                      className="px-2.5 py-1 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-lg text-[10px] font-mono font-semibold text-slate-300 transition-colors cursor-pointer"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-white/5 pt-2">
+                <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block mb-1.5">⏳ Recent Searches</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Agra', 'Delhi'].map(term => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setSearchQuery(term)}
+                      className="px-2.5 py-1 bg-white/5 hover:bg-teal-500/10 hover:text-teal-400 border border-white/5 rounded-lg text-[10px] font-mono font-semibold text-slate-300 transition-colors cursor-pointer"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           {searchQuery && (
             <div className="absolute top-full left-0 right-0 mt-2 p-2.5 rounded-2xl bg-slate-950/95 border border-white/10 shadow-2xl z-50 flex flex-col gap-1 text-left max-h-[300px] overflow-y-auto backdrop-blur-md">
               <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest px-2.5 py-1 block">Matching Coordinates</span>
