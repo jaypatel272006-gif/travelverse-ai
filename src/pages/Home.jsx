@@ -222,7 +222,7 @@ export const Home = () => {
   
   // OS Tab state
   const [activeTab, setActiveTab] = useState('mission-control');
-  const [use3DUniverse, setUse3DUniverse] = useState(true);
+  const [use3DUniverse, setUse3DUniverse] = useState(false);
   
   // Interactive Canvas & Soundscape Refs
   const audioCtxRef = useRef(null);
