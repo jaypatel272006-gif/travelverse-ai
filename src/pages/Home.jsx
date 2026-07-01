@@ -896,8 +896,14 @@ export const Home = () => {
               <Link to="/packages" className="px-4 py-2.5 bg-slate-950 border border-white/10 hover:border-teal-500 rounded-xl text-slate-300 hover:text-white">📅 TOUR PACKAGES</Link>
               <Link to="/weather" className="px-4 py-2.5 bg-slate-950 border border-white/10 hover:border-teal-500 rounded-xl text-slate-300 hover:text-white">🌦️ ATMOSPHERE ADVISOR</Link>
               <button 
-                onClick={() => { setUnlockedStamps(['Agra', 'Delhi']); setPassportXp(1200); showToast('Reset system parameters.', 'info'); }}
-                className="px-4 py-2.5 bg-rose-950/20 border border-rose-500/20 text-rose-400 hover:bg-rose-500/10 rounded-xl"
+                onClick={() => {
+                  if (window.confirm('WARNING: Are you sure you want to calibrate and reset all travel matrices? This will revert unlocked location stamps and XP metrics.')) {
+                    setUnlockedStamps(['Agra', 'Delhi']);
+                    setPassportXp(1200);
+                    showToast('System parameters calibrated.', 'info');
+                  }
+                }}
+                className="px-4 py-2.5 bg-rose-950/20 border border-rose-500/20 text-rose-400 hover:bg-rose-500/10 rounded-xl cursor-pointer"
               >
                 🔄 RESET SYSTEM CORES
               </button>
