@@ -388,10 +388,10 @@ export const Navbar = () => {
           {/* Hamburger Menu (Mobile/Tablet) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="xl:hidden p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300"
+            className="xl:hidden p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? <X size={15} /> : <Menu size={15} />}
+            {isOpen ? <X size={15} className="text-teal-500" /> : <Menu size={15} />}
           </button>
         </div>
       </div>
@@ -412,7 +412,7 @@ export const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-              className="fixed right-0 top-0 bottom-0 w-[280px] bg-white dark:bg-slate-900 border-l border-slate-100 dark:border-slate-850 p-6 z-50 xl:hidden flex flex-col gap-6 text-left"
+              className="fixed right-0 top-0 bottom-0 w-[280px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-l border-slate-100 dark:border-slate-800 p-6 z-55 xl:hidden flex flex-col gap-6 text-left shadow-[0_-10px_35px_rgba(0,0,0,0.15)]"
             >
               <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
                 <span className="font-display font-extrabold text-lg text-slate-850 dark:text-slate-100">
