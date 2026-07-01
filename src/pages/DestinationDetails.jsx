@@ -456,6 +456,31 @@ export const DestinationDetails = () => {
   const isWishlisted = cityData ? isInWishlist('destinations', id) : false;
   const displayImage = cityData ? (customPhotos[id] || cityData.image) : '';
 
+  const getCityFacts = (name) => {
+    const facts = {
+      'Goa': [
+        "Goa is India's smallest state by area but has the highest GDP per capita.",
+        "The first printing press in Asia was established in Goa by the Portuguese in 1556.",
+        "It features the Dudhsagar Waterfalls, one of the tallest multi-tiered waterfalls in India."
+      ],
+      'Jaipur': [
+        "Jaipur was planned from scratch according to Vastu Shastra (traditional Indian architecture).",
+        "The entire city was painted terracotta pink in 1876 to welcome Prince Albert of Britain.",
+        "It is home to the world's largest stone sundial, the Jantar Mantar (UNESCO World Heritage site)."
+      ],
+      'Varanasi': [
+        "Varanasi is widely considered one of the oldest continuously inhabited cities in the world.",
+        "Mark Twain once said: 'Varanasi is older than history, older than tradition, older even than legend.'",
+        "It holds the famous Ganga Aarti at Dashashwamedh Ghat every single evening at dusk."
+      ]
+    };
+    return facts[name] || [
+      `${name} is a highly unique travel sector featuring outstanding local heritage and culinary trails.`,
+      "The region supports a dynamic tourism footprint with both premium hotels and backpacker communities.",
+      "Travelers can explore historic architecture and beautiful natural scenery throughout the year."
+    ];
+  };
+
   if (loading) {
     return (
       <div className="w-full max-w-7xl mx-auto py-12 px-4">
