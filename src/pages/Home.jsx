@@ -737,15 +737,16 @@ export const Home = () => {
               type="text"
               placeholder="Search destinations or systems (e.g. flights, road trip, DNA quiz)..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => { setSearchQuery(e.target.value); setSearchFocusIndex(-1); }}
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
+              onKeyDown={handleSearchKeyDown}
               className="bg-transparent border-none outline-none text-white text-xs w-full placeholder-slate-500 focus:ring-0 focus:outline-none font-mono"
             />
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => setSearchQuery('')}
+                onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
                 className="text-slate-500 hover:text-white cursor-pointer"
               >
                 <X size={13} />
@@ -789,41 +790,48 @@ export const Home = () => {
           )}
           {searchQuery && (
             <div className="absolute top-full left-0 right-0 mt-2 p-2.5 rounded-2xl bg-slate-950/95 border border-white/10 shadow-2xl z-50 flex flex-col gap-1 text-left max-h-[300px] overflow-y-auto backdrop-blur-md">
-              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest px-2.5 py-1 block">Matching Coordinates</span>
-              {mockDestinations
-                .filter(d => d.name.toLowerCase().includes(searchQuery.toLowerCase()) || d.region.toLowerCase().includes(searchQuery.toLowerCase()))
-                .slice(0, 4)
-                .map(d => (
-                  <Link
-                    key={d.id}
-                    to={`/destination/${d.id}`}
-                    onClick={() => setSearchQuery('')}
-                    className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-all"
-                  >
-                    <img src={d.image} alt={d.name} className="w-8 h-8 rounded-lg object-cover" />
-                    <div className="flex-1">
-                      <p className="text-xs font-bold text-white">{d.name}</p>
-                      <p className="text-[9px] text-slate-400 font-mono uppercase">{d.region} • {d.country}</p>
-                    </div>
-                    <ArrowRight size={14} className="text-slate-500" />
-                  </Link>
-                ))}
-              {/* System Core redirects */}
-              {['flights', 'road-trip-os', 'spiritual', 'maps', 'personality-lab', 'achievements', 'utilities'].some(sys => sys.includes(searchQuery.toLowerCase())) && (
+              {totalSearchResults.length === 0 ? (
+                <div className="p-4 text-center text-[10px] font-mono text-slate-550">
+                  ⚠️ NO COORDINATES RESOLVED
+                </div>
+              ) : (
                 <>
-                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest px-2.5 py-1 block border-t border-white/5 mt-1">Subsystem Core Access</span>
-                  {['flights', 'road-trip-os', 'spiritual', 'maps', 'personality-lab', 'achievements', 'utilities']
-                    .filter(sys => sys.includes(searchQuery.toLowerCase()))
-                    .map(sys => (
-                      <Link
-                        key={sys}
-                        to={`/${sys}`}
-                        onClick={() => setSearchQuery('')}
-                        className="flex items-center gap-2 px-3 py-2 hover:bg-teal-500/10 rounded-xl transition-all text-teal-400 font-mono text-[10px] uppercase font-bold"
-                      >
-                        ⚙️ {sys.replace('-', ' ')} Core
-                      </Link>
-                    ))}
+                  <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest px-2.5 py-1 block">Resolved Telemetry Coordinates</span>
+                  {totalSearchResults.map((result, i) => {
+                    const isFocused = i === searchFocusIndex;
+                    if (result.type === 'destination') {
+                      return (
+                        <Link
+                          key={result.id}
+                          to={result.link}
+                          onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
+                          className={`flex items-center gap-3 p-2 hover:bg-white/5 rounded-xl transition-all ${
+                            isFocused ? 'bg-white/10 border-l-2 border-teal-450 pl-3 font-bold text-teal-400' : ''
+                          }`}
+                        >
+                          <img src={result.image} alt={result.name} className="w-8 h-8 rounded-lg object-cover" />
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-white">{result.name}</p>
+                            <p className="text-[9px] text-slate-400 font-mono uppercase">{result.sub}</p>
+                          </div>
+                          <ArrowRight size={14} className="text-slate-500" />
+                        </Link>
+                      );
+                    } else {
+                      return (
+                        <Link
+                          key={result.id}
+                          to={result.link}
+                          onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
+                          className={`flex items-center gap-2 px-3 py-2 hover:bg-teal-500/10 rounded-xl transition-all text-teal-400 font-mono text-[10px] uppercase font-bold ${
+                            isFocused ? 'bg-teal-500/20 border-l-2 border-teal-455 pl-4 text-teal-300' : ''
+                          }`}
+                        >
+                          ⚙️ {result.name}
+                        </Link>
+                      );
+                    }
+                  })}
                 </>
               )}
             </div>
