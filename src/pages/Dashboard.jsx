@@ -1643,7 +1643,7 @@ export const Dashboard = () => {
 
               {/* Layout mode Floating Windows */}
               {activeWSPreset.layout === 'floating' && (
-                <div className="relative w-full h-[850px] overflow-auto border border-dashed border-teal-500/10 rounded-2xl bg-slate-950/80 scrollbar-thin pb-10">
+                <div className="relative w-full h-auto md:h-[850px] overflow-auto border border-dashed border-teal-500/10 rounded-2xl bg-slate-950/80 scrollbar-thin pb-10 flex flex-col md:block gap-6 p-4 md:p-0">
                   <div className="absolute inset-0 grid-cyber opacity-60 pointer-events-none" />
                   
                   {activeWSPreset.widgets.map((wId) => {
@@ -1657,7 +1657,8 @@ export const Dashboard = () => {
                       rules: { x: 20, y: 110, w: 450, h: 350, z: 6 },
                       universe: { x: 490, y: 110, w: 450, h: 350, z: 6 },
                       simulation: { x: 20, y: 480, w: 450, h: 350, z: 7 },
-                      command: { x: 490, y: 480, w: 450, h: 350, z: 7 }
+                      command: { x: 490, y: 480, w: 450, h: 350, z: 7 },
+                      passport: { x: 20, y: 110, w: 460, h: 420, z: 8 }
                     };
                     const item = widgetPositions[wId];
                     const isValid = item && 
@@ -1670,13 +1671,16 @@ export const Dashboard = () => {
                     return (
                       <div 
                         key={wId}
-                        className="absolute glass-neo rounded-2xl border border-teal-500/20 shadow-2xl flex flex-col pointer-events-auto"
-                        style={{
+                        className={`${isMobile ? 'relative' : 'absolute'} glass-neo rounded-2xl border border-teal-500/20 shadow-2xl flex flex-col pointer-events-auto`}
+                        style={!isMobile ? {
                           left: `${pos.x}px`,
                           top: `${pos.y}px`,
                           width: `${pos.w}px`,
                           height: `${pos.h}px`,
                           zIndex: pos.z
+                        } : {
+                          width: '100%',
+                          height: 'auto'
                         }}
                       >
                         {/* Header handle controls */}
