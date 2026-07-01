@@ -726,7 +726,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex flex-col gap-12 py-4 overflow-x-hidden text-slate-800 dark:text-slate-100 transition-colors duration-500">
+    <div className="flex flex-col gap-24 py-8 overflow-x-hidden text-slate-800 dark:text-slate-100 transition-colors duration-500">
       
       {/* Dynamic View Mode HUD Bar */}
       <div className="w-full flex flex-col md:flex-row justify-between items-center bg-slate-900/60 border border-white/15 p-4 rounded-2xl shadow-xl backdrop-blur-md relative z-30 gap-4 text-left">
