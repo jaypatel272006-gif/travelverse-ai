@@ -1546,7 +1546,7 @@ export const Dashboard = () => {
               {/* Active Widgets selector checklist */}
               <div className="flex items-center gap-3 text-[10.5px] font-mono text-slate-400 flex-wrap">
                 <span className="font-bold uppercase text-teal-450">LOADED DECK:</span>
-                {['itinerary', 'map', 'budget', 'memories', 'radar', 'deals', 'rules', 'universe', 'simulation', 'command'].map(wId => {
+                {['itinerary', 'map', 'budget', 'memories', 'radar', 'deals', 'rules', 'universe', 'simulation', 'command', 'passport'].map(wId => {
                   const isActive = activeWSPreset.widgets.includes(wId);
                   return (
                     <label key={wId} className="flex items-center gap-1.5 cursor-pointer">
