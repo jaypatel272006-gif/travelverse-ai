@@ -170,6 +170,6 @@ export const Footer = () => {
           <a href="#" className="hover:underline">Sitemap</a>
         </div>
       </div>
-    </footer>>
+    </footer>
   );
 };
