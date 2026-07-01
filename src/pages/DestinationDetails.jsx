@@ -1281,6 +1281,70 @@ export const DestinationDetails = () => {
                 </div>
               ))}
             </div>
+            {/* Did You Know? Facts Card */}
+            <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-505/20 text-left flex flex-col gap-4">
+              <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5 font-bold">
+                💡 Did You Know?
+              </h4>
+              <ul className="list-disc list-inside flex flex-col gap-2 font-mono text-xs text-slate-700 dark:text-slate-200">
+                {getCityFacts(cityData.name).map((fact, idx) => (
+                  <li key={idx} className="leading-relaxed font-semibold">{fact}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Destination Comparison Matrix Card */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
+              <div>
+                <span className="text-[9px] font-mono text-indigo-400 font-bold tracking-widest uppercase">COMPARISON MATRIX</span>
+                <h3 className="font-display font-black text-lg text-slate-900 dark:text-white mt-1 uppercase">Sector Comparison Grid</h3>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left font-mono text-[10px] text-slate-655 dark:text-slate-300 border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-white/10 text-slate-400 font-bold">
+                      <th className="py-2.5">METRIC INDICATOR</th>
+                      <th className="py-2.5 text-teal-650 dark:text-teal-400">{cityData.name.toUpperCase()} (CURRENT)</th>
+                      <th className="py-2.5 text-slate-500">ALT REGIONAL SECTOR A</th>
+                      <th className="py-2.5 text-slate-500">ALT REGIONAL SECTOR B</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200">
+                    <tr>
+                      <td className="py-3 text-slate-400">Budget Tier Range</td>
+                      <td className="py-3 text-teal-605 dark:text-teal-400 font-bold">{travelerTier}</td>
+                      <td className="py-3">Backpacker Budget</td>
+                      <td className="py-3">Luxury Elite Elite</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Pace / Action Density</td>
+                      <td className="py-3 text-indigo-500 dark:text-indigo-400 font-bold">{pace}</td>
+                      <td className="py-3">Relaxed / Slow</td>
+                      <td className="py-3">Balanced / High</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Family Friendliness</td>
+                      <td className="py-3 text-emerald-600 dark:text-emerald-400">⭐⭐⭐⭐★</td>
+                      <td className="py-3">⭐⭐⭐⭐⭐</td>
+                      <td className="py-3">⭐⭐⭐★★</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Adventure Exertion</td>
+                      <td className="py-3 text-rose-500 dark:text-rose-400">High Exertion</td>
+                      <td className="py-3">Medium Exertion</td>
+                      <td className="py-3">Extreme Level</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Travel Safety Index</td>
+                      <td className="py-3 text-teal-500 dark:text-teal-400">95% Confidence</td>
+                      <td className="py-3">90% Confidence</td>
+                      <td className="py-3">98% Confidence</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
 
