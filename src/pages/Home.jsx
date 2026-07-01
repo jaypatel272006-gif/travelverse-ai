@@ -974,16 +974,41 @@ export const Home = () => {
         </AnimatePresence>
 
         {/* Cinematic Premium Hero Title */}
-        <div className="w-full text-center py-12 flex flex-col items-center gap-4 relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-[10px] font-mono font-black uppercase tracking-widest animate-pulse">
+        <div className="w-full text-center py-16 flex flex-col items-center gap-6 relative z-10">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[9px] font-mono font-black uppercase tracking-[0.2em] animate-pulse backdrop-blur-md">
             🪐 TRAVELVERSE OS V2100 ACTIVATED
           </div>
-          <h1 className="font-display font-black text-4xl sm:text-7xl tracking-tight text-slate-850 dark:text-white leading-none uppercase max-w-4xl">
+          <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-slate-850 dark:text-white leading-tight uppercase max-w-5xl">
             The Future of <span className="gradient-text">Autonomous Travel</span>
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-mono max-w-2xl font-semibold leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base font-mono max-w-3xl leading-relaxed mt-2 text-center">
             Experience the year 2100 travel operating system. AI-driven sequential itineraries, geodetic real-world telemetry, and zero-fatigue planning matrices.
           </p>
+
+          {/* Premium CTA Buttons Group */}
+          <div className="flex flex-wrap gap-4 items-center justify-center mt-4">
+            <Link
+              to="/planner"
+              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 font-bold text-xs tracking-wider font-mono hover:shadow-[0_0_25px_rgba(45,212,191,0.5)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+            >
+              🚀 CALIBRATE QUANTUM PLANNER
+            </Link>
+            <button
+              onClick={() => {
+                setShowLegacyMenu(!showLegacyMenu);
+                showToast('Accessing Legacy Subsystem Menu...', 'info');
+              }}
+              className="px-6 py-3.5 rounded-xl bg-slate-900/80 border border-white/10 text-teal-400 hover:text-white font-bold text-xs tracking-wider font-mono transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+            >
+              📂 ACCESS LEGACY ARCHIVES
+            </button>
+          </div>
+
+          {/* Scroll Down Telemetry Indicator */}
+          <div className="flex flex-col items-center justify-center gap-1.5 mt-8 animate-bounce">
+            <span className="text-[8.5px] font-mono font-black uppercase tracking-widest text-teal-500">SCROLL TO TELEMETRY</span>
+            <ArrowRight size={13} className="text-teal-400 rotate-90" />
+          </div>
         </div>
 
         {/* Command Center Main Layout */}
