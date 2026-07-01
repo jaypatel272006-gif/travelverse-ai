@@ -682,6 +682,41 @@ export const Home = () => {
     }
   ];
 
+  // Dynamic search results for keyboard navigation tracking
+  const matchingDestinations = mockDestinations
+    .filter(d => d.name.toLowerCase().includes(searchQuery.toLowerCase()) || d.region.toLowerCase().includes(searchQuery.toLowerCase()))
+    .slice(0, 4);
+
+  const matchingSystems = ['flights', 'road-trip-os', 'spiritual', 'maps', 'personality-lab', 'achievements', 'utilities']
+    .filter(sys => sys.includes(searchQuery.toLowerCase()));
+
+  const totalSearchResults = [
+    ...matchingDestinations.map(d => ({ type: 'destination', id: d.id, name: d.name, link: `/destination/${d.id}`, image: d.image, sub: `${d.region} • ${d.country}` })),
+    ...matchingSystems.map(sys => ({ type: 'system', id: sys, name: `${sys.replace('-', ' ')} Core`, link: `/${sys}` }))
+  ];
+
+  const handleSearchKeyDown = (e) => {
+    if (totalSearchResults.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSearchFocusIndex(prev => (prev + 1) % totalSearchResults.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSearchFocusIndex(prev => (prev - 1 + totalSearchResults.length) % totalSearchResults.length);
+    } else if (e.key === 'Enter') {
+      if (searchFocusIndex >= 0 && searchFocusIndex < totalSearchResults.length) {
+        e.preventDefault();
+        const selected = totalSearchResults[searchFocusIndex];
+        setSearchQuery('');
+        setSearchFocusIndex(-1);
+        navigate(selected.link);
+      }
+    } else if (e.key === 'Escape') {
+      setSearchQuery('');
+      setSearchFocusIndex(-1);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-12 py-4 overflow-x-hidden text-slate-800 dark:text-slate-100 transition-colors duration-500">
       
