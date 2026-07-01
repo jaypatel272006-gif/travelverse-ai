@@ -821,11 +821,20 @@ export const Home = () => {
       {use3DUniverse ? (
         <UniverseExplorer />
       ) : (
-        <section className="relative rounded-3xl overflow-hidden p-6 lg:p-8 bg-slate-950 border border-slate-900 shadow-2xl min-h-[720px] flex flex-col justify-between">
+        <section 
+          style={{ 
+            backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+          className="relative rounded-3xl overflow-hidden p-6 lg:p-8 border border-white/5 shadow-2xl min-h-[720px] flex flex-col justify-between"
+        >
+          {/* Dark Overlay mask */}
+          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-0" />
         
-        {/* Neon HUD grid backdrop */}
-        <div className="absolute inset-0 bg-cyber-grid pointer-events-none opacity-40 z-0" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 blur-3xl pointer-events-none" />
+          {/* Neon HUD grid backdrop */}
+          <div className="absolute inset-0 bg-cyber-grid pointer-events-none opacity-20 z-0" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 blur-3xl pointer-events-none z-0" />
 
         {/* Global HUD Stats Bar */}
         <div className="w-full flex justify-between items-center pb-6 border-b border-white/10 relative z-10 font-mono text-[10px] flex-wrap gap-4">
