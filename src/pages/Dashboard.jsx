@@ -954,6 +954,57 @@ export const Dashboard = () => {
   // Render Widget Selector Content (Expanded to all 10 widgets fully)
   const renderWidget = (wId) => {
     switch (wId) {
+      case 'passport':
+        return (
+          <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-wider text-teal-400 font-mono mb-2 flex justify-between items-center">
+                <span>🛂 Digital Passport & stamps</span>
+                <span className="text-[9px] text-slate-500 font-normal">Level 1 Explorer</span>
+              </h4>
+              <div className="p-4 rounded-2xl bg-slate-900/60 border border-teal-500/10 flex items-center gap-4 relative overflow-hidden">
+                <div className="w-14 h-16 rounded border border-white/10 bg-slate-950 flex flex-col justify-center items-center text-slate-600 relative overflow-hidden shrink-0">
+                  <User size={24} />
+                  <span className="text-[7px] font-mono font-bold mt-1 text-slate-500">VISAGE LINK</span>
+                  <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                </div>
+                
+                <div className="flex-1 font-mono text-[9px] text-slate-400 flex flex-col gap-1">
+                  <div><span className="font-bold text-slate-550">PASSPORT NO:</span> <span className="text-white">TV-2100-JP</span></div>
+                  <div><span className="font-bold text-slate-550">ISSUING PORT:</span> <span className="text-white">DELHI HUB</span></div>
+                  <div><span className="font-bold text-slate-550">SECTOR STATUS:</span> <span className="text-emerald-450 font-black">ACTIVE</span></div>
+                </div>
+              </div>
+
+              {/* Stamps grid */}
+              <div className="grid grid-cols-3 gap-2 mt-3">
+                {[
+                  { id: 'goa', name: 'GOA', emoji: '🏖️', desc: 'Coastal Sector', match: 'goa' },
+                  { id: 'jaipur', name: 'JAIPUR', emoji: '🛕', desc: 'Royal Sector', match: 'jaipur' },
+                  { id: 'delhi', name: 'DELHI', emoji: '🏙️', desc: 'Capital Hub', match: 'delhi' }
+                ].map(stamp => {
+                  const isUnlocked = itineraries.some(it => it.destination?.toLowerCase().includes(stamp.match)) ||
+                                    (unlockedStamps && unlockedStamps.some(s => s.toLowerCase().includes(stamp.match)));
+                  return (
+                    <div 
+                      key={stamp.id}
+                      className={`p-2 rounded-xl border flex flex-col items-center justify-center text-center gap-1 transition-all ${
+                        isUnlocked 
+                          ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.15)]' 
+                          : 'border-white/5 bg-slate-950/40 text-slate-600'
+                      }`}
+                    >
+                      <span className={`text-base ${isUnlocked ? 'animate-bounce' : 'opacity-30'}`}>{stamp.emoji}</span>
+                      <span className="text-[8.5px] font-black tracking-wider block font-mono">{stamp.name}</span>
+                      <span className="text-[7px] text-slate-500 uppercase font-mono tracking-widest">{stamp.desc}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
       case 'itinerary':
         return (
           <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
