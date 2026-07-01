@@ -88,10 +88,10 @@ export const DestinationCard = ({ destination }) => {
         rotateY: isHovered ? rotateY : 0,
         y: isHovered ? -10 : 0,
         boxShadow: isHovered 
-          ? '0 25px 50px -12px rgba(45, 212, 191, 0.15)' 
-          : '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+          ? '0 25px 50px -12px rgba(45, 212, 191, 0.2)' 
+          : '0 8px 30px rgba(0, 0, 0, 0.04)'
       }}
-      className="group relative flex flex-col h-full rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900/50 transition-all duration-300 select-none border-gradient-glow"
+      className="group relative flex flex-col h-full rounded-3xl overflow-hidden border border-slate-200/50 dark:border-white/5 bg-white dark:bg-slate-950/40 transition-all duration-300 select-none shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
     >
       {/* Glare Overlay */}
       {isHovered && (
@@ -119,25 +119,25 @@ export const DestinationCard = ({ destination }) => {
 
       {/* Image Container */}
       <div 
-        className="relative h-56 overflow-hidden w-full"
+        className="relative aspect-[16/10] overflow-hidden w-full"
         style={{ transform: 'translateZ(20px)' }}
       >
         <img
           src={customPhotos[id] || image}
           alt={name}
-          className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-out"
           loading="lazy"
         />
         
         {/* Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-95" />
 
         {/* Region Tag */}
         <div className="absolute top-4 left-4 flex gap-2 flex-wrap max-w-[80%] items-center">
-          <span className="px-3 py-1 text-[10px] font-semibold tracking-wide uppercase bg-white/95 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 rounded-full shadow-sm">
+          <span className="px-2.5 py-1 text-[9px] font-bold font-mono tracking-wide uppercase bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-full backdrop-blur-md">
             {region}
           </span>
-          <span className="px-2.5 py-1 text-[8px] font-bold font-mono uppercase bg-emerald-500/85 text-white backdrop-blur-sm rounded-full shadow-sm flex items-center gap-1">
+          <span className="px-2.5 py-1 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 backdrop-blur-md rounded-full flex items-center gap-1">
             <span className="w-1 h-1 rounded-full bg-white animate-pulse" /> Sourced Live Data
           </span>
         </div>
@@ -165,36 +165,36 @@ export const DestinationCard = ({ destination }) => {
             <span className="text-xs font-semibold drop-shadow-md">{country}</span>
           </div>
           <div className="flex flex-col items-end">
-            <span className="text-[10px] text-teal-300 uppercase tracking-widest font-bold">Starts at</span>
-            <span className="text-lg font-bold text-white leading-none">₹{price.toLocaleString('en-IN')}</span>
+            <span className="text-[8.5px] text-teal-300 uppercase tracking-widest font-bold font-mono">Starts at</span>
+            <span className="text-lg font-black text-white leading-none">₹{price.toLocaleString('en-IN')}</span>
           </div>
         </div>
       </div>
 
       {/* Content */}
       <div 
-        className="p-5 flex-1 flex flex-col justify-between"
+        className="p-6 flex-1 flex flex-col justify-between"
         style={{ transform: 'translateZ(10px)' }}
       >
         <div>
           {/* Header */}
           <div className="flex justify-between items-start gap-2 mb-2">
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors duration-300 line-clamp-1">
+            <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors duration-300 line-clamp-1">
               {name}
             </h3>
             <div className="flex items-center gap-1 shrink-0">
               <Star size={14} className="text-amber-500 fill-amber-500" />
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{rating}</span>
-              <span className="text-[10px] text-slate-400">({reviewsCount})</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-205">{rating}</span>
+              <span className="text-[10px] text-slate-500">({reviewsCount})</span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-650 dark:text-slate-400 line-clamp-2 mb-3 leading-relaxed">
+          <p className="text-xs text-slate-655 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
             {description}
           </p>
 
           {/* Season & Duration Metadata */}
-          <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-500 dark:text-slate-405 mb-3 border-y border-slate-105/80 dark:border-slate-800/40 py-2">
+          <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-500 dark:text-slate-400 mb-4 border-y border-slate-100 dark:border-white/5 py-2.5">
             <div className="flex items-center gap-1">☀️ <span className="font-bold text-slate-800 dark:text-slate-205">{season}</span></div>
             <div className="flex items-center gap-1">⏳ <span className="font-bold text-slate-800 dark:text-slate-205">{duration}</span></div>
           </div>
@@ -213,7 +213,7 @@ export const DestinationCard = ({ destination }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-3.5 border-t border-slate-100 dark:border-slate-800/80 flex flex-col gap-3 mt-auto">
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex flex-col gap-4 mt-auto">
           <div className="flex justify-between items-center text-[10px]">
             <label className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 cursor-pointer select-none">
               <input 
@@ -243,13 +243,13 @@ export const DestinationCard = ({ destination }) => {
             </Link>
             <Link
               to={`/planner?destination=${name}`}
-              className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:bg-teal-600 dark:hover:bg-teal-400 hover:text-white dark:hover:text-slate-900 transition-all duration-200 btn-press-spring cursor-pointer"
+              className="px-4 py-2 text-xs font-mono font-bold uppercase rounded-xl bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 hover:shadow-[0_0_15px_rgba(45,212,191,0.4)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer shadow-md"
             >
               Plan Itinerary
             </Link>
           </div>
         </div>
       </div>
-    </motion.div>
+    </motion.div>ion.div>
   );
 };
