@@ -560,6 +560,25 @@ export const Navbar = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Premium Voice assistant Indicator Overlay */}
+      <AnimatePresence>
+        {isListening && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-55 px-6 py-4 rounded-2xl bg-slate-950/90 border border-teal-500/20 shadow-[0_10px_35px_rgba(20,184,166,0.15)] flex flex-col items-center gap-2 backdrop-blur-md min-w-[320px] select-none text-center"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+              <span className="text-[10px] font-mono font-bold text-teal-400 uppercase tracking-widest">TRANSMISSION ACTIVE: OS LISTENING</span>
+            </div>
+            <p className="text-xs text-white font-bold animate-pulse mt-1">"Speak system command coordinates..."</p>
+            <span className="text-[9px] font-mono text-slate-500 uppercase mt-1">Try: "flights", "spiritual", "road trip", "theme cyberpunk"</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
