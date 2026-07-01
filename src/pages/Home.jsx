@@ -874,15 +874,25 @@ export const Home = () => {
         <UniverseExplorer />
       ) : (
         <section 
+          onMouseMove={handleHeroMouseMove}
           style={{ 
             backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80')",
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
           }}
-          className="relative rounded-3xl overflow-hidden p-6 lg:p-8 border border-white/5 shadow-2xl min-h-[720px] flex flex-col justify-between"
+          className="relative rounded-3xl overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[760px] flex flex-col justify-between transition-all duration-300"
         >
           {/* Dark Overlay mask */}
-          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[2px] z-0" />
+          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[1px] z-0" />
+          
+          {/* Interactive cursor-tracking neon spotlight glow */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-500 pointer-events-none z-0"
+            style={{
+              background: `radial-gradient(circle 350px at ${heroMouse.x}% ${heroMouse.y}%, rgba(20,184,166,0.15) 0%, transparent 100%)`
+            }}
+          />
         
           {/* Neon HUD grid backdrop */}
           <div className="absolute inset-0 bg-cyber-grid pointer-events-none opacity-20 z-0" />
