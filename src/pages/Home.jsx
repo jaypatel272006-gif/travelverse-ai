@@ -858,6 +858,19 @@ export const Home = () => {
           )}
         </AnimatePresence>
 
+        {/* Cinematic Premium Hero Title */}
+        <div className="w-full text-center py-12 flex flex-col items-center gap-4 relative z-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-[10px] font-mono font-black uppercase tracking-widest animate-pulse">
+            🪐 TRAVELVERSE OS V2100 ACTIVATED
+          </div>
+          <h1 className="font-display font-black text-4xl sm:text-7xl tracking-tight text-slate-850 dark:text-white leading-none uppercase max-w-4xl">
+            The Future of <span className="gradient-text">Autonomous Travel</span>
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-mono max-w-2xl font-semibold leading-relaxed">
+            Experience the year 2100 travel operating system. AI-driven sequential itineraries, geodetic real-world telemetry, and zero-fatigue planning matrices.
+          </p>
+        </div>
+
         {/* Command Center Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 py-6 relative z-10 items-stretch">
           
