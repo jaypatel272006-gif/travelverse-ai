@@ -9,36 +9,52 @@ import { CinematicLoader } from './components/CinematicLoader';
 import ErrorBoundary from './components/ErrorBoundary';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 
+// Helper to catch dynamic chunk loading failures on new deployments and auto-retry
+const lazyWithRetry = (importFn) => {
+  return lazy(() => 
+    importFn().catch((error) => {
+      const isFailedFetch = error.message && (
+        error.message.includes('Failed to fetch dynamically imported module') ||
+        error.message.includes('error loading dynamically imported module')
+      );
+      if (isFailedFetch) {
+        window.location.reload();
+      }
+      return Promise.reject(error);
+    })
+  );
+};
+
 // Lazy load all page components
-const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
-const Destinations = lazy(() => import('./pages/Destinations').then(m => ({ default: m.Destinations })));
-const DestinationDetails = lazy(() => import('./pages/DestinationDetails').then(m => ({ default: m.DestinationDetails })));
-const AITripPlanner = lazy(() => import('./pages/AITripPlanner').then(m => ({ default: m.AITripPlanner })));
-const Flights = lazy(() => import('./pages/Flights').then(m => ({ default: m.Flights })));
-const Hotels = lazy(() => import('./pages/Hotels').then(m => ({ default: m.Hotels })));
-const TourPackages = lazy(() => import('./pages/TourPackages').then(m => ({ default: m.TourPackages })));
-const Weather = lazy(() => import('./pages/Weather').then(m => ({ default: m.Weather })));
-const Maps = lazy(() => import('./pages/Maps').then(m => ({ default: m.Maps })));
-const Wishlist = lazy(() => import('./pages/Wishlist').then(m => ({ default: m.Wishlist })));
-const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
-const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
-const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login })));
-const Register = lazy(() => import('./pages/Register').then(m => ({ default: m.Register })));
-const IndiaExplorer = lazy(() => import('./pages/IndiaExplorer').then(m => ({ default: m.IndiaExplorer })));
-const Challenges = lazy(() => import('./pages/Challenges').then(m => ({ default: m.Challenges })));
-const AdventureRoulette = lazy(() => import('./pages/AdventureRoulette').then(m => ({ default: m.AdventureRoulette })));
-const LegacyCapsule = lazy(() => import('./pages/LegacyCapsule').then(m => ({ default: m.LegacyCapsule })));
-const SpiritualUniverse = lazy(() => import('./pages/SpiritualUniverse').then(m => ({ default: m.SpiritualUniverse })));
+const Home = lazyWithRetry(() => import('./pages/Home').then(m => ({ default: m.Home })));
+const Destinations = lazyWithRetry(() => import('./pages/Destinations').then(m => ({ default: m.Destinations })));
+const DestinationDetails = lazyWithRetry(() => import('./pages/DestinationDetails').then(m => ({ default: m.DestinationDetails })));
+const AITripPlanner = lazyWithRetry(() => import('./pages/AITripPlanner').then(m => ({ default: m.AITripPlanner })));
+const Flights = lazyWithRetry(() => import('./pages/Flights').then(m => ({ default: m.Flights })));
+const Hotels = lazyWithRetry(() => import('./pages/Hotels').then(m => ({ default: m.Hotels })));
+const TourPackages = lazyWithRetry(() => import('./pages/TourPackages').then(m => ({ default: m.TourPackages })));
+const Weather = lazyWithRetry(() => import('./pages/Weather').then(m => ({ default: m.Weather })));
+const Maps = lazyWithRetry(() => import('./pages/Maps').then(m => ({ default: m.Maps })));
+const Wishlist = lazyWithRetry(() => import('./pages/Wishlist').then(m => ({ default: m.Wishlist })));
+const Dashboard = lazyWithRetry(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
+const Contact = lazyWithRetry(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
+const Login = lazyWithRetry(() => import('./pages/Login').then(m => ({ default: m.Login })));
+const Register = lazyWithRetry(() => import('./pages/Register').then(m => ({ default: m.Register })));
+const IndiaExplorer = lazyWithRetry(() => import('./pages/IndiaExplorer').then(m => ({ default: m.IndiaExplorer })));
+const Challenges = lazyWithRetry(() => import('./pages/Challenges').then(m => ({ default: m.Challenges })));
+const AdventureRoulette = lazyWithRetry(() => import('./pages/AdventureRoulette').then(m => ({ default: m.AdventureRoulette })));
+const LegacyCapsule = lazyWithRetry(() => import('./pages/LegacyCapsule').then(m => ({ default: m.LegacyCapsule })));
+const SpiritualUniverse = lazyWithRetry(() => import('./pages/SpiritualUniverse').then(m => ({ default: m.SpiritualUniverse })));
 
 // New pages
-const LiveExplorer = lazy(() => import('./pages/LiveExplorer').then(m => ({ default: m.LiveExplorer })));
-const DreamTripGenerator = lazy(() => import('./pages/DreamTripGenerator').then(m => ({ default: m.DreamTripGenerator })));
-const EarthEngine = lazy(() => import('./pages/EarthEngine').then(m => ({ default: m.EarthEngine })));
-const RecognitionEngine = lazy(() => import('./pages/RecognitionEngine').then(m => ({ default: m.RecognitionEngine })));
-const PersonalityLab = lazy(() => import('./pages/PersonalityLab').then(m => ({ default: m.PersonalityLab })));
-const TravelUtilities = lazy(() => import('./pages/TravelUtilities').then(m => ({ default: m.TravelUtilities })));
-const Achievements = lazy(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
-const RoadTripOS = lazy(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
+const LiveExplorer = lazyWithRetry(() => import('./pages/LiveExplorer').then(m => ({ default: m.LiveExplorer })));
+const DreamTripGenerator = lazyWithRetry(() => import('./pages/DreamTripGenerator').then(m => ({ default: m.DreamTripGenerator })));
+const EarthEngine = lazyWithRetry(() => import('./pages/EarthEngine').then(m => ({ default: m.EarthEngine })));
+const RecognitionEngine = lazyWithRetry(() => import('./pages/RecognitionEngine').then(m => ({ default: m.RecognitionEngine })));
+const PersonalityLab = lazyWithRetry(() => import('./pages/PersonalityLab').then(m => ({ default: m.PersonalityLab })));
+const TravelUtilities = lazyWithRetry(() => import('./pages/TravelUtilities').then(m => ({ default: m.TravelUtilities })));
+const Achievements = lazyWithRetry(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
+const RoadTripOS = lazyWithRetry(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
 
 // Scroll to top helper
 const ScrollToTop = () => {
