@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MapPin, Heart, Wifi, Shield, Calendar, BedDouble, Users, Sparkles, ChevronDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export const HotelCard = ({ hotel, onBook }) => {
+export const HotelCard = memo(({ hotel, onBook }) => {
   const { isInWishlist, toggleWishlist } = useApp();
   const [showRooms, setShowRooms] = useState(false);
   const isWishlisted = isInWishlist('hotels', hotel.id);
@@ -216,4 +216,4 @@ export const RoomSelectionList = ({ hotel, onSelectRoom }) => {
       </div>
     </motion.div>
   );
-};
+});
