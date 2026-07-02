@@ -2283,7 +2283,7 @@ export const mockDestinations = [
       { name: 'Trocadéro Steps', type: 'Sunset', desc: 'Perfect sunrise or sunset view of the Eiffel Tower.' }
     ],
     history: [
-      { era: '1889 AD', event: 'World's Fair', desc: 'Inaugurated as the entrance arch to the 1889 World's Fair.' }
+      { era: '1889 AD', event: "World's Fair", desc: "Inaugurated as the entrance arch to the 1889 World's Fair." }
     ],
     stays: [
       { name: 'Shangri-La Paris', type: 'Luxury', desc: 'Stunning direct views of the Eiffel Tower.' }
