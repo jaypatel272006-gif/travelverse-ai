@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Heart, MapPin, ArrowRight, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export const DestinationCard = ({ destination }) => {
+export const DestinationCard = memo(({ destination }) => {
   const { isInWishlist, toggleWishlist, customPhotos, showToast } = useApp();
   const { id, name, image, region, country, rating, reviewsCount, price, tags, description } = destination;
   const isWishlisted = isInWishlist('destinations', id);
