@@ -766,8 +766,94 @@ textarea:focus-visible {
   .animate-route-dash,
   .animate-globe-scroll,
   .animate-globe-pulse,
-  .animate-star-glow {
+  .animate-star-glow,
+  .animate-sun-sweep,
+  .animate-aurora-glow,
+  .animate-fog-drift,
+  .animate-snow-drift,
+  .animate-wind-drift,
+  .animate-wave-drift,
+  .animate-bird-drift {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Layered Parallax Background Animation System */
+
+/* Sunlight Sweep Keyframes */
+@keyframes sun-sweep {
+  0%, 100% { opacity: 0.12; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.22; transform: scale(1.1) rotate(180deg); }
+}
+
+/* Aurora Glow Keyframes */
+@keyframes aurora-glow {
+  0%, 100% { opacity: 0.08; filter: hue-rotate(0deg); }
+  50% { opacity: 0.2; filter: hue-rotate(60deg); }
+}
+
+/* Fog Drift Keyframes */
+@keyframes fog-drift {
+  0% { transform: translateX(0) scaleY(1); opacity: 0.35; }
+  50% { transform: translateX(-40px) scaleY(1.1); opacity: 0.55; }
+  100% { transform: translateX(0) scaleY(1); opacity: 0.35; }
+}
+
+/* Snow Fall Keyframes */
+@keyframes snow-drift {
+  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(350px) translateX(30px); opacity: 0; }
+}
+
+/* Wind Drift Keyframes */
+@keyframes wind-drift {
+  0% { transform: translateX(-20px) translateY(0) rotate(15deg); opacity: 0; }
+  10% { opacity: 0.25; }
+  90% { opacity: 0.25; }
+  100% { transform: translateX(450px) translateY(-50px) rotate(15deg); opacity: 0; }
+}
+
+/* Ocean Wave Rising Keyframes */
+@keyframes wave-drift {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(8px) scaleY(0.95); }
+}
+
+/* Bird Flying Keyframes */
+@keyframes bird-drift {
+  0% { transform: translate(-10%, 60px) scale(0.6); opacity: 0; }
+  15% { opacity: 0.25; }
+  85% { opacity: 0.25; }
+  100% { transform: translate(110%, 20px) scale(0.6); opacity: 0; }
+}
+
+.animate-sun-sweep {
+  animation: sun-sweep 15s ease-in-out infinite;
+}
+
+.animate-aurora-glow {
+  animation: aurora-glow 8s ease-in-out infinite;
+}
+
+.animate-fog-drift {
+  animation: fog-drift 18s ease-in-out infinite;
+}
+
+.animate-snow-drift {
+  animation: snow-drift 5s linear infinite;
+}
+
+.animate-wind-drift {
+  animation: wind-drift 6s linear infinite;
+}
+
+.animate-wave-drift {
+  animation: wave-drift 5s ease-in-out infinite;
+}
+
+.animate-bird-drift {
+  animation: bird-drift 22s linear infinite;
 }
