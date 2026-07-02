@@ -243,6 +243,17 @@ export const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [budgetVal, setBudgetVal] = useState(150000);
   const [durationVal, setDurationVal] = useState(6);
+
+  const getDynamicTheme = () => {
+    const q = searchQuery.toLowerCase();
+    if (q.includes('goa') || q.includes('beach') || q.includes('ocean') || q.includes('gokarna') || q.includes('sea')) return 'ocean';
+    if (q.includes('leh') || q.includes('snow') || q.includes('manali') || q.includes('shimla') || q.includes('mountain') || q.includes('ice')) return 'snow';
+    if (q.includes('aurora') || q.includes('iceland') || q.includes('norway') || q.includes('northern')) return 'aurora';
+    if (q.includes('wind') || q.includes('desert') || q.includes('rajasthan') || q.includes('sand') || q.includes('dust')) return 'wind';
+    return 'default';
+  };
+  const themeMode = getDynamicTheme();
+
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [selectedMood, setSelectedMood] = useState('All');
 
