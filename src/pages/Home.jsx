@@ -889,22 +889,65 @@ export const Home = () => {
       ) : (
         <section 
           onMouseMove={handleHeroMouseMove}
-          style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
           className="relative rounded-3xl overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[760px] flex flex-col justify-between transition-all duration-300"
         >
-          {/* Dark Overlay mask */}
-          <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[1px] z-0" />
-          
+          {/* Base Layer: Sky gradient sheet */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#090d16] via-[#05080e] to-[#090d16] z-0 pointer-events-none" />
+
+          {/* Layer 2: Sunlight / Aurora light sweeps */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(20,184,166,0.14),transparent_65%)] pointer-events-none z-0 animate-sun-sweep" />
+          {themeMode === 'aurora' && (
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(45,212,191,0.16),transparent)] pointer-events-none z-0 animate-aurora-glow" />
+          )}
+
+          {/* Layer 3: Distant Mountain Range Silhouettes (visual depth parallax) */}
+          <svg className="absolute bottom-0 left-0 right-0 h-48 opacity-15 pointer-events-none z-0" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="currentColor">
+            <path d="M0,160 L120,130 L240,170 L360,110 L480,180 L600,120 L720,150 L840,90 L960,160 L1080,130 L1200,170 L1320,110 L1440,160 L1440,200 L0,200 Z" className="text-slate-800" />
+          </svg>
+          <svg className="absolute bottom-0 left-0 right-0 h-36 opacity-25 pointer-events-none z-0" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="currentColor">
+            <path d="M0,180 L180,140 L360,170 L540,130 L720,160 L900,120 L1080,170 L1260,140 L1440,180 L1440,200 L0,200 Z" className="text-slate-900" />
+          </svg>
+
+          {/* Layer 4: Moving Fog Sheets */}
+          <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent opacity-50 z-0 animate-fog-drift pointer-events-none" />
+
+          {/* Layer 5: Dynamic Particle Theme Overlay */}
+          {themeMode === 'snow' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              <div className="absolute w-2 h-2 bg-white rounded-full animate-snow-drift top-0 left-[12%] opacity-60" style={{ animationDelay: '0s', animationDuration: '6s' }} />
+              <div className="absolute w-1.5 h-1.5 bg-white rounded-full animate-snow-drift top-0 left-[38%] opacity-80" style={{ animationDelay: '1.5s', animationDuration: '5s' }} />
+              <div className="absolute w-2 h-2 bg-white rounded-full animate-snow-drift top-0 left-[62%] opacity-70" style={{ animationDelay: '3s', animationDuration: '7s' }} />
+              <div className="absolute w-2.5 h-2.5 bg-white rounded-full animate-snow-drift top-0 left-[88%] opacity-60" style={{ animationDelay: '0.5s', animationDuration: '5.5s' }} />
+            </div>
+          )}
+          {themeMode === 'ocean' && (
+            <svg className="absolute bottom-0 left-0 right-0 h-10 opacity-30 pointer-events-none z-0 animate-wave-drift" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="currentColor">
+              <path d="M0,50 Q360,20 720,50 T1440,50 L1440,100 L0,100 Z" className="text-teal-500" />
+            </svg>
+          )}
+          {themeMode === 'wind' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              <div className="absolute w-12 h-[1px] bg-teal-400/20 animate-wind-drift top-[22%] left-0" style={{ animationDelay: '0s', animationDuration: '4s' }} />
+              <div className="absolute w-16 h-[1.5px] bg-sky-400/20 animate-wind-drift top-[54%] left-0" style={{ animationDelay: '1.5s', animationDuration: '5s' }} />
+              <div className="absolute w-8 h-[1px] bg-teal-300/25 animate-wind-drift top-[78%] left-0" style={{ animationDelay: '3s', animationDuration: '3.5s' }} />
+            </div>
+          )}
+          {themeMode === 'default' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              <svg className="absolute text-teal-400/20 animate-bird-drift w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '2s' }}>
+                <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
+              </svg>
+              <svg className="absolute text-teal-400/20 animate-bird-drift w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '8s', animationDuration: '26s' }}>
+                <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
+              </svg>
+            </div>
+          )}
+
           {/* Interactive cursor-tracking neon spotlight glow */}
           <div 
             className="absolute inset-0 transition-opacity duration-500 pointer-events-none z-0"
             style={{
-              background: `radial-gradient(circle 350px at ${heroMouse.x}% ${heroMouse.y}%, rgba(20,184,166,0.15) 0%, transparent 100%)`
+              background: `radial-gradient(circle 350px at ${heroMouse.x}% ${heroMouse.y}%, rgba(20,184,166,0.12) 0%, transparent 100%)`
             }}
           />
         
