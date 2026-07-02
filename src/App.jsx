@@ -51,12 +51,21 @@ const ScrollToTop = () => {
 
 // Route-based Page Transition container
 const PageTransition = ({ children }) => {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
+  const variants = {
+    initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.99 },
+    animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 },
+    exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -15, scale: 0.99 },
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={prefersReducedMotion ? { duration: 0.1 } : { type: 'spring', stiffness: 120, damping: 20 }}
       className="w-full"
     >
       {children}

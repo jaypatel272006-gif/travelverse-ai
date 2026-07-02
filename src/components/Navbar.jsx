@@ -316,7 +316,7 @@ export const Navbar = () => {
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                       className="absolute right-0 mt-2.5 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-2xl p-2 z-50 text-left"
                     >
                       <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
