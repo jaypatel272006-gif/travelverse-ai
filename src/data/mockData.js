@@ -767,7 +767,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3120,
     price: 22000,
-    image: 'https://images.unsplash.com/photo-1707297893043-448f7eb48625?auto=format&fit=crop&w=800&q=80',
+    image: 'https://namandarshan.com/images/ayodhya-yatra-banner.jpg',
     description: 'The legendary birthplace of Lord Rama. Home to the grand Ram Janmabhoomi Mandir, peaceful Sarayu River ghats, and historical sacred sites.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 66, y: 30 },
