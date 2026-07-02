@@ -312,7 +312,9 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
 
     // Animation Loop
     let clock = new THREE.Clock();
+    let animationFrameId;
     let animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
       // Slow rotation
@@ -348,12 +350,12 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
 
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       if (renderer.domElement) {
         renderer.domElement.removeEventListener('click', handleCanvasClick);
