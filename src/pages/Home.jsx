@@ -899,7 +899,53 @@ export const Home = () => {
         
           {/* Neon HUD grid backdrop */}
           <div className="absolute inset-0 bg-cyber-grid pointer-events-none opacity-20 z-0" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 blur-3xl pointer-events-none z-0" />
+
+          {/* 3D Holographic Scrolling Map Globe */}
+          <div className="absolute top-16 right-6 md:right-12 w-64 h-64 md:w-80 md:h-80 rounded-full border border-teal-500/20 z-0 overflow-hidden opacity-30 md:opacity-60 pointer-events-none animate-globe-pulse shadow-[inset_0_0_40px_rgba(20,184,166,0.2)]">
+            <div 
+              className="w-full h-full animate-globe-scroll"
+              style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=800&q=80')",
+                backgroundSize: 'cover',
+                backgroundRepeat: 'repeat-x'
+              }}
+            />
+            {/* Globe reflection mask overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/90 via-transparent to-teal-500/10 pointer-events-none" />
+          </div>
+
+          {/* Dotted Flight Route Vector Paths */}
+          <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none z-0">
+            <path d="M 80 180 Q 280 80 580 220" fill="none" stroke="#2dd4bf" strokeWidth="1.5" strokeDasharray="6,6" className="animate-route-dash" />
+            <circle cx="80" cy="180" r="3" fill="#2dd4bf" className="animate-pulse" />
+            <circle cx="580" cy="220" r="3" fill="#2dd4bf" className="animate-pulse" />
+            
+            <path d="M 180 480 Q 480 280 780 420" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="6,6" className="animate-route-dash" />
+            <circle cx="180" cy="480" r="3" fill="#38bdf8" className="animate-pulse" />
+            <circle cx="780" cy="420" r="3" fill="#38bdf8" className="animate-pulse" />
+          </svg>
+
+          {/* Small Flying Airplane Sprite */}
+          <div className="absolute left-1/4 top-1/4 text-teal-400/25 pointer-events-none z-0 animate-airplane-fly w-full max-w-[200px]">
+            <PlaneTakeoff className="rotate-[35deg]" size={16} />
+          </div>
+
+          {/* Floating Famous Landmarks Outlines */}
+          <div className="absolute left-10 top-1/3 opacity-10 text-teal-400 animate-cloud-slow pointer-events-none z-0">
+            <Compass size={40} className="stroke-[1]" />
+          </div>
+          <div className="absolute right-1/3 bottom-20 opacity-10 text-teal-400 animate-cloud-fast pointer-events-none z-0">
+            <Globe size={48} className="stroke-[1]" />
+          </div>
+
+          {/* Smooth Floating Cloud Layers */}
+          <div className="absolute top-1/4 -left-12 w-64 h-20 bg-teal-500/5 blur-2xl rounded-full animate-cloud-slow pointer-events-none z-0" />
+          <div className="absolute top-1/2 -right-12 w-80 h-28 bg-sky-500/5 blur-2xl rounded-full animate-cloud-fast pointer-events-none z-0" />
+
+          {/* Subtle Star Particle Points */}
+          <div className="absolute top-12 left-1/3 w-1 h-1 rounded-full bg-white animate-star-glow z-0" />
+          <div className="absolute top-24 left-2/3 w-1.5 h-1.5 rounded-full bg-teal-300 animate-star-glow z-0" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-48 left-1/5 w-1 h-1 rounded-full bg-sky-300 animate-star-glow z-0" style={{ animationDelay: '2s' }} />
 
         {/* Global HUD Stats Bar */}
         <div className="w-full flex justify-between items-center pb-6 border-b border-white/10 relative z-10 font-mono text-[10px] flex-wrap gap-4">
