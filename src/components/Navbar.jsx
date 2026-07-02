@@ -217,7 +217,17 @@ export const Navbar = () => {
             <AnimatePresence>
               {showEnginesMenu && (
                 <>
-                  <div className="absolute top-full left-0 w-max min-w-[200px] mt-1 p-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 shadow-2xl z-50 flex flex-col gap-0.5 text-left animate-in fade-in slide-in-from-top-1">
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowEnginesMenu(false)}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: -5, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -5, scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    className="absolute top-full left-0 w-max min-w-[200px] mt-1 p-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 shadow-2xl z-50 flex flex-col gap-0.5 text-left"
+                  >
                     {engineLinks.map((link) => (
                       <Link
                         key={link.path}
@@ -229,7 +239,7 @@ export const Navbar = () => {
                         <span>{link.label}</span>
                       </Link>
                     ))}
-                  </div>
+                  </motion.div>
                 </>
               )}
             </AnimatePresence>
