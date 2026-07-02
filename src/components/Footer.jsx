@@ -18,12 +18,12 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-900 text-slate-400 dark:bg-slate-950/80 border-t border-slate-800 pt-20 pb-10 px-6 sm:px-12 lg:px-16 w-full text-left relative overflow-hidden">
+    <footer className="bg-slate-900 text-slate-400 dark:bg-slate-950/80 border-t border-slate-800 pt-28 pb-14 px-8 sm:px-16 lg:px-20 w-full text-left relative overflow-hidden">
       {/* Decorative cosmic background glows */}
       <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute right-0 top-0 w-96 h-96 bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 relative z-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 mb-20 relative z-10">
         {/* Brand Details */}
         <div className="flex flex-col gap-5">
           <Link to="/" className="flex items-center gap-2 select-none group focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg w-max">
@@ -158,7 +158,7 @@ export const Footer = () => {
       </div>
 
       {/* Newsletter & Operating System download grid */}
-      <div className="max-w-7xl mx-auto border-t border-slate-800/80 pt-10 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-10 mb-8 z-10 relative">
+      <div className="max-w-7xl mx-auto border-t border-slate-800/80 pt-16 pb-10 grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12 z-10 relative">
         <div className="lg:col-span-6 text-left flex flex-col gap-3">
           <h4 className="text-white font-mono font-bold text-xs uppercase tracking-widest">Stay Connected to the Grid</h4>
           <p className="text-xs text-slate-400 leading-relaxed max-w-lg">
