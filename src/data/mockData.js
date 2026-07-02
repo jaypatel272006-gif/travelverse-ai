@@ -767,7 +767,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3120,
     price: 22000,
-    image: 'https://i.pinimg.com/736x/8b/03/2f/8b032f931b613e38dedbdcc7e224347d.jpg',
+    image: 'https://images.unsplash.com/photo-1707297893043-448f7eb48625?auto=format&fit=crop&w=800&q=80',
     description: 'The legendary birthplace of Lord Rama. Home to the grand Ram Janmabhoomi Mandir, peaceful Sarayu River ghats, and historical sacred sites.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 66, y: 30 },
@@ -813,7 +813,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 4210,
     price: 38000,
-    image: 'https://images.pexels.com/photos/19271393/pexels-photo-19271393.jpeg',
+    image: 'https://images.unsplash.com/photo-1667849357658-16bfafe50dc6?auto=format&fit=crop&w=800&q=80',
     description: 'One of the most sacred Hindu shrines. Located high in the Garhwal Himalayas near Mandakini river, this ancient temple is dedicated to Lord Shiva.',
     tags: ['Spiritual', 'Adventure', 'Nature', 'Offbeat'],
     coordinates: { x: 64, y: 29 },
@@ -999,7 +999,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3820,
     price: 24000,
-    image: 'https://images.pexels.com/photos/7470318/pexels-photo-7470318.jpeg',
+    image: 'https://images.unsplash.com/photo-1621415410141-bb05ec7f7fcd?auto=format&fit=crop&w=800&q=80',
     description: 'The eternal shrine on the Arabian Sea coast. It is the first of the twelve holy Shiva Jyotirlingas, reconstructed in magnificent Chalukya architecture style.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 60, y: 34 },
@@ -1220,7 +1220,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3410,
     price: 23000,
-    image: '/destinations/dwarkadhish.jpg',
+    image: 'https://images.unsplash.com/photo-1620894084661-bc4ccde6042b?auto=format&fit=crop&w=800&q=80',
     description: 'The ancient capital kingdom of Lord Krishna. Situated in Gujarat where the Gomti River meets the Arabian Sea, featuring a majestic 5-story sandstone spire.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 59, y: 32 },
@@ -2093,7 +2093,351 @@ export const mockDestinations = [
     riskAlerts: [
       { level: 'Low', category: 'Culture', text: 'Strict dress codes apply. Do not wear short clothing. Leather products are prohibited.' }
     ]
-  }
+  },
+  {
+    id: 'dest-bali',
+    name: 'Bali',
+    region: 'Southeast Asia',
+    country: 'Indonesia',
+    rating: 4.8,
+    reviewsCount: 4120,
+    price: 45000,
+    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+    description: 'The Island of the Gods. Renowned for its forested volcanic mountains, iconic rice paddies, beaches, and coral reefs.',
+    tags: ['Beach', 'Culture', 'Nature', 'Relaxation'],
+    coordinates: { x: 74, y: 39 },
+    moods: ['Relaxed', 'Romantic', 'Nature Escape'],
+    photoSpots: [
+      { name: 'Ubud Rice Terrace', type: 'Landscape', desc: 'Symmetrical green terraces at sunrise.' }
+    ],
+    history: [
+      { era: '900 AD', event: 'Balinese Kingdom', desc: 'Ruled by warm, independent Hindu dynasties.' }
+    ],
+    stays: [
+      { name: 'Four Seasons Sayan Ubud', type: 'Luxury', desc: 'Overlooking lush green valleys.' }
+    ],
+    nomadHub: {
+      internetSpeed: '85 Mbps',
+      coworkingSpace: 'Outpost, Dojo Bali',
+      costOfLiving: 'Medium (₹42,000/mo)',
+      monthlyRent: '₹20,000 - ₹32,000',
+      visaInfo: 'Visa on Arrival valid up to 60 days.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 2800,
+      tollEstimates: 150,
+      foodStops: ['Naughty Nuri Ubud', 'Warung Kayana'],
+      scenicStops: ['Bedugul Lake curves'],
+      restAreas: ['Kuta Beach Node'],
+      evChargers: ['PLN Charging base Denpasar'],
+      emergencyContacts: { phone: '+62 361-224123', details: 'Bali Tourism Police' },
+      alternativeRoute: 'Scenic central highlands bypass'
+    },
+    riskAlerts: [
+      { level: 'Low', category: 'Nature', text: 'Active volcano zones (Mount Agung). Watch warning updates.' }
+    ]
+  },
+  {
+    id: 'dest-santorini',
+    name: 'Santorini',
+    region: 'Europe',
+    country: 'Greece',
+    rating: 4.9,
+    reviewsCount: 3890,
+    price: 95000,
+    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80',
+    description: 'The pearl of the Aegean. Famous for dramatic views, whitewashed houses with blue domes, and active volcanic caldera cliffs.',
+    tags: ['Romantic', 'Relaxation', 'Luxury', 'Culture'],
+    coordinates: { x: 45, y: 22 },
+    moods: ['Romantic', 'Relaxed', 'Luxury'],
+    photoSpots: [
+      { name: 'Oia Blue Domes', type: 'Sunset', desc: 'Iconic whitewashed churches overlooking the sea.' }
+    ],
+    history: [
+      { era: '1600 BC', event: 'Minoan Eruption', desc: 'One of the largest volcanic events in human history.' }
+    ],
+    stays: [
+      { name: 'Grace Hotel Santorini', type: 'Luxury', desc: 'Infinity pool overlooking the caldera.' }
+    ],
+    nomadHub: {
+      internetSpeed: '60 Mbps',
+      coworkingSpace: 'Santorini Hub',
+      costOfLiving: 'High (₹98,000/mo)',
+      monthlyRent: '₹45,000 - ₹75,000',
+      visaInfo: 'Schengen Visa regulations apply.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 3600,
+      tollEstimates: 0,
+      foodStops: ['Ammoudi Fish Tavern'],
+      scenicStops: ['Fira cliff trail'],
+      restAreas: ['Kamari Rest area'],
+      evChargers: ['Fira Town EV Chargers'],
+      emergencyContacts: { phone: '+30 22860-22640', details: 'Fira Tourist Police' },
+      alternativeRoute: 'Coast road avoiding narrow Fira centers'
+    },
+    riskAlerts: [
+      { level: 'Low', category: 'Transit', text: 'Extremely steep roads. Rent automatic cars if possible.' }
+    ]
+  },
+  {
+    id: 'dest-kyoto',
+    name: 'Kyoto',
+    region: 'East Asia',
+    country: 'Japan',
+    rating: 4.9,
+    reviewsCount: 5210,
+    price: 88000,
+    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
+    description: 'The ancient imperial capital. Renowned for its thousands of classical Buddhist temples, gardens, imperial palaces, Shinto shrines, and traditional wooden houses.',
+    tags: ['History', 'Culture', 'Nature', 'Heritage'],
+    coordinates: { x: 82, y: 28 },
+    moods: ['Relaxed', 'Spiritual', 'Cultural'],
+    photoSpots: [
+      { name: 'Fushimi Inari Torii Gates', type: 'Detail', desc: 'Paths framed by thousands of vibrant vermilion gates.' }
+    ],
+    history: [
+      { era: '794 AD', event: 'Heian-kyo Capital', desc: 'Established as the official seat of the Japanese Emperor.' }
+    ],
+    stays: [
+      { name: 'Hoshinoya Kyoto', type: 'Luxury', desc: 'Traditional ryokan accessed via wooden riverboat.' }
+    ],
+    nomadHub: {
+      internetSpeed: '120 Mbps',
+      coworkingSpace: 'Kyoto Nomad Box, DevX Kyoto',
+      costOfLiving: 'Medium-High (₹65,000/mo)',
+      monthlyRent: '₹28,000 - ₹45,000',
+      visaInfo: 'Digital Nomad Visa launched.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 4200,
+      tollEstimates: 1800,
+      foodStops: ['Nishiki Market stall', 'Gion Veg Restaurant'],
+      scenicStops: ['Arashiyama Bamboo Grove curves'],
+      restAreas: ['Kyoto highway service area'],
+      evChargers: ['Nissan EV charger Kyoto'],
+      emergencyContacts: { phone: '+81 75-343-0110', details: 'Kyoto Municipal Emergency Unit' },
+      alternativeRoute: 'Kyoto Jukan Expressway'
+    },
+    riskAlerts: [
+      { level: 'Low', category: 'Etiquette', text: 'Respect Geisha privacy in Gion districts. Photographing them without permission is forbidden.' }
+    ]
+  },
+  {
+    id: 'dest-swissalps',
+    name: 'Swiss Alps',
+    region: 'Europe',
+    country: 'Switzerland',
+    rating: 5.0,
+    reviewsCount: 4890,
+    price: 110000,
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    description: 'The peak of European luxury. Famous for soaring snow-covered peaks, glaciated valleys, high-altitude alpine lakes, and world-class ski chalets.',
+    tags: ['Nature', 'Adventure', 'Relaxation', 'Luxury'],
+    coordinates: { x: 44, y: 20 },
+    moods: ['Adventurous', 'Nature Escape', 'Luxury'],
+    photoSpots: [
+      { name: 'Matterhorn Reflection', type: 'Landscape', desc: 'The majestic peak reflecting off Riffelsee alpine lake.' }
+    ],
+    history: [
+      { era: '1865 AD', event: 'First Ascent', desc: 'First successful mountaineering expedition to climb the Matterhorn.' }
+    ],
+    stays: [
+      { name: 'The Chedi Andermatt', type: 'Luxury', desc: 'World-class heated mountain chalet.' }
+    ],
+    nomadHub: {
+      internetSpeed: '95 Mbps',
+      coworkingSpace: 'Impact Hub Zurich (base)',
+      costOfLiving: 'Very High (₹150,000/mo)',
+      monthlyRent: '₹65,000 - ₹120,000',
+      visaInfo: 'Schengen Visa regulations apply.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 8200,
+      tollEstimates: 3200,
+      foodStops: ['Interlaken Peak Cafe'],
+      scenicStops: ['Furka Pass hairpin turns'],
+      restAreas: ['Gotthard Tunnel Rest Area'],
+      evChargers: ['Swiss Charge EV stations'],
+      emergencyContacts: { phone: '+41 144', details: 'Swiss Alpine Rescue Service' },
+      alternativeRoute: 'Scenic pass route bypassing long tunnels'
+    },
+    riskAlerts: [
+      { level: 'High', category: 'Weather', text: 'Heavy snow can block passes. Carry winter snow chains at all times.' }
+    ]
+  },
+  {
+    id: 'dest-eiffeltower',
+    name: 'Eiffel Tower',
+    region: 'Europe',
+    country: 'France',
+    rating: 4.8,
+    reviewsCount: 6120,
+    price: 78000,
+    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+    description: 'The symbol of Paris. A wrought-iron lattice tower on the Champ de Mars, named after the engineer Gustave Eiffel.',
+    tags: ['History', 'Culture', 'Romantic'],
+    coordinates: { x: 41, y: 19 },
+    moods: ['Romantic', 'Cultural', 'Luxury'],
+    photoSpots: [
+      { name: 'Trocadéro Steps', type: 'Sunset', desc: 'Perfect sunrise or sunset view of the Eiffel Tower.' }
+    ],
+    history: [
+      { era: '1889 AD', event: 'World's Fair', desc: 'Inaugurated as the entrance arch to the 1889 World's Fair.' }
+    ],
+    stays: [
+      { name: 'Shangri-La Paris', type: 'Luxury', desc: 'Stunning direct views of the Eiffel Tower.' }
+    ],
+    nomadHub: {
+      internetSpeed: '100 Mbps',
+      coworkingSpace: 'WeWork Paris, Coworkshop',
+      costOfLiving: 'High (₹85,000/mo)',
+      monthlyRent: '₹38,000 - ₹65,000',
+      visaInfo: 'Schengen regulations apply.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 5400,
+      tollEstimates: 1200,
+      foodStops: ['Parisian Croissant Cafe'],
+      scenicStops: ['Seine River Banks'],
+      restAreas: ['A1 Highway Rest stop'],
+      evChargers: ['Belib charging base'],
+      emergencyContacts: { phone: '+33 112', details: 'Paris Emergency Command Unit' },
+      alternativeRoute: 'Boulevard Périphérique bypass'
+    },
+    riskAlerts: [
+      { level: 'Moderate', category: 'Security', text: 'Watch out for pickpockets near the Champ de Mars area.' }
+    ]
+  },
+  {
+    id: 'dest-burjkhalifa',
+    name: 'Burj Khalifa',
+    region: 'Middle East',
+    country: 'UAE',
+    rating: 4.8,
+    reviewsCount: 5430,
+    price: 69000,
+    image: 'https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?auto=format&fit=crop&w=800&q=80',
+    description: 'The tallest structure in the world. Standing at 828 meters, this architectural marvel dominates the Dubai skyline.',
+    tags: ['Luxury', 'Architecture', 'Shopping'],
+    coordinates: { x: 55, y: 25 },
+    moods: ['Luxury', 'Family Fun'],
+    photoSpots: [
+      { name: 'Dubai Fountain Walkway', type: 'Night photography', desc: 'Burj Khalifa framed by water fountain light shows.' }
+    ],
+    history: [
+      { era: '2010 AD', event: 'Grand Opening', desc: 'Opened officially as part of a new downtown development project.' }
+    ],
+    stays: [
+      { name: 'Armani Hotel Dubai', type: 'Luxury', desc: 'Located directly inside the Burj Khalifa tower.' }
+    ],
+    nomadHub: {
+      internetSpeed: '110 Mbps',
+      coworkingSpace: 'Nook Dubai, AstroLabs',
+      costOfLiving: 'High (₹92,000/mo)',
+      monthlyRent: '₹40,000 - ₹70,000',
+      visaInfo: 'Green Visa option available.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 3200,
+      tollEstimates: 250,
+      foodStops: ['Sheikh Zayed road cafe'],
+      scenicStops: ['Dubai Canal bridge'],
+      restAreas: ['Al Khail road service center'],
+      evChargers: ['DEWA superchargers'],
+      emergencyContacts: { phone: '+971 999', details: 'Dubai Tourist Police unit' },
+      alternativeRoute: 'Al Khail road bypass'
+    },
+    riskAlerts: [
+      { level: 'High', category: 'Weather', text: 'Extreme summer heat (June-Sept) makes outdoor walking impossible.' }
+    ]
+  },
+  {
+    id: 'dest-iceland',
+    name: 'Iceland',
+    region: 'Europe',
+    country: 'Iceland',
+    rating: 4.9,
+    reviewsCount: 3120,
+    price: 105000,
+    image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80',
+    description: 'The land of fire and ice. Famous for active volcanoes, glaciers, black sand beaches, hot springs, and majestic waterfalls.',
+    tags: ['Nature', 'Adventure', 'Offbeat'],
+    coordinates: { x: 38, y: 15 },
+    moods: ['Adventurous', 'Nature Escape'],
+    photoSpots: [
+      { name: 'Kirkjufell Waterfall', type: 'Landscape', desc: 'The pointy Kirkjufell mountain framed by waterfalls under auroras.' }
+    ],
+    history: [
+      { era: '874 AD', event: 'Norse Settlement', desc: 'Norse chieftains settled the volcanic island.' }
+    ],
+    stays: [
+      { name: 'The Retreat at Blue Lagoon', type: 'Luxury', desc: 'Lakeside silica thermal pool resort.' }
+    ],
+    nomadHub: {
+      internetSpeed: '85 Mbps',
+      coworkingSpace: 'Reykjavik Coworking Unit',
+      costOfLiving: 'High (₹110,000/mo)',
+      monthlyRent: '₹50,000 - ₹85,000',
+      visaInfo: 'Long-term remote worker visa available.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 7200,
+      tollEstimates: 180,
+      foodStops: ['Reykjavik organic cafe'],
+      scenicStops: ['Seljalandsfoss waterfall route'],
+      restAreas: ['Vik rest station'],
+      evChargers: ['ON Power charging network'],
+      emergencyContacts: { phone: '+354 112', details: 'Icelandic Search and Rescue team' },
+      alternativeRoute: 'Ring Road NH 1 route'
+    },
+    riskAlerts: [
+      { level: 'Moderate', category: 'Weather', text: 'Wind gusts can blow car doors open. Check weather alerts.' }
+    ]
+  },
+  {
+    id: 'dest-maldives',
+    name: 'Maldives',
+    region: 'South Asia',
+    country: 'Maldives',
+    rating: 4.9,
+    reviewsCount: 3450,
+    price: 120000,
+    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80',
+    description: 'A tropical nation in the Indian Ocean composed of 26 ring-shaped atolls. Renowned for its blue lagoons, reefs, beaches, and overwater bungalows.',
+    tags: ['Beach', 'Relaxation', 'Romantic', 'Luxury'],
+    coordinates: { x: 63, y: 39 },
+    moods: ['Romantic', 'Relaxed', 'Luxury'],
+    photoSpots: [
+      { name: 'Overwater Villa deck', type: 'Landscape', desc: 'Blue lagoon waters stretching below an infinity pool deck.' }
+    ],
+    history: [
+      { era: '5th Century BC', event: 'Buddhist Period', desc: 'First settlers came from Sri Lanka and Southern India.' }
+    ],
+    stays: [
+      { name: 'Soneva Jani', type: 'Luxury', desc: 'Overwater luxury villas featuring retractable roofs for stargazing.' }
+    ],
+    nomadHub: {
+      internetSpeed: '50 Mbps',
+      coworkingSpace: 'Male City Tech Center',
+      costOfLiving: 'High (₹98,000/mo)',
+      monthlyRent: '₹40,000 - ₹80,000',
+      visaInfo: 'Tourist Visa on Arrival valid up to 30 days.'
+    },
+    roadTripDefaults: {
+      fuelCostEstimate: 0,
+      tollEstimates: 0,
+      foodStops: ['Male Local Diner'],
+      scenicStops: ['Sandbank walks'],
+      restAreas: ['Speedboat nodes'],
+      evChargers: ['Eco Solar chargers'],
+      emergencyContacts: { phone: '+960 119', details: 'Maldives Coast Guard Command' },
+      alternativeRoute: 'Transit via speedboats or seaplanes only'
+    },
+    riskAlerts: [
+      { level: 'Low', category: 'Transit', text: 'Seaplane baggage weight is strictly capped at 20kg.' }
+    ]
+  },
 ];
 
 export const mockFlights = [
