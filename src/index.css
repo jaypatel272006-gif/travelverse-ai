@@ -678,4 +678,96 @@ textarea:focus-visible {
   main {
     padding-bottom: 2rem;
   }
+}
+
+/* Homepage Hero Animation System */
+
+/* Cloud drifting keyframes */
+@keyframes cloud-drift-1 {
+  0% { transform: translateX(-50px) translateY(0); }
+  50% { transform: translateX(50px) translateY(-10px); }
+  100% { transform: translateX(-50px) translateY(0); }
+}
+
+@keyframes cloud-drift-2 {
+  0% { transform: translateX(50px) translateY(0); }
+  50% { transform: translateX(-50px) translateY(10px); }
+  100% { transform: translateX(50px) translateY(0); }
+}
+
+/* Airplane flight path keyframes */
+@keyframes airplane-fly {
+  0% { transform: translate(-10%, 120%) rotate(25deg); opacity: 0; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.35; }
+  100% { transform: translate(110%, -20%) rotate(25deg); opacity: 0; }
+}
+
+/* Route dash offsets keyframes */
+@keyframes route-dash-move {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+/* Globe continuous horizontal map scrolling */
+@keyframes globe-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 400px 0; }
+}
+
+/* Globe atmospheric pulse halo */
+@keyframes globe-pulse {
+  0% { box-shadow: 0 0 30px rgba(20, 184, 166, 0.1), inset 0 0 20px rgba(20, 184, 166, 0.1); }
+  50% { box-shadow: 0 0 50px rgba(20, 184, 166, 0.25), inset 0 0 45px rgba(20, 184, 166, 0.25); }
+  100% { box-shadow: 0 0 30px rgba(20, 184, 166, 0.1), inset 0 0 20px rgba(20, 184, 166, 0.1); }
+}
+
+/* Star/telemetry particle glowing */
+@keyframes star-glowing {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50% { opacity: 0.85; transform: scale(1.15); }
+}
+
+/* Animation trigger classes */
+.animate-cloud-slow {
+  animation: cloud-drift-1 30s ease-in-out infinite;
+}
+
+.animate-cloud-fast {
+  animation: cloud-drift-2 25s ease-in-out infinite;
+}
+
+.animate-airplane-fly {
+  animation: airplane-fly 20s linear infinite;
+}
+
+.animate-route-dash {
+  animation: route-dash-move 2s linear infinite;
+}
+
+.animate-globe-scroll {
+  animation: globe-scroll 45s linear infinite;
+}
+
+.animate-globe-pulse {
+  animation: globe-pulse 6s ease-in-out infinite;
+}
+
+.animate-star-glow {
+  animation: star-glowing 3s ease-in-out infinite;
+}
+
+/* Accessibility: respect prefers-reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+  .animate-cloud-slow,
+  .animate-cloud-fast,
+  .animate-airplane-fly,
+  .animate-route-dash,
+  .animate-globe-scroll,
+  .animate-globe-pulse,
+  .animate-star-glow {
+    animation: none !important;
+    transition: none !important;
+  }
 }
