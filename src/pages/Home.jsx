@@ -475,7 +475,15 @@ export const Home = () => {
   const handleHeroSearch = (e) => {
     e.preventDefault();
     const query = searchQuery.trim().toLowerCase();
-    if (!query) return;
+    
+    // Construct the query string parameters
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.append('search', searchQuery.trim());
+    params.append('budget', budgetVal);
+    params.append('duration', durationVal);
+    if (travelStyle !== 'All') params.append('style', travelStyle);
+    if (travelSeason !== 'All') params.append('season', travelSeason);
+    params.append('travelers', travelersCount);
 
     if (query.includes('flight') || query.includes('plane') || query.includes('ticket')) {
       navigate('/flights');
@@ -499,8 +507,22 @@ export const Home = () => {
       navigate('/utilities');
       showToast('Navigating to Travel Utilities...');
     } else {
-      navigate(`/destinations?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/destinations?${params.toString()}`);
     }
+  };
+
+  const handleVoiceSearchSimulate = (e) => {
+    e.preventDefault();
+    if (isVoiceActive) return;
+    setIsVoiceActive(true);
+    showToast('Calibrating voice recognition systems... Speak now.', 'info');
+    setTimeout(() => {
+      const phrases = ['Bali', 'Santorini', 'Kyoto', 'Kedarnath', 'Goa'];
+      const chosen = phrases[Math.floor(Math.random() * phrases.length)];
+      setSearchQuery(chosen);
+      setIsVoiceActive(false);
+      showToast(`Voice resolved coordinate: "${chosen}"`, 'success');
+    }, 2000);
   };
 
   const handleQuickPlan = (e) => {
