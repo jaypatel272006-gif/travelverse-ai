@@ -182,7 +182,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Navigation Link Menu */}
-        <div className="hidden xl:flex items-center gap-1.5">
+        <div className="hidden xl:flex items-center gap-3">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}

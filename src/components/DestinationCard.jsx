@@ -320,7 +320,7 @@ export const DestinationCard = memo(({ destination }) => {
             </div>
 
             {/* CTAs */}
-            <div className="flex justify-between items-center gap-3">
+            <div className="flex justify-between items-center gap-4">
               <Link
                 to={`/destination/${id}`}
                 className="text-xs font-bold text-teal-600 dark:text-teal-400 flex items-center gap-1 hover:underline group-hover:gap-2 transition-all duration-300"
