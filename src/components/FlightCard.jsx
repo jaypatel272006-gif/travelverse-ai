@@ -195,4 +195,4 @@ export const FlightCard = memo(({ flight, onBook }) => {
       </AnimatePresence>
     </motion.div>
   );
-};
+});
