@@ -13,6 +13,15 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error("TravelVerse OS Stability Layer Caught Error:", error, errorInfo);
+    
+    // Auto-recovery for chunk loading failures on new deployments
+    const errorMsg = error && error.message ? error.message.toLowerCase() : '';
+    const isFailedFetch = errorMsg.includes('failed to fetch') || 
+                          errorMsg.includes('dynamically imported module') ||
+                          errorMsg.includes('error loading dynamically imported module');
+    if (isFailedFetch) {
+      window.location.reload();
+    }
   }
 
   handleReset = () => {
