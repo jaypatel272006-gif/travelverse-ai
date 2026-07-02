@@ -176,7 +176,7 @@ export const DestinationCard = memo(({ destination }) => {
               {region}
             </span>
             <span className="px-3 py-1 text-[8px] font-bold font-mono uppercase bg-slate-950/80 border border-emerald-500/20 text-emerald-400 backdrop-blur-md rounded-full flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> Sourced Live Data
+              ✓ Verified Destination
             </span>
           </div>
 

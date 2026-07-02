@@ -67,7 +67,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
                 </h4>
                 {hotel.isLiveVerified ? (
                   <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Verified
+                    ✓ Verified Hotel
                   </span>
                 ) : (
                   <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded flex items-center gap-1">
