@@ -2683,7 +2683,7 @@ export const Home = () => {
       </section>
 
       {/* 🗺️ HIDDEN INDIA DISCOVERY ENGINE */}
-      <section className="flex flex-col gap-6 text-left">
+      <section className="flex flex-col gap-10 text-left">
         <div className="flex justify-between items-end border-b border-slate-200 dark:border-white/5 pb-4">
           <div>
             <span className="text-[10px] text-sky-400 font-bold uppercase tracking-widest font-mono">OFFBEAT SATELLITE TILES</span>
@@ -2803,7 +2803,7 @@ export const Home = () => {
       </section>
 
       {/* Testimonials Carousel */}
-      <section className="flex flex-col gap-6 text-center max-w-3xl mx-auto">
+      <section className="flex flex-col gap-10 text-center max-w-3xl mx-auto">
         <div className="flex flex-col items-center gap-1">
           <span className="text-[10px] font-bold uppercase tracking-widest text-teal-400 font-mono">Testimonials</span>
           <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-850 dark:text-white mt-1 tracking-wide">
