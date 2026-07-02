@@ -311,7 +311,9 @@ export const UniverseExplorer = () => {
 
     // Animation loop
     const clock = new THREE.Clock();
+    let animationFrameId;
     let animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
       // Core rotation
@@ -356,7 +358,6 @@ export const UniverseExplorer = () => {
 
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
     };
 
     animate();
@@ -374,6 +375,7 @@ export const UniverseExplorer = () => {
     }, 8000);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       clearInterval(alertInterval);
       window.removeEventListener('resize', handleResize);
       if (renderer.domElement) {
