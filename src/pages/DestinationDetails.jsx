@@ -1042,7 +1042,12 @@ export const DestinationDetails = () => {
           {cityData.history && (
             <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5 text-left">
               <div>
-                <span className="text-[9px] font-mono text-indigo-555 dark:text-indigo-400 font-bold tracking-widest uppercase">CHRONOLOGICAL ENGINE</span>
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <span className="text-[9px] font-mono text-indigo-555 dark:text-indigo-400 font-bold tracking-widest uppercase">CHRONOLOGICAL ENGINE</span>
+                  <span className="px-2 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded-full flex items-center gap-1">
+                    ✓ Verified Historical Information
+                  </span>
+                </div>
                 <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Historical Time Travel</h3>
               </div>
 
