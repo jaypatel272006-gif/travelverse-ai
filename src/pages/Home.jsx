@@ -243,6 +243,10 @@ export const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [budgetVal, setBudgetVal] = useState(150000);
   const [durationVal, setDurationVal] = useState(6);
+  const [travelStyle, setTravelStyle] = useState('All');
+  const [travelersCount, setTravelersCount] = useState('Solo');
+  const [travelSeason, setTravelSeason] = useState('All');
+  const [isVoiceActive, setIsVoiceActive] = useState(false);
 
   const getDynamicTheme = () => {
     const q = searchQuery.toLowerCase();
