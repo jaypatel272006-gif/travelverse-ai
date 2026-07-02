@@ -1669,7 +1669,7 @@ export const SpiritualUniverse = () => {
                   )}
                   {selectedWalkthrough === 'varanasi' && (
                     <img 
-                      src="https://images.pexels.com/photos/31393861/pexels-photo-31393861.jpeg" 
+                      src="https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&q=80&w=800" 
                       alt="Varanasi live scan" 
                       className="absolute inset-0 w-full h-full object-cover opacity-75 filter blur-xs"
                     />
