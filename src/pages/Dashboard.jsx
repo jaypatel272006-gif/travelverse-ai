@@ -1156,7 +1156,7 @@ export const Dashboard = () => {
             <div className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-1">
               {vaultMemories.map(v => (
                 <div key={v.id} className="p-2 rounded-xl bg-slate-900/60 border border-teal-500/10 flex gap-2">
-                  {v.mediaUrl && <img src={v.mediaUrl} className="w-10 h-10 object-cover rounded-lg border border-white/5" alt="" />}
+                  {v.mediaUrl && <img src={v.mediaUrl} className="w-10 h-10 object-cover rounded-lg border border-white/5" alt={v.title} />}
                   <div className="flex-1 min-w-0">
                     <span className="font-bold text-white block truncate">{v.title}</span>
                     <span className="text-[9px] text-slate-405 block truncate">{v.description}</span>
