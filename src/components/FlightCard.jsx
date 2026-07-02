@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plane, Compass, Clock, ArrowRight, ShieldCheck, BaggageClaim, Wifi, Coffee, BatteryCharging, ChevronDown, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export const FlightCard = ({ flight, onBook }) => {
+export const FlightCard = memo(({ flight, onBook }) => {
   const { isInWishlist, toggleWishlist } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const isWishlisted = isInWishlist('flights', flight.id);
