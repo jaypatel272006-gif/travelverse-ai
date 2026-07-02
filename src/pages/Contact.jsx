@@ -6,6 +6,8 @@ import { mockFaqs } from '../data/mockData';
 
 // Sub-component for individual Accordion item
 const AccordionItem = ({ faq, isOpen, onToggle }) => {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   return (
     <div className="border-b border-slate-100 dark:border-slate-800/80 last:border-b-0 py-4 text-left">
       <button
@@ -14,8 +16,8 @@ const AccordionItem = ({ faq, isOpen, onToggle }) => {
       >
         <span className="max-w-[90%] leading-relaxed">{faq.q}</span>
         <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          animate={prefersReducedMotion ? {} : { rotate: isOpen ? 180 : 0 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         >
           <ChevronDown size={14} className="text-slate-400" />
         </motion.div>
@@ -24,10 +26,10 @@ const AccordionItem = ({ faq, isOpen, onToggle }) => {
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            initial={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            animate={prefersReducedMotion ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.1 } : { type: 'spring', stiffness: 200, damping: 22 }}
             className="overflow-hidden"
           >
             <p className="text-xs text-slate-500 leading-relaxed pt-2 pb-3 font-semibold">
