@@ -1189,24 +1189,260 @@ export const Home = () => {
             Experience the year 2100 travel operating system. AI-driven sequential itineraries, geodetic real-world telemetry, and zero-fatigue planning matrices.
           </p>
 
-          {/* Premium CTA Buttons Group */}
-          <div className="flex flex-wrap gap-4 items-center justify-center mt-4">
-            <Link
-              to="/planner"
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 font-bold text-xs tracking-wider font-mono hover:shadow-[0_0_25px_rgba(45,212,191,0.5)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
-            >
-              🚀 CALIBRATE QUANTUM PLANNER
-            </Link>
-            <button
-              onClick={() => {
-                setShowLegacyMenu(!showLegacyMenu);
-                showToast('Accessing Legacy Subsystem Menu...', 'info');
-              }}
-              className="px-6 py-3.5 rounded-xl bg-slate-900/80 border border-white/10 text-teal-400 hover:text-white font-bold text-xs tracking-wider font-mono transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
-            >
-              📂 ACCESS LEGACY ARCHIVES
-            </button>
-          </div>
+          {/* Large Premium Search Terminal */}
+          <form 
+            onSubmit={handleHeroSearch}
+            className="w-full max-w-4xl p-6 md:p-8 rounded-3xl bg-slate-950/60 border border-teal-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(20,184,166,0.1)] backdrop-blur-md relative z-10 flex flex-col gap-6 text-left mt-6 animate-in fade-in zoom-in-95 duration-500"
+          >
+            {/* Input Row */}
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1 relative">
+                <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-slate-900/80 border border-white/10 focus-within:border-teal-500 transition-all duration-300">
+                  <Search className="text-teal-400 shrink-0" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search coordinates... (Destination, Country, State, City)"
+                    value={searchQuery}
+                    onChange={(e) => { setSearchQuery(e.target.value); setSearchFocusIndex(-1); }}
+                    onFocus={() => setIsSearchFocused(true)}
+                    onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
+                    onKeyDown={handleSearchKeyDown}
+                    className="bg-transparent border-none outline-none text-white text-sm w-full placeholder-slate-500 focus:ring-0 focus:outline-none font-mono"
+                  />
+                  {/* Voice Search Simulator Button */}
+                  <button
+                    type="button"
+                    onClick={handleVoiceSearchSimulate}
+                    className={`p-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 transition-all relative ${
+                      isVoiceActive ? 'animate-pulse text-teal-400 border-teal-500' : ''
+                    }`}
+                    title="Voice Search"
+                  >
+                    <Mic size={15} />
+                    {isVoiceActive && (
+                      <span className="absolute inset-0 rounded-lg border border-teal-500 animate-ping opacity-75" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Autocomplete / Telemetry Dropdown */}
+                {isSearchFocused && searchQuery && (
+                  <div className="absolute top-full left-0 right-0 mt-3 p-3 rounded-2xl bg-slate-950/95 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-50 flex flex-col gap-1 max-h-[300px] overflow-y-auto backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                    {totalSearchResults.length === 0 ? (
+                      <div className="p-4 text-center text-[10px] font-mono text-slate-500">
+                        ⚠️ NO COORDINATES RESOLVED
+                      </div>
+                    ) : (
+                      totalSearchResults.map((result, i) => {
+                        const isFocused = i === searchFocusIndex;
+                        return (
+                          <Link
+                            key={result.id}
+                            to={result.link}
+                            onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
+                            className={`flex items-center gap-3.5 p-2.5 hover:bg-white/5 rounded-xl transition-all duration-200 ${
+                              isFocused ? 'bg-white/10 text-teal-400 border-l-2 border-teal-500 pl-4' : ''
+                            }`}
+                          >
+                            {result.type === 'destination' ? (
+                              <>
+                                <img src={result.image} alt={result.name} className="w-8 h-8 rounded-lg object-cover shadow-sm" />
+                                <div className="flex-1">
+                                  <p className="text-xs font-bold text-white leading-none">{result.name}</p>
+                                  <p className="text-[9px] text-slate-500 font-mono uppercase mt-0.5">{result.sub}</p>
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex-1 font-mono text-[10px] text-teal-400 uppercase">
+                                ⚙️ {result.name}
+                              </div>
+                            )}
+                            <ArrowRight size={13} className="text-slate-500" />
+                          </Link>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Submit Action Button */}
+              <button
+                type="submit"
+                className="px-6 py-4 bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 font-bold text-xs tracking-wider font-mono rounded-2xl hover:shadow-[0_0_20px_rgba(45,212,191,0.4)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Sparkles size={14} />
+                SCAN TELEMETRY
+              </button>
+            </div>
+
+            {/* Advanced Filters Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 pt-4 border-t border-white/5">
+              {/* Budget Limit Slider */}
+              <div className="flex flex-col gap-2">
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Max Budget</span>
+                <div className="flex items-center justify-between text-[10px] font-mono text-teal-400 font-bold">
+                  <span>₹{budgetVal.toLocaleString('en-IN')}</span>
+                </div>
+                <input
+                  type="range"
+                  min="40000"
+                  max="400000"
+                  step="5000"
+                  value={budgetVal}
+                  onChange={(e) => setBudgetVal(parseInt(e.target.value))}
+                  className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
+                />
+              </div>
+
+              {/* Duration Slider */}
+              <div className="flex flex-col gap-2">
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Duration</span>
+                <div className="flex items-center justify-between text-[10px] font-mono text-teal-400 font-bold">
+                  <span>{durationVal} Days</span>
+                </div>
+                <input
+                  type="range"
+                  min="2"
+                  max="14"
+                  value={durationVal}
+                  onChange={(e) => setDurationVal(parseInt(e.target.value))}
+                  className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
+                />
+              </div>
+
+              {/* Travel Style Selector */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Travel Style</span>
+                <select
+                  value={travelStyle}
+                  onChange={(e) => setTravelStyle(e.target.value)}
+                  className="bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:border-teal-500 focus:outline-none"
+                >
+                  <option value="All">All Styles</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Relaxed">Relaxed</option>
+                  <option value="Spiritual">Spiritual</option>
+                  <option value="Luxury">Luxury</option>
+                  <option value="Wildlife">Wildlife</option>
+                </select>
+              </div>
+
+              {/* Travelers Selector */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Travelers</span>
+                <select
+                  value={travelersCount}
+                  onChange={(e) => setTravelersCount(e.target.value)}
+                  className="bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:border-teal-500 focus:outline-none"
+                >
+                  <option value="Solo">Solo Traveler</option>
+                  <option value="Couple">Couple</option>
+                  <option value="Group">Group (3-5)</option>
+                  <option value="Family">Family (5+)</option>
+                </select>
+              </div>
+
+              {/* Best Season Selector */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Preferred Season</span>
+                <select
+                  value={travelSeason}
+                  onChange={(e) => setTravelSeason(e.target.value)}
+                  className="bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:border-teal-500 focus:outline-none"
+                >
+                  <option value="All">Any Season</option>
+                  <option value="Winter">Winter (Nov-Feb)</option>
+                  <option value="Summer">Summer (Mar-Jun)</option>
+                  <option value="Monsoon">Monsoon (Jul-Sep)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Suggestions & Recent Searches Row */}
+            <div className="flex flex-wrap gap-x-8 gap-y-4 pt-4 border-t border-white/5 text-[10px] font-mono">
+              {/* AI suggestions */}
+              <div className="flex items-center gap-2">
+                <span className="text-slate-500 uppercase font-black">AI Suggestions:</span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('Spiti Peaks');
+                      showToast('Loaded AI suggestion: Spiti Peaks', 'info');
+                    }}
+                    className="text-teal-400 hover:text-white transition-colors"
+                  >
+                    💡 Spiti Peaks
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('Goa Coast');
+                      showToast('Loaded AI suggestion: Goa Coast', 'info');
+                    }}
+                    className="text-teal-400 hover:text-white transition-colors"
+                  >
+                    💡 Goa Coast
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent searches */}
+              <div className="flex items-center gap-2">
+                <span className="text-slate-500 uppercase font-black">Recent Logs:</span>
+                <div className="flex gap-2 text-slate-400">
+                  {['Agra', 'Delhi'].map(term => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setSearchQuery(term)}
+                      className="hover:text-white transition-colors"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trending */}
+              <div className="flex items-center gap-2">
+                <span className="text-slate-500 uppercase font-black">Trending:</span>
+                <div className="flex gap-2 text-sky-400">
+                  {['Bali', 'Santorini', 'Kyoto'].map(term => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => setSearchQuery(term)}
+                      className="hover:text-white transition-colors"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Subsystems Shortcuts Row */}
+            <div className="flex flex-wrap gap-4 items-center justify-center pt-4 border-t border-white/5 w-full">
+              <Link
+                to="/planner"
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-white/10 text-teal-400 hover:text-white text-[10px] font-bold tracking-wider font-mono transition-all hover:scale-105 active:scale-95"
+              >
+                🚀 CALIBRATE QUANTUM PLANNER
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLegacyMenu(!showLegacyMenu);
+                  showToast('Accessing Legacy Subsystem Menu...', 'info');
+                }}
+                className="px-4 py-2 rounded-xl bg-slate-900 border border-white/10 text-teal-400 hover:text-white text-[10px] font-bold tracking-wider font-mono transition-all hover:scale-105 active:scale-95"
+              >
+                📂 ACCESS LEGACY ARCHIVES
+              </button>
+            </div>
+          </form>
 
           {/* Scroll Down Telemetry Indicator */}
           <div className="flex flex-col items-center justify-center gap-1.5 mt-8 animate-bounce">
