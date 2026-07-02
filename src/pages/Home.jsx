@@ -254,6 +254,9 @@ export const Home = () => {
   };
   const themeMode = getDynamicTheme();
 
+  const [selectedMood, setSelectedMood] = useState('All');
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+
   const getMoodSectionStyle = () => {
     switch (selectedMood) {
       case 'Road Trip':
@@ -328,9 +331,6 @@ export const Home = () => {
     }
   };
   const moodStyle = getMoodSectionStyle();
-
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [selectedMood, setSelectedMood] = useState('All');
 
   // TravelVerse 2200 Sentient System states
   const [atlasQuery, setAtlasQuery] = useState('');
