@@ -252,4 +252,4 @@ export const DestinationCard = memo(({ destination }) => {
       </div>
     </motion.div>
   );
-};
+});

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Star, CheckCircle, ArrowRight, Heart, Percent } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export const TourCard = ({ tour }) => {
+export const TourCard = memo(({ tour }) => {
   const { isInWishlist, toggleWishlist } = useApp();
   const isWishlisted = isInWishlist('tours', tour.id);
 
@@ -120,4 +120,4 @@ export const TourCard = ({ tour }) => {
       </div>
     </motion.div>
   );
-};
+});
