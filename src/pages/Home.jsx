@@ -2399,21 +2399,24 @@ export const Home = () => {
         </div>
 
         {/* Filtered Destination Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-          <AnimatePresence mode="popLayout">
-            {filteredDestinations.slice(0, 6).map((dest) => (
-              <motion.div
-                key={dest.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-              >
-                <DestinationCard destination={dest} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        <div className={moodStyle.wrapperClass}>
+          {moodStyle.motif}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+            <AnimatePresence mode="popLayout">
+              {filteredDestinations.slice(0, 6).map((dest) => (
+                <motion.div
+                  key={dest.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <DestinationCard destination={dest} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 
@@ -2447,9 +2450,9 @@ export const Home = () => {
       </section>
 
       {/* 📊 BUDGET ESTIMATION WIDGET */}
-      <section className="p-8 rounded-3xl bg-slate-900/50 dark:bg-slate-950/80 border border-white/5 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden neon-border-pink">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
-        <div className="absolute left-0 bottom-0 w-96 h-96 bg-sky-500/5 rounded-full blur-3xl" />
+      <section className="p-8 rounded-3xl bg-slate-950/40 backdrop-blur-md border border-cyan-500/20 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.15)]">
+        <div className="absolute right-0 top-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+        <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
 
         <div className="flex-1 text-left relative z-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold mb-4 border border-teal-500/20">
