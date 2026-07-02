@@ -254,6 +254,81 @@ export const Home = () => {
   };
   const themeMode = getDynamicTheme();
 
+  const getMoodSectionStyle = () => {
+    switch (selectedMood) {
+      case 'Road Trip':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-[#121620] via-[#0b0e14] to-[#121620] border-slate-800 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden',
+          accentColor: '#64748b',
+          motif: (
+            <svg className="absolute inset-x-0 bottom-4 h-1.5 w-full opacity-20 pointer-events-none" preserveAspectRatio="none">
+              <line x1="0" y1="0" x2="100%" y2="0" stroke="#f1f5f9" strokeWidth="3" strokeDasharray="20,15" className="animate-route-dash" />
+            </svg>
+          )
+        };
+      case 'Spiritual':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-[#1e140d] via-[#0f0905] to-[#1e140d] border-amber-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(245,158,11,0.08)]',
+          accentColor: '#f59e0b',
+          motif: (
+            <svg className="absolute right-[-40px] bottom-[-40px] w-64 h-64 text-amber-500/10 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+              <circle cx="50" cy="50" r="40" className="animate-pulse" />
+              <circle cx="50" cy="50" r="30" />
+              <circle cx="50" cy="50" r="20" />
+              <path d="M 50 0 L 50 100 M 0 50 L 100 50 M 15 15 L 85 85 M 15 85 L 85 15" />
+            </svg>
+          )
+        };
+      case 'Adventurous':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-[#0c1a15] via-[#060d0a] to-[#0c1a15] border-emerald-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(16,185,129,0.08)]',
+          accentColor: '#10b981',
+          motif: (
+            <svg className="absolute bottom-0 right-0 w-80 h-32 text-emerald-500/10 pointer-events-none" viewBox="0 0 100 30" preserveAspectRatio="none" fill="currentColor">
+              <path d="M0 30 L25 10 L50 20 L75 5 L100 30 Z" />
+            </svg>
+          )
+        };
+      case 'Luxury':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-slate-950 via-[#131109] to-slate-950 border-yellow-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.55),0_0_30px_rgba(234,179,8,0.05)] backdrop-blur-md',
+          accentColor: '#eab308',
+          motif: (
+            <div className="absolute inset-0 border border-yellow-500/10 rounded-3xl m-2 pointer-events-none z-0" />
+          )
+        };
+      case 'Relaxed':
+      case 'Romantic':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-[#0d1b2a] via-[#060c14] to-[#0d1b2a] border-sky-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(14,165,233,0.08)]',
+          accentColor: '#0ea5e9',
+          motif: (
+            <svg className="absolute bottom-0 inset-x-0 h-10 text-sky-500/10 pointer-events-none animate-wave-drift" viewBox="0 0 100 10" preserveAspectRatio="none" fill="currentColor">
+              <path d="M0 10 C 30 2, 70 8, 100 10 L 100 10 L 0 10 Z" />
+            </svg>
+          )
+        };
+      case 'Wildlife':
+      case 'Nature Escape':
+        return {
+          wrapperClass: 'bg-gradient-to-br from-[#0f1f13] via-[#070f09] to-[#0f1f13] border-green-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(34,197,94,0.08)]',
+          accentColor: '#22c55e',
+          motif: (
+            <div className="absolute right-4 bottom-4 text-green-500/15 pointer-events-none z-0 select-none">
+              <span className="text-[120px] font-bold">🌿</span>
+            </div>
+          )
+        };
+      default:
+        return {
+          wrapperClass: 'bg-slate-900/10 dark:bg-slate-950/20 p-6 rounded-3xl border border-slate-200/50 dark:border-white/5 transition-all duration-500',
+          accentColor: '#2dd4bf',
+          motif: null
+        };
+    }
+  };
+  const moodStyle = getMoodSectionStyle();
+
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [selectedMood, setSelectedMood] = useState('All');
 
