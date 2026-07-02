@@ -155,7 +155,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 // Sub-component for listing rooms when expanded
 export const RoomSelectionList = ({ hotel, onSelectRoom }) => {
@@ -216,4 +216,4 @@ export const RoomSelectionList = ({ hotel, onSelectRoom }) => {
       </div>
     </motion.div>
   );
-});
+};
