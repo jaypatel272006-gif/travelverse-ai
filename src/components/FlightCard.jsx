@@ -7,6 +7,7 @@ export const FlightCard = memo(({ flight, onBook }) => {
   const { isInWishlist, toggleWishlist } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const isWishlisted = isInWishlist('flights', flight.id);
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Helper to color class badges elegantly
   const getClassBadgeStyle = (cls) => {
@@ -127,8 +128,8 @@ export const FlightCard = memo(({ flight, onBook }) => {
           Flight Details & Baggage
         </span>
         <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          animate={prefersReducedMotion ? {} : { rotate: isOpen ? 180 : 0 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         >
           <ChevronDown size={14} className="text-slate-400" />
         </motion.div>
@@ -138,10 +139,10 @@ export const FlightCard = memo(({ flight, onBook }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            initial={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            animate={prefersReducedMotion ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.1 } : { type: 'spring', stiffness: 200, damping: 22 }}
             className="overflow-hidden bg-slate-50/30 dark:bg-slate-950/20 border-t border-slate-100 dark:border-slate-800"
           >
             <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
