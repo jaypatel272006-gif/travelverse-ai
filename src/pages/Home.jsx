@@ -313,68 +313,78 @@ export const Home = () => {
   const [selectedMood, setSelectedMood] = useState('All');
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
+
   const getMoodSectionStyle = () => {
     switch (selectedMood) {
       case 'Road Trip':
         return {
-          wrapperClass: 'bg-gradient-to-br from-[#121620] via-[#0b0e14] to-[#121620] border-slate-800 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden',
+          wrapperClass: 'bg-gradient-to-br from-[#12141c] via-[#090b0e] to-[#12141c] border-slate-700/40 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden',
           accentColor: '#64748b',
           motif: (
-            <svg className="absolute inset-x-0 bottom-4 h-1.5 w-full opacity-20 pointer-events-none" preserveAspectRatio="none">
-              <line x1="0" y1="0" x2="100%" y2="0" stroke="#f1f5f9" strokeWidth="3" strokeDasharray="20,15" className="animate-route-dash" />
-            </svg>
+            <div className="absolute inset-x-0 bottom-6 h-1 bg-slate-800 flex justify-around pointer-events-none z-0 overflow-hidden">
+              <div className="w-full h-full flex justify-between animate-road-travel px-4">
+                {[...Array(20)].map((_, i) => (
+                  <span key={i} className="w-6 h-full bg-yellow-500/40 shrink-0" />
+                ))}
+              </div>
+            </div>
           )
         };
       case 'Spiritual':
         return {
-          wrapperClass: 'bg-gradient-to-br from-[#1e140d] via-[#0f0905] to-[#1e140d] border-amber-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(245,158,11,0.08)]',
+          wrapperClass: 'bg-gradient-to-br from-[#1e140d] via-[#0f0905] to-[#1e140d] border-amber-500/30 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(245,158,11,0.12)]',
           accentColor: '#f59e0b',
           motif: (
-            <svg className="absolute right-[-40px] bottom-[-40px] w-64 h-64 text-amber-500/10 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
-              <circle cx="50" cy="50" r="40" className="animate-pulse" />
-              <circle cx="50" cy="50" r="30" />
-              <circle cx="50" cy="50" r="20" />
-              <path d="M 50 0 L 50 100 M 0 50 L 100 50 M 15 15 L 85 85 M 15 85 L 85 15" />
+            <svg className="absolute right-[-20px] bottom-[-20px] w-64 h-64 text-amber-500/10 pointer-events-none animate-[spin_40s_linear_infinite]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+              <circle cx="50" cy="50" r="45" strokeDasharray="2,2" />
+              <circle cx="50" cy="50" r="35" />
+              <polygon points="50,15 60,35 80,35 65,50 75,70 50,60 25,70 35,50 20,35 40,35" />
+              <circle cx="50" cy="50" r="10" />
             </svg>
           )
         };
       case 'Adventurous':
         return {
-          wrapperClass: 'bg-gradient-to-br from-[#0c1a15] via-[#060d0a] to-[#0c1a15] border-emerald-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(16,185,129,0.08)]',
+          wrapperClass: 'bg-gradient-to-br from-[#0c1a13] via-[#050c09] to-[#0c1a13] border-emerald-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(16,185,129,0.08)]',
           accentColor: '#10b981',
           motif: (
-            <svg className="absolute bottom-0 right-0 w-80 h-32 text-emerald-500/10 pointer-events-none" viewBox="0 0 100 30" preserveAspectRatio="none" fill="currentColor">
-              <path d="M0 30 L25 10 L50 20 L75 5 L100 30 Z" />
+            <svg className="absolute bottom-0 right-0 w-full h-48 text-emerald-500/5 pointer-events-none" viewBox="0 0 100 30" preserveAspectRatio="none" fill="currentColor">
+              <path d="M0 30 L15 15 L30 25 L50 10 L70 20 L85 5 L100 30 Z" />
+              <path d="M0 30 L25 18 L55 28 L75 15 L100 30 Z" className="opacity-50" />
             </svg>
           )
         };
       case 'Luxury':
         return {
-          wrapperClass: 'bg-gradient-to-br from-slate-950 via-[#131109] to-slate-950 border-yellow-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.55),0_0_30px_rgba(234,179,8,0.05)] backdrop-blur-md',
+          wrapperClass: 'bg-gradient-to-br from-black via-[#14120c] to-black border-yellow-500/30 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.7),0_0_40px_rgba(234,179,8,0.1)] backdrop-blur-md',
           accentColor: '#eab308',
           motif: (
-            <div className="absolute inset-0 border border-yellow-500/10 rounded-3xl m-2 pointer-events-none z-0" />
+            <>
+              <div className="absolute inset-2 border border-yellow-500/10 rounded-2xl pointer-events-none" />
+              <div className="absolute inset-3 border border-yellow-500/5 rounded-2xl pointer-events-none" />
+            </>
           )
         };
       case 'Relaxed':
       case 'Romantic':
         return {
-          wrapperClass: 'bg-gradient-to-br from-[#0d1b2a] via-[#060c14] to-[#0d1b2a] border-sky-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(14,165,233,0.08)]',
+          wrapperClass: 'bg-gradient-to-br from-[#0b1d33] via-[#040c17] to-[#0b1d33] border-sky-500/25 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(14,165,233,0.12)]',
           accentColor: '#0ea5e9',
           motif: (
-            <svg className="absolute bottom-0 inset-x-0 h-10 text-sky-500/10 pointer-events-none animate-wave-drift" viewBox="0 0 100 10" preserveAspectRatio="none" fill="currentColor">
-              <path d="M0 10 C 30 2, 70 8, 100 10 L 100 10 L 0 10 Z" />
+            <svg className="absolute bottom-0 inset-x-0 h-16 text-sky-400/5 pointer-events-none" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="currentColor">
+              <path d="M0,50 Q360,100 720,50 T1440,50 L1440,100 L0,100 Z" className="animate-wave-drift" style={{ animationDuration: '8s' }} />
+              <path d="M0,40 Q360,80 720,40 T1440,40 L1440,100 L0,100 Z" className="animate-wave-drift opacity-50" style={{ animationDuration: '14s', animationDelay: '1s' }} />
             </svg>
           )
         };
       case 'Wildlife':
       case 'Nature Escape':
         return {
-          wrapperClass: 'bg-gradient-to-br from-[#0f1f13] via-[#070f09] to-[#0f1f13] border-green-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(34,197,94,0.08)]',
+          wrapperClass: 'bg-gradient-to-br from-[#0c1c11] via-[#050c07] to-[#0c1c11] border-green-500/20 p-8 rounded-3xl border transition-all duration-500 relative overflow-hidden shadow-[0_0_35px_rgba(34,197,94,0.08)]',
           accentColor: '#22c55e',
           motif: (
-            <div className="absolute right-4 bottom-4 text-green-500/15 pointer-events-none z-0 select-none">
-              <span className="text-[120px] font-bold">🌿</span>
+            <div className="absolute right-6 bottom-6 text-green-500/10 pointer-events-none select-none text-9xl">
+              🌲
             </div>
           )
         };
@@ -386,6 +396,7 @@ export const Home = () => {
         };
     }
   };
+
   const moodStyle = getMoodSectionStyle();
 
   // TravelVerse 2200 Sentient System states
