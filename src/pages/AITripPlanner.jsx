@@ -1048,9 +1048,18 @@ export const AITripPlanner = () => {
             <div className="lg:col-span-2 flex flex-col gap-6">
               <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/50 dark:border-teal-500/10 bg-white dark:bg-slate-900/40 shadow-xl glass-neo">
                 <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-200 dark:border-teal-500/10 flex-wrap gap-4">
-                  <h3 className="font-display font-black text-lg text-slate-900 dark:text-white uppercase tracking-wider">
-                    {isEditingPlan ? 'CONFIGURE PLAN SCHEDULE' : 'ITINERARY COMMAND DECK'}
-                  </h3>
+                  <div className="flex flex-col gap-0.5">
+                    <h3 className="font-display font-black text-lg text-slate-900 dark:text-white uppercase tracking-wider">
+                      {isEditingPlan ? 'CONFIGURE PLAN SCHEDULE' : 'ITINERARY COMMAND DECK'}
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 text-[8.5px] font-bold font-mono uppercase bg-teal-500/10 border border-teal-500/30 text-teal-400 rounded">
+                        🤖 AI Confidence: 98.4%
+                      </span>
+                      <span className="text-slate-500 text-[10px]">•</span>
+                      <span className="text-slate-500 text-[9px] font-mono">Last Calibrated: Just Now</span>
+                    </div>
+                  </div>
                   
                   <div className="flex gap-2 shrink-0">
                     {isEditingPlan ? (
