@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Heart, MapPin, ArrowRight, Sparkles, Bookmark, Eye, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getResponsiveSrcSet } from '../utils/responsiveImages';
 
 export const DestinationCard = memo(({ destination }) => {
   const { isInWishlist, toggleWishlist, customPhotos, showToast } = useApp();
@@ -162,6 +163,8 @@ export const DestinationCard = memo(({ destination }) => {
         >
           <img
             src={customPhotos[id] || image}
+            srcSet={getResponsiveSrcSet(customPhotos[id] || image)}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             alt={name}
             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[1200ms] cubic-bezier(0.16, 1, 0.3, 1)"
             loading="lazy"
