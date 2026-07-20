@@ -273,6 +273,11 @@ export const Home = () => {
     setIsDraggingGlobe(false);
   };
 
+  const parallaxX = (heroMouse.x - 50) * 0.12;
+  const parallaxY = (heroMouse.y - 50) * 0.12;
+  const parallaxXDeep = (heroMouse.x - 50) * 0.24;
+  const parallaxYDeep = (heroMouse.y - 50) * 0.24;
+
   const handleHeroMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -1048,44 +1053,86 @@ export const Home = () => {
             <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(45,212,191,0.16),transparent)] pointer-events-none z-0 animate-aurora-glow" />
           )}
 
-          {/* Layer 3: Distant Mountain Range Silhouettes (visual depth parallax) */}
-          <svg className="absolute bottom-0 left-0 right-0 h-48 opacity-15 pointer-events-none z-0" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="currentColor">
+          {/* Layer 3: Distant Mountain Range Silhouettes (multi-layer parallax depth) */}
+          <svg 
+            className="absolute bottom-0 left-0 right-0 h-48 opacity-15 pointer-events-none z-0" 
+            viewBox="0 0 1440 200" 
+            preserveAspectRatio="none" 
+            fill="currentColor"
+            style={{
+              transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
+              transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
+          >
             <path d="M0,160 L120,130 L240,170 L360,110 L480,180 L600,120 L720,150 L840,90 L960,160 L1080,130 L1200,170 L1320,110 L1440,160 L1440,200 L0,200 Z" className="text-slate-800" />
           </svg>
-          <svg className="absolute bottom-0 left-0 right-0 h-36 opacity-25 pointer-events-none z-0" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="currentColor">
+          <svg 
+            className="absolute bottom-0 left-0 right-0 h-36 opacity-25 pointer-events-none z-0" 
+            viewBox="0 0 1440 200" 
+            preserveAspectRatio="none" 
+            fill="currentColor"
+            style={{
+              transform: `translate3d(${parallaxXDeep}px, ${parallaxYDeep}px, 0)`,
+              transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }}
+          >
             <path d="M0,180 L180,140 L360,170 L540,130 L720,160 L900,120 L1080,170 L1260,140 L1440,180 L1440,200 L0,200 Z" className="text-slate-900" />
           </svg>
 
-          {/* Layer 4: Moving Fog Sheets */}
-          <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent opacity-50 z-0 animate-fog-drift pointer-events-none" />
+          {/* Layer 4: Atmospheric Fog Sheets */}
+          <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent opacity-60 z-0 animate-fog-drift pointer-events-none" />
 
-          {/* Layer 5: Dynamic Particle Theme Overlay */}
+          {/* Layer 5: Dynamic Region-Specific Ambient Effect Overlays */}
           {themeMode === 'snow' && (
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              {/* Slow moving snow particles */}
               <div className="absolute w-2 h-2 bg-white rounded-full animate-snow-drift top-0 left-[12%] opacity-60" style={{ animationDelay: '0s', animationDuration: '6s' }} />
               <div className="absolute w-1.5 h-1.5 bg-white rounded-full animate-snow-drift top-0 left-[38%] opacity-80" style={{ animationDelay: '1.5s', animationDuration: '5s' }} />
-              <div className="absolute w-2 h-2 bg-white rounded-full animate-snow-drift top-0 left-[62%] opacity-70" style={{ animationDelay: '3s', animationDuration: '7s' }} />
-              <div className="absolute w-2.5 h-2.5 bg-white rounded-full animate-snow-drift top-0 left-[88%] opacity-60" style={{ animationDelay: '0.5s', animationDuration: '5.5s' }} />
+              <div className="absolute w-2.5 h-2.5 bg-white rounded-full animate-snow-drift top-0 left-[62%] opacity-70" style={{ animationDelay: '3s', animationDuration: '7s' }} />
+              <div className="absolute w-2 h-2 bg-white rounded-full animate-snow-drift top-0 left-[88%] opacity-60" style={{ animationDelay: '0.5s', animationDuration: '5.5s' }} />
+              <div className="absolute w-1.5 h-1.5 bg-white/70 rounded-full animate-snow-drift top-0 left-[25%] opacity-95" style={{ animationDelay: '2.2s', animationDuration: '6.2s' }} />
+              <div className="absolute w-2.5 h-2.5 bg-white/50 rounded-full animate-snow-drift top-0 left-[72%] opacity-40" style={{ animationDelay: '4.1s', animationDuration: '4.9s' }} />
+            </div>
+          )}
+          {themeMode === 'aurora' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              {/* Shifting neon aurora blankets */}
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 via-teal-500/5 to-transparent blur-3xl animate-aurora-glow opacity-90" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(16,185,129,0.14),transparent_60%)] animate-pulse" style={{ animationDuration: '9s' }} />
             </div>
           )}
           {themeMode === 'ocean' && (
-            <svg className="absolute bottom-0 left-0 right-0 h-10 opacity-30 pointer-events-none z-0 animate-wave-drift" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="currentColor">
-              <path d="M0,50 Q360,20 720,50 T1440,50 L1440,100 L0,100 Z" className="text-teal-500" />
-            </svg>
+            <div className="absolute inset-x-0 bottom-0 pointer-events-none z-0 overflow-hidden">
+              {/* Double wave vectors */}
+              <svg className="w-full h-12 opacity-30 animate-wave-drift text-teal-500" viewBox="0 0 1440 100" preserveAspectRatio="none" fill="currentColor">
+                <path d="M0,50 Q360,20 720,50 T1440,50 L1440,100 L0,100 Z" />
+              </svg>
+              <svg className="w-full h-8 opacity-20 animate-wave-drift text-sky-400 absolute bottom-0" style={{ animationDelay: '2s', animationDuration: '6s' }} viewBox="0 0 1440 100" preserveAspectRatio="none" fill="currentColor">
+                <path d="M0,40 Q360,60 720,40 T1440,40 L1440,100 L0,100 Z" />
+              </svg>
+            </div>
           )}
-          {themeMode === 'wind' && (
+          {themeMode === 'desert' && (
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-              <div className="absolute w-12 h-[1px] bg-teal-400/20 animate-wind-drift top-[22%] left-0" style={{ animationDelay: '0s', animationDuration: '4s' }} />
-              <div className="absolute w-16 h-[1.5px] bg-sky-400/20 animate-wind-drift top-[54%] left-0" style={{ animationDelay: '1.5s', animationDuration: '5s' }} />
-              <div className="absolute w-8 h-[1px] bg-teal-300/25 animate-wind-drift top-[78%] left-0" style={{ animationDelay: '3s', animationDuration: '3.5s' }} />
+              {/* Desert heat shimmer overlay */}
+              <div className="absolute inset-x-0 bottom-0 top-[40%] bg-gradient-to-t from-amber-500/10 via-orange-500/0 to-transparent opacity-40 animate-heat-shimmer" />
+              <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-orange-500/5 to-transparent blur-xl" />
+            </div>
+          )}
+          {themeMode === 'tropical' && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              {/* Flying birds silhouette paths */}
+              <svg className="absolute text-teal-400/25 animate-bird-drift w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '1.2s' }}>
+                <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
+              </svg>
+              <svg className="absolute text-emerald-400/20 animate-bird-drift w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '4.8s', animationDuration: '24s' }}>
+                <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
+              </svg>
             </div>
           )}
           {themeMode === 'default' && (
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-              <svg className="absolute text-teal-400/20 animate-bird-drift w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '2s' }}>
-                <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
-              </svg>
-              <svg className="absolute text-teal-400/20 animate-bird-drift w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '8s', animationDuration: '26s' }}>
+              <svg className="absolute text-teal-400/10 animate-bird-drift w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" style={{ animationDelay: '4s' }}>
                 <path d="M2 10 Q6 6 12 10 Q18 6 22 10" />
               </svg>
             </div>
