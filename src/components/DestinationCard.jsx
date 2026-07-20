@@ -126,10 +126,10 @@ export const DestinationCard = memo(({ destination }) => {
           rotateY: isHovered ? rotateY : 0,
           y: isHovered ? -12 : 0,
           boxShadow: isHovered 
-            ? '0 30px 60px rgba(0, 0, 0, 0.4), 0 0 20px rgba(45, 212, 191, 0.15)' 
+            ? '0 30px 60px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(20, 184, 166, 0.15)' 
             : '0 8px 30px rgba(0, 0, 0, 0.04)'
         }}
-        className="group relative flex flex-col h-full rounded-3xl overflow-hidden border border-slate-200/50 dark:border-white/5 bg-white dark:bg-slate-950/40 transition-all duration-300 select-none shadow-[0_8px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
+        className="group relative flex flex-col h-full rounded-[28px] overflow-hidden border border-slate-200/50 dark:border-white/5 bg-white dark:bg-slate-950/40 transition-all duration-300 select-none shadow-[0_10px_40px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
       >
         {/* Glare Overlay */}
         {isHovered && (
@@ -157,13 +157,13 @@ export const DestinationCard = memo(({ destination }) => {
 
         {/* Image Container - Larger & Responsive */}
         <div 
-          className="relative aspect-[16/10.5] overflow-hidden w-full"
+          className="relative aspect-[16/10] overflow-hidden w-full"
           style={{ transform: 'translateZ(20px)' }}
         >
           <img
             src={customPhotos[id] || image}
             alt={name}
-            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[1200ms] cubic-bezier(0.16, 1, 0.3, 1)"
             loading="lazy"
           />
           
@@ -171,12 +171,17 @@ export const DestinationCard = memo(({ destination }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent opacity-95" />
 
           {/* Region Tag & Modern Badges */}
-          <div className="absolute top-4 left-4 flex gap-2 flex-wrap max-w-[80%] items-center z-20">
-            <span className="px-3 py-1 text-[9px] font-bold font-mono tracking-wide uppercase bg-slate-950/80 border border-teal-500/20 text-teal-400 rounded-full backdrop-blur-md">
+          <div className="absolute top-4 left-4 flex gap-1.5 flex-wrap max-w-[80%] items-center z-20">
+            <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono tracking-wide uppercase bg-slate-950/80 border border-teal-500/20 text-teal-400 rounded-full backdrop-blur-md">
               {region}
             </span>
-            <span className="px-3 py-1 text-[8px] font-bold font-mono uppercase bg-slate-950/80 border border-emerald-500/20 text-emerald-400 backdrop-blur-md rounded-full flex items-center gap-1">
-              ✓ Verified Destination
+            {rating >= 4.7 && (
+              <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono uppercase bg-indigo-950/90 border border-indigo-500/30 text-indigo-300 backdrop-blur-md rounded-full flex items-center gap-1 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                <Sparkles size={9} className="text-indigo-400 animate-pulse" /> AI Recommended
+              </span>
+            )}
+            <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono uppercase bg-slate-950/80 border border-emerald-500/20 text-emerald-400 backdrop-blur-md rounded-full flex items-center gap-1">
+              ✓ Verified
             </span>
           </div>
 
@@ -193,7 +198,7 @@ export const DestinationCard = memo(({ destination }) => {
                   : 'bg-slate-950/60 border-white/10 text-slate-300 hover:text-white'
               }`}
             >
-              <Bookmark size={15} fill={isBookmarked ? 'currentColor' : 'none'} className="transition-colors duration-200" />
+              <Bookmark size={14} fill={isBookmarked ? 'currentColor' : 'none'} className="transition-colors duration-200" />
             </motion.button>
 
             {/* Favorite Button */}
@@ -211,26 +216,26 @@ export const DestinationCard = memo(({ destination }) => {
                   : 'bg-slate-950/60 border-white/10 text-slate-300 hover:text-rose-400'
               }`}
             >
-              <Heart size={15} fill={isWishlisted ? 'currentColor' : 'none'} className="transition-colors duration-200" />
+              <Heart size={14} fill={isWishlisted ? 'currentColor' : 'none'} className="transition-colors duration-200" />
             </motion.button>
           </div>
 
           {/* Premium Hover Actions Overlay (Buttons Appear) */}
-          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2.5 z-10">
+          <div className="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2.5 z-10">
             <motion.button
               onClick={handleQuickViewClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-xl bg-teal-500 text-slate-950 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-teal-500 text-slate-950 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer"
             >
               <Eye size={12} />
-              Quick View
+              Quick Preview
             </motion.button>
             <motion.button
               onClick={handleCompareToggle}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer ${
+              className={`px-4 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer ${
                 isCompared
                   ? 'bg-emerald-500 text-slate-950'
                   : 'bg-slate-900 border border-white/10 text-white hover:bg-slate-800'
@@ -247,7 +252,7 @@ export const DestinationCard = memo(({ destination }) => {
               <span className="text-xs font-semibold drop-shadow-md">{country}</span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[8.5px] text-teal-305 uppercase tracking-widest font-bold font-mono">Starts at</span>
+              <span className="text-[8.5px] text-teal-300 uppercase tracking-widest font-bold font-mono">Starts at</span>
               <span className="text-lg font-black text-white leading-none">₹{price.toLocaleString('en-IN')}</span>
             </div>
           </div>
