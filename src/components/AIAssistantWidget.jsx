@@ -1,3 +1,5 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, MessageSquare, Send, ShieldAlert, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { mockDestinations } from '../data/mockData';
