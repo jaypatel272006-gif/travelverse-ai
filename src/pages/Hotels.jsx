@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Star, MapPin, X, Building, DollarSign, Calendar, Heart, ShieldAlert, Sparkles, CheckCircle, Info } from 'lucide-react';
 import { HotelCard, RoomSelectionList } from '../components/HotelCard';
-import { CardGridSkeleton } from '../components/SkeletonLoader';
+import { HotelsSkeleton } from '../components/SkeletonLoader';
 import { useApp } from '../context/AppContext';
 
 // 1. Real-world verified hotels database
@@ -557,7 +557,7 @@ export const Hotels = () => {
         {/* Results */}
         <div className="flex-1 flex flex-col gap-6 w-full">
           {loading ? (
-            <CardGridSkeleton count={2} />
+            <HotelsSkeleton />
           ) : filteredHotels.length > 0 ? (
             filteredHotels.map((hotel) => (
               <div key={hotel.id} className="flex flex-col gap-2">
