@@ -872,4 +872,21 @@ textarea:focus-visible {
 
 .pause-all-animations * {
   animation-play-state: paused !important;
+}
+
+/* Desert Heat Shimmer Keyframe */
+@keyframes heat-shimmer {
+  0%, 100% {
+    transform: scaleY(1) skewX(0deg);
+    filter: blur(2px);
+  }
+  50% {
+    transform: scaleY(1.03) skewX(1.5deg);
+    filter: blur(3px);
+  }
+}
+
+.animate-heat-shimmer {
+  animation: heat-shimmer 4s ease-in-out infinite;
+  transform-origin: bottom;
 }
