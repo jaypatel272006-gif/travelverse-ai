@@ -2888,9 +2888,14 @@ export const Home = () => {
       </section>
 
       {/* 📊 BUDGET ESTIMATION WIDGET */}
-      <section className="p-8 rounded-3xl bg-slate-950/40 backdrop-blur-md border border-cyan-500/20 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.15)]">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-        <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" />
+      <section className="p-8 rounded-3xl bg-slate-950/40 backdrop-blur-xl border border-cyan-500/30 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.22),0_0_20px_rgba(20,184,166,0.1)]">
+        <div className="absolute right-0 top-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Holographic corners details */}
+        <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-cyan-400/40 pointer-events-none" />
+        <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-cyan-400/40 pointer-events-none" />
+        <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-cyan-400/40 pointer-events-none" />
+        <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-cyan-400/40 pointer-events-none" />
 
         <div className="flex-1 text-left relative z-10">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold mb-4 border border-teal-500/20">

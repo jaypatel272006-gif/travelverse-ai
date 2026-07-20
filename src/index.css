@@ -889,4 +889,18 @@ textarea:focus-visible {
 .animate-heat-shimmer {
   animation: heat-shimmer 4s ease-in-out infinite;
   transform-origin: bottom;
+}
+
+/* Road Travel Keyframes */
+@keyframes road-travel {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-32px, 0, 0);
+  }
+}
+
+.animate-road-travel {
+  animation: road-travel 0.5s linear infinite;
 }
