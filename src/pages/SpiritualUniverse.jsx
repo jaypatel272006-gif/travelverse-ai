@@ -721,17 +721,17 @@ export const SpiritualUniverse = () => {
                 </div>
               </div>
 
-              {/* Grid of Spiritual Destinations */}
               {filteredDirDestinations.length === 0 ? (
-                <div className="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800/60 p-12 rounded-3xl flex flex-col items-center justify-center text-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-950 text-slate-400 flex items-center justify-center mb-2">
-                    <Search size={18} />
-                  </div>
-                  <span className="text-xs font-bold text-slate-750 dark:text-slate-300">No Spiritual Sanctuaries Found</span>
-                  <p className="text-[10px] text-slate-455 max-w-xs">
-                    We couldn't find any spiritual destinations matching your search parameters. Try clearing your filters.
-                  </p>
-                </div>
+                <EmptyState 
+                  title="Sanctuary Search Failure" 
+                  message="No sacred coordinates fit your specified criteria. Try clearing query fields to scan a wider range." 
+                  onRetry={() => {
+                    setDirSearchQuery('');
+                    setDirReligionFilter('All');
+                    setDirStateFilter('All');
+                  }}
+                  retryLabel="Reset Search & Filters"
+                />
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredDirDestinations.map(dest => (

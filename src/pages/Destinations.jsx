@@ -5,6 +5,7 @@ import { Search, MapPin, SlidersHorizontal, ArrowUpDown, X, Frown, Sparkles } fr
 import { DestinationCard } from '../components/DestinationCard';
 import { mockDestinations } from '../data/mockData';
 import { CardGridSkeleton } from '../components/SkeletonLoader';
+import { EmptyState } from '../components/EmptyState';
 
 export const Destinations = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -229,35 +230,19 @@ export const Destinations = () => {
               </AnimatePresence>
             </motion.div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="py-16 px-4 rounded-3xl bg-white/40 dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col items-center justify-center text-center gap-4 relative grid-cyber"
-            >
-              <div className="w-16 h-16 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400">
-                <Sparkles size={28} className="animate-pulse" />
-              </div>
-              <div>
-                <h3 className="font-display font-black text-lg text-slate-900 dark:text-white uppercase tracking-wide">Dynamic Sector Identified</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-xs leading-relaxed font-semibold">
-                  We didn't find "{searchQuery}" in our featured database, but you can query the satellite network database to compile a custom dossier.
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <Link
-                  to={`/destination/${encodeURIComponent(searchQuery)}`}
-                  className="px-6 py-3 bg-teal-500 hover:bg-teal-600 text-slate-950 font-mono font-bold text-xs rounded-xl shadow-md cursor-pointer"
-                >
-                  COMPILE "{searchQuery.toUpperCase()}" PLAN
-                </Link>
-                <button
-                  onClick={clearFilters}
-                  className="px-5 py-3 border border-slate-250 dark:border-teal-500/20 text-slate-655 dark:text-teal-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 font-mono font-bold text-xs rounded-xl cursor-pointer"
-                >
-                  RESET FILTERS
-                </button>
-              </div>
-            </motion.div>
+            <EmptyState 
+              icon={Sparkles}
+              title={`Dynamic Sector Identified`}
+              message={`We didn't find "${searchQuery}" in our featured database, but you can query the satellite network database to compile a custom dossier.`}
+              onRetry={clearFilters}
+              retryLabel="Reset Filters"
+              quickActions={
+                searchQuery ? [
+                  { to: `/destination/${encodeURIComponent(searchQuery)}`, label: `Compile "${searchQuery.toUpperCase()}" Plan` }
+                ] : []
+              }
+            />
+          )}
           )}
         </div>
       </div>
