@@ -2,6 +2,7 @@ import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MapPin, Heart, Wifi, Shield, Calendar, BedDouble, Users, Sparkles, ChevronDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getResponsiveSrcSet } from '../utils/responsiveImages';
 
 export const HotelCard = memo(({ hotel, onBook }) => {
   const { isInWishlist, toggleWishlist } = useApp();
@@ -43,6 +44,8 @@ export const HotelCard = memo(({ hotel, onBook }) => {
       <div className="relative w-full md:w-80 h-56 md:h-auto shrink-0 overflow-hidden">
         <img
           src={hotel.image}
+          srcSet={getResponsiveSrcSet(hotel.image)}
+          sizes="(max-width: 640px) 100vw, 320px"
           alt={hotel.name}
           className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
           loading="lazy"
