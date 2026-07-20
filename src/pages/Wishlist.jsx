@@ -8,6 +8,7 @@ import { DestinationCard } from '../components/DestinationCard';
 import { FlightCard } from '../components/FlightCard';
 import { HotelCard } from '../components/HotelCard';
 import { TourCard } from '../components/TourCard';
+import { EmptyState } from '../components/EmptyState';
 
 export const Wishlist = () => {
   const { wishlist, toggleWishlist } = useApp();
@@ -98,25 +99,17 @@ export const Wishlist = () => {
             ))}
           </div>
         ) : (
-          /* Empty placeholder */
-          <div className="py-16 px-6 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/40 shadow-sm flex flex-col items-center justify-center text-center gap-4 max-w-md mx-auto mt-4">
-            <div className="w-14 h-14 rounded-full bg-rose-50 dark:bg-rose-950/40 flex items-center justify-center text-rose-500 dark:text-rose-400">
-              <Heart size={24} className="animate-pulse" />
-            </div>
-            <div>
-              <h3 className="font-bold text-base text-slate-850 dark:text-slate-100">Your wishlist is empty</h3>
-              <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed font-semibold">
-                Explore destinations, flights, lodging, or packaged tours and tap the heart icon to save your favorites here.
-              </p>
-            </div>
-            <Link
-              to={activeTab === 'destinations' ? '/destinations' : activeTab === 'flights' ? '/flights' : activeTab === 'hotels' ? '/hotels' : '/packages'}
-              className="px-5 py-2.5 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-1 mt-2"
-            >
-              Browse {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-              <ArrowRight size={13} />
-            </Link>
-          </div>
+          <EmptyState 
+            icon={Heart} 
+            title={`Your Wishlist Ledger is Empty`} 
+            message={`Explore destinations, flights, lodging, or packaged tours and tap the heart icon to save your favorites here.`} 
+            quickActions={[
+              { 
+                to: activeTab === 'destinations' ? '/destinations' : activeTab === 'flights' ? '/flights' : activeTab === 'hotels' ? '/hotels' : '/packages', 
+                label: `Browse ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}` 
+              }
+            ]}
+          />
         )}
       </div>
     </div>

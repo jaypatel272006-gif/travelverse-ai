@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Star, MapPin, X, Building, DollarSign, Calendar, Heart, ShieldAlert, Sparkles, CheckCircle, Info } from 'lucide-react';
 import { HotelCard, RoomSelectionList } from '../components/HotelCard';
 import { HotelsSkeleton } from '../components/SkeletonLoader';
+import { EmptyState } from '../components/EmptyState';
 import { useApp } from '../context/AppContext';
 
 // 1. Real-world verified hotels database
@@ -566,9 +567,15 @@ export const Hotels = () => {
               </div>
             ))
           ) : (
-            <div className="py-16 text-center border border-dashed border-slate-200 dark:border-white/10 rounded-2xl text-slate-500 font-mono text-xs">
-              No verified hotel dossiers matching current criteria tags.
-            </div>
+            <EmptyState 
+              title="No Lodging Plotted" 
+              message="We couldn't locate any accommodation coordinates matching your current filter set." 
+              onRetry={() => {
+                setPriceFilter(350000);
+                setStarsFilter(0);
+              }}
+              retryLabel="Recalibrate Budget & Star Filters"
+            />
           )}
         </div>
       </div>
