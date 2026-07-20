@@ -1151,7 +1151,7 @@ export const Home = () => {
 
           {/* 3D Holographic Scrolling Map Globe (Interactive Drag-to-Spin) */}
           <div 
-            className="absolute top-16 right-6 md:right-12 w-64 h-64 md:w-80 md:h-80 rounded-full border border-teal-500/20 z-0 overflow-hidden opacity-30 md:opacity-70 cursor-grab active:cursor-grabbing pointer-events-auto animate-globe-pulse shadow-[inset_0_0_40px_rgba(20,184,166,0.2)]"
+            className="absolute top-16 right-6 md:right-12 w-64 h-64 md:w-80 md:h-80 rounded-full border border-teal-500/20 z-30 overflow-hidden opacity-30 md:opacity-70 cursor-grab active:cursor-grabbing pointer-events-auto animate-globe-pulse shadow-[inset_0_0_40px_rgba(20,184,166,0.2)]"
           >
             <div 
               onMouseDown={handleGlobeMouseDown}
@@ -1203,7 +1203,7 @@ export const Home = () => {
           </div>
 
           {/* Floating Interactive Location Pins & Landmarks */}
-          <div className="absolute left-[15%] top-[60%] z-10 pointer-events-auto group hidden md:block">
+          <div className="absolute left-[15%] top-[60%] z-30 pointer-events-auto group hidden md:block">
             <div className="relative flex items-center justify-center">
               <span className="absolute inline-flex h-6 w-6 rounded-full bg-teal-400/30 animate-ping" />
               <MapPin size={14} className="text-teal-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
@@ -1213,7 +1213,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="absolute right-[28%] top-[45%] z-10 pointer-events-auto group hidden md:block">
+          <div className="absolute right-[28%] top-[45%] z-30 pointer-events-auto group hidden md:block">
             <div className="relative flex items-center justify-center">
               <span className="absolute inline-flex h-6 w-6 rounded-full bg-sky-400/30 animate-ping" style={{ animationDelay: '1.2s' }} />
               <MapPin size={14} className="text-sky-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
@@ -1223,7 +1223,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="absolute left-[45%] top-[22%] z-10 pointer-events-auto group hidden md:block">
+          <div className="absolute left-[45%] top-[22%] z-30 pointer-events-auto group hidden md:block">
             <div className="relative flex items-center justify-center">
               <span className="absolute inline-flex h-6 w-6 rounded-full bg-indigo-400/30 animate-ping" style={{ animationDelay: '2.4s' }} />
               <MapPin size={14} className="text-indigo-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
