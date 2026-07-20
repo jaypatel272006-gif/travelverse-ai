@@ -228,6 +228,51 @@ export const Home = () => {
   const [searchFocusIndex, setSearchFocusIndex] = useState(-1);
   const [heroMouse, setHeroMouse] = useState({ x: 50, y: 50 });
 
+  const [isTabActive, setIsTabActive] = useState(true);
+  const [globePos, setGlobePos] = useState(0);
+  const [isDraggingGlobe, setIsDraggingGlobe] = useState(false);
+  const dragStartX = useRef(0);
+  const globePosStart = useRef(0);
+  const autoRotateRef = useRef(null);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabActive(!document.hidden);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isDraggingGlobe || !isTabActive) return;
+    const rotate = () => {
+      setGlobePos(prev => (prev - 0.25) % 400);
+      autoRotateRef.current = requestAnimationFrame(rotate);
+    };
+    autoRotateRef.current = requestAnimationFrame(rotate);
+    return () => {
+      if (autoRotateRef.current) cancelAnimationFrame(autoRotateRef.current);
+    };
+  }, [isDraggingGlobe, isTabActive]);
+
+  const handleGlobeMouseDown = (e) => {
+    setIsDraggingGlobe(true);
+    dragStartX.current = e.clientX;
+    globePosStart.current = globePos;
+  };
+
+  const handleGlobeMouseMove = (e) => {
+    if (!isDraggingGlobe) return;
+    const deltaX = e.clientX - dragStartX.current;
+    setGlobePos(globePosStart.current + deltaX * 0.4);
+  };
+
+  const handleGlobeMouseUp = () => {
+    setIsDraggingGlobe(false);
+  };
+
   const handleHeroMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
