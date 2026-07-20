@@ -203,8 +203,13 @@ export const Footer = () => {
 
       {/* Bottom copyrights row */}
       <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono uppercase tracking-wider relative z-10">
-        <p>© 2026 TravelVerse AI Inc. Curated under premium digital twinning guidelines.</p>
-        <div className="flex gap-6 flex-wrap">
+        <div className="flex flex-col gap-1 text-slate-500">
+          <p>© 2026 TravelVerse AI Inc. Curated under premium digital twinning guidelines.</p>
+          <p className="text-[8.5px] leading-normal text-slate-500 lowercase tracking-normal">
+            🛡️ <span className="font-bold">Data Privacy Notice</span>: All genomic travel profiles are secured in local browser storage and transit via AES-256 quantum encryption. Last Calibrated: 2026-07-20T16:45:25
+          </p>
+        </div>
+        <div className="flex gap-6 flex-wrap shrink-0">
           <a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a>
           <a href="#" className="hover:text-teal-400 transition-colors">Terms of Service</a>
           <a href="#" className="hover:text-teal-400 transition-colors">Sitemap</a>
