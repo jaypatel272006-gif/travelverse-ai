@@ -296,10 +296,11 @@ export const Home = () => {
 
   const getDynamicTheme = () => {
     const q = searchQuery.toLowerCase();
-    if (q.includes('goa') || q.includes('beach') || q.includes('ocean') || q.includes('gokarna') || q.includes('sea')) return 'ocean';
-    if (q.includes('leh') || q.includes('snow') || q.includes('manali') || q.includes('shimla') || q.includes('mountain') || q.includes('ice')) return 'snow';
+    if (q.includes('goa') || q.includes('beach') || q.includes('ocean') || q.includes('gokarna') || q.includes('sea') || q.includes('maldives')) return 'ocean';
+    if (q.includes('leh') || q.includes('snow') || q.includes('manali') || q.includes('shimla') || q.includes('mountain') || q.includes('ice') || q.includes('switzerland') || q.includes('swiss')) return 'snow';
     if (q.includes('aurora') || q.includes('iceland') || q.includes('norway') || q.includes('northern')) return 'aurora';
-    if (q.includes('wind') || q.includes('desert') || q.includes('rajasthan') || q.includes('sand') || q.includes('dust')) return 'wind';
+    if (q.includes('dubai') || q.includes('desert') || q.includes('heat') || q.includes('shimmer') || q.includes('rajasthan') || q.includes('sand') || q.includes('dust')) return 'desert';
+    if (q.includes('tropical') || q.includes('kerala') || q.includes('bali') || q.includes('island') || q.includes('forest') || q.includes('amazon')) return 'tropical';
     return 'default';
   };
   const themeMode = getDynamicTheme();
