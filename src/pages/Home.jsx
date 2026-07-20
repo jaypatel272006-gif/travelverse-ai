@@ -1036,7 +1036,7 @@ export const Home = () => {
       ) : (
         <section 
           onMouseMove={handleHeroMouseMove}
-          className="relative rounded-3xl overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[760px] flex flex-col justify-between transition-all duration-300"
+          className={`relative rounded-3xl overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[760px] flex flex-col justify-between transition-all duration-300 ${isTabActive ? '' : 'pause-all-animations'}`}
         >
           {/* Base Layer: Sky gradient sheet */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#090d16] via-[#05080e] to-[#090d16] z-0 pointer-events-none" />
@@ -1101,14 +1101,21 @@ export const Home = () => {
           {/* Neon HUD grid backdrop */}
           <div className="absolute inset-0 bg-cyber-grid pointer-events-none opacity-20 z-0" />
 
-          {/* 3D Holographic Scrolling Map Globe */}
-          <div className="absolute top-16 right-6 md:right-12 w-64 h-64 md:w-80 md:h-80 rounded-full border border-teal-500/20 z-0 overflow-hidden opacity-30 md:opacity-60 pointer-events-none animate-globe-pulse shadow-[inset_0_0_40px_rgba(20,184,166,0.2)]">
+          {/* 3D Holographic Scrolling Map Globe (Interactive Drag-to-Spin) */}
+          <div 
+            className="absolute top-16 right-6 md:right-12 w-64 h-64 md:w-80 md:h-80 rounded-full border border-teal-500/20 z-0 overflow-hidden opacity-30 md:opacity-70 cursor-grab active:cursor-grabbing pointer-events-auto animate-globe-pulse shadow-[inset_0_0_40px_rgba(20,184,166,0.2)]"
+          >
             <div 
-              className="w-full h-full animate-globe-scroll"
+              onMouseDown={handleGlobeMouseDown}
+              onMouseMove={handleGlobeMouseMove}
+              onMouseUp={handleGlobeMouseUp}
+              onMouseLeave={handleGlobeMouseUp}
+              className={`w-full h-full select-none ${isDraggingGlobe ? '' : 'animate-globe-scroll'}`}
               style={{
                 backgroundImage: "url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=800&q=80')",
                 backgroundSize: 'cover',
-                backgroundRepeat: 'repeat-x'
+                backgroundRepeat: 'repeat-x',
+                backgroundPositionX: `${globePos}px`
               }}
             />
             {/* Globe reflection mask overlay */}
@@ -1124,11 +1131,19 @@ export const Home = () => {
             <path d="M 180 480 Q 480 280 780 420" fill="none" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="6,6" className="animate-route-dash" />
             <circle cx="180" cy="480" r="3" fill="#38bdf8" className="animate-pulse" />
             <circle cx="780" cy="420" r="3" fill="#38bdf8" className="animate-pulse" />
+
+            {/* Extra Purple Cosmic Path */}
+            <path d="M 640 120 Q 400 340 120 220" fill="none" stroke="#a78bfa" strokeWidth="1.5" strokeDasharray="6,6" className="animate-route-dash" />
+            <circle cx="640" cy="120" r="3" fill="#a78bfa" className="animate-pulse" />
+            <circle cx="120" cy="220" r="3" fill="#a78bfa" className="animate-pulse" />
           </svg>
 
-          {/* Small Flying Airplane Sprite */}
+          {/* Animated Airplanes (Two Paths) */}
           <div className="absolute left-1/4 top-1/4 text-teal-400/25 pointer-events-none z-0 animate-airplane-fly w-full max-w-[200px]">
             <PlaneTakeoff className="rotate-[35deg]" size={16} />
+          </div>
+          <div className="absolute right-1/4 top-1/3 text-sky-400/20 pointer-events-none z-0 animate-airplane-fly-reverse w-full max-w-[200px]" style={{ animationDelay: '5s' }}>
+            <PlaneTakeoff className="rotate-[-145deg]" size={14} />
           </div>
 
           {/* Floating Famous Landmarks Outlines */}
@@ -1139,14 +1154,51 @@ export const Home = () => {
             <Globe size={48} className="stroke-[1]" />
           </div>
 
+          {/* Floating Interactive Location Pins & Landmarks */}
+          <div className="absolute left-[15%] top-[60%] z-10 pointer-events-auto group hidden md:block">
+            <div className="relative flex items-center justify-center">
+              <span className="absolute inline-flex h-6 w-6 rounded-full bg-teal-400/30 animate-ping" />
+              <MapPin size={14} className="text-teal-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
+              <span className="absolute left-6 px-2 py-1 rounded bg-slate-900/90 border border-teal-500/30 text-[8px] font-mono text-teal-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap uppercase tracking-wider">
+                Varanasi Portal
+              </span>
+            </div>
+          </div>
+
+          <div className="absolute right-[28%] top-[45%] z-10 pointer-events-auto group hidden md:block">
+            <div className="relative flex items-center justify-center">
+              <span className="absolute inline-flex h-6 w-6 rounded-full bg-sky-400/30 animate-ping" style={{ animationDelay: '1.2s' }} />
+              <MapPin size={14} className="text-sky-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
+              <span className="absolute left-6 px-2 py-1 rounded bg-slate-900/90 border border-sky-500/30 text-[8px] font-mono text-sky-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap uppercase tracking-wider">
+                Tokyo Grid
+              </span>
+            </div>
+          </div>
+
+          <div className="absolute left-[45%] top-[22%] z-10 pointer-events-auto group hidden md:block">
+            <div className="relative flex items-center justify-center">
+              <span className="absolute inline-flex h-6 w-6 rounded-full bg-indigo-400/30 animate-ping" style={{ animationDelay: '2.4s' }} />
+              <MapPin size={14} className="text-indigo-400 relative z-10 hover:scale-125 transition-transform cursor-pointer" />
+              <span className="absolute left-6 px-2 py-1 rounded bg-slate-900/90 border border-indigo-500/30 text-[8px] font-mono text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap uppercase tracking-wider">
+                Paris Station
+              </span>
+            </div>
+          </div>
+
           {/* Smooth Floating Cloud Layers */}
           <div className="absolute top-1/4 -left-12 w-64 h-20 bg-teal-500/5 blur-2xl rounded-full animate-cloud-slow pointer-events-none z-0" />
           <div className="absolute top-1/2 -right-12 w-80 h-28 bg-sky-500/5 blur-2xl rounded-full animate-cloud-fast pointer-events-none z-0" />
+
+          {/* Smooth Ambient Lighting Spotlights */}
+          <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(20,184,166,0.06)_0%,transparent_70%)] pointer-events-none z-0 mix-blend-screen" />
+          <div className="absolute bottom-0 left-[20%] w-[500px] h-[300px] bg-[radial-gradient(circle,rgba(99,102,241,0.05)_0%,transparent_75%)] pointer-events-none z-0 mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
 
           {/* Subtle Star Particle Points */}
           <div className="absolute top-12 left-1/3 w-1 h-1 rounded-full bg-white animate-star-glow z-0" />
           <div className="absolute top-24 left-2/3 w-1.5 h-1.5 rounded-full bg-teal-300 animate-star-glow z-0" style={{ animationDelay: '1s' }} />
           <div className="absolute top-48 left-1/5 w-1 h-1 rounded-full bg-sky-300 animate-star-glow z-0" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-36 right-1/4 w-1.5 h-1.5 rounded-full bg-indigo-300 animate-star-glow z-0" style={{ animationDelay: '1.5s' }} />
+          <div className="absolute bottom-48 left-1/2 w-1 h-1 rounded-full bg-white animate-star-glow z-0" style={{ animationDelay: '0.5s' }} />
 
         {/* Global HUD Stats Bar */}
         <div className="w-full flex justify-between items-center pb-6 border-b border-white/10 relative z-10 font-mono text-[10px] flex-wrap gap-4">
