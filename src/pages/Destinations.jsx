@@ -270,9 +270,9 @@ export const Destinations = () => {
                 </h3>
                 <button
                   onClick={() => setShowFiltersMobile(false)}
-                  className="p-1 rounded-lg border border-slate-100 dark:border-slate-800"
+                  className="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-center min-w-[40px] min-h-[40px]"
                 >
-                  <X size={16} />
+                  <X size={18} />
                 </button>
               </div>
 

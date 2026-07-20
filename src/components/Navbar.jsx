@@ -398,10 +398,10 @@ export const Navbar = () => {
           {/* Hamburger Menu (Mobile/Tablet) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="xl:hidden p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
+            className="xl:hidden p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-880/60 text-slate-600 dark:text-slate-300 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95] min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? <X size={15} className="text-teal-500" /> : <Menu size={15} />}
+            {isOpen ? <X size={20} className="text-teal-500" /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -430,9 +430,9 @@ export const Navbar = () => {
                 </span>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-lg border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-850"
+                  className="p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-850 flex items-center justify-center min-w-[44px] min-h-[44px]"
                 >
-                  <X size={16} />
+                  <X size={20} />
                 </button>
               </div>
 
