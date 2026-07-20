@@ -1347,7 +1347,7 @@ export const Home = () => {
                   <Search className="text-teal-400 shrink-0" size={18} />
                   <input
                     type="text"
-                    placeholder="Search coordinates... (Destination, Country, State, City)"
+                    placeholder={isVoiceActive ? "Listening for coordinates... Speak now!" : "Search coordinates... (Destination, Country, State, City)"}
                     value={searchQuery}
                     onChange={(e) => { setSearchQuery(e.target.value); setSearchFocusIndex(-1); }}
                     onFocus={() => setIsSearchFocused(true)}
@@ -1489,83 +1489,95 @@ export const Home = () => {
                 </select>
               </div>
 
-              {/* Best Season Selector */}
+              {/* Weather Preference Selector */}
               <div className="flex flex-col gap-1.5">
-                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">Preferred Season</span>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Weather Preference</span>
                 <select
                   value={travelSeason}
                   onChange={(e) => setTravelSeason(e.target.value)}
                   className="bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:border-teal-500 focus:outline-none"
                 >
-                  <option value="All">Any Season</option>
-                  <option value="Winter">Winter (Nov-Feb)</option>
-                  <option value="Summer">Summer (Mar-Jun)</option>
-                  <option value="Monsoon">Monsoon (Jul-Sep)</option>
+                  <option value="All">Any Weather</option>
+                  <option value="Winter">Snowy / Cold</option>
+                  <option value="Summer">Warm / Sunny</option>
+                  <option value="Monsoon">Pleasant / Rain</option>
                 </select>
               </div>
             </div>
 
             {/* Suggestions & Recent Searches Row */}
-            <div className="flex flex-wrap gap-x-8 gap-y-4 pt-4 border-t border-white/5 text-[10px] font-mono">
+            <div className="flex flex-col md:flex-row justify-between gap-4 pt-4 border-t border-white/5 text-[10px] font-mono">
               {/* AI suggestions */}
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 uppercase font-black">AI Suggestions:</span>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery('Spiti Peaks');
-                      showToast('Loaded AI suggestion: Spiti Peaks', 'info');
-                    }}
-                    className="text-teal-400 hover:text-white transition-colors"
-                  >
-                    💡 Spiti Peaks
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSearchQuery('Goa Coast');
-                      showToast('Loaded AI suggestion: Goa Coast', 'info');
-                    }}
-                    className="text-teal-400 hover:text-white transition-colors"
-                  >
-                    💡 Goa Coast
-                  </button>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-slate-500 uppercase font-black">AI suggestions:</span>
+                <div className="flex gap-2 flex-wrap">
+                  {[
+                    { term: 'Spiti Peaks', desc: '🏔️ Snow Peaks' },
+                    { term: 'Goa Coast', desc: '🏖️ Sun Beach' }
+                  ].map((item) => (
+                    <button
+                      key={item.term}
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery(item.term);
+                        showToast(`Calibrating matrix to ${item.term}`, 'info');
+                      }}
+                      className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 hover:text-white hover:bg-indigo-500/20 transition-all cursor-pointer"
+                    >
+                      {item.desc}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* Recent searches */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-slate-500 uppercase font-black">Recent Logs:</span>
-                <div className="flex gap-2 text-slate-400">
+                <div className="flex gap-2">
                   {['Agra', 'Delhi'].map(term => (
                     <button
                       key={term}
                       type="button"
-                      onClick={() => setSearchQuery(term)}
-                      className="hover:text-white transition-colors"
+                      onClick={() => {
+                        setSearchQuery(term);
+                        showToast(`Loaded recent search for ${term}`, 'info');
+                      }}
+                      className="px-2.5 py-1 rounded-full bg-slate-900 border border-white/5 text-slate-450 hover:text-white hover:border-teal-500/30 transition-all cursor-pointer"
                     >
-                      {term}
+                      ⏳ {term}
                     </button>
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Trending */}
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 uppercase font-black">Trending:</span>
-                <div className="flex gap-2 text-sky-400">
-                  {['Bali', 'Santorini', 'Kyoto'].map(term => (
-                    <button
-                      key={term}
-                      type="button"
-                      onClick={() => setSearchQuery(term)}
-                      className="hover:text-white transition-colors"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
+            {/* Trending Destinations with Thumbnails */}
+            <div className="w-full flex flex-col gap-3 pt-4 border-t border-white/5">
+              <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono text-slate-400">🔥 Trending Coordinates</span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                {[
+                  { name: 'Varanasi', sub: 'Spiritual Core', image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=120&q=80', query: 'Varanasi' },
+                  { name: 'Leh Ladakh', sub: 'Glacial Pass', image: 'https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?auto=format&fit=crop&w=120&q=80', query: 'Leh' },
+                  { name: 'Jaipur', sub: 'Royal Grid', image: 'https://images.unsplash.com/photo-1477587458883-471a5ed94245?auto=format&fit=crop&w=120&q=80', query: 'Jaipur' },
+                  { name: 'Goa Coast', sub: 'Ocean Front', image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80', query: 'Goa' },
+                  { name: 'Agra', sub: 'Taj Sector', image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=120&q=80', query: 'Agra' }
+                ].map((dest) => (
+                  <button
+                    key={dest.name}
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery(dest.query);
+                      showToast(`Calibrating destination to ${dest.name}`, 'success');
+                    }}
+                    className="flex items-center gap-2.5 p-2 rounded-2xl bg-slate-900/60 border border-white/5 hover:border-teal-500/30 text-left transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                  >
+                    <img src={dest.image} alt={dest.name} className="w-8 h-8 rounded-lg object-cover border border-white/10" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] font-bold text-white leading-none truncate">{dest.name}</p>
+                      <p className="text-[8px] text-slate-500 font-mono truncate mt-0.5">{dest.sub}</p>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
 
