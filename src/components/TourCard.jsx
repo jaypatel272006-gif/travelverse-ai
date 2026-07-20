@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Star, CheckCircle, ArrowRight, Heart, Percent } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getResponsiveSrcSet } from '../utils/responsiveImages';
 
 export const TourCard = memo(({ tour }) => {
   const { isInWishlist, toggleWishlist } = useApp();
@@ -25,6 +26,8 @@ export const TourCard = memo(({ tour }) => {
       <div className="relative h-52 overflow-hidden w-full shrink-0">
         <img
           src={tour.image}
+          srcSet={getResponsiveSrcSet(tour.image)}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           alt={tour.name}
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
