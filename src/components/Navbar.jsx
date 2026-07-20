@@ -160,18 +160,18 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-2.5' : 'py-4'}`}>
-      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 backdrop-blur-lg border ${
+    <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-3' : 'py-5'}`}>
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 backdrop-blur-md border ${
         isScrolled 
-          ? 'bg-white/75 dark:bg-slate-950/75 border-slate-200/50 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.5)] px-6 py-2.5' 
-          : 'bg-white/90 dark:bg-slate-950/90 border-slate-200/30 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.3)] px-6 py-3.5'
+          ? 'bg-white/70 dark:bg-slate-950/70 border-slate-200/40 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.15),0_0_20px_rgba(20,184,166,0.05)] px-6 py-2.5' 
+          : 'bg-white/80 dark:bg-slate-950/80 border-slate-200/20 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] px-6 py-3.5'
       } flex items-center justify-between`}>
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 select-none group shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
             <Sparkles size={18} className="animate-pulse" />
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 align-middle">
             <span className="font-display font-extrabold text-xl tracking-tight text-slate-800 dark:text-slate-100 bg-clip-text">
               Travel<span className="text-teal-600 dark:text-teal-400">Verse</span>
             </span>
@@ -188,9 +188,9 @@ export const Navbar = () => {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none ${
+                `flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.03] active:scale-[0.97] ${
                   isActive
-                    ? 'bg-gradient-to-r from-teal-500/10 to-sky-500/10 text-teal-655 dark:text-teal-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] border border-teal-500/15 font-bold'
+                    ? 'bg-gradient-to-r from-teal-500/10 to-sky-500/10 text-teal-600 dark:text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.05)] border border-teal-500/20 font-bold'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 border border-transparent'
                 }`
               }
@@ -389,7 +389,7 @@ export const Navbar = () => {
           ) : (
             <Link
               to="/login"
-              className="hidden sm:inline-flex px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-teal-600 dark:hover:bg-teal-400 dark:hover:text-slate-900 font-semibold text-xs tracking-wide transition-colors"
+              className="hidden sm:inline-flex px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 font-bold text-xs tracking-wider uppercase hover:shadow-[0_0_15px_rgba(45,212,191,0.4)] hover:scale-[1.03] active:scale-[0.97] transition-all"
             >
               Sign In
             </Link>
