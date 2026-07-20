@@ -56,12 +56,33 @@ const TravelUtilities = lazyWithRetry(() => import('./pages/TravelUtilities').th
 const Achievements = lazyWithRetry(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
 const RoadTripOS = lazyWithRetry(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
 
-// Scroll to top helper
-const ScrollToTop = () => {
+// High-fidelity Scroll coordinate manager (restores scroll coordinates per path)
+const ScrollManager = () => {
   const { pathname } = useLocation();
+  const scrollPositions = useRef({});
+  const lastPath = useRef(pathname);
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const handleScrollSave = () => {
+      scrollPositions.current[lastPath.current] = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScrollSave);
+
+    const saved = scrollPositions.current[pathname];
+    if (saved !== undefined) {
+      window.scrollTo(0, saved);
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    lastPath.current = pathname;
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollSave);
+    };
   }, [pathname]);
+
   return null;
 };
 
@@ -70,9 +91,9 @@ const PageTransition = ({ children }) => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   const variants = {
-    initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.99 },
-    animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 },
-    exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -15, scale: 0.99 },
+    initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985, filter: 'blur(3px)' },
+    animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1, filter: 'blur(0px)' },
+    exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985, filter: 'blur(3px)' },
   };
 
   return (
@@ -81,7 +102,7 @@ const PageTransition = ({ children }) => {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={prefersReducedMotion ? { duration: 0.1 } : { type: 'spring', stiffness: 120, damping: 20 }}
+      transition={prefersReducedMotion ? { duration: 0.1 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="w-full"
     >
       {children}
@@ -89,12 +110,17 @@ const PageTransition = ({ children }) => {
   );
 };
 
-// High-fidelity Loading Fallback
+// High-fidelity Loading Fallback with animations
 const LoadingFallback = () => (
-  <div className="w-full min-h-[400px] flex flex-col justify-center items-center gap-4 text-slate-500 font-mono text-xs">
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="w-full min-h-[400px] flex flex-col justify-center items-center gap-4 text-slate-500 font-mono text-xs"
+  >
     <div className="w-10 h-10 rounded-full border-2 border-teal-500 border-t-transparent animate-spin" />
     <span className="animate-pulse tracking-widest uppercase text-teal-400 font-bold">CALIBRATING WORKSPACE...</span>
-  </div>
+  </motion.div>
 );
 
 function App() {
