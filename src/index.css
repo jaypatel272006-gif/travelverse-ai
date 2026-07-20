@@ -856,4 +856,20 @@ textarea:focus-visible {
 
 .animate-bird-drift {
   animation: bird-drift 22s linear infinite;
+}
+
+/* Custom Hero Additions */
+@keyframes airplane-fly-reverse {
+  0% { transform: translate(110%, 10%) rotate(-145deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translate(-10%, 80%) rotate(-145deg); opacity: 0; }
+}
+
+.animate-airplane-fly-reverse {
+  animation: airplane-fly-reverse 24s linear infinite;
+}
+
+.pause-all-animations * {
+  animation-play-state: paused !important;
 }
