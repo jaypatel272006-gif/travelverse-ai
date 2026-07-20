@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, X, Send, Compass, MessageSquare, ShieldAlert, Cpu } from 'lucide-react';
+import { Cpu, MessageSquare, Send, ShieldAlert, Sparkles, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { mockDestinations } from '../data/mockData';
 
 export const AIAssistantWidget = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -143,7 +143,7 @@ export const AIAssistantWidget = () => {
               <button
                 type="button"
                 onClick={() => {
-                  window.location.href = '/planner';
+                  navigate('/planner');
                 }}
                 className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
               >
@@ -152,7 +152,7 @@ export const AIAssistantWidget = () => {
               <button
                 type="button"
                 onClick={() => {
-                  window.location.href = '/road-trip-os';
+                  navigate('/road-trip-os');
                 }}
                 className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
               >
