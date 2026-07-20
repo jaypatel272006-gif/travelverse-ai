@@ -241,8 +241,6 @@ export const Destinations = () => {
                   { to: `/destination/${encodeURIComponent(searchQuery)}`, label: `Compile "${searchQuery.toUpperCase()}" Plan` }
                 ] : []
               }
-            />
-          )}
           )}
         </div>
       </div>
