@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
+import { ReligiousSkeleton, ItineraryBuilderSkeleton } from '../components/SkeletonLoader';
 
 // Coordinate positions for spiritual nodes on the interactive SVG canvas
 const CIRCUIT_NODES = [
@@ -1310,10 +1311,11 @@ export const SpiritualUniverse = () => {
                 {/* Itinerary Display (7 columns) */}
                 <div className="lg:col-span-7 flex flex-col gap-4">
                   {isGenerating && (
-                    <div className="bg-slate-950 border border-slate-850 p-12 rounded-3xl flex flex-col items-center justify-center text-center gap-4 min-h-[400px]">
-                      <div className="w-12 h-12 rounded-full border-t-2 border-teal-500 border-r-2 border-transparent animate-spin mb-2" />
-                      <span className="text-xs font-semibold text-slate-200">{generationSteps}</span>
-                      <span className="text-[10px] text-slate-500">Retrieving sacred protocols...</span>
+                    <div className="flex flex-col gap-4">
+                      <div className="text-xs font-semibold text-teal-400 font-mono tracking-widest animate-pulse mb-2">
+                        {generationSteps.toUpperCase()}
+                      </div>
+                      <ItineraryBuilderSkeleton />
                     </div>
                   )}
 
