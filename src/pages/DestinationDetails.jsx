@@ -5,7 +5,7 @@ import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, Refre
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
 import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../utils/countriesApi';
-import { CardGridSkeleton } from '../components/SkeletonLoader';
+import { DestinationDetailsSkeleton } from '../components/SkeletonLoader';
 import { generateDetailedItinerary } from '../utils/itineraryEngine';
 
 export const DestinationDetails = () => {
@@ -541,12 +541,7 @@ export const DestinationDetails = () => {
   };
 
   if (loading) {
-    return (
-      <div className="w-full max-w-7xl mx-auto py-12 px-4">
-        <div className="h-64 rounded-3xl bg-slate-200 dark:bg-slate-900/60 shimmer mb-8" />
-        <CardGridSkeleton count={3} />
-      </div>
-    );
+    return <DestinationDetailsSkeleton />;
   }
 
   return (
