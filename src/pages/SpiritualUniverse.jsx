@@ -726,9 +726,9 @@ export const SpiritualUniverse = () => {
                   title="Sanctuary Search Failure" 
                   message="No sacred coordinates fit your specified criteria. Try clearing query fields to scan a wider range." 
                   onRetry={() => {
-                    setDirSearchQuery('');
-                    setDirReligionFilter('All');
-                    setDirStateFilter('All');
+                    setDirSearch('');
+                    setDirFaith('All');
+                    setDirRegion('All');
                   }}
                   retryLabel="Reset Search & Filters"
                 />
