@@ -182,6 +182,19 @@ export const SpiritualUniverse = () => {
   });
   const [showCertificate, setShowCertificate] = useState(false);
 
+  const certificateMetaData = useMemo(() => {
+    const count = visitedJyotirlingas.length;
+    const seed = `${user?.name || 'Guest Pilgrim'}-${count}`;
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = (hash << 5) - hash + seed.charCodeAt(i);
+      hash |= 0;
+    }
+    const cleanHash = Math.abs(hash).toString(36).substring(0, 8).toUpperCase().padEnd(8, 'X');
+    const certId = `50${(Math.abs(hash) % 90000) + 10000}`;
+    return { hash: cleanHash, certId };
+  }, [user, visitedJyotirlingas]);
+
   // Pilgrim Passport Stamps State
   const [passportStamps, setPassportStamps] = useState(() => {
     const saved = localStorage.getItem('tv_spiritual_stamps');
@@ -1804,11 +1817,11 @@ export const SpiritualUniverse = () => {
                   </div>
                   <div>
                     <span>Verification Hash:</span>
-                    <div className="font-bold font-mono text-[9px] text-slate-400 mt-1">SHA-2100:{Math.random().toString(36).substring(2, 10).toUpperCase()}</div>
+                    <div className="font-bold font-mono text-[9px] text-slate-400 mt-1">SHA-2100:{certificateMetaData.hash}</div>
                   </div>
                   <div>
                     <span>Certificate ID:</span>
-                    <div className="font-bold font-mono text-[9px] text-slate-400 mt-1">TV-SP-{Date.now().toString().slice(-6)}</div>
+                    <div className="font-bold font-mono text-[9px] text-slate-400 mt-1">TV-SP-{certificateMetaData.certId}</div>
                   </div>
                 </div>
 
