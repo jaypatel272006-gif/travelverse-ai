@@ -425,6 +425,14 @@ export const Dashboard = () => {
   const [simulationResult, setSimulationResult] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
 
+  // Budget Simulation States
+  const [simLodgingBudget, setSimLodgingBudget] = useState(25000);
+  const [simFlightsBudget, setSimFlightsBudget] = useState(30000);
+  const [simFoodBudget, setSimFoodBudget] = useState(10000);
+  const [simTransportBudget, setSimTransportBudget] = useState(5000);
+  const [simShoppingBudget, setSimShoppingBudget] = useState(8000);
+  const [simEmergencyBudget, setSimEmergencyBudget] = useState(4000);
+
   // 7. AI Command Console States
   const [commandText, setCommandText] = useState('');
   const [isExecutingCommand, setIsExecutingCommand] = useState(false);
