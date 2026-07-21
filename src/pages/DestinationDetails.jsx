@@ -1,4 +1,5 @@
-
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -466,7 +467,7 @@ export const DestinationDetails = () => {
   const calculatedCosts = getCalculatedCosts();
 
   // Save itinerary to Dashboard context
-  const handleSaveItinerary = () => {
+  const handleSaveItinerary = useCallback(() => {
     const compiled = generateDetailedItinerary(cityData.name, estimatedDays, travelerTier, selectedInterests, travelStyle, pace);
     const newItineraryObj = {
       id: `it-${Date.now()}`,
@@ -486,7 +487,7 @@ export const DestinationDetails = () => {
       packingList: ['Passport', 'Climate wear', 'Universal adapter', 'Local currency credits']
     };
     saveItinerary(newItineraryObj);
-  };
+  }, [cityData, countryData, displayImage, estimatedDays, travelerTier, selectedInterests, travelStyle, pace, calculatedCosts, saveItinerary]);
 
   // Submit Feedback Review
   const handleSubmitReview = (e) => {
