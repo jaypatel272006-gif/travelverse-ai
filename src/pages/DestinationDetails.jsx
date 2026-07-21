@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
