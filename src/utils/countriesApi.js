@@ -70,7 +70,8 @@ const curations = {
  * Fetch country demographics and info from REST Countries API
  */
 export async function fetchCountryDetails(countryName) {
-
+  try {
+    const res = await fetchWithTimeout(`https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}`);
     if (!res.ok) throw new Error('Country not found in registry');
     const data = await res.json();
     const country = data[0];
