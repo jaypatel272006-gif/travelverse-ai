@@ -1,4 +1,5 @@
-
+import React, { useState, useRef, useEffect, memo } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Heart, MapPin, ArrowRight, Sparkles, Bookmark, Eye, X } from 'lucide-react';
