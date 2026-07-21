@@ -441,10 +441,6 @@ export const Dashboard = () => {
     }
   }, [user, navigate]);
 
-  if (!user) {
-    return <DashboardSkeleton />;
-  }
-
   // --- PERSISTENCE SYNCS ---
   useEffect(() => {
     localStorage.setItem('tv_workspace_presets', JSON.stringify(workspacePresets));
@@ -469,6 +465,10 @@ export const Dashboard = () => {
   useEffect(() => {
     localStorage.setItem('tv_active_hunts', JSON.stringify(activeHunts));
   }, [activeHunts]);
+
+  if (!user) {
+    return <DashboardSkeleton />;
+  }
 
   // --- WORKSPACE BUILDER HELPERS ---
   const handleCreateWorkspace = (e) => {
