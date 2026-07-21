@@ -352,15 +352,24 @@ export const DestinationCard = memo(({ destination }) => {
           </div>
         </div>
       </motion.div>
+      {/* Quick View Modal Overlay rendered via React Portal */}
       {createPortal(
         <AnimatePresence>
           {showQuickView && (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-955/85 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowQuickView(false)}
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md cursor-pointer"
+            >
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="w-full max-w-lg bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 relative flex flex-col gap-4 text-left"
+                onClick={(e) => e.stopPropagation()}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: 'spring', duration: 0.5 }}
+                className="w-full max-w-lg bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 relative flex flex-col gap-4 text-left cursor-default"
               >
                 <button
                   onClick={() => setShowQuickView(false)}
@@ -415,7 +424,7 @@ export const DestinationCard = memo(({ destination }) => {
                   </div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           )}
         </AnimatePresence>,
         document.body
