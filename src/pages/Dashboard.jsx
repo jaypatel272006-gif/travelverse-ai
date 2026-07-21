@@ -808,7 +808,6 @@ export const Dashboard = () => {
     
     setTimeout(() => {
       let responseLogs = [];
-      let success = false;
       
       if (cmd.toLowerCase().includes('switzerland') || cmd.toLowerCase().includes('lakh')) {
         responseLogs = [
@@ -834,7 +833,6 @@ export const Dashboard = () => {
           ]
         };
         saveItinerary(newItin);
-        success = true;
       } 
       else if (cmd.toLowerCase().includes('beach') || cmd.toLowerCase().includes('cool')) {
         responseLogs = [
@@ -845,7 +843,6 @@ export const Dashboard = () => {
           `Adjusting preferences map to priority: Beach, Relaxed, Cold.`
         ];
         setTwinPreferences(prev => ({ ...prev, favoriteStyle: 'nature', travelPace: 'relaxed' }));
-        success = true;
       }
       else if (cmd.toLowerCase().includes('road trip') || cmd.toLowerCase().includes('toll')) {
         responseLogs = [
@@ -855,7 +852,6 @@ export const Dashboard = () => {
           `Bypass route locked: NH-48 old ghats routes selected.`,
           `Updated road trip modifiers: Avoid Tolls [TRUE]`
         ];
-        success = true;
       }
       else {
         responseLogs = [
@@ -864,12 +860,11 @@ export const Dashboard = () => {
           `Running predictive itinerary compilation...`,
           `Success: Process completed. Atlas recommendations updated.`
         ];
-        success = true;
       }
       
       setConsoleLogs(prev => [...prev, ...responseLogs]);
       setIsExecutingCommand(false);
-      showToast(success ? 'Command executed successfully.' : 'Command execution finished.', 'success');
+      showToast('Command executed successfully.', 'success');
     }, 1500);
   };
 
@@ -1215,7 +1210,7 @@ export const Dashboard = () => {
             </form>
           </div>
         );
-      case 'rules':
+      case 'rules': {
         const recommended = getCockpitRecommendations();
         return (
           <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
@@ -1262,6 +1257,7 @@ export const Dashboard = () => {
             </div>
           </div>
         );
+      }
       case 'universe':
         return (
           <div className="flex flex-col gap-3 text-left text-xs h-full justify-between pr-1">
