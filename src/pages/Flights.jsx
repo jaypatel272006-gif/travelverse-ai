@@ -159,7 +159,9 @@ export const Flights = () => {
         if (parsed.flightClass === 'business') return 'Business Class';
         if (parsed.flightClass === 'premium') return 'Premium Economy';
       }
-    } catch(e) {}
+    } catch(e) {
+      // Ignore local storage parsing failures
+    }
     return 'Economy';
   });
   
@@ -174,7 +176,9 @@ export const Flights = () => {
           if (parsed.flightClass === 'business') return 'Business Class';
           if (parsed.flightClass === 'premium') return 'Premium Economy';
         }
-      } catch(e) {}
+      } catch(e) {
+        // Ignore local storage parsing failures
+      }
       return 'Economy';
     })();
     return generateMockFlights('New York (JFK)', 'Tokyo (HND)', initialClass);
