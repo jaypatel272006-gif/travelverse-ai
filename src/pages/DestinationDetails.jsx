@@ -282,7 +282,7 @@ export const DestinationDetails = () => {
     setTimeout(() => {
       const q = questionText.toLowerCase();
       const guideData = guides[selectedGuide];
-      let reply = "";
+      let reply;
 
       if (q.includes('history') || q.includes('ancient') || q.includes('old') || q.includes('dynasty') || q.includes('myth')) {
         reply = guideData.responses.history || guideData.responses.default;
