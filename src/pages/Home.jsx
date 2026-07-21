@@ -634,7 +634,7 @@ export const Home = () => {
         setDreamLogs(prev => [...prev, step.log]);
         if (idx === steps.length - 1) {
           setTimeout(() => {
-            let itinerary = null;
+            let itinerary;
             if (dreamType === 'northern') {
               itinerary = {
                 title: 'Aurora Borealis Quantum Drift',
