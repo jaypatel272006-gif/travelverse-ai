@@ -1119,7 +1119,7 @@ export const Dashboard = () => {
             </form>
           </div>
         );
-      case 'budget':
+      case 'budget': {
         const simTotal = simLodgingBudget + simFlightsBudget + simFoodBudget + simTransportBudget + simShoppingBudget + simEmergencyBudget;
         const isBudgetOverdraft = simTotal > budget.currentSavings;
         return (
@@ -1153,6 +1153,7 @@ export const Dashboard = () => {
             </div>
           </div>
         );
+      }
       case 'memories':
         return (
           <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
