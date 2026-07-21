@@ -465,6 +465,8 @@ export const DestinationDetails = () => {
   };
 
   const calculatedCosts = getCalculatedCosts();
+  const isWishlisted = cityData ? isInWishlist('destinations', id) : false;
+  const displayImage = cityData ? (customPhotos[id] || cityData.image) : '';
 
   // Save itinerary to Dashboard context
   const handleSaveItinerary = useCallback(() => {
@@ -512,8 +514,6 @@ export const DestinationDetails = () => {
     showToast('Feedback telemetry logged.', 'success');
   };
 
-  const isWishlisted = cityData ? isInWishlist('destinations', id) : false;
-  const displayImage = cityData ? (customPhotos[id] || cityData.image) : '';
 
   const getCityFacts = (name) => {
     const facts = {
