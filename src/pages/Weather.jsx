@@ -33,21 +33,21 @@ export const Weather = () => {
     setLoading(true);
     setError(null);
     
-    let resolvedName = '';
-    let lat = null;
-    let lon = null;
+    try {
+      let resolvedName = '';
+      let lat = null;
+      let lon = null;
 
-    // 1. Resolve coordinates via local cache
-    const cityKey = cityName.toLowerCase().trim();
-    const cityCoords = CITY_COORDINATES[cityKey];
+      // 1. Resolve coordinates via local cache
+      const cityKey = cityName.toLowerCase().trim();
+      const cityCoords = CITY_COORDINATES[cityKey];
 
-    if (cityCoords) {
-      resolvedName = cityCoords.name;
-      lat = cityCoords.lat;
-      lon = cityCoords.lon;
-    } else {
-      // 2. Query keyless Open-Meteo Geocoding API for global lookup
-      try {
+      if (cityCoords) {
+        resolvedName = cityCoords.name;
+        lat = cityCoords.lat;
+        lon = cityCoords.lon;
+      } else {
+        // 2. Query keyless Open-Meteo Geocoding API for global lookup
         const geoResponse = await fetch(
           `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`
         );
@@ -61,18 +61,11 @@ export const Weather = () => {
           lon = match.longitude;
         } else {
           setError(`We couldn't resolve coordinates for "${cityName}". Try searching with another city/state name (e.g., Surat, Bharuch, Delhi).`);
-          setLoading(false);
           return;
         }
-      } catch (e) {
-        setError(`Failed to connect to the geo-location engine for "${cityName}".`);
-        setLoading(false);
-        return;
       }
-    }
 
-    // 3. Query weather reports for the resolved coordinate vectors
-    try {
+      // 3. Query weather reports for the resolved coordinate vectors
       const response = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`
       );
@@ -86,6 +79,7 @@ export const Weather = () => {
         daily: data.daily
       });
     } catch (err) {
+      console.error('Weather retrieval error:', err);
       setError('Network error: Failed to retrieve weather records.');
       showToast('Could not fetch weather data.', 'error');
     } finally {
