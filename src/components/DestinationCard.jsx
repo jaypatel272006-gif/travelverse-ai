@@ -402,15 +402,30 @@ export const DestinationCard = memo(({ destination }) => {
                   <X size={16} />
                 </button>
                 
-                <img
-                  src={customPhotos[id] || image}
-                  alt={name}
-                  className="w-full h-48 object-cover rounded-2xl border border-white/5"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-                  }}
-                />
+                <div className="relative w-full h-48 rounded-2xl overflow-hidden border border-white/5 bg-slate-950/40 flex items-center justify-center">
+                  {isImageLoading && (
+                    <div className="absolute inset-0 bg-slate-900 flex items-center justify-center z-10">
+                      <div className="w-8 h-8 rounded-full border-2 border-teal-500 border-t-transparent animate-spin" />
+                    </div>
+                  )}
+                  <img
+                    src={customPhotos[id] || image}
+                    alt={name}
+                    className="w-full h-full object-cover"
+                    onLoad={() => {
+                      if (isMounted.current) {
+                        setIsImageLoading(false);
+                      }
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
+                      if (isMounted.current) {
+                        setIsImageLoading(false);
+                      }
+                    }}
+                  />
+                </div>
                 
                 <div>
                   <div className="flex justify-between items-start">
