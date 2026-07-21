@@ -123,7 +123,7 @@ export const DreamTripGenerator = () => {
     }, 1500);
   };
 
-  const handleSaveOffline = (variantKey) => {
+  const handleSaveOffline = useCallback((variantKey) => {
     const data = variants[variantKey];
     const itinerary = {
       id: `dream-${variantKey}-${Date.now()}`,
@@ -134,7 +134,7 @@ export const DreamTripGenerator = () => {
       timeline: data.itinerary.map((act, i) => ({ day: `Day ${i+1}`, activity: act }))
     };
     saveItineraryOffline(itinerary);
-  };
+  }, [destination, duration, variants, saveItineraryOffline]);
 
   return (
     <div className="w-full flex flex-col gap-8 text-left font-sans text-slate-800 dark:text-slate-100 py-4">
