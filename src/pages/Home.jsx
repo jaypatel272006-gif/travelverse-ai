@@ -1,8 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-useless-assignment */
-/* eslint-disable no-empty */
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
