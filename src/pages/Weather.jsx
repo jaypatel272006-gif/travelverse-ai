@@ -89,7 +89,10 @@ export const Weather = () => {
 
   // Load initial city weather
   useEffect(() => {
-    fetchWeather('Kyoto');
+    const timer = setTimeout(() => {
+      fetchWeather('Kyoto');
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchWeather]);
 
   const handleSearchSubmit = (e) => {
