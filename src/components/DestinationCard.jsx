@@ -351,74 +351,75 @@ export const DestinationCard = memo(({ destination }) => {
             </div>
           </div>
         </div>
-      </motion.div>
-
-      {/* Quick View Modal Overlay */}
-      <AnimatePresence>
-        {showQuickView && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="w-full max-w-lg bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 relative flex flex-col gap-4 text-left"
-            >
-              <button
-                onClick={() => setShowQuickView(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-full bg-slate-800 transition-colors"
+      </mot      {/* Quick View Modal Overlay rendered via React Portal */}
+      {createPortal(
+        <AnimatePresence>
+          {showQuickView && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-955/85 backdrop-blur-md">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="w-full max-w-lg bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 relative flex flex-col gap-4 text-left"
               >
-                <X size={16} />
-              </button>
-              
-              <img
-                src={customPhotos[id] || image}
-                alt={name}
-                className="w-full h-48 object-cover rounded-2xl border border-white/5"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-                }}
-              />
-              
-              <div>
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-bold text-white">{name}</h3>
-                  <span className="text-amber-500 font-bold flex items-center gap-1">
-                    ★ {rating} <span className="text-xs text-slate-400 font-normal font-mono">({reviewsCount})</span>
-                  </span>
+                <button
+                  onClick={() => setShowQuickView(false)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-full bg-slate-800 transition-colors cursor-pointer z-10"
+                >
+                  <X size={16} />
+                </button>
+                
+                <img
+                  src={customPhotos[id] || image}
+                  alt={name}
+                  className="w-full h-48 object-cover rounded-2xl border border-white/5"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
+                  }}
+                />
+                
+                <div>
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-xl font-bold text-white">{name}</h3>
+                    <span className="text-amber-500 font-bold flex items-center gap-1">
+                      ★ {rating} <span className="text-xs text-slate-400 font-normal font-mono">({reviewsCount})</span>
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-2 leading-relaxed">{description}</p>
                 </div>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">{description}</p>
-              </div>
 
-              <div className="grid grid-cols-2 gap-3 text-xs text-slate-350 font-mono bg-slate-950/40 p-3 rounded-xl border border-white/5">
-                <div>Region: <span className="text-teal-400 font-bold">{region}</span></div>
-                <div>Country: <span className="text-teal-400 font-bold">{country}</span></div>
-                <div>Best Season: <span className="text-teal-400 font-bold">{season}</span></div>
-                <div>Duration: <span className="text-teal-400 font-bold">{duration}</span></div>
-              </div>
-
-              <div className="flex justify-between items-center mt-2 border-t border-white/5 pt-4">
-                <span className="text-lg font-black text-white">₹{price.toLocaleString('en-IN')}</span>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setShowQuickView(false)}
-                    className="px-4 py-2 border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl text-xs font-bold transition-all"
-                  >
-                    Close
-                  </button>
-                  <Link
-                    to={`/destination/${id}`}
-                    onClick={() => setShowQuickView(false)}
-                    className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-xl text-xs font-bold transition-all"
-                  >
-                    Go to Dossier
-                  </Link>
+                <div className="grid grid-cols-2 gap-3 text-xs text-slate-350 font-mono bg-slate-950/40 p-3 rounded-xl border border-white/5">
+                  <div>Region: <span className="text-teal-400 font-bold">{region}</span></div>
+                  <div>Country: <span className="text-teal-400 font-bold">{country}</span></div>
+                  <div>Best Season: <span className="text-teal-400 font-bold">{season}</span></div>
+                  <div>Duration: <span className="text-teal-400 font-bold">{duration}</span></div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
+                <div className="flex justify-between items-center mt-2 border-t border-white/5 pt-4">
+                  <span className="text-lg font-black text-white">₹{price.toLocaleString('en-IN')}</span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowQuickView(false)}
+                      className="px-4 py-2 border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <Link
+                      to={`/destination/${id}`}
+                      onClick={() => setShowQuickView(false)}
+                      className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-xl text-xs font-bold transition-all"
+                    >
+                      Go to Dossier
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}imatePresence>
     </>
   );
 });
