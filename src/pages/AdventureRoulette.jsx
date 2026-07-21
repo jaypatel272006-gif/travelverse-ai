@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dices, Coins, Compass, Calendar, Sparkles, RefreshCw, Save, MapPin, Activity, CloudRain, Sun, Snowflake, Leaf, ArrowRight, Clock, User, DollarSign, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
