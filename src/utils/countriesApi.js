@@ -167,8 +167,7 @@ export async function fetchCityDetails(cityName, countryName = '') {
   const curated = curations[normalizedKey];
 
   try {
-    // Wikipedia API call
-    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cityName)}`);
+
     if (!res.ok) throw new Error('Wikipedia article summary not found');
     const data = await res.json();
 
