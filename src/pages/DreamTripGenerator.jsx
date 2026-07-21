@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Sparkles, ShieldCheck, Activity, Compass, ArrowRight, 
