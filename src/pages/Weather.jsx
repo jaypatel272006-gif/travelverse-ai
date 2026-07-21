@@ -29,7 +29,7 @@ export const Weather = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchWeather = async (cityName) => {
+  const fetchWeather = useCallback(async (cityName) => {
     setLoading(true);
     setError(null);
     
@@ -85,12 +85,12 @@ export const Weather = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   // Load initial city weather
   useEffect(() => {
     fetchWeather('Kyoto');
-  }, []);
+  }, [fetchWeather]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
