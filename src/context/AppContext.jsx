@@ -12,6 +12,16 @@ export const useApp = () => {
 };
 
 export const AppContextProvider = ({ children }) => {
+  // Alert/Toast Notification helper
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 4000);
+  };
+
   // Theme state
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('tv_theme');
@@ -262,15 +272,6 @@ export const AppContextProvider = ({ children }) => {
     showToast('Sanctuary data cached offline. Ready for remote flight.', 'success');
   };
 
-  // Alert/Toast Notification helper
-  const [toast, setToast] = useState(null);
-
-  const showToast = (message, type = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => {
-      setToast(null);
-    }, 4000);
-  };
 
   // Sync theme to DOM
   useEffect(() => {
