@@ -167,7 +167,7 @@ export async function fetchCityDetails(cityName, countryName = '') {
   const curated = curations[normalizedKey];
 
   try {
-
+    const res = await fetchWithTimeout(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cityName)}`);
     if (!res.ok) throw new Error('Wikipedia article summary not found');
     const data = await res.json();
 
@@ -264,9 +264,7 @@ export async function fetchCityDetails(cityName, countryName = '') {
  * Fetch 5-Day weather report from Open-Meteo API
  */
 export async function fetchWeatherForecast(lat, lon) {
-  try {
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`);
-    if (!res.ok) throw new Error('Weather forecast not available');
+
     const data = await res.json();
     
     const daily = data.daily;
