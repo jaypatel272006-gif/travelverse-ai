@@ -1405,7 +1405,7 @@ export const AITripPlanner = () => {
                                   key={idx} 
                                   className="w-[3px] bg-teal-400 rounded-full" 
                                   style={{
-                                    height: `${Math.random() * 14 + 4}px`,
+                                    height: `${4 + ((idx * 5) % 14)}px`,
                                     animation: `audio-bar-grow 0.6s ease infinite ${delay}s`
                                   }} 
                                 />
