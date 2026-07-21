@@ -2,7 +2,23 @@
  * TravelVerse AI - Global API & Database Utility
  * Fetches real-time country details, Wikipedia summaries, and weather forecasts.
  * Provides fallback data for offline mode or API limits.
- */
+
+// Lightweight fetch wrapper with built-in AbortController timeout to prevent infinite hangs
+async function fetchWithTimeout(resource, options = {}) {
+  const { timeout = 6000 } = options;
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(resource, {
+      ...options,
+      signal: controller.signal
+    });
+    return response;
+  } finally {
+    clearTimeout(id);
+  }
+}
+
 
 // Local fallback database for prominent destinations
 const curations = {
@@ -54,8 +70,7 @@ const curations = {
  * Fetch country demographics and info from REST Countries API
  */
 export async function fetchCountryDetails(countryName) {
-  try {
-    const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}`);
+
     if (!res.ok) throw new Error('Country not found in registry');
     const data = await res.json();
     const country = data[0];
