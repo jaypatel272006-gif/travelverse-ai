@@ -44,6 +44,25 @@ export const DestinationCard = memo(({ destination }) => {
   const [isCompared, setIsCompared] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showQuickView, setShowQuickView] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    
+    const handleCloseEvent = () => {
+      if (isMounted.current) {
+        setShowQuickView(false);
+      }
+    };
+    
+    window.addEventListener('tv_close_all_previews', handleCloseEvent);
+    
+    return () => {
+      isMounted.current = false;
+      window.removeEventListener('tv_close_all_previews', handleCloseEvent);
+    };
+  }, []);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -105,7 +124,12 @@ export const DestinationCard = memo(({ destination }) => {
   const handleQuickViewClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Broadcast event to close any other active quick preview modals
+    window.dispatchEvent(new CustomEvent('tv_close_all_previews'));
+    
     setShowQuickView(true);
+    setIsImageLoading(true);
   };
 
   return (
