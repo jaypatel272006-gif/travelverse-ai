@@ -264,7 +264,9 @@ export async function fetchCityDetails(cityName, countryName = '') {
  * Fetch 5-Day weather report from Open-Meteo API
  */
 export async function fetchWeatherForecast(lat, lon) {
-
+  try {
+    const res = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`);
+    if (!res.ok) throw new Error('Weather forecast not available');
     const data = await res.json();
     
     const daily = data.daily;
