@@ -8,6 +8,280 @@ import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../
 import { DestinationDetailsSkeleton } from '../components/SkeletonLoader';
 import { generateDetailedItinerary } from '../utils/itineraryEngine';
 
+const getPremiumGuideData = (name) => {
+  const defaultData = {
+    architecture: "Features local vernacular planning blended with modern micro-climate adaptation protocols, passive solar cooling, and locally sourced construction layers.",
+    culture: "Draped in centuries-old heritage, featuring daily devotional assemblies, classical music legacy, and unique native pottery crafts.",
+    unesco: "Protected under national heritage preservation laws with active ecological buffer corridors.",
+    sunrise: "05:42 AM",
+    sunset: "06:48 PM",
+    emergency: {
+      police: "112 / 100",
+      medical: "108 / 102",
+      touristHelpline: "+91-11-2365-2200"
+    },
+    transit: {
+      airports: [
+        { name: "Sector Main Airport", dist: "18 km" }
+      ],
+      railways: [
+        { name: "Central Terminal Station", dist: "4 km" }
+      ],
+      road: "Connected via National Expressway grid routes, providing high-speed asphalt connectivity.",
+      local: "Eco-friendly metro corridors, ride-sharing cabs, and app-based electric shuttles."
+    },
+    culinary: {
+      restaurants: [
+        { name: "The Imperial Vault", type: "Traditional Fine Dining" },
+        { name: "Quantum Spices", type: "Fusion Regional" }
+      ],
+      cafes: [
+        { name: "Solar Brew Cafe", specialty: "Locally roasted coffees & micro-bakes" },
+        { name: "Neon Leaves Tea House", specialty: "Infused regional teas & herbal decocs" }
+      ],
+      streetFood: [
+        { name: "Old Quarter Food Market", specialties: "Crisp hot patties, sweet milk cakes, spicy potato skins" }
+      ]
+    },
+    shopping: [
+      { name: "Central Heritage Bazaar", specialty: "Handcrafted textiles, brass works & silver ornaments" }
+    ],
+    packingChecklist: [
+      "Light climate-appropriate apparel",
+      "Universal power grids adapter",
+      "Local offline maps database",
+      "Hydration flask & basic medical kit"
+    ],
+    festivals: [
+      { name: "Spring Equinox Festival", season: "March - April", desc: "Grand cultural processions, traditional dances, and floral decor." }
+    ],
+    tips: [
+      "Acclimatize for the first 24 hours if arriving in high-altitude zones.",
+      "Prefer bottled mineral water or purified community dispensers.",
+      "Respect local dress protocols by keeping shoulders covered inside shrines."
+    ],
+    faqs: [
+      { q: "Is it safe for solo travelers?", a: "Yes, the sector has a high safety index with 24/7 tourist police assistance." },
+      { q: "What is the primary language spoken?", a: "The local residents speak the regional dialect, but English is widely understood in shops." }
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80"
+    ],
+    aiRecommendations: [
+      "Optimal Route: Morning visits to monuments yield 40% lower crowd density.",
+      "Energy Conservation: Reserve high-exertion treks for early sunrise windows.",
+      "Local Dining: Street vendors with high local traffic compile the safest culinary quality."
+    ]
+  };
+
+  const overrides = {
+    'Goa': {
+      architecture: "Indo-Portuguese baroque architectures with bright whitewashed plaster facades, terracotta tiled sloping roofs, carved wooden pillars, and window panes made of polished oyster shells.",
+      culture: "A beautiful fusion of coastal Indian traditions and Portuguese heritage, celebrated through traditional Manddo songs, annual street carnivals, and village church feasts.",
+      unesco: "Churches and Convents of Goa (UNESCO World Heritage Site, registered in 1986).",
+      sunrise: "06:05 AM",
+      sunset: "07:02 PM",
+      emergency: {
+        police: "100 / 112",
+        medical: "108 / 102",
+        touristHelpline: "+91-832-243-7722"
+      },
+      transit: {
+        airports: [
+          { name: "Manohar International Airport (MOPA)", dist: "35 km" },
+          { name: "Dabolim International Airport (GOI)", dist: "28 km" }
+        ],
+        railways: [
+          { name: "Madgaon Junction Railway Station (MAO)", dist: "12 km" },
+          { name: "Thivim Railway Station (THVM)", dist: "15 km" }
+        ],
+        road: "Linked via NH-66 providing direct road transit to Mumbai, Pune, and Bangalore.",
+        local: "Self-driven scooter rentals, app-based GoaMiles cabs, and local ferry routes."
+      },
+      culinary: {
+        restaurants: [
+          { name: "The Black Sheep Bistro", type: "Pan-Asian & Goan Fusion" },
+          { name: "Gunpowder", type: "Coastal Peninsular South Indian" }
+        ],
+        cafes: [
+          { name: "Artjuna Cafe Anjuna", specialty: "Organic Mediterranean breakfast & coffee" },
+          { name: "Eva Cafe", specialty: "Sea-facing Greek cafe with fresh juices" }
+        ],
+        streetFood: [
+          { name: "Miramar Beach Stalls", specialties: "Chorizo Pav, Fish Cutlets, Gadbad Ice Cream" }
+        ]
+      },
+      shopping: [
+        { name: "Anjuna Wednesday Flea Market", specialty: "Handmade jewelry, beachwear, local spices" }
+      ],
+      packingChecklist: [
+        "Light cotton/linen beachwear",
+        "Reef-safe sunscreen & sunglasses",
+        "Waterproof dry pouch for accessories",
+        "Flip-flops & swimming gear"
+      ],
+      festivals: [
+        { name: "Shigmo Spring Festival", season: "March", desc: "Vibrant folk dances, parades, and street colors celebrating spring." },
+        { name: "Goa Carnival", season: "February", desc: "Colorful float parades, live music bands, and non-stop dancing." }
+      ],
+      tips: [
+        "Pre-book a cab through GoaMiles at the airport to avoid street taxi haggling.",
+        "Always wear a helmet when driving rented two-wheelers; police checks are strict."
+      ],
+      faqs: [
+        { q: "When is the beach swimming season?", a: "October to May. Avoid swimming during monsoon months due to high undercurrents." },
+        { q: "Is vegetarian food easily available?", a: "Yes! While famous for seafood, all major restaurants offer delicious pure veg Goan curries." }
+      ],
+      gallery: [
+        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80"
+      ],
+      aiRecommendations: [
+        "Beach Safety: Verify flag color status before swimming in Anjuna or Calangute.",
+        "Monsoon Travel: Water sports are closed from June to September. Use this time for forest hikes.",
+        "Transit: Rented scooters are optimal for budget solo travelers; use cabs for group safety."
+      ]
+    },
+    'Jaipur': {
+      architecture: "Indo-Saracenic styles with Rajput symmetry, featuring massive pink terracotta sandstone walls, delicate jali screens, dome chhatris, and open courtyards built to Vastu Shastra rules.",
+      culture: "Rich in royal Rajasthani heritage, folk Ghoomar dances, miniature painting arts, and blue pottery crafts.",
+      unesco: "Jaipur Walled City (UNESCO World Heritage Site, registered in 2019) and Jantar Mantar (2010).",
+      sunrise: "05:38 AM",
+      sunset: "07:22 PM",
+      emergency: {
+        police: "100 / 112",
+        medical: "108 / 102",
+        touristHelpline: "+91-141-282-2200"
+      },
+      transit: {
+        airports: [
+          { name: "Jaipur International Airport (JAI)", dist: "12 km" }
+        ],
+        railways: [
+          { name: "Jaipur Junction (JP)", dist: "3 km" }
+        ],
+        road: "Linked via the NH-48 Jaipur-Delhi highway corridor.",
+        local: "Jaipur Metro, app-based Uber/Ola, e-rickshaws, and tourist buses."
+      },
+      culinary: {
+        restaurants: [
+          { name: "Laxmi Mishthan Bhandar (LMB)", type: "Traditional Rajasthani Thali" },
+          { name: "1135 AD Amer", type: "Royal Fort Dining Experience" }
+        ],
+        cafes: [
+          { name: "Tapri The Tea House", specialty: "Premium regional teas & street bites" },
+          { name: "Wind View Cafe", specialty: "Direct view facing the Hawa Mahal" }
+        ],
+        streetFood: [
+          { name: "Link Road stalls", specialties: "Pyaaz Kachori, Mawa Kachori, Rabdi Kulfi" }
+        ]
+      },
+      shopping: [
+        { name: "Johari Bazar & Bapu Bazar", specialty: "Gemstone jewelry, bandhani sarees, mojari leather shoes" }
+      ],
+      packingChecklist: [
+        "Lightweight sun-protective clothing",
+        "Wide-brim hat & sunglasses",
+        "Comfortable walking shoes for fort climbs",
+        "Hand sanitizer & tissues"
+      ],
+      festivals: [
+        { name: "Gangaur Festival", season: "March - April", desc: "Colorful processions of Goddess Parvati throughout the city." },
+        { name: "Jaipur Literature Festival (JLF)", season: "January", desc: "The world's largest free literary festival." }
+      ],
+      tips: [
+        "Hire official guides with ID cards at Amer Fort to learn the true history.",
+        "Shop at state-government authorized handloom cooperatives to ensure genuine crafts."
+      ],
+      faqs: [
+        { q: "Is the city crowded?", a: "Yes, the walled old city is highly active. Walk along pedestrian lanes for safety." },
+        { q: "How many days are needed?", a: "At least 3 days to comfortably explore the major forts, palaces, and markets." }
+      ],
+      gallery: [
+        "https://images.unsplash.com/photo-1477587458883-471a5ed94245?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80"
+      ],
+      aiRecommendations: [
+        "Amer Fort: Visit at 8:00 AM to beat the tour bus crowds and enjoy soft morning lighting.",
+        "Shopping: Bargain at street stalls, typically offering items starting 30% below initial quotes."
+      ]
+    },
+    'Varanasi': {
+      architecture: "Densely packed old town alleys with multi-tiered temple shikhara towers, ancient stone ghat staircases, and traditional brick Havelis.",
+      culture: "The spiritual heart of India, famous for classical music gharanas, Sanskrit study hubs, and Benarasi silk weaving heritage.",
+      unesco: "UNESCO Creative City of Music (since 2015). Walled ghat complexes are on the UNESCO tentative list.",
+      sunrise: "05:15 AM",
+      sunset: "06:40 PM",
+      emergency: {
+        police: "100 / 112",
+        medical: "108 / 102",
+        touristHelpline: "+91-542-250-2200"
+      },
+      transit: {
+        airports: [
+          { name: "Lal Bahadur Shastri International Airport (VNS)", dist: "24 km" }
+        ],
+        railways: [
+          { name: "Varanasi Junction (BSB)", dist: "4 km" },
+          { name: "Deen Dayal Upadhyaya Station (DDU)", dist: "16 km" }
+        ],
+        road: "Connected by the NH-19 grand trunk highway corridor.",
+        local: "Cycle rickshaws, electric e-rickshaws, and hand-rowed or motor ghat boats."
+      },
+      culinary: {
+        restaurants: [
+          { name: "Keshari Restaurant", type: "North Indian Satvik Thali" },
+          { name: "Brown Bread Bakery", type: "Organic rooftop bakery & live music" }
+        ],
+        cafes: [
+          { name: "Mona Lisa Cafe", specialty: "Lassi variations & local snacks" },
+          { name: "Filo Cafe", specialty: "Espressos & fusion desserts" }
+        ],
+        streetFood: [
+          { name: "Kachori Gali", specialties: "Kachori Sabji, Tamatar Chaat, Benarasi Lassi, Malaiyo" }
+        ]
+      },
+      shopping: [
+        { name: "Vishwanath Gali", specialty: "Benarasi silk sarees, copper utensils, rudraksha beads" }
+      ],
+      packingChecklist: [
+        "Modest traditional clothing",
+        "Slip-on shoes for temple crawls",
+        "Sanitizing wipes & small flashlight",
+        "Small bag to secure personal accessories"
+      ],
+      festivals: [
+        { name: "Dev Deepawali", season: "November", desc: "Millions of clay lamps lit on the river ghat steps." },
+        { name: "Maha Shivratri", season: "February - March", desc: "Grand spiritual wedding procession of Lord Shiva." }
+      ],
+      tips: [
+        "Book a boat ride at early dawn (5:15 AM) to observe the spectacular sunrise prayers.",
+        "Beware of fake priests demanding high sums for special rituals; stick to official counters."
+      ],
+      faqs: [
+        { q: "Is Varanasi safe at night?", a: "Yes, the main ghat corridors are highly active and guarded by police until 10:30 PM." },
+        { q: "Can I take pictures of the cremation ghats?", a: "No, photography is strictly prohibited at Manikarnika and Harishchandra cremation ghats." }
+      ],
+      gallery: [
+        "https://images.unsplash.com/photo-1561361531-997c5d23db16?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1601999109332-542b18dbec57?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1598977123418-45f04b615967?auto=format&fit=crop&w=800&q=80"
+      ],
+      aiRecommendations: [
+        "Ghat Walks: Explore the ghat corridor during late afternoon to experience ghat actions.",
+        "Silk Sarees: Buy only from Government handloom centers (e.g. Chowk) to avoid artificial polyester replicas."
+      ]
+    }
+  };
+
+  const cleanName = Object.keys(overrides).find(k => name.toLowerCase().includes(k.toLowerCase()));
+  return cleanName ? overrides[cleanName] : defaultData;
+};
+
 export const DestinationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
