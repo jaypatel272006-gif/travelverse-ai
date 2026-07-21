@@ -1,7 +1,4 @@
-/**
- * TravelVerse AI - Global API & Database Utility
- * Fetches real-time country details, Wikipedia summaries, and weather forecasts.
- * Provides fallback data for offline mode or API limits.
+
 
 // Lightweight fetch wrapper with built-in AbortController timeout to prevent infinite hangs
 async function fetchWithTimeout(resource, options = {}) {
