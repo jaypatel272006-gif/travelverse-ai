@@ -33,6 +33,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
 import { ReligiousSkeleton, ItineraryBuilderSkeleton } from '../components/SkeletonLoader';
+import { EmptyState } from '../components/EmptyState';
 
 // Coordinate positions for spiritual nodes on the interactive SVG canvas
 const CIRCUIT_NODES = [

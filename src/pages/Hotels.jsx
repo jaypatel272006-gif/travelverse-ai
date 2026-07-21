@@ -572,7 +572,7 @@ export const Hotels = () => {
               message="We couldn't locate any accommodation coordinates matching your current filter set." 
               onRetry={() => {
                 setPriceFilter(350000);
-                setStarsFilter(0);
+                setRatingFilter(0);
               }}
               retryLabel="Recalibrate Budget & Star Filters"
             />
