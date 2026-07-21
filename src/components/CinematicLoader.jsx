@@ -57,186 +57,198 @@ export const CinematicLoader = ({ onComplete }) => {
     // ----------------------------------------------------
     // 2. Three.js Lightweight Hologram Globe
     // ----------------------------------------------------
-    if (!canvasRef.current) return;
-    
-    const width = canvasRef.current.clientWidth;
-    const height = canvasRef.current.clientHeight;
-    
-    const scene = new THREE.Scene();
-    
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.z = 220;
+    let renderer;
+    let reqId;
+    let handleResize;
+    const gsapTweens = [];
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      antialias: true,
-      alpha: true
-    });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    try {
+      if (!canvasRef.current) return;
+      
+      const width = canvasRef.current.clientWidth;
+      const height = canvasRef.current.clientHeight;
+      
+      const scene = new THREE.Scene();
+      
+      const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      camera.position.z = 220;
 
-    // Create a points-based holographic globe
-    const radius = 60;
-    const segments = 48;
-    const rings = 48;
-    
-    const geometry = new THREE.BufferGeometry();
-    const positions = [];
-    const colors = [];
-    const colorTeal = new THREE.Color('#2dd4bf');
-    const colorIndigo = new THREE.Color('#6366f1');
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvasRef.current,
+        antialias: true,
+        alpha: true
+      });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    for (let y = 0; y <= rings; y++) {
-      const theta = (y * Math.PI) / rings;
-      const sinTheta = Math.sin(theta);
-      const cosTheta = Math.cos(theta);
+      // Create a points-based holographic globe
+      const radius = 60;
+      const segments = 48;
+      const rings = 48;
+      
+      const geometry = new THREE.BufferGeometry();
+      const positions = [];
+      const colors = [];
+      const colorTeal = new THREE.Color('#2dd4bf');
+      const colorIndigo = new THREE.Color('#6366f1');
 
-      for (let x = 0; x <= segments; x++) {
-        const phi = (x * 2 * Math.PI) / segments;
-        const sinPhi = Math.sin(phi);
-        const cosPhi = Math.cos(phi);
+      for (let y = 0; y <= rings; y++) {
+        const theta = (y * Math.PI) / rings;
+        const sinTheta = Math.sin(theta);
+        const cosTheta = Math.cos(theta);
 
-        const px = radius * sinTheta * cosPhi;
-        const py = radius * cosTheta;
-        const pz = radius * sinTheta * sinPhi;
+        for (let x = 0; x <= segments; x++) {
+          const phi = (x * 2 * Math.PI) / segments;
+          const sinPhi = Math.sin(phi);
+          const cosPhi = Math.cos(phi);
 
-        // Add positions
-        positions.push(px, py, pz);
+          const px = radius * sinTheta * cosPhi;
+          const py = radius * cosTheta;
+          const pz = radius * sinTheta * sinPhi;
 
-        // Mix colors for a dynamic gradient layout
-        const mixedColor = colorTeal.clone().lerp(colorIndigo, Math.abs(cosTheta));
-        colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
+          // Add positions
+          positions.push(px, py, pz);
+
+          // Mix colors for a dynamic gradient layout
+          const mixedColor = colorTeal.clone().lerp(colorIndigo, Math.abs(cosTheta));
+          colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
+        }
       }
+
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 1.2,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65,
+        sizeAttenuation: true
+      });
+
+      const globe = new THREE.Points(geometry, material);
+      scene.add(globe);
+
+      // Add glowing atmosphere ring
+      const atmosGeo = new THREE.RingGeometry(radius + 1, radius + 2, 64);
+      const atmosMat = new THREE.MeshBasicMaterial({
+        color: 0x2dd4bf,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.15
+      });
+      const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
+      scene.add(atmosphere);
+
+      // Create group for rotation
+      const globeGroup = new THREE.Group();
+      globeGroup.add(globe);
+      globeGroup.add(atmosphere);
+      scene.add(globeGroup);
+
+      // Add intercontinental flight path arcs (Bezier curves)
+      const flightGroup = new THREE.Group();
+      scene.add(flightGroup);
+
+      const connections = [
+        { from: { lat: 40.7128, lon: -74.0060 }, to: { lat: 35.6762, lon: 139.6503 } }, // NYC to Tokyo
+        { from: { lat: 48.8566, lon: 2.3522 }, to: { lat: 25.2048, lon: 55.2708 } },   // Paris to Dubai
+        { from: { lat: -33.8688, lon: 151.2093 }, to: { lat: 19.0760, lon: 72.8777 } } // Sydney to Mumbai
+      ];
+
+      // Helper: Lat/Lon coordinates to Vector3
+      const convertCoords = (lat, lon, r) => {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lon + 180) * (Math.PI / 180);
+        return new THREE.Vector3(
+          -(r * Math.sin(phi) * Math.sin(theta)),
+          r * Math.cos(phi),
+          r * Math.sin(phi) * Math.cos(theta)
+        );
+      };
+
+      connections.forEach((conn) => {
+        const p1 = convertCoords(conn.from.lat, conn.from.lon, radius);
+        const p2 = convertCoords(conn.to.lat, conn.to.lon, radius);
+
+        // Create quadratic Bezier midpoint arched outwards
+        const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+        const dist = p1.distanceTo(p2);
+        mid.normalize().multiplyScalar(radius + dist * 0.35); // Arched height proportional to distance
+
+        const curve = new THREE.QuadraticBezierCurve3(p1, p2, mid);
+        const points = curve.getPoints(32);
+        const curveGeo = new THREE.BufferGeometry().setFromPoints(points);
+        
+        const curveMat = new THREE.LineBasicMaterial({
+          color: 0x2dd4bf,
+          transparent: true,
+          opacity: 0.2
+        });
+        const flightLine = new THREE.Line(curveGeo, curveMat);
+        flightGroup.add(flightLine);
+
+        // Add a animated dash following the flight path
+        const dashGeo = new THREE.BufferGeometry();
+        const dashMat = new THREE.PointsMaterial({
+          color: 0xf472b6, // Pink pulse
+          size: 3,
+          transparent: true,
+          opacity: 0.8
+        });
+        const dashPoints = [new THREE.Vector3()];
+        dashGeo.setFromPoints(dashPoints);
+        const dashMesh = new THREE.Points(dashGeo, dashMat);
+        flightGroup.add(dashMesh);
+
+        // Animate dash along the curve using GSAP
+        const tween = gsap.to({}, {
+          duration: 3,
+          repeat: -1,
+          ease: 'none',
+          onUpdate: function() {
+            const t = (this.progress() * 1.5) % 1;
+            const pos = curve.getPointAt(t);
+            dashGeo.setFromPoints([pos]);
+          }
+        });
+        gsapTweens.push(tween);
+      });
+
+      globeGroup.add(flightGroup);
+
+      // Animation loop
+      const animate = () => {
+        reqId = requestAnimationFrame(animate);
+        
+        // Rotate globe group
+        globeGroup.rotation.y += 0.005;
+        globeGroup.rotation.x += 0.002;
+        
+        if (renderer) {
+          renderer.render(scene, camera);
+        }
+      };
+      animate();
+
+      // Resize handler
+      handleResize = () => {
+        if (!canvasRef.current || !renderer) return;
+        const w = canvasRef.current.clientWidth;
+        const h = canvasRef.current.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      };
+      window.addEventListener('resize', handleResize);
+    } catch (e) {
+      console.warn('Three.js initialization failed or WebGL not supported, bypassing holographic animation:', e);
     }
 
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 1.2,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.65,
-      sizeAttenuation: true
-    });
-
-    const globe = new THREE.Points(geometry, material);
-    scene.add(globe);
-
-    // Add glowing atmosphere ring
-    const atmosGeo = new THREE.RingGeometry(radius + 1, radius + 2, 64);
-    const atmosMat = new THREE.MeshBasicMaterial({
-      color: 0x2dd4bf,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.15
-    });
-    const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
-    scene.add(atmosphere);
-
-    // Create group for rotation
-    const globeGroup = new THREE.Group();
-    globeGroup.add(globe);
-    globeGroup.add(atmosphere);
-    scene.add(globeGroup);
-
-    // Add intercontinental flight path arcs (Bezier curves)
-    const flightGroup = new THREE.Group();
-    scene.add(flightGroup);
-
-    const connections = [
-      { from: { lat: 40.7128, lon: -74.0060 }, to: { lat: 35.6762, lon: 139.6503 } }, // NYC to Tokyo
-      { from: { lat: 48.8566, lon: 2.3522 }, to: { lat: 25.2048, lon: 55.2708 } },   // Paris to Dubai
-      { from: { lat: -33.8688, lon: 151.2093 }, to: { lat: 19.0760, lon: 72.8777 } } // Sydney to Mumbai
-    ];
-
-    // Helper: Lat/Lon coordinates to Vector3
-    const convertCoords = (lat, lon, r) => {
-      const phi = (90 - lat) * (Math.PI / 180);
-      const theta = (lon + 180) * (Math.PI / 180);
-      return new THREE.Vector3(
-        -(r * Math.sin(phi) * Math.sin(theta)),
-        r * Math.cos(phi),
-        r * Math.sin(phi) * Math.cos(theta)
-      );
-    };
-
-    connections.forEach((conn) => {
-      const p1 = convertCoords(conn.from.lat, conn.from.lon, radius);
-      const p2 = convertCoords(conn.to.lat, conn.to.lon, radius);
-
-      // Create quadratic Bezier midpoint arched outwards
-      const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-      const dist = p1.distanceTo(p2);
-      mid.normalize().multiplyScalar(radius + dist * 0.35); // Arched height proportional to distance
-
-      const curve = new THREE.QuadraticBezierCurve3(p1, p2, mid);
-      const points = curve.getPoints(32);
-      const curveGeo = new THREE.BufferGeometry().setFromPoints(points);
-      
-      const curveMat = new THREE.LineBasicMaterial({
-        color: 0x2dd4bf,
-        transparent: true,
-        opacity: 0.2
-      });
-      const flightLine = new THREE.Line(curveGeo, curveMat);
-      flightGroup.add(flightLine);
-
-      // Add a animated dash following the flight path
-      const dashGeo = new THREE.BufferGeometry();
-      const dashMat = new THREE.PointsMaterial({
-        color: 0xf472b6, // Pink pulse
-        size: 3,
-        transparent: true,
-        opacity: 0.8
-      });
-      const dashPoints = [new THREE.Vector3()];
-      dashGeo.setFromPoints(dashPoints);
-      const dashMesh = new THREE.Points(dashGeo, dashMat);
-      flightGroup.add(dashMesh);
-
-      // Animate dash along the curve using GSAP
-      gsap.to({}, {
-        duration: 3,
-        repeat: -1,
-        ease: 'none',
-        onUpdate: function() {
-          const t = (this.progress() * 1.5) % 1;
-          const pos = curve.getPointAt(t);
-          dashGeo.setFromPoints([pos]);
-        }
-      });
-    });
-
-    globeGroup.add(flightGroup);
-
-    // Animation loop
-    let reqId;
-    const animate = () => {
-      reqId = requestAnimationFrame(animate);
-      
-      // Rotate globe group
-      globeGroup.rotation.y += 0.005;
-      globeGroup.rotation.x += 0.002;
-      
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    // Resize handler
-    const handleResize = () => {
-      if (!canvasRef.current) return;
-      const w = canvasRef.current.clientWidth;
-      const h = canvasRef.current.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener('resize', handleResize);
-
     return () => {
-      cancelAnimationFrame(reqId);
-      window.removeEventListener('resize', handleResize);
+      if (reqId) cancelAnimationFrame(reqId);
+      if (handleResize) window.removeEventListener('resize', handleResize);
+      gsapTweens.forEach(t => t.kill());
       progressTween.kill();
     };
   }, []);
