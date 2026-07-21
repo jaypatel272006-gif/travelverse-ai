@@ -352,7 +352,9 @@ export const DestinationDetails = () => {
         try {
           if (oscRef.current) oscRef.current.stop();
           if (audioCtxRef.current) audioCtxRef.current.close();
-        } catch (e) {}
+        } catch (e) {
+          // Swallow audio context termination exceptions
+        }
         oscRef.current = null;
         audioCtxRef.current = null;
         gainRef.current = null;
