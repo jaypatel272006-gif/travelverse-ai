@@ -49,6 +49,11 @@ export const HotelCard = memo(({ hotel, onBook }) => {
           alt={hotel.name}
           className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+            e.target.srcset = '';
+          }}
         />
         <button
           onClick={() => toggleWishlist('hotels', hotel)}

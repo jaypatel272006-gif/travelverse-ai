@@ -19,33 +19,12 @@ import { mockDestinations } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import { UniverseExplorer } from '../components/UniverseExplorer';
 
-// Mini CountUp Component for stats
-const CountUp = ({ to, suffix = '', duration = 1.5 }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    const end = parseInt(to);
-    if (start === end) return;
-
-    let totalMiliseconds = duration * 1000;
-    let incrementTime = Math.max(Math.floor(totalMiliseconds / end), 20);
-    
-    let timer = setInterval(() => {
-      start += Math.ceil(end / 30);
-      if (start >= end) {
-        clearInterval(timer);
-        setCount(end);
-      } else {
-        setCount(start);
-      }
-    }, incrementTime);
-
-    return () => clearInterval(timer);
-  }, [to, duration]);
-
-  return <span>{count.toLocaleString()}{suffix}</span>;
-};
+import { HomeMoodSelection } from '../components/home/HomeMoodSelection';
+import { HomeHiddenIndia } from '../components/home/HomeHiddenIndia';
+import { HomeBudgetEstimation } from '../components/home/HomeBudgetEstimation';
+import { HomeStatsCounters } from '../components/home/HomeStatsCounters';
+import { HomeEcosystemCockpit } from '../components/home/HomeEcosystemCockpit';
+import { HomeTestimonials } from '../components/home/HomeTestimonials';
 
 // Procedural Audio Synthesizer Engine
 const playProceduralSound = (type, audioCtxRef, activeNodesRef) => {
@@ -2789,433 +2768,40 @@ export const Home = () => {
           <div className="flex gap-8 whitespace-nowrap animate-marquee">
             <span>Goa Beaches (Active Density)</span>
             <span className="text-white">•</span>
-            <span>Ladakh Mountain Loop (High Altitude Alert)</span>
-            <span className="text-white">•</span>
-            <span>Varanasi Spiritual Ghats (Peak Density)</span>
-            <span className="text-white">•</span>
-            <span>Ziro Valley (Monsoon Warning)</span>
-            <span className="text-white">•</span>
-            <span>Tawang Peak (AMS Rest Advisory)</span>
-            <span className="text-white">•</span>
-            <span>Majuli River Ferry (Operational)</span>
+                      <span>Ziro Valley (Monsoon Warning)</span>
           </div>
         </div>
       </section>
       )}
 
-      {/* 🧘 TRAVEL MOOD SELECTION SECTION */}
-      <section className="flex flex-col gap-10 text-left">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] text-teal-400 font-bold uppercase tracking-widest font-mono">NEURAL SELECTION MATRIX</span>
-          <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-850 dark:text-white mt-0 tracking-wide">
-            How do you want to feel?
-          </h2>
-          <p className="text-xs text-slate-400 font-semibold">
-            Choose an emotion matrix below. Our AI Twin engine immediately highlights domestic and global destinations mapped to that vibe.
-          </p>
-        </div>
+      <HomeMoodSelection
+        selectedMood={selectedMood}
+        setSelectedMood={setSelectedMood}
+        moodsList={moodsList}
+        moodStyle={moodStyle}
+        filteredDestinations={filteredDestinations}
+        showToast={showToast}
+      />
 
-        {/* Mood select grid */}
-        <div className="flex flex-wrap gap-2.5 mt-2">
-          {moodsList.map((mood) => (
-            <button
-              key={mood.name}
-              onClick={() => {
-                setSelectedMood(mood.name);
-                showToast(`Filtered destinations matching mood "${mood.name}"!`, 'success');
-              }}
-              className={`px-4 py-3 border rounded-2xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-2 ${
-                selectedMood === mood.name
-                  ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-[0_0_12px_rgba(45,212,191,0.25)] scale-105'
-                  : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-300 hover:border-teal-500/30'
-              }`}
-            >
-              <span className="text-sm">{mood.icon}</span>
-              <span>{mood.name.toUpperCase()}</span>
-            </button>
-          ))}
-        </div>
+      <HomeHiddenIndia />
 
-        {/* Filtered Destination Cards */}
-        <div className={moodStyle.wrapperClass}>
-          {moodStyle.motif}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-            <AnimatePresence mode="popLayout">
-              {filteredDestinations.slice(0, 6).map((dest) => (
-                <motion.div
-                  key={dest.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <DestinationCard destination={dest} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      </section>
+      <HomeBudgetEstimation
+        budgetVal={budgetVal}
+        setBudgetVal={setBudgetVal}
+        durationVal={durationVal}
+        setDurationVal={setDurationVal}
+        handleQuickPlan={handleQuickPlan}
+      />
 
-      {/* 🗺️ HIDDEN INDIA DISCOVERY ENGINE */}
-      <section className="flex flex-col gap-10 text-left">
-        <div className="flex justify-between items-end border-b border-slate-200 dark:border-white/5 pb-4">
-          <div>
-            <span className="text-[10px] text-sky-400 font-bold uppercase tracking-widest font-mono">OFFBEAT SATELLITE TILES</span>
-            <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-850 dark:text-white mt-1.5 tracking-wide">
-              Hidden India Explorer
-            </h2>
-            <p className="text-xs text-slate-400 font-semibold mt-1">
-              Dodge standard tourist trap loops. Venture into these unexplored, high-value alternative coordinates.
-            </p>
-          </div>
-          <Link
-            to="/destinations?filter=offbeat"
-            className="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1 font-mono shrink-0"
-          >
-            ALL OFFBEAT TILES
-            <ArrowRight size={13} />
-          </Link>
-        </div>
+      <HomeStatsCounters />
 
-        {/* Hidden India Grid Slider */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockDestinations.filter(d => ['dest-ziro', 'dest-tawang', 'dest-spiti', 'dest-gokarna', 'dest-majuli'].includes(d.id)).map((dest) => (
-            <DestinationCard key={dest.id} destination={dest} />
-          ))}
-        </div>
-      </section>
+      <HomeEcosystemCockpit />
 
-      {/* 📊 BUDGET ESTIMATION WIDGET */}
-      <section className="p-8 rounded-3xl bg-slate-950/40 backdrop-blur-xl border border-cyan-500/30 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.22),0_0_20px_rgba(20,184,166,0.1)]">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-        {/* Holographic corners details */}
-        <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-cyan-400/40 pointer-events-none" />
-        <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-cyan-400/40 pointer-events-none" />
-        <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-cyan-400/40 pointer-events-none" />
-        <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-cyan-400/40 pointer-events-none" />
-
-        <div className="flex-1 text-left relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold mb-4 border border-teal-500/20">
-            <Sparkles size={12} />
-            <span>AI Estimation Engine</span>
-          </div>
-          <h2 className="font-display font-black text-2xl sm:text-3xl mb-3 leading-tight">
-            Estimate Your Dream Trip Instantly
-          </h2>
-          <p className="text-slate-450 text-xs sm:text-sm max-w-md leading-relaxed font-semibold">
-            Drag the sliders to set your travel bounds. Our AI system will estimate accommodations, activities, and flight budgets, then generate your itinerary.
-          </p>
-        </div>
-
-        <form onSubmit={handleQuickPlan} className="w-full lg:w-96 p-6 rounded-2xl bg-slate-950 border border-white/10 flex flex-col gap-5 text-left relative z-10">
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center text-xs font-semibold text-slate-350">
-              <span>Trip Budget Limit</span>
-              <span className="text-teal-400 font-mono font-bold">₹{budgetVal.toLocaleString('en-IN')}</span>
-            </div>
-            <input
-              type="range"
-              min="40000"
-              max="400000"
-              step="8000"
-              value={budgetVal}
-              onChange={(e) => setBudgetVal(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center text-xs font-semibold text-slate-350">
-              <span>Duration (Days)</span>
-              <span className="text-teal-400 font-mono font-bold">{durationVal} Days</span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="14"
-              value={durationVal}
-              onChange={(e) => setDurationVal(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-teal-400"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <Sparkles size={14} />
-            Launch AI Planner
-          </button>
-        </form>
-      </section>
-
-      {/* Statistical Counters */}
-      <section className="py-12 border-y border-slate-200 dark:border-white/5 grid grid-cols-2 md:grid-cols-5 gap-8 font-mono">
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl sm:text-4xl font-extrabold text-slate-850 dark:text-white font-display">
-            <CountUp to="120" suffix="k+" />
-          </span>
-          <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Happy Users</span>
-        </div>
-        
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl sm:text-4xl font-extrabold text-slate-850 dark:text-white font-display">
-            <CountUp to="250" suffix="+" />
-          </span>
-          <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Destinations Available</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl sm:text-4xl font-extrabold text-slate-850 dark:text-white font-display">
-            <CountUp to="45" suffix="" />
-          </span>
-          <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Countries Mapped</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl sm:text-4xl font-extrabold text-slate-850 dark:text-white font-display">
-            <CountUp to="850" suffix="k+" />
-          </span>
-          <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Trips Planned</span>
-        </div>
-
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-3xl sm:text-4xl font-extrabold text-slate-850 dark:text-white font-display">
-            4.9 ★
-          </span>
-          <span className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Overall Rating</span>
-        </div>
-      </section>
-
-      {/* 🔮 TRAVELVERSE COCKPIT - INTEGRATED AI TRAVEL ECOSYSTEM */}
-      <section className="flex flex-col gap-10 text-left">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] text-teal-400 font-bold uppercase tracking-widest font-mono">TravelVerse Ecosystem Hub</span>
-          <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-850 dark:text-white mt-0 tracking-wide">
-            Travelverse OS Core Engines
-          </h2>
-          <p className="text-xs text-slate-400 font-semibold">
-            Launch, calibrate, or inspect any of the active travel modules in the unified year 2100 travel operating system.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            {
-              title: 'AI Itinerary Planner',
-              desc: 'Generates realistic daily travel schedules, adjusting for walking fatigue and weather.',
-              link: '/planner',
-              badge: 'READY',
-              color: 'text-teal-400 border-teal-500/20 bg-teal-500/5',
-              icon: Cpu
-            },
-            {
-              title: 'Road Trip Planner',
-              desc: 'Maps scenic route paths, EV charging networks, and highway rest areas.',
-              link: '/road-trip-os',
-              badge: 'CALIBRATED',
-              color: 'text-sky-400 border-sky-500/20 bg-sky-500/5',
-              icon: MapPin
-            },
-            {
-              title: 'Religious Tourism',
-              desc: 'Guides travelers through sacred pilgrim routes and local temple rules.',
-              link: '/spiritual',
-              badge: 'STEADY',
-              color: 'text-amber-400 border-amber-500/20 bg-amber-500/5',
-              icon: Landmark
-            },
-            {
-              title: 'Budget Simulator',
-              desc: 'Runs financial simulations to forecast maximum coordinate cost bounds.',
-              link: '/utilities',
-              badge: 'STABLE',
-              color: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5',
-              icon: ShieldCheck
-            },
-            {
-              title: 'Fuel Cost Calculator',
-              desc: 'Calculates vehicle consumption and toll fees for cross-country tracks.',
-              link: '/road-trip-os',
-              badge: 'READY',
-              color: 'text-indigo-400 border-indigo-500/20 bg-indigo-500/5',
-              icon: Activity
-            },
-            {
-              title: 'Hotel Recommendations',
-              desc: 'AI matching ranks accommodations suited to traveler DNA profiles.',
-              link: '/hotels',
-              badge: 'VETTED',
-              color: 'text-purple-400 border-purple-500/20 bg-purple-500/5',
-              icon: Lock
-            },
-            {
-              title: 'Restaurant Explorer',
-              desc: 'Identifies local culinary specialties, street food, and Jain choices.',
-              link: '/utilities',
-              badge: 'ONLINE',
-              color: 'text-rose-400 border-rose-500/20 bg-rose-500/5',
-              icon: Compass
-            },
-            {
-              title: 'Interactive Maps',
-              desc: 'Displays real-time day/night cycles and aircraft coordinates globally.',
-              link: '/maps',
-              badge: 'LIVE',
-              color: 'text-pink-400 border-pink-500/20 bg-pink-500/5',
-              icon: Globe
-            },
-            {
-              title: 'Travel Calendar',
-              desc: 'Blocks out scheduled trip days to avoid timing overlaps.',
-              link: '/utilities',
-              badge: 'ACTIVE',
-              color: 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5',
-              icon: Calendar
-            },
-            {
-              title: 'Saved Trips Log',
-              desc: 'Accesses saved custom itineraries and agent logs.',
-              link: '/dashboard',
-              badge: 'SYNCHRONIZED',
-              color: 'text-orange-400 border-orange-500/20 bg-orange-500/5',
-              icon: Layers
-            },
-            {
-              title: 'Memory Vault',
-              desc: 'Stores digital postcards, audio diaries, and coordinates stamps.',
-              link: '/legacy',
-              badge: 'RESTORED',
-              color: 'text-amber-400 border-amber-500/20 bg-amber-500/5',
-              icon: BookOpen
-            },
-            {
-              title: 'Travel Statistics',
-              desc: 'Inspects country completeness indices and carbon footprints.',
-              link: '/dashboard',
-              badge: 'ONLINE',
-              color: 'text-teal-400 border-teal-500/20 bg-teal-500/5',
-              icon: TrendingUp
-            },
-            {
-              title: 'Personalized Recommendations',
-              desc: 'Suggests coordinates matched to user travel history.',
-              link: '/dream-trip',
-              badge: 'READY',
-              color: 'text-sky-400 border-sky-500/20 bg-sky-500/5',
-              icon: Sparkles
-            },
-            {
-              title: 'Travel Personas',
-              desc: 'Calibrates travel preferences via DNA profile mapping.',
-              link: '/personality-lab',
-              badge: 'RESOLVED',
-              color: 'text-purple-400 border-purple-500/20 bg-purple-500/5',
-              icon: UserCheck
-            },
-            {
-              title: 'Explorer Achievements',
-              desc: 'Tracks unlocked location badges and ranking levels.',
-              link: '/achievements',
-              badge: 'ACTIVE',
-              color: 'text-yellow-400 border-yellow-500/20 bg-yellow-500/5',
-              icon: Award
-            }
-          ].map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={idx}
-                to={item.link}
-                className="group p-6 rounded-3xl bg-slate-900/40 hover:bg-slate-900 border border-white/5 hover:border-teal-500/30 transition-all duration-300 flex flex-col justify-between text-left card-premium-hover shadow-lg"
-              >
-                <div className="flex flex-col gap-3">
-                  <div className="flex justify-between items-start">
-                    <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-teal-400 group-hover:text-white transition-colors">
-                      <Icon size={18} />
-                    </div>
-                    <span className={`px-2.5 py-0.5 rounded-full border text-[8px] font-bold font-mono tracking-wider ${item.color}`}>
-                      {item.badge}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-teal-400 transition-colors mt-2">{item.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed font-medium mt-1">{item.desc}</p>
-                </div>
-                <div className="pt-4 mt-6 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-teal-400 uppercase font-bold tracking-wider">
-                  <span>LAUNCH MODULE</span>
-                  <ArrowRight size={12} className="group-hover:translate-x-1.5 transition-transform" />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Testimonials Carousel */}
-      <section className="flex flex-col gap-10 text-center max-w-3xl mx-auto">
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-teal-400 font-mono">Testimonials</span>
-          <h2 className="font-display font-extrabold text-2xl sm:text-3xl text-slate-850 dark:text-white mt-1 tracking-wide">
-            What Our Explorers Say
-          </h2>
-        </div>
-
-        <div className="relative min-h-[260px] sm:min-h-[220px] mt-4 p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 shadow-xl flex flex-col justify-between items-center text-center card-premium-hover">
-          <div className="flex flex-col items-center gap-4">
-            <img
-              src={testimonials[activeTestimonial].avatar}
-              alt={testimonials[activeTestimonial].name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-teal-500 shadow-md"
-            />
-            
-            {/* Star Ratings */}
-            <div className="flex gap-0.5 text-amber-400 text-xs">
-              {Array.from({ length: testimonials[activeTestimonial].rating }).map((_, i) => (
-                <span key={i}>★</span>
-              ))}
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-655 dark:text-slate-350 italic leading-relaxed max-w-xl font-semibold">
-              "{testimonials[activeTestimonial].comment}"
-            </p>
-          </div>
-
-          <div className="mt-4 flex flex-col items-center gap-1.5">
-            <span className="px-2 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded-full flex items-center gap-1 self-center">
-              ✓ Verified Traveler Review
-            </span>
-            <span className="text-xs font-bold text-slate-800 dark:text-white font-mono">
-              {testimonials[activeTestimonial].name}
-            </span>
-            <div className="flex items-center gap-1.5 text-[9px] text-slate-455 font-bold uppercase tracking-wider font-mono">
-              <span>{testimonials[activeTestimonial].role}</span>
-              <span>•</span>
-              <span className="text-teal-650 dark:text-teal-400">
-                Visited {testimonials[activeTestimonial].destination} {testimonials[activeTestimonial].country}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Carousel indicators */}
-        <div className="flex justify-center gap-2 mt-2">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveTestimonial(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                activeTestimonial === index 
-                  ? 'bg-teal-500 w-6' 
-                  : 'bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-500'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </div>
-      </section>
+      <HomeTestimonials
+        testimonials={testimonials}
+        activeTestimonial={activeTestimonial}
+        setActiveTestimonial={setActiveTestimonial}
+      />
     </div>
   );
 };
