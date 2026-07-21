@@ -80,7 +80,7 @@ export const TravelUtilities = () => {
 
     showToast('AI Translator: Synthesizing regional nodes...', 'info');
     setTimeout(() => {
-      let result = 'Translation complete.';
+      let result;
       const text = transText.toLowerCase();
 
       if (transLang === 'Hindi') {

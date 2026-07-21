@@ -386,9 +386,9 @@ export const SpiritualUniverse = () => {
         // Generate day objects
         const generatedDays = Array.from({ length: plannerDuration }, (_, idx) => {
           const dayNum = idx + 1;
-          let morningText = 'Morning prayer and entry queue preparation.';
-          let afternoonText = 'Detailed exploration of the sacred central shrine complexes.';
-          let eveningText = 'Attend night prayers, Aarti, or group chanting congregations.';
+          let morningText;
+          let afternoonText;
+          let eveningText;
           
           if (plannerFaith === 'Hinduism') {
             if (dayNum === 1) {
