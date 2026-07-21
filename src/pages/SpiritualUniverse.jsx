@@ -1712,7 +1712,7 @@ export const SpiritualUniverse = () => {
                           key={i} 
                           className="w-1 bg-teal-400 rounded-t"
                           style={{
-                            height: `${15 + Math.random() * 85}%`,
+                            height: `${15 + ((i * 17) % 85)}%`,
                             animation: `cyberDash ${0.5 + i * 0.1}s ease-in-out infinite alternate`
                           }}
                         />
