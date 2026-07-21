@@ -351,7 +351,7 @@ export const DestinationCard = memo(({ destination }) => {
             </div>
           </div>
         </div>
-      </mot      {/* Quick View Modal Overlay rendered via React Portal */}
+      </motion.div>
       {createPortal(
         <AnimatePresence>
           {showQuickView && (
@@ -419,7 +419,7 @@ export const DestinationCard = memo(({ destination }) => {
           )}
         </AnimatePresence>,
         document.body
-      )}imatePresence>
+      )}
     </>
   );
 });
