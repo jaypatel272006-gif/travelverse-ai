@@ -27,7 +27,13 @@ export const PWAInstallPrompt = () => {
 
     // Also check if app is already installed / running as standalone PWA
     if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsVisible(false);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 0);
+      return () => {
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        clearTimeout(timer);
+      };
     }
 
     return () => {

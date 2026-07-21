@@ -3,7 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 export const CustomCursor = () => {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    }
+    return false;
+  });
   const [isHovered, setIsHovered] = useState(false);
 
   // Keep track of coordinates
@@ -16,7 +21,6 @@ export const CustomCursor = () => {
     if (!mediaQuery.matches) return;
 
     document.body.classList.add('custom-cursor-active');
-    setIsVisible(true);
 
     const onMouseMove = (e) => {
       mouseCoords.current.x = e.clientX;
