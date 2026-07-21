@@ -23,9 +23,12 @@ export const TourPackages = () => {
     if (initialId) {
       const matchedTour = mockTours.find(t => t.id === initialId);
       if (matchedTour) {
-        setSelectedTour(matchedTour);
-        setCheckoutStep(false);
-        setActiveTab('itinerary');
+        const timer = setTimeout(() => {
+          setSelectedTour(matchedTour);
+          setCheckoutStep(false);
+          setActiveTab('itinerary');
+        }, 0);
+        return () => clearTimeout(timer);
       }
     }
   }, [initialId]);
