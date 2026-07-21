@@ -131,7 +131,10 @@ function App() {
   useEffect(() => {
     const shown = sessionStorage.getItem('travelverse_intro_shown');
     if (!shown) {
-      setAppLoading(true);
+      const timer = setTimeout(() => {
+        setAppLoading(true);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 
