@@ -50,7 +50,7 @@ export const AIAssistantWidget = () => {
 
     // AI smart response generation logic based on keywords
     setTimeout(() => {
-      let aiText = '';
+      let aiText;
       const query = text.toLowerCase();
 
       if (query.includes('visa') || query.includes('passport') || query.includes('entry') || query.includes('nri')) {
