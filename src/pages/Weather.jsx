@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 import { Search, CloudSun, Thermometer, Wind, Eye, Droplet, Sun, Umbrella, CloudRain, Snowflake, AlertTriangle, Sparkles, Navigation } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { WeatherSkeleton } from '../components/SkeletonLoader';
