@@ -1413,11 +1413,6 @@ export const Dashboard = () => {
           0% { top: 0; }
           100% { top: 100%; }
         }
-        .glass-neo {
-          background: rgba(15, 23, 42, 0.55);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(45, 212, 191, 0.1);
-        }
       `}</style>
 
       {/* Header OS Panel */}
@@ -1444,7 +1439,7 @@ export const Dashboard = () => {
           <select
             value={activeWorkspace}
             onChange={(e) => setActiveWorkspace(e.target.value)}
-            className="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-teal-500/15 text-xs font-bold text-slate-800 dark:text-teal-400 font-mono outline-none shadow-sm cursor-pointer"
+            className="px-3.5 py-2 rounded-xl glass-card-neo text-xs font-bold text-slate-800 dark:text-teal-400 font-mono outline-none shadow-sm cursor-pointer"
           >
             {workspacePresets.map(preset => (
               <option key={preset.id} value={preset.id}>OS Desk: {preset.name}</option>
@@ -1453,7 +1448,7 @@ export const Dashboard = () => {
 
           <button
             onClick={handleLogout}
-            className="px-4 py-2 border border-rose-200 dark:border-rose-900/40 bg-white dark:bg-slate-900/30 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-xs font-bold rounded-xl text-rose-600 dark:text-rose-400 flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+            className="px-4 py-2 border border-rose-500/30 hover:border-rose-500/50 bg-rose-500/10 hover:bg-rose-500/20 text-xs font-bold rounded-xl text-rose-400 flex items-center gap-1.5 transition-all cursor-pointer shadow-sm hover:shadow-[0_0_15px_rgba(239,68,68,0.25)]"
           >
             <LogOut size={12} /> Shutdown OS
           </button>
@@ -1516,25 +1511,25 @@ export const Dashboard = () => {
 
         {/* Analytics stats */}
         <div className="lg:col-span-3 p-5 rounded-3xl glass-neo border border-slate-200/50 dark:border-teal-500/10 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
+          <div className="p-4 rounded-2xl glass-card-neo text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Active Projects</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{itineraries.length}</span>
             <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Saved Plans</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
+          <div className="p-4 rounded-2xl glass-card-neo text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Persona Mode</span>
             <span className="text-sm font-black font-mono text-slate-800 dark:text-teal-400 uppercase truncate mt-1">{activePersona}</span>
             <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">AI Template</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
+          <div className="p-4 rounded-2xl glass-card-neo text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Custom Rules</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{customRules.length}</span>
             <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Active Rules</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
+          <div className="p-4 rounded-2xl glass-card-neo text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">OS XP Ledger</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{userXp}</span>
             <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Level {userLevel} Core</span>
