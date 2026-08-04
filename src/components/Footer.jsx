@@ -18,7 +18,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-955 text-slate-400 border-t border-slate-900 pt-28 pb-14 px-8 sm:px-16 lg:px-20 w-full text-left relative overflow-hidden">
+    <footer className="bg-slate-950 text-slate-400 border-t border-slate-900/60 pt-28 pb-14 px-8 sm:px-16 lg:px-20 w-full text-left relative overflow-hidden">
       {/* Decorative background gradients */}
       <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -66,7 +66,7 @@ export const Footer = () => {
                 )
               }
             ].map((soc, idx) => (
-              <a 
+               <a 
                 key={idx}
                 href="#" 
                 className="w-10 h-10 rounded-xl bg-slate-900 border border-white/5 hover:border-teal-500/40 text-slate-400 hover:text-teal-400 hover:shadow-[0_0_15px_rgba(20,184,166,0.25)] flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 outline-none focus-visible:ring-2 focus-visible:ring-teal-500" 
@@ -151,7 +151,7 @@ export const Footer = () => {
       {/* Glassmorphic Newsletter & Trust Badges Block */}
       <div className="max-w-7xl mx-auto border-t border-white/5 pt-16 pb-10 grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12 z-10 relative items-center">
         {/* Newsletter Frosted Card */}
-        <div className="lg:col-span-7 p-6 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-md text-left flex flex-col gap-4 shadow-xl">
+        <div className="lg:col-span-7 p-6 rounded-3xl glass-neo text-left flex flex-col gap-4 shadow-xl">
           <div>
             <h4 className="text-white font-mono font-bold text-xs uppercase tracking-widest">Subscribe to Telemetry Streams</h4>
             <p className="text-xs text-slate-400 leading-relaxed mt-1">
