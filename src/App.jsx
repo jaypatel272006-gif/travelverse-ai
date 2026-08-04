@@ -55,6 +55,7 @@ const PersonalityLab = lazyWithRetry(() => import('./pages/PersonalityLab').then
 const TravelUtilities = lazyWithRetry(() => import('./pages/TravelUtilities').then(m => ({ default: m.TravelUtilities })));
 const Achievements = lazyWithRetry(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
 const RoadTripOS = lazyWithRetry(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
+const NotFound = lazyWithRetry(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 
 // High-fidelity Scroll coordinate manager (restores scroll coordinates per path)
 const ScrollManager = () => {
@@ -195,6 +196,7 @@ function App() {
                 <Route path="/utilities" element={<PageTransition><TravelUtilities /></PageTransition>} />
                 <Route path="/achievements" element={<PageTransition><Achievements /></PageTransition>} />
                 <Route path="/road-trip-os" element={<PageTransition><RoadTripOS /></PageTransition>} />
+                <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
               </Routes>
             </AnimatePresence>
           </Suspense>
