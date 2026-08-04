@@ -148,7 +148,7 @@ export const HomeEcosystemCockpit = () => {
             <Link
               key={idx}
               to={item.link}
-              className="group p-6 rounded-3xl bg-slate-900/40 hover:bg-slate-900 border border-white/5 hover:border-teal-500/30 transition-all duration-300 flex flex-col justify-between text-left card-premium-hover shadow-lg"
+              className="group p-6 rounded-3xl glass-card-neo transition-all duration-300 flex flex-col justify-between text-left shadow-lg"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-start">
