@@ -13,8 +13,13 @@ export const Challenges = () => {
   });
   
   const [triedFoods, setTriedFoods] = useState(() => {
-    const saved = localStorage.getItem('tv_tried_foods');
-    return saved ? JSON.parse(saved) : ['Cardamom Tea'];
+    try {
+      const saved = localStorage.getItem('tv_tried_foods');
+      return saved ? JSON.parse(saved) : ['Cardamom Tea'];
+    } catch (e) {
+      console.warn("Failed to parse tv_tried_foods from localStorage, using fallback.", e);
+      return ['Cardamom Tea'];
+    }
   });
 
   // Selected Roadmap Goal State
