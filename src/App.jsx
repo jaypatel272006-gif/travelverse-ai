@@ -99,16 +99,18 @@ const PageTransition = ({ children }) => {
   };
 
   return (
-    <motion.div
-      variants={variants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={prefersReducedMotion ? { duration: 0.1 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full"
-    >
-      {children}
-    </motion.div>
+    <RouteErrorBoundary>
+      <motion.div
+        variants={variants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        transition={prefersReducedMotion ? { duration: 0.1 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full"
+      >
+        {children}
+      </motion.div>
+    </RouteErrorBoundary>
   );
 };
 
@@ -138,6 +140,20 @@ function App() {
       }, 0);
       return () => clearTimeout(timer);
     }
+  }, []);
+
+  // Global event listener for image loading errors (image fallbacks)
+  useEffect(() => {
+    const handleImageError = (event) => {
+      if (event.target && event.target.tagName === 'IMG') {
+        const fallback = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
+        if (event.target.src !== fallback) {
+          event.target.src = fallback;
+        }
+      }
+    };
+    window.addEventListener('error', handleImageError, true);
+    return () => window.removeEventListener('error', handleImageError, true);
   }, []);
 
   const handleLoaderComplete = () => {
