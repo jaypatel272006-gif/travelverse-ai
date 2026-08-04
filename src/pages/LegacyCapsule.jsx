@@ -15,17 +15,31 @@ export const LegacyCapsule = () => {
 
   // Time Capsule states
   const [capsules, setCapsules] = useState(() => {
-    const saved = localStorage.getItem('tv_time_capsules');
-    return saved ? JSON.parse(saved) : [
-      {
-        id: 'cap-1',
-        title: 'Voyage to the Northern Lights',
-        destination: 'Tromso, Norway',
-        unlockDate: '2026-12-25T00:00:00.000Z',
-        message: 'Dear Self, I hope you finally saw the green aurora waves in Norway. Remember the chilly nights and hot cocoa!',
-        sealed: true
-      }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_time_capsules');
+      return saved ? JSON.parse(saved) : [
+        {
+          id: 'cap-1',
+          title: 'Voyage to the Northern Lights',
+          destination: 'Tromso, Norway',
+          unlockDate: '2026-12-25T00:00:00.000Z',
+          message: 'Dear Self, I hope you finally saw the green aurora waves in Norway. Remember the chilly nights and hot cocoa!',
+          sealed: true
+        }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_time_capsules:", e);
+      return [
+        {
+          id: 'cap-1',
+          title: 'Voyage to the Northern Lights',
+          destination: 'Tromso, Norway',
+          unlockDate: '2026-12-25T00:00:00.000Z',
+          message: 'Dear Self, I hope you finally saw the green aurora waves in Norway. Remember the chilly nights and hot cocoa!',
+          sealed: true
+        }
+      ];
+    }
   });
   const [capTitle, setCapTitle] = useState('');
   const [capDest, setCapDest] = useState('');

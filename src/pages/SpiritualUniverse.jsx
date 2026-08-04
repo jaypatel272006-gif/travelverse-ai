@@ -178,8 +178,13 @@ export const SpiritualUniverse = () => {
 
   // 12 Jyotirlinga Tracker State
   const [visitedJyotirlingas, setVisitedJyotirlingas] = useState(() => {
-    const saved = localStorage.getItem('tv_jyotirlinga_progress');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('tv_jyotirlinga_progress');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.warn("Failed to parse tv_jyotirlinga_progress:", e);
+      return [];
+    }
   });
   const [showCertificate, setShowCertificate] = useState(false);
 
@@ -198,8 +203,13 @@ export const SpiritualUniverse = () => {
 
   // Pilgrim Passport Stamps State
   const [passportStamps, setPassportStamps] = useState(() => {
-    const saved = localStorage.getItem('tv_spiritual_stamps');
-    return saved ? JSON.parse(saved) : ['Varanasi-Kashi']; // Default stamp for startup
+    try {
+      const saved = localStorage.getItem('tv_spiritual_stamps');
+      return saved ? JSON.parse(saved) : ['Varanasi-Kashi']; // Default stamp for startup
+    } catch (e) {
+      console.warn("Failed to parse tv_spiritual_stamps:", e);
+      return ['Varanasi-Kashi'];
+    }
   });
 
   // AI Spiritual Planner States
