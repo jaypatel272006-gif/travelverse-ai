@@ -161,10 +161,10 @@ export const Navbar = () => {
 
   return (
     <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-3' : 'py-5'}`}>
-      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 backdrop-blur-md border ${
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 glass-neo ${
         isScrolled 
-          ? 'bg-white/70 dark:bg-slate-950/70 border-slate-200/40 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.15),0_0_20px_rgba(20,184,166,0.05)] px-6 py-2.5' 
-          : 'bg-white/80 dark:bg-slate-950/80 border-slate-200/20 dark:border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] px-6 py-3.5'
+          ? 'px-6 py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.35),0_0_25px_rgba(20,184,166,0.1)]' 
+          : 'px-6 py-3.5 shadow-[0_8px_30px_rgba(0,0,0,0.2)]'
       } flex items-center justify-between`}>
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 select-none group shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg">
@@ -226,7 +226,7 @@ export const Navbar = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -5, scale: 0.95 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    className="absolute top-full left-0 w-max min-w-[200px] mt-1 p-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 shadow-2xl z-50 flex flex-col gap-0.5 text-left"
+                    className="absolute top-full left-0 w-max min-w-[200px] mt-2 p-2 rounded-2xl glass-neo shadow-2xl z-50 flex flex-col gap-0.5 text-left"
                   >
                     {engineLinks.map((link) => (
                       <Link
@@ -317,7 +317,7 @@ export const Navbar = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      className="absolute right-0 mt-2.5 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-2xl p-2 z-50 text-left"
+                      className="absolute right-0 mt-2.5 w-56 rounded-2xl glass-neo shadow-2xl p-2 z-50 text-left"
                     >
                       <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
                         <p className="text-xs text-slate-400 font-semibold">Logged in as</p>
@@ -422,7 +422,7 @@ export const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-              className="fixed right-0 top-0 bottom-0 w-[280px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-l border-slate-100 dark:border-slate-800 p-6 z-55 xl:hidden flex flex-col gap-6 text-left shadow-[0_-10px_35px_rgba(0,0,0,0.15)]"
+              className="fixed right-0 top-0 bottom-0 w-[280px] glass-neo border-l border-slate-800 p-6 z-55 xl:hidden flex flex-col gap-6 text-left shadow-[0_-10px_35px_rgba(0,0,0,0.35)]"
             >
               <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800">
                 <span className="font-display font-extrabold text-lg text-slate-850 dark:text-slate-100">
