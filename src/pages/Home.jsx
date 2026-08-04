@@ -15,11 +15,11 @@ import { mockDestinations } from '../data/mockData';
 import { useApp } from '../context/AppContext';
 import { UniverseExplorer } from '../components/UniverseExplorer';
 
-import { HomeMoodSelection } from '../components/home/HomeMoodSelection';
-import { HomeHiddenIndia } from '../components/home/HomeHiddenIndia';
-import { HomeBudgetEstimation } from '../components/home/HomeBudgetEstimation';
-import { HomeStatsCounters } from '../components/home/HomeStatsCounters';
-import { HomeEcosystemCockpit } from '../components/home/HomeEcosystemCockpit';
+import { HomeAIPlannerSection } from '../components/home/HomeAIPlannerSection';
+import { HomeDestinationsSection } from '../components/home/HomeDestinationsSection';
+import { HomeSpiritualUniverseSection } from '../components/home/HomeSpiritualUniverseSection';
+import { HomeMemoryVaultSection } from '../components/home/HomeMemoryVaultSection';
+import { HomeDashboardSection } from '../components/home/HomeDashboardSection';
 import { HomeTestimonials } from '../components/home/HomeTestimonials';
 
 // Procedural Audio Synthesizer Engine
@@ -2854,28 +2854,15 @@ export const Home = () => {
       </section>
       )}
 
-      <HomeMoodSelection
-        selectedMood={selectedMood}
-        setSelectedMood={setSelectedMood}
-        moodsList={moodsList}
-        moodStyle={moodStyle}
-        filteredDestinations={filteredDestinations}
-        showToast={showToast}
-      />
+      <HomeAIPlannerSection />
 
-      <HomeHiddenIndia />
+      <HomeDestinationsSection />
 
-      <HomeBudgetEstimation
-        budgetVal={budgetVal}
-        setBudgetVal={setBudgetVal}
-        durationVal={durationVal}
-        setDurationVal={setDurationVal}
-        handleQuickPlan={handleQuickPlan}
-      />
+      <HomeSpiritualUniverseSection />
 
-      <HomeStatsCounters />
+      <HomeMemoryVaultSection />
 
-      <HomeEcosystemCockpit />
+      <HomeDashboardSection />
 
       <HomeTestimonials
         testimonials={testimonials}
