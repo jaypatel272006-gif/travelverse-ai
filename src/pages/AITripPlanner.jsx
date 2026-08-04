@@ -178,16 +178,17 @@ export const AITripPlanner = () => {
     // Set initial log
     setTerminalLogs([targetLogs[0]]);
 
-    const logInterval = setInterval(() => {
+    generateIntervalRef.current = setInterval(() => {
       logIdx++;
       if (logIdx < targetLogs.length) {
         setTerminalLogs(prev => [...prev, targetLogs[logIdx]]);
         setGeneratingProgress(Math.min(100, Math.round((logIdx / (targetLogs.length - 1)) * 100)));
       } else {
-        clearInterval(logInterval);
+        clearInterval(generateIntervalRef.current);
+        generateIntervalRef.current = null;
         
         // Build mock itinerary matching wizard inputs
-        setTimeout(() => {
+        generateTimeoutRef.current = setTimeout(() => {
           const selectedDest = mockDestinations.find(
             d => d.name.toLowerCase().includes(destination.toLowerCase())
           ) || { name: destination, country: 'Explore', price: 64000, image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80', description: 'Explore the wonders of this beautiful travel hub.' };
@@ -288,6 +289,7 @@ export const AITripPlanner = () => {
           setActiveTab('schedule');
           setDocPlaying(false);
           setDocDay(0);
+          generateTimeoutRef.current = null;
         }, 500);
       }
     }, 350);
