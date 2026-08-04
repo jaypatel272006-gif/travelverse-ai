@@ -310,11 +310,11 @@ export const UniverseExplorer = () => {
     window.addEventListener('resize', handleResize);
 
     // Animation loop
-    const clock = new THREE.Clock();
+    const startTime = Date.now();
     let animationFrameId;
     let animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (Date.now() - startTime) / 1000;
 
       // Core rotation
       coreMesh.rotation.y = elapsedTime * 0.2;
