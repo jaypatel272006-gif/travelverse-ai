@@ -2845,8 +2845,9 @@ export const Home = () => {
         <div className="w-full flex justify-center items-center py-4 relative z-20 font-mono text-[9px] text-slate-400 hover:text-white transition-colors cursor-pointer select-none">
           <span className="tracking-widest uppercase">SCROLL TO DE-ORBIT</span>
           <motion.span
-            animate={{ y: [0, 5, 0] }}
+            whileInView={{ y: [0, 5, 0] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            viewport={{ once: false }}
             className="text-teal-400 text-xs ml-1.5"
           >
             ↓

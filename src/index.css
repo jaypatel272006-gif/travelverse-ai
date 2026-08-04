@@ -781,24 +781,16 @@ textarea:focus-visible {
   animation: star-glowing 3s ease-in-out infinite;
 }
 
-/* Accessibility: respect prefers-reduced-motion settings */
+/* Accessibility: respect prefers-reduced-motion settings globally */
 @media (prefers-reduced-motion: reduce) {
-  .animate-cloud-slow,
-  .animate-cloud-fast,
-  .animate-airplane-fly,
-  .animate-route-dash,
-  .animate-globe-scroll,
-  .animate-globe-pulse,
-  .animate-star-glow,
-  .animate-sun-sweep,
-  .animate-aurora-glow,
-  .animate-fog-drift,
-  .animate-snow-drift,
-  .animate-wind-drift,
-  .animate-wave-drift,
-  .animate-bird-drift {
-    animation: none !important;
-    transition: none !important;
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }
 
