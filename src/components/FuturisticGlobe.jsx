@@ -310,11 +310,31 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     };
     window.addEventListener('resize', handleResize);
 
+    // Intersection observer to pause rendering when scrolled out of view
+    let isIntersecting = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+    }, { threshold: 0 });
+    if (mountRef.current) {
+      observer.observe(mountRef.current);
+    }
+
     // Animation Loop
     const startTime = Date.now();
     let animationFrameId;
+    let lastFrameTime = performance.now();
+    const fpsInterval = 1000 / 60;
+
     let animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      
+      if (document.hidden || !isIntersecting) return;
+
+      const now = performance.now();
+      const elapsed = now - lastFrameTime;
+      if (elapsed < fpsInterval) return;
+      lastFrameTime = now - (elapsed % fpsInterval);
+
       const elapsedTime = (Date.now() - startTime) / 1000;
 
       // Slow rotation
@@ -357,6 +377,7 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      if (observer) observer.disconnect();
       if (renderer.domElement) {
         renderer.domElement.removeEventListener('click', handleCanvasClick);
         renderer.domElement.removeEventListener('mousemove', handleCanvasMouseMove);

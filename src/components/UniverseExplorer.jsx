@@ -93,6 +93,12 @@ export const UniverseExplorer = () => {
   const mountRef = useRef(null);
   const navigate = useNavigate();
   const [selectedPlanet, setSelectedPlanet] = useState(null);
+  const selectedPlanetRef = useRef(null);
+
+  useEffect(() => {
+    selectedPlanetRef.current = selectedPlanet;
+  }, [selectedPlanet]);
+
   const [hoveredPlanetName, setHoveredPlanetName] = useState('');
   const [planetCoords, setPlanetCoords] = useState({});
   const [systemAlert, setSystemAlert] = useState('SYSTEM INIT: Calibrating space station telemetry...');
