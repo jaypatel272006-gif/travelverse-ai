@@ -33,7 +33,8 @@ export const FlightCard = memo(({ flight, onBook }) => {
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="rounded-2xl border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+      whileHover={{ y: -4 }}
+      className="group rounded-2xl border border-slate-100 dark:border-teal-500/20 bg-white dark:bg-slate-950/20 glass-card-neo shadow-sm hover:shadow-[0_20px_50px_rgba(20,184,166,0.12)] hover:scale-[1.01] transition-all duration-300 overflow-hidden"
     >
       <div className="p-6 flex flex-col lg:flex-row justify-between items-center gap-6">
         {/* Airline & Brand */}

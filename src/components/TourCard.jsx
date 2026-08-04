@@ -19,8 +19,8 @@ export const TourCard = memo(({ tour }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -6 }}
-      className="group rounded-2xl border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900/50 shadow-md shadow-slate-100/40 dark:shadow-none hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col h-full"
+      whileHover={{ y: -8, scale: 1.025 }}
+      className="group rounded-2xl border border-slate-100 dark:border-teal-500/20 bg-white dark:bg-slate-950/20 glass-card-neo shadow-md hover:shadow-[0_20px_50px_rgba(20,184,166,0.15)] transition-all duration-300 overflow-hidden flex flex-col h-full"
     >
       {/* Tour Image */}
       <div className="relative h-52 overflow-hidden w-full shrink-0">
