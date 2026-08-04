@@ -250,6 +250,22 @@ export const CinematicLoader = ({ onComplete }) => {
       if (handleResize) window.removeEventListener('resize', handleResize);
       gsapTweens.forEach(t => t.kill());
       progressTween.kill();
+      
+      if (renderer) {
+        renderer.dispose();
+      }
+      if (scene) {
+        scene.traverse((object) => {
+          if (object.geometry) object.geometry.dispose();
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach(mat => mat.dispose());
+            } else {
+              object.material.dispose();
+            }
+          }
+        });
+      }
     };
   }, []);
 
