@@ -22,6 +22,16 @@ export const AppContextProvider = ({ children }) => {
     }, 4000);
   };
 
+  const safeJSONParse = (key, fallback) => {
+    try {
+      const saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : fallback;
+    } catch (e) {
+      console.warn(`TravelVerse OS LocalStorage Warning: Failed to parse key "${key}". Reverting to factory fallbacks.`, e);
+      return fallback;
+    }
+  };
+
   // Theme state
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('tv_theme');
@@ -30,67 +40,49 @@ export const AppContextProvider = ({ children }) => {
   });
 
   // User Auth state
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('tv_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [user, setUser] = useState(() => safeJSONParse('tv_user', null));
 
   // Wishlist state: destinations, flights, hotels, tours
-  const [wishlist, setWishlist] = useState(() => {
-    const saved = localStorage.getItem('tv_wishlist');
-    return saved ? JSON.parse(saved) : { destinations: [], flights: [], hotels: [], tours: [] };
-  });
+  const [wishlist, setWishlist] = useState(() => safeJSONParse('tv_wishlist', { destinations: [], flights: [], hotels: [], tours: [] }));
 
   // Saved Itineraries state
-  const [itineraries, setItineraries] = useState(() => {
-    const saved = localStorage.getItem('tv_itineraries');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [itineraries, setItineraries] = useState(() => safeJSONParse('tv_itineraries', []));
 
   // Budget / Savings Tracker state
-  const [budget, setBudget] = useState(() => {
-    const saved = localStorage.getItem('tv_budget');
-    return saved ? JSON.parse(saved) : { target: 500000, currentSavings: 180000 };
-  });
+  const [budget, setBudget] = useState(() => safeJSONParse('tv_budget', { target: 500000, currentSavings: 180000 }));
 
   // Travel Journals state (Social Travel Layer)
-  const [journals, setJournals] = useState(() => {
-    const saved = localStorage.getItem('tv_journals');
-    return saved ? JSON.parse(saved) : [
-      {
-        id: '1',
-        title: 'Misty Mornings in Munnar',
-        location: 'Kerala, India',
-        date: 'June 10, 2026',
-        content: 'Woke up at 5:30 AM to catch the sunrise over the Munnar tea plantations. The mist was rolling over the hills like waves in the ocean. Truly a magical sight! If you visit, try the local cardamom tea at Tata Tea Museum.',
-        image: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=400&q=80',
-        author: 'Alex Mercer'
-      },
-      {
-        id: '2',
-        title: 'Leh-Ladakh Road Trip: Crossing Khardung La',
-        location: 'Ladakh, India',
-        date: 'May 24, 2026',
-        content: 'Successfully crossed Khardung La at 17,582 ft on a Royal Enfield! The wind was freezing and the views were breathtaking. Make sure to carry portable oxygen cans and rest for at least 36 hours in Leh to acclimatize properly.',
-        image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=400&q=80',
-        author: 'Alex Mercer'
-      }
-    ];
-  });
+  const [journals, setJournals] = useState(() => safeJSONParse('tv_journals', [
+    {
+      id: '1',
+      title: 'Misty Mornings in Munnar',
+      location: 'Kerala, India',
+      date: 'June 10, 2026',
+      content: 'Woke up at 5:30 AM to catch the sunrise over the Munnar tea plantations. The mist was rolling over the hills like waves in the ocean. Truly a magical sight! If you visit, try the local cardamom tea at Tata Tea Museum.',
+      image: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=400&q=80',
+      author: 'Alex Mercer'
+    },
+    {
+      id: '2',
+      title: 'Leh-Ladakh Road Trip: Crossing Khardung La',
+      location: 'Ladakh, India',
+      date: 'May 24, 2026',
+      content: 'Successfully crossed Khardung La at 17,582 ft on a Royal Enfield! The wind was freezing and the views were breathtaking. Make sure to carry portable oxygen cans and rest for at least 36 hours in Leh to acclimatize properly.',
+      image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=400&q=80',
+      author: 'Alex Mercer'
+    }
+  ]));
 
   // AI Travel Twin preferences state
-  const [twinPreferences, setTwinPreferences] = useState(() => {
-    const saved = localStorage.getItem('tv_twin_prefs');
-    return saved ? JSON.parse(saved) : {
-      hotelCategory: 'midrange',
-      foodPreference: 'all',
-      budgetRange: 'midrange',
-      flightClass: 'economy',
-      adventureLevel: 'medium',
-      travelPace: 'moderate',
-      favoriteStyle: 'nature'
-    };
-  });
+  const [twinPreferences, setTwinPreferences] = useState(() => safeJSONParse('tv_twin_prefs', {
+    hotelCategory: 'midrange',
+    foodPreference: 'all',
+    budgetRange: 'midrange',
+    flightClass: 'economy',
+    adventureLevel: 'medium',
+    travelPace: 'moderate',
+    favoriteStyle: 'nature'
+  }));
 
   // Travel Gamification states
   const [userXp, setUserXp] = useState(() => {
@@ -110,16 +102,13 @@ export const AppContextProvider = ({ children }) => {
   });
 
   // Dynamic Widget Config
-  const [dashboardWidgets, setDashboardWidgets] = useState(() => {
-    const saved = localStorage.getItem('tv_db_widgets');
-    return saved ? JSON.parse(saved) : [
-      { id: 'budget', label: 'Budget Simulator', visible: true },
-      { id: 'dna', label: 'Travel DNA Genome', visible: true },
-      { id: 'achievements', label: 'Achievements Logs', visible: true },
-      { id: 'wishlist', label: 'Wishlist Telemetry', visible: true },
-      { id: 'journals', label: 'Travel Journals log', visible: true }
-    ];
-  });
+  const [dashboardWidgets, setDashboardWidgets] = useState(() => safeJSONParse('tv_db_widgets', [
+    { id: 'budget', label: 'Budget Simulator', visible: true },
+    { id: 'dna', label: 'Travel DNA Genome', visible: true },
+    { id: 'achievements', label: 'Achievements Logs', visible: true },
+    { id: 'wishlist', label: 'Wishlist Telemetry', visible: true },
+    { id: 'journals', label: 'Travel Journals log', visible: true }
+  ]));
 
   // Workspace Preset Mode
   const [dashboardPreset, setDashboardPreset] = useState(() => {
@@ -128,51 +117,36 @@ export const AppContextProvider = ({ children }) => {
   });
 
   // UI Theme Styling Lab
-  const [uiThemeStyle, setUiThemeStyle] = useState(() => {
-    const saved = localStorage.getItem('tv_ui_theme_style');
-    return saved ? JSON.parse(saved) : {
-      colorTheme: 'noon',
-      accentColor: 'cyan',
-      cardStyle: 'hologram',
-      layoutDensity: 'comfortable'
-    };
-  });
+  const [uiThemeStyle, setUiThemeStyle] = useState(() => safeJSONParse('tv_ui_theme_style', {
+    colorTheme: 'noon',
+    accentColor: 'cyan',
+    cardStyle: 'hologram',
+    layoutDensity: 'comfortable'
+  }));
 
   // Map Studio custom markers
-  const [mapMarkers, setMapMarkers] = useState(() => {
-    const saved = localStorage.getItem('tv_map_markers');
-    return saved ? JSON.parse(saved) : [
-      { id: 'm1', name: 'Kyoto, Japan', type: 'dream', coords: { lat: 35.0116, lon: 135.7681 }, notes: 'Visit Fushimi Inari shrine at dusk', media: [] },
-      { id: 'm2', name: 'Agra, India', type: 'visited', coords: { lat: 27.1767, lon: 78.0081 }, notes: 'Explored Taj Mahal in early morning mist', media: [] }
-    ];
-  });
+  const [mapMarkers, setMapMarkers] = useState(() => safeJSONParse('tv_map_markers', [
+    { id: 'm1', name: 'Kyoto, Japan', type: 'dream', coords: { lat: 35.0116, lon: 135.7681 }, notes: 'Visit Fushimi Inari shrine at dusk', media: [] },
+    { id: 'm2', name: 'Agra, India', type: 'visited', coords: { lat: 27.1767, lon: 78.0081 }, notes: 'Explored Taj Mahal in early morning mist', media: [] }
+  ]));
 
   // Calendar blocked dates
-  const [blockedDates, setBlockedDates] = useState(() => {
-    const saved = localStorage.getItem('tv_blocked_dates');
-    return saved ? JSON.parse(saved) : [
-      { date: '2026-06-25', type: 'blocked', desc: 'Project release window' },
-      { date: '2026-07-02', type: 'vacation', desc: 'Goa monsoon break' }
-    ];
-  });
+  const [blockedDates, setBlockedDates] = useState(() => safeJSONParse('tv_blocked_dates', [
+    { date: '2026-06-25', type: 'blocked', desc: 'Project release window' },
+    { date: '2026-07-02', type: 'vacation', desc: 'Goa monsoon break' }
+  ]));
 
   // Watchlist items
-  const [watchlistItems, setWatchlistItems] = useState(() => {
-    const saved = localStorage.getItem('tv_watchlist_items');
-    return saved ? JSON.parse(saved) : [
-      { id: 'w1', name: 'Japan', type: 'country', dateAdded: '2026-06-15' },
-      { id: 'w2', name: 'Air India', type: 'airline', dateAdded: '2026-06-18' }
-    ];
-  });
+  const [watchlistItems, setWatchlistItems] = useState(() => safeJSONParse('tv_watchlist_items', [
+    { id: 'w1', name: 'Japan', type: 'country', dateAdded: '2026-06-15' },
+    { id: 'w2', name: 'Air India', type: 'airline', dateAdded: '2026-06-18' }
+  ]));
 
   // Memory Vault
-  const [vaultMemories, setVaultMemories] = useState(() => {
-    const saved = localStorage.getItem('tv_vault_memories');
-    return saved ? JSON.parse(saved) : [
-      { id: 'v1', title: 'Agra Dome Flyover', type: 'drone', description: 'Stunning drone capture of the white marble reflection.', location: 'Agra, India', mediaUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=400&q=80' },
-      { id: 'v2', title: 'Local guide interview', type: 'voice', description: 'Transcribed notes from spiritual history discussion.', location: 'Varanasi, India', audioTranscription: 'The Ganga Aarti starts precisely at sunset, aligning seven wooden steps facing eastward...' }
-    ];
-  });
+  const [vaultMemories, setVaultMemories] = useState(() => safeJSONParse('tv_vault_memories', [
+    { id: 'v1', title: 'Agra Dome Flyover', type: 'drone', description: 'Stunning drone capture of the white marble reflection.', location: 'Agra, India', mediaUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=400&q=80' },
+    { id: 'v2', title: 'Local guide interview', type: 'voice', description: 'Transcribed notes from spiritual history discussion.', location: 'Varanasi, India', audioTranscription: 'The Ganga Aarti starts precisely at sunset, aligning seven wooden steps facing eastward...' }
+  ]));
 
   // AI Autonomy setting
   const [aiAutonomy, setAiAutonomy] = useState(() => {
@@ -189,16 +163,10 @@ export const AppContextProvider = ({ children }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   // Smart Stability: Offline storage state
-  const [offlineItineraries, setOfflineItineraries] = useState(() => {
-    const saved = localStorage.getItem('tv_offline_itineraries');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [offlineItineraries, setOfflineItineraries] = useState(() => safeJSONParse('tv_offline_itineraries', []));
 
   // Custom destination photos state
-  const [customPhotos, setCustomPhotos] = useState(() => {
-    const saved = localStorage.getItem('tv_custom_photos');
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [customPhotos, setCustomPhotos] = useState(() => safeJSONParse('tv_custom_photos', {}));
 
   const updateDestinationPhoto = async (id, imageUrl) => {
     setCustomPhotos(prev => {
