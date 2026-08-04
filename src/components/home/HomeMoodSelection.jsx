@@ -33,8 +33,8 @@ export const HomeMoodSelection = ({
             }}
             className={`px-4 py-3 border rounded-2xl text-xs font-bold transition-all duration-300 cursor-pointer flex items-center gap-2 ${
               selectedMood === mood.name
-                ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-[0_0_12px_rgba(45,212,191,0.25)] scale-105'
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-300 hover:border-teal-500/30'
+                ? 'bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 border-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.35)] scale-105'
+                : 'glass-card-neo text-slate-700 dark:text-slate-300'
             }`}
           >
             <span className="text-sm">{mood.icon}</span>

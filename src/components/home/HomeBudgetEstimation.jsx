@@ -9,7 +9,7 @@ export const HomeBudgetEstimation = ({
   handleQuickPlan
 }) => {
   return (
-    <section className="p-8 rounded-3xl bg-slate-955/40 backdrop-blur-xl border border-cyan-500/30 text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_60px_rgba(6,182,212,0.22),0_0_20px_rgba(20,184,166,0.1)]">
+    <section className="p-8 rounded-3xl glass-neo text-white flex flex-col lg:flex-row items-center gap-8 relative overflow-hidden shadow-[0_0_40px_rgba(20,184,166,0.15)]">
       <div className="absolute right-0 top-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute left-0 bottom-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
       {/* Holographic corners details */}
@@ -23,7 +23,7 @@ export const HomeBudgetEstimation = ({
           <Sparkles size={12} />
           <span>AI Estimation Engine</span>
         </div>
-        <h2 className="font-display font-black text-2xl sm:text-3xl mb-3 leading-tight">
+        <h2 className="font-display font-black text-2xl sm:text-3xl mb-3 leading-tight text-white mt-0">
           Estimate Your Dream Trip Instantly
         </h2>
         <p className="text-slate-400 text-xs sm:text-sm max-w-md leading-relaxed font-semibold">
@@ -31,7 +31,7 @@ export const HomeBudgetEstimation = ({
         </p>
       </div>
 
-      <form onSubmit={handleQuickPlan} className="w-full lg:w-96 p-6 rounded-2xl bg-slate-950 border border-white/10 flex flex-col gap-5 text-left relative z-10">
+      <form onSubmit={handleQuickPlan} className="w-full lg:w-96 p-6 rounded-2xl glass-card-neo flex flex-col gap-5 text-left relative z-10">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center text-xs font-semibold text-slate-350">
             <span>Trip Budget Limit</span>
@@ -65,7 +65,7 @@ export const HomeBudgetEstimation = ({
 
         <button
           type="submit"
-          className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-1.5 cursor-pointer"
+          className="w-full py-3 bg-gradient-to-r from-teal-500 to-sky-500 hover:shadow-[0_0_15px_rgba(45,212,191,0.4)] text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
         >
           <Sparkles size={14} />
           Launch AI Planner
