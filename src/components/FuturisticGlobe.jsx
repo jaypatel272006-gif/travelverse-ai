@@ -311,11 +311,11 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     window.addEventListener('resize', handleResize);
 
     // Animation Loop
-    let clock = new THREE.Clock();
+    const startTime = Date.now();
     let animationFrameId;
     let animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (Date.now() - startTime) / 1000;
 
       // Slow rotation
       globeMesh.rotation.y = elapsedTime * 0.02;
