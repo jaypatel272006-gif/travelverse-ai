@@ -34,7 +34,24 @@ self.addEventListener('fetch', (event) => {
   // Only cache GET requests
   if (event.request.method !== 'GET') return;
 
-  // Skip chrome-extension, other protocols, and external APIs (Supabase etc.)
+  const url = new URL(event.request.url);
+
+  // Never intercept requests to localhost, or Vite / HMR / Source files
+  if (
+    url.hostname === 'localhost' ||
+    url.hostname === '127.0.0.1' ||
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/@vite/') ||
+    url.pathname.startsWith('/node_modules/') ||
+    url.pathname.includes('/@vite-client') ||
+    url.searchParams.has('t') ||
+    url.searchParams.has('import') ||
+    event.request.headers.get('Upgrade') === 'websocket'
+  ) {
+    return;
+  }
+
+  // Skip external APIs and protocols (like chrome-extension, Supabase, etc.)
   if (!event.request.url.startsWith(self.location.origin)) {
     return;
   }
@@ -57,20 +74,41 @@ self.addEventListener('fetch', (event) => {
 
       return fetch(event.request)
         .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
+          if (!response || response.status < 200 || response.status >= 300) {
             return response;
           }
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+          if (response.type === 'basic') {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
           return response;
         })
-        .catch(() => {
+        .catch(async () => {
+          // Offline fallback
+          const fallbackCached = await caches.match(event.request);
+          if (fallbackCached) {
+            return fallbackCached;
+          }
+
           // If offline and request is HTML/navigation, return index.html
           if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/index.html');
+            const indexResponse = await caches.match('/index.html');
+            if (indexResponse) {
+              return indexResponse;
+            }
           }
+
+          // Always return a valid response, never undefined
+          return new Response(
+            '{"error": "Offline and resource not found in cache"}',
+            {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
         });
     })
   );
