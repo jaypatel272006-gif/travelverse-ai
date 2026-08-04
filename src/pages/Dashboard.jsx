@@ -297,13 +297,23 @@ export const Dashboard = () => {
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
   
   const [workspacePresets, setWorkspacePresets] = useState(() => {
-    const saved = localStorage.getItem('tv_workspace_presets');
-    return saved ? JSON.parse(saved) : [
-      { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['itinerary', 'map'] },
-      { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'deals'] },
-      { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['map'] },
-      { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_workspace_presets');
+      return saved ? JSON.parse(saved) : [
+        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['itinerary', 'map'] },
+        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'deals'] },
+        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['map'] },
+        { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_workspace_presets:", e);
+      return [
+        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['itinerary', 'map'] },
+        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'deals'] },
+        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['map'] },
+        { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
+      ];
+    }
   });
 
   // Floating Window Coordinates for modular widgets (Supports all 10 widgets)
@@ -345,11 +355,19 @@ export const Dashboard = () => {
 
   // 2. Personal Travel Universe States
   const [planets, setPlanets] = useState(() => {
-    const saved = localStorage.getItem('tv_user_planets');
-    return saved ? JSON.parse(saved) : [
-      { id: 'p-1', name: 'Planet Oasis', type: 'ocean', theme: 'relaxing', cities: ['Goa', 'Kerala'] },
-      { id: 'p-2', name: 'Planet Nebula', type: 'ice', theme: 'extreme', cities: ['Kashmir', 'Ladakh'] }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_user_planets');
+      return saved ? JSON.parse(saved) : [
+        { id: 'p-1', name: 'Planet Oasis', type: 'ocean', theme: 'relaxing', cities: ['Goa', 'Kerala'] },
+        { id: 'p-2', name: 'Planet Nebula', type: 'ice', theme: 'extreme', cities: ['Kashmir', 'Ladakh'] }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_user_planets:", e);
+      return [
+        { id: 'p-1', name: 'Planet Oasis', type: 'ocean', theme: 'relaxing', cities: ['Goa', 'Kerala'] },
+        { id: 'p-2', name: 'Planet Nebula', type: 'ice', theme: 'extreme', cities: ['Kashmir', 'Ladakh'] }
+      ];
+    }
   });
   const [newPlanetName, setNewPlanetName] = useState('');
   const [newPlanetType, setNewPlanetType] = useState('jungle');
@@ -365,11 +383,19 @@ export const Dashboard = () => {
 
   // 3. Recommendation Rules States
   const [customRules, setCustomRules] = useState(() => {
-    const saved = localStorage.getItem('tv_custom_rules');
-    return saved ? JSON.parse(saved) : [
-      { id: 'r-1', param: 'budget', op: '>', val: '100000', action: 'recommend', target: 'Luxury Hotels' },
-      { id: 'r-2', param: 'temp', op: '<', val: '10', action: 'recommend', target: 'Indoor Activities' }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_custom_rules');
+      return saved ? JSON.parse(saved) : [
+        { id: 'r-1', param: 'budget', op: '>', val: '100000', action: 'recommend', target: 'Luxury Hotels' },
+        { id: 'r-2', param: 'temp', op: '<', val: '10', action: 'recommend', target: 'Indoor Activities' }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_custom_rules:", e);
+      return [
+        { id: 'r-1', param: 'budget', op: '>', val: '100000', action: 'recommend', target: 'Luxury Hotels' },
+        { id: 'r-2', param: 'temp', op: '<', val: '10', action: 'recommend', target: 'Indoor Activities' }
+      ];
+    }
   });
   const [ruleParam, setRuleParam] = useState('budget');
   const [ruleOp, setRuleOp] = useState('>');
@@ -379,13 +405,23 @@ export const Dashboard = () => {
 
   // AI Memory list
   const [aiMemories, setAiMemories] = useState(() => {
-    const saved = localStorage.getItem('tv_ai_memories');
-    return saved ? JSON.parse(saved) : [
-      { id: 'm-1', text: 'Prefers window seat on flights' },
-      { id: 'm-2', text: 'Jain food compliant (strictly no root vegetables)' },
-      { id: 'm-3', text: 'Prefers 5-star hotels over hostels' },
-      { id: 'm-4', text: 'Low walking tolerance threshold (max 3km/day)' }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_ai_memories');
+      return saved ? JSON.parse(saved) : [
+        { id: 'm-1', text: 'Prefers window seat on flights' },
+        { id: 'm-2', text: 'Jain food compliant (strictly no root vegetables)' },
+        { id: 'm-3', text: 'Prefers 5-star hotels over hostels' },
+        { id: 'm-4', text: 'Low walking tolerance threshold (max 3km/day)' }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_ai_memories:", e);
+      return [
+        { id: 'm-1', text: 'Prefers window seat on flights' },
+        { id: 'm-2', text: 'Jain food compliant (strictly no root vegetables)' },
+        { id: 'm-3', text: 'Prefers 5-star hotels over hostels' },
+        { id: 'm-4', text: 'Low walking tolerance threshold (max 3km/day)' }
+      ];
+    }
   });
   const [newMemoryText, setNewMemoryText] = useState('');
   const [activePersona, setActivePersona] = useState('Default');
@@ -405,11 +441,19 @@ export const Dashboard = () => {
   const [maxHotelDeal, setMaxHotelDeal] = useState(15000);
   const [dealDest, setDealDest] = useState('Goa');
   const [activeHunts, setActiveHunts] = useState(() => {
-    const saved = localStorage.getItem('tv_active_hunts');
-    return saved ? JSON.parse(saved) : [
-      { id: 'h-1', dest: 'Goa', maxFlight: 8000, maxHotel: 8000 },
-      { id: 'h-2', dest: 'London', maxFlight: 45000, maxHotel: 20000 }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_active_hunts');
+      return saved ? JSON.parse(saved) : [
+        { id: 'h-1', dest: 'Goa', maxFlight: 8000, maxHotel: 8000 },
+        { id: 'h-2', dest: 'London', maxFlight: 45000, maxHotel: 20000 }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_active_hunts:", e);
+      return [
+        { id: 'h-1', dest: 'Goa', maxFlight: 8000, maxHotel: 8000 },
+        { id: 'h-2', dest: 'London', maxFlight: 45000, maxHotel: 20000 }
+      ];
+    }
   });
   const [dealAlerts, setDealAlerts] = useState([
     { id: 1, time: '17:01', msg: 'IndiGo Flight BOM -> GOI dropped to ₹6,200! (Target was ₹8,000)' },

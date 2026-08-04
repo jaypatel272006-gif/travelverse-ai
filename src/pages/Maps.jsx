@@ -28,26 +28,48 @@ export const Maps = () => {
   const [routeStartId, setRouteStartId] = useState('');
   const [routeEndId, setRouteEndId] = useState('');
   const [drawnRoutes, setDrawnRoutes] = useState(() => {
-    const saved = localStorage.getItem('tv_drawn_routes');
-    return saved ? JSON.parse(saved) : [
-      { id: 'r1', startName: 'Agra, India', endName: 'Kyoto, Japan', startCoords: { x: 64, y: 31 }, endCoords: { x: 70, y: 30 } }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_drawn_routes');
+      return saved ? JSON.parse(saved) : [
+        { id: 'r1', startName: 'Agra, India', endName: 'Kyoto, Japan', startCoords: { x: 64, y: 31 }, endCoords: { x: 70, y: 30 } }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_drawn_routes:", e);
+      return [
+        { id: 'r1', startName: 'Agra, India', endName: 'Kyoto, Japan', startCoords: { x: 64, y: 31 }, endCoords: { x: 70, y: 30 } }
+      ];
+    }
   });
 
   // Gamification Trackers (World Challenges)
   const [visitedStates, setVisitedStates] = useState(() => {
-    const saved = localStorage.getItem('tv_visited_states');
-    return saved ? JSON.parse(saved) : ['Delhi', 'Gujarat', 'Uttar Pradesh'];
+    try {
+      const saved = localStorage.getItem('tv_visited_states');
+      return saved ? JSON.parse(saved) : ['Delhi', 'Gujarat', 'Uttar Pradesh'];
+    } catch (e) {
+      console.warn("Failed to parse tv_visited_states:", e);
+      return ['Delhi', 'Gujarat', 'Uttar Pradesh'];
+    }
   });
   
   const [visitedWonders, setVisitedWonders] = useState(() => {
-    const saved = localStorage.getItem('tv_visited_wonders');
-    return saved ? JSON.parse(saved) : ['Taj Mahal'];
+    try {
+      const saved = localStorage.getItem('tv_visited_wonders');
+      return saved ? JSON.parse(saved) : ['Taj Mahal'];
+    } catch (e) {
+      console.warn("Failed to parse tv_visited_wonders:", e);
+      return ['Taj Mahal'];
+    }
   });
 
   const [visitedG20, setVisitedG20] = useState(() => {
-    const saved = localStorage.getItem('tv_visited_g20');
-    return saved ? JSON.parse(saved) : ['India', 'Japan'];
+    try {
+      const saved = localStorage.getItem('tv_visited_g20');
+      return saved ? JSON.parse(saved) : ['India', 'Japan'];
+    } catch (e) {
+      console.warn("Failed to parse tv_visited_g20:", e);
+      return ['India', 'Japan'];
+    }
   });
 
   useEffect(() => {
