@@ -1028,10 +1028,39 @@ export const Home = () => {
       ) : (
         <section 
           onMouseMove={handleHeroMouseMove}
-          className={`relative rounded-3xl overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[760px] flex flex-col justify-between transition-all duration-300 ${isTabActive ? '' : 'pause-all-animations'}`}
+          className={`relative rounded-[32px] overflow-hidden p-6 lg:p-10 border border-white/10 shadow-2xl min-h-[820px] flex flex-col justify-between transition-all duration-300 ${isTabActive ? '' : 'pause-all-animations'}`}
         >
+          {/* Cinematic Sunset Clouds & Earth Video loop */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0 opacity-25 pointer-events-none"
+          >
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-satellite-view-of-clouds-on-planet-earth-31958-large.mp4" type="video/mp4" />
+          </video>
+
           {/* Base Layer: Sky gradient sheet */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#090d16] via-[#05080e] to-[#090d16] z-0 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950 z-0 pointer-events-none" />
+
+          {/* Floating Space Dust Particles */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+            {Array.from({ length: 25 }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute bg-teal-400/20 rounded-full blur-[1px] animate-star-glow"
+                style={{
+                  width: `${Math.random() * 3 + 1.5}px`,
+                  height: `${Math.random() * 3 + 1.5}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 5}s`,
+                  animationDuration: `${Math.random() * 3 + 2.5}s`
+                }}
+              />
+            ))}
+          </div>
 
           {/* Layer 2: Sunlight / Aurora light sweeps */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(20,184,166,0.14),transparent_65%)] pointer-events-none z-0 animate-sun-sweep" />
@@ -1154,6 +1183,30 @@ export const Home = () => {
             />
             {/* Globe reflection mask overlay */}
             <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/90 via-transparent to-teal-500/10 pointer-events-none" />
+          </div>
+
+          {/* Floating Weather Telemetry Card */}
+          <div className="absolute right-[3%] top-[30%] glass-card-neo p-3 rounded-2xl border border-teal-500/20 text-left w-36 shadow-lg z-35 hidden xl:flex flex-col gap-1 animate-float">
+            <div className="flex justify-between items-center text-[8px] font-mono text-slate-400">
+              <span>GRID_ALTITUDE</span>
+              <span className="text-teal-400 font-bold">12.4k M</span>
+            </div>
+            <span className="text-xs font-bold text-white leading-none mt-1">Delhi Station</span>
+            <span className="text-xl font-black text-teal-400 font-mono mt-0.5">34°C</span>
+            <span className="text-[7.5px] font-mono text-slate-500">WIND: NW 12 KM/H // CLEAR</span>
+          </div>
+
+          {/* Floating Flight Speed Card */}
+          <div className="absolute right-[22%] top-[60%] glass-card-neo p-3 rounded-2xl border border-sky-500/20 text-left w-36 shadow-lg z-35 hidden xl:flex flex-col gap-1 animate-float" style={{ animationDelay: '1.8s' }}>
+            <div className="flex justify-between items-center text-[8px] font-mono text-slate-400">
+              <span>GRID_VELOCITY</span>
+              <span className="text-sky-400 font-bold">MACH 1.8</span>
+            </div>
+            <span className="text-xs font-bold text-white leading-none mt-1">Flight UK-943</span>
+            <span className="text-[10px] font-mono text-slate-400">ETA: 45 MINS</span>
+            <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden mt-1">
+              <div className="bg-sky-400 h-full w-[70%] animate-pulse" />
+            </div>
           </div>
 
           {/* Dotted Flight Route Vector Paths */}
@@ -1314,9 +1367,28 @@ export const Home = () => {
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[9px] font-mono font-black uppercase tracking-[0.2em] animate-pulse backdrop-blur-md">
             🪐 TRAVELVERSE OS V2100 ACTIVATED
           </div>
-          <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-slate-850 dark:text-white leading-tight uppercase max-w-5xl">
-            The Future of <span className="gradient-text">Autonomous Travel</span>
-          </h1>
+          <motion.h1 
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+            }}
+            className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-slate-850 dark:text-white leading-tight uppercase max-w-5xl"
+          >
+            {"The Future of Autonomous Travel".split(" ").map((word, idx) => (
+              <motion.span 
+                key={idx} 
+                variants={{
+                  hidden: { opacity: 0, y: 35, filter: 'blur(5px)' },
+                  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="inline-block mr-3 sm:mr-4 md:mr-5"
+              >
+                {word === "Autonomous" ? <span className="gradient-text">{word}</span> : word}
+              </motion.span>
+            ))}
+          </motion.h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base font-mono max-w-3xl leading-relaxed mt-2 text-center">
             Experience the year 2100 travel operating system. AI-driven sequential itineraries, geodetic real-world telemetry, and zero-fatigue planning matrices.
           </p>
@@ -2754,6 +2826,18 @@ export const Home = () => {
 
           </div>
 
+        </div>
+
+        {/* Scroll Down Telemetry Indicator */}
+        <div className="w-full flex justify-center items-center py-4 relative z-20 font-mono text-[9px] text-slate-400 hover:text-white transition-colors cursor-pointer select-none">
+          <span className="tracking-widest uppercase">SCROLL TO DE-ORBIT</span>
+          <motion.span
+            animate={{ y: [0, 5, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            className="text-teal-400 text-xs ml-1.5"
+          >
+            ↓
+          </motion.span>
         </div>
 
         {/* Global Tourism Trends Feed Ticker */}
