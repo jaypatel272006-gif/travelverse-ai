@@ -7,6 +7,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { AIAssistantWidget } from './components/AIAssistantWidget';
 import { CinematicLoader } from './components/CinematicLoader';
 import ErrorBoundary from './components/ErrorBoundary';
+import RouteErrorBoundary from './components/RouteErrorBoundary';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 // Helper to catch dynamic chunk loading failures on new deployments and auto-retry
