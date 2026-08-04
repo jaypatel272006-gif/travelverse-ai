@@ -265,6 +265,19 @@ export const Home = () => {
   const activeAudioNodesRef = useRef(null);
   const galaxyCanvasRef = useRef(null);
 
+  // Cleanup active audio nodes and context on unmount to prevent soundscape/interval leaks
+  useEffect(() => {
+    return () => {
+      stopProceduralSound(audioCtxRef, activeAudioNodesRef);
+      if (audioCtxRef.current) {
+        try {
+          audioCtxRef.current.close().catch(() => {});
+        } catch (e) {}
+        audioCtxRef.current = null;
+      }
+    };
+  }, []);
+
   // States
   const [searchQuery, setSearchQuery] = useState('');
   const [budgetVal, setBudgetVal] = useState(150000);
