@@ -31,6 +31,18 @@ export const AITripPlanner = () => {
   // Twin Synced indicator
   const [twinSynced, setTwinSynced] = useState(false);
 
+  // Wizard Timer Refs for memory cleanup
+  const generateIntervalRef = useRef(null);
+  const generateTimeoutRef = useRef(null);
+
+  // Cleanup compilation intervals/timeouts on unmount to prevent leaks
+  useEffect(() => {
+    return () => {
+      if (generateIntervalRef.current) clearInterval(generateIntervalRef.current);
+      if (generateTimeoutRef.current) clearTimeout(generateTimeoutRef.current);
+    };
+  }, []);
+
   // Tabs state for Itinerary View
   const [activeTab, setActiveTab] = useState('schedule');
 
