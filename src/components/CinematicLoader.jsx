@@ -217,9 +217,28 @@ export const CinematicLoader = ({ onComplete }) => {
 
       globeGroup.add(flightGroup);
 
-      // Animation loop
+      // Intersection observer to pause rendering when scrolled out of view
+      let isIntersecting = true;
+      const observer = new IntersectionObserver(([entry]) => {
+        isIntersecting = entry.isIntersecting;
+      }, { threshold: 0 });
+      if (canvasRef.current) {
+        observer.observe(canvasRef.current);
+      }
+
+      // Animation loop (throttled to 60 FPS & tab active & viewport active checks)
+      let lastFrameTime = performance.now();
+      const fpsInterval = 1000 / 60;
+
       const animate = () => {
         reqId = requestAnimationFrame(animate);
+        
+        if (document.hidden || !isIntersecting) return;
+
+        const now = performance.now();
+        const elapsed = now - lastFrameTime;
+        if (elapsed < fpsInterval) return;
+        lastFrameTime = now - (elapsed % fpsInterval);
         
         // Rotate globe group
         globeGroup.rotation.y += 0.005;
@@ -248,6 +267,7 @@ export const CinematicLoader = ({ onComplete }) => {
     return () => {
       if (reqId) cancelAnimationFrame(reqId);
       if (handleResize) window.removeEventListener('resize', handleResize);
+      if (observer) observer.disconnect();
       gsapTweens.forEach(t => t.kill());
       progressTween.kill();
       
