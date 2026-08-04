@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle } from 'lucide-react';
+import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle, Landmark } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
 import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../utils/countriesApi';
@@ -320,10 +320,16 @@ export const DestinationDetails = () => {
   // Interactive Calculator & Planner States
   const [estimatedDays, setEstimatedDays] = useState(5);
   const [travelerTier, setTravelerTier] = useState('Mid-range');
-  const [selectedInterests, setSelectedInterests] = useState(['History', 'Food']);
+  const [selectedInterests, setSelectedInterests] = useState(['Food', 'History']);
   const [generatedItinerary, setGeneratedItinerary] = useState([]);
   const [travelStyle, setTravelStyle] = useState('Solo');
   const [pace, setPace] = useState('Balanced');
+
+  // Premium Travel Guide interactive states
+  const [activeTab, setActiveTab] = useState('telemetry');
+  const [checkedPacking, setCheckedPacking] = useState({});
+  const [hoveredMapNode, setHoveredMapNode] = useState(null);
+  const [galleryLightbox, setGalleryLightbox] = useState(null);
 
   // Local helper for destination travel snapshot dossiers
   const getTravelSnapshot = (targetId) => {
@@ -740,6 +746,7 @@ export const DestinationDetails = () => {
     };
   };
 
+  const guidePremiumData = useMemo(() => getPremiumGuideData(cityData?.name || id), [cityData, id]);
   const calculatedCosts = getCalculatedCosts();
   const isWishlisted = cityData ? isInWishlist('destinations', id) : false;
   const displayImage = cityData ? (customPhotos[id] || cityData.image) : '';
@@ -790,7 +797,6 @@ export const DestinationDetails = () => {
     showToast('Feedback telemetry logged.', 'success');
   };
 
-
   const getCityFacts = (name) => {
     const facts = {
       'Goa': [
@@ -829,6 +835,13 @@ export const DestinationDetails = () => {
           -webkit-backdrop-filter: blur(16px);
           border: 1px solid rgba(255, 255, 255, 0.05);
         }
+        @keyframes audio-bar-grow {
+          0%, 100% { height: 3px; }
+          50% { height: 12px; }
+        }
+        .animate-audio-bar-1 { animation: audio-bar-grow 0.8s ease infinite; }
+        .animate-audio-bar-2 { animation: audio-bar-grow 0.5s ease infinite 0.2s; }
+        .animate-audio-bar-3 { animation: audio-bar-grow 0.9s ease infinite 0.4s; }
       `}</style>
       
       {/* Breadcrumb Navigation */}
@@ -842,87 +855,43 @@ export const DestinationDetails = () => {
         <span className="text-teal-650 dark:text-teal-400">{cityData.name}</span>
       </nav>
 
-      {/* Travel Snapshot dossier */}
-      <div className="w-full p-5 rounded-3xl bg-slate-900/60 border border-teal-500/10 shadow-xl relative overflow-hidden text-slate-100">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/5 blur-3xl pointer-events-none" />
-        <div className="flex items-center gap-2 mb-3.5">
-          <Cpu className="text-teal-400 animate-pulse" size={14} />
-          <h3 className="font-mono text-[9px] font-bold text-teal-400 uppercase tracking-widest">
-            COGNITIVE CORRELATION: TRAVEL SNAPSHOT
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
-          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
-            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">📅 BEST MONTHS</span>
-            <span className="text-[11px] font-bold text-white block">{snapshot.bestMonths}</span>
-          </div>
-          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
-            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">💰 AVG BUDGET</span>
-            <span className="text-[11px] font-bold text-white block">{snapshot.avgBudget}</span>
-          </div>
-          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
-            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">⏳ TRIP DURATION</span>
-            <span className="text-[11px] font-bold text-white block">{snapshot.duration}</span>
-          </div>
-          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
-            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">👤 TRAVELER TYPE</span>
-            <span className="text-[11px] font-bold text-white block">{snapshot.travelerType}</span>
-          </div>
-          <div className="p-3 bg-slate-950/60 rounded-2xl border border-white/5 text-left">
-            <span className="text-[7.5px] font-mono font-bold text-slate-500 uppercase tracking-widest block mb-1">🛡️ SAFETY RATING</span>
-            <span className="text-[11px] font-bold text-white block">{snapshot.safetyRating}</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 mt-3.5 pt-3.5 border-t border-white/5">
-          <div className="text-left text-[10px]">
-            <span className="text-slate-400 font-mono">🗣️ LOCAL LANGUAGES:</span> <span className="text-white font-bold">{snapshot.language}</span>
-          </div>
-          <div className="text-left text-[10px]">
-            <span className="text-slate-400 font-mono">🪙 CURRENCY USED:</span> <span className="text-white font-bold">{snapshot.currency}</span>
-          </div>
-          <div className="text-left text-[10px]">
-            <span className="text-slate-400 font-mono">⛅ CLIMATE TYPE:</span> <span className="text-white font-bold">{snapshot.climate}</span>
-          </div>
-          <div className="text-left text-[10px]">
-            <span className="text-slate-400 font-mono">🛞 ACCESSIBILITY:</span> <span className="text-white font-bold">{snapshot.accessibility}</span>
-          </div>
-        </div>
-
-        <div className="mt-3.5 p-3 bg-teal-500/5 rounded-2xl border border-teal-500/10 text-left text-[10px]">
-          <span className="text-teal-400 font-mono font-bold uppercase tracking-wider block mb-0.5">⚡ TOP HIGHLIGHTS DOSSIER</span>
-          <span className="text-slate-300 font-medium">{snapshot.highlights}</span>
-        </div>
-      </div>
-
-      {/* Hero Parallax Area */}
-      <div className="relative h-[300px] sm:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-teal-500/10">
+      {/* Cinematic Full-screen/Taller Hero Banner with entrance animations */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative h-[450px] sm:h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-teal-500/10 group"
+      >
         <img
           src={displayImage}
           alt={cityData.name}
-          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-[12s] ease-out"
+          className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[12s] ease-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent" />
         
         {/* Floating Details Overlay */}
-        <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div className="absolute bottom-6 left-6 right-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 z-10">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse relative block">
                 <span className="absolute inset-0 rounded-full bg-teal-400/50 scale-200 animate-ping" />
               </span>
               <span className="text-[10px] text-teal-400 font-mono tracking-widest font-bold uppercase">{countryData.continent} Sector</span>
+              {guidePremiumData.unesco && (
+                <span className="ml-2 px-2 py-0.5 text-[9px] font-mono font-bold uppercase bg-amber-500/20 border border-amber-500/30 text-amber-300 rounded">
+                  🏛️ UNESCO HERITAGE
+                </span>
+              )}
             </div>
-            <h1 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight leading-none uppercase">
+            <h1 className="font-display font-black text-4xl sm:text-6xl text-white tracking-tight leading-none uppercase">
               {cityData.name}
             </h1>
-            <p className="text-sm font-mono text-slate-300 font-bold uppercase mt-1 tracking-wider flex items-center gap-1">
+            <p className="text-sm font-mono text-slate-300 font-bold uppercase mt-1.5 tracking-wider flex items-center gap-1">
               <MapPin size={13} className="text-teal-400" /> {countryData.name}
             </p>
           </div>
 
-          <div className="flex gap-3 relative z-10">
+          <div className="flex gap-3">
             <button
               onClick={() => toggleWishlist('destinations', { id, name: cityData.name, image: displayImage, country: countryData.name })}
               className={`p-3.5 rounded-2xl border transition-all duration-300 transform active:scale-95 cursor-pointer ${
@@ -943,1005 +912,991 @@ export const DestinationDetails = () => {
             </button>
             <button
               onClick={handleSaveItinerary}
-              className="px-5 py-3.5 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-2xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-lg shadow-teal-500/10"
+              className="px-5 py-3.5 bg-teal-500 hover:bg-teal-600 text-slate-955 rounded-2xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-lg shadow-teal-500/10"
             >
-              <Save size={15} /> SYNC TO DASHBOARD
+              <Save size={15} /> SYNC TO OS
             </button>
           </div>
         </div>
+      </motion.div>
+
+      {/* Futuristic Glassmorphic Tab Bar Navigation */}
+      <div className="w-full flex flex-wrap gap-2 bg-slate-900/40 border border-white/5 p-2 rounded-2xl backdrop-blur-md">
+        {[
+          { id: 'telemetry', label: '🛰️ OS Telemetry', desc: 'Realtime Radar & Map' },
+          { id: 'culture', label: '🏛️ History & Culture', desc: 'Chronology, UNESCO, Design' },
+          { id: 'transit', label: '🚀 Transit & Helplines', desc: 'Terminals & Assistance' },
+          { id: 'culinary', label: '🍛 Lodging & Dining', desc: 'Hotels, Cafes & Shopping' },
+          { id: 'planning', label: '🧠 AI Planner & Checklist', desc: 'Scheduler, Packing, Budget' },
+          { id: 'logs', label: '💬 Voyager Logs & FAQs', desc: 'Feedback, FAQs & Gallery' }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex-1 min-w-[150px] p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer ${
+              activeTab === tab.id
+                ? 'bg-teal-500/10 border-teal-500 shadow-[0_0_15px_rgba(20,184,166,0.15)]'
+                : 'border-transparent hover:bg-white/5 hover:border-white/10'
+            }`}
+          >
+            <span className={`text-[11px] font-bold block ${activeTab === tab.id ? 'text-teal-400' : 'text-slate-205 dark:text-white'}`}>{tab.label}</span>
+            <span className="text-[8px] font-mono text-slate-400 uppercase tracking-wider block mt-0.5">{tab.desc}</span>
+          </button>
+        ))}
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative z-10">
-        
-        <div className="lg:col-span-2 flex flex-col gap-8">
-          
-          <style>{`
-            @keyframes audio-bar-grow {
-              0%, 100% { height: 3px; }
-              50% { height: 12px; }
-            }
-            .animate-audio-bar-1 { animation: audio-bar-grow 0.8s ease infinite; }
-            .animate-audio-bar-2 { animation: audio-bar-grow 0.5s ease infinite 0.2s; }
-            .animate-audio-bar-3 { animation: audio-bar-grow 0.9s ease infinite 0.4s; }
-          `}</style>
+      {/* Main Tab Render Grid Container */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.3 }}
+          className="w-full"
+        >
+          {/* Tab 1: OS Telemetry & Weather */}
+          {activeTab === 'telemetry' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* Geological Dossier */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl relative overflow-hidden flex flex-col gap-6 text-left">
+                  <div className="flex justify-between items-center flex-wrap gap-2">
+                    <div>
+                      <span className="text-[9px] font-mono text-teal-400 font-bold tracking-widest uppercase">SECTION 01 // OVERVIEW SUMMARY</span>
+                      <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide my-0">Geographical Dossier</h3>
+                    </div>
+                    <span className="px-2 py-0.5 text-[8.5px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1 shrink-0">
+                      <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> Live Sourced API Data
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">
+                    {cityData.overview}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-200 dark:border-teal-500/10 pt-6 text-xs font-mono font-bold text-slate-500">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Capital City</span>
+                      <span className="text-slate-900 dark:text-white">{countryData.capital}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Population</span>
+                      <span className="text-slate-900 dark:text-white">{countryData.population}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Currency</span>
+                      <span className="text-slate-900 dark:text-white">{countryData.currency} ({snapshot.currency})</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Official Language</span>
+                      <span className="text-slate-900 dark:text-white truncate">{countryData.languages}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Local Timezone</span>
+                      <span className="text-slate-900 dark:text-white">{countryData.timezone}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[9px] text-slate-400 uppercase tracking-widest">Sector Coordinates</span>
+                      <span className="text-teal-400 font-black">{countryData.latlng[0].toFixed(2)}°N, {countryData.latlng[1].toFixed(2)}°E</span>
+                    </div>
+                  </div>
+                </div>
 
-          {/* Virtual 360 Preview with Holographic Device-Tilt Portal */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left animate-in fade-in duration-300">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
-              <span>PREVIEW: VIRTUAL_360_HOTSPOTS</span>
-            </div>
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 00 // ATMOSPHERIC RADAR</span>
-                <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
-                  <Globe size={18} className="text-teal-400 animate-spin duration-10000" /> Virtual 360° Preview
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsFullscreen360(true);
-                  requestGyroPermission();
-                }}
-                className="px-3.5 py-1.5 rounded-xl border border-teal-500/25 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 text-[10px] font-mono font-bold uppercase transition-all flex items-center gap-1 cursor-pointer"
-              >
-                <Maximize2 size={11} /> Holographic Portal
-              </button>
-            </div>
-            
-            <div className="relative h-64 rounded-2xl overflow-hidden border border-white/5 bg-slate-950 group">
-              <img 
-                src={displayImage} 
-                alt="360 View" 
-                className="w-full h-full object-cover opacity-80 filter brightness-90 transform scale-110 transition-transform duration-1000 origin-center"
-                style={{ transform: `scale(1.25) translate(${previewAngle}px, 0px)` }}
-              />
-              <div className="absolute inset-0 bg-black/25 pointer-events-none" />
-              
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-32 h-32 rounded-full border border-teal-500/35 flex items-center justify-center opacity-75 relative">
-                  <div className="absolute w-full h-[1px] bg-teal-500/20" />
-                  <div className="absolute h-full w-[1px] bg-teal-500/20" />
-                  <span className="text-[8px] font-mono text-teal-400 tracking-wider absolute bottom-1.5">RETICLE LOCK</span>
+                {/* Simulated Interactive Holographic Vector Map */}
+                <div className="p-6 rounded-3xl bg-slate-900/80 border border-teal-500/25 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left">
+                  <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-400/40 font-bold select-none">
+                    <span>TELEMETRY: VECTOR_GRID_RADAR</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-mono text-teal-400 font-bold tracking-widest uppercase">SECTION 02 // GEOGRAPHIC SECTOR MAP</span>
+                    <h3 className="font-display font-black text-xl text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
+                      <Globe size={18} className="text-teal-400 animate-spin duration-[20s]" /> Holographic Sector Map
+                    </h3>
+                  </div>
+
+                  <div className="relative h-80 w-full rounded-2xl bg-slate-950 border border-white/5 overflow-hidden flex items-center justify-center">
+                    {/* Retro Grid Background */}
+                    <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#0ea5e9_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e9_1px,transparent_1px)] bg-[size:25px_25px]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#020617_90%)] pointer-events-none" />
+
+                    {/* SVG Map Lines & Nodes */}
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 300">
+                      {/* Connection lines */}
+                      <path d="M 250 150 L 120 70 M 250 150 L 380 90 M 250 150 L 160 210 M 250 150 L 340 220" stroke="#14b8a6" strokeWidth="1" strokeDasharray="5,5" className="opacity-40" />
+                      <circle cx="250" cy="150" r="10" stroke="#14b8a6" strokeWidth="1.5" fill="rgba(20,184,166,0.1)" className="animate-pulse" />
+                      <circle cx="250" cy="150" r="4" fill="#14b8a6" />
+                    </svg>
+
+                    {/* Interactive Node Hotspots */}
+                    {[
+                      { id: 'center', label: cityData.name, x: '50%', y: '50%', type: 'City Center', details: 'Telemetry core' },
+                      { id: 'airport', label: guidePremiumData.transit.airports[0]?.name || 'Airport Sector', x: '24%', y: '23%', type: 'Terminal Gate', details: `Dist: ${guidePremiumData.transit.airports[0]?.dist || 'N/A'}` },
+                      { id: 'rail', label: guidePremiumData.transit.railways[0]?.name || 'Railway Terminal', x: '76%', y: '30%', type: 'Railway Hub', details: `Dist: ${guidePremiumData.transit.railways[0]?.dist || 'N/A'}` },
+                      { id: 'scenic', label: cityData.attractions[0] || 'Vantage Point', x: '32%', y: '70%', type: 'Scenic Reticle', details: 'Optimal sun alignment' },
+                      { id: 'culinary', label: guidePremiumData.culinary.restaurants[0]?.name || 'Dining Hub', x: '68%', y: '73%', type: 'Culinary Vault', details: 'Traditional specialties' }
+                    ].map((node) => (
+                      <button
+                        key={node.id}
+                        onMouseEnter={() => setHoveredMapNode(node)}
+                        onMouseLeave={() => setHoveredMapNode(null)}
+                        className="absolute w-6 h-6 rounded-full flex items-center justify-center group transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-15"
+                        style={{ left: node.x, top: node.y }}
+                      >
+                        <span className="absolute w-4 h-4 rounded-full bg-teal-400/25 scale-150 animate-ping group-hover:scale-200 duration-1000" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-teal-400 group-hover:bg-sky-400 border border-slate-950 transition-colors" />
+                      </button>
+                    ))}
+
+                    {/* Telemetry Floating HUD overlay on hover */}
+                    <AnimatePresence>
+                      {hoveredMapNode && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                          className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-slate-900/90 border border-teal-500/30 backdrop-blur-md text-left flex flex-col gap-1 z-20 pointer-events-none"
+                        >
+                          <span className="text-[8px] font-mono font-bold text-teal-400 uppercase tracking-widest">{hoveredMapNode.type}</span>
+                          <span className="text-xs font-bold text-white uppercase">{hoveredMapNode.label}</span>
+                          <span className="text-[10px] font-mono text-slate-400">{hoveredMapNode.details}</span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Coordinates Reticle labels */}
+                    <div className="absolute top-4 left-4 text-[9px] font-mono text-slate-500 uppercase tracking-wider">
+                      COORDS: {countryData.latlng[0].toFixed(3)}N / {countryData.latlng[1].toFixed(3)}E
+                    </div>
+                    <div className="absolute bottom-4 right-4 text-[9px] font-mono text-slate-500">
+                      GRID SECTOR: ALPH_4
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-slate-950/75 border border-white/10 px-3 py-2 rounded-xl backdrop-blur-md">
-                <button
-                  type="button"
-                  onClick={() => setIsAudioPlaying(!isAudioPlaying)}
-                  className="w-8 h-8 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center hover:scale-105 transition-all cursor-pointer"
-                >
-                  <span className="font-bold text-xs">{isAudioPlaying ? '⏸' : '▶'}</span>
-                </button>
-                <div className="flex flex-col text-left">
-                  <span className="text-[8px] font-bold text-slate-400 uppercase font-mono tracking-wider">AMBIENT DRONE</span>
-                  <span className="text-[10px] font-bold text-teal-400">{isAudioPlaying ? 'SYNTH ACTIVE' : 'MUTED'}</span>
+              {/* Sidebar Snapshot & live details */}
+              <div className="lg:col-span-1 flex flex-col gap-6 sticky top-6 self-start text-left">
+                {/* Sunrise, Sunset, and live snapshot */}
+                <div className="p-6 rounded-3xl bg-slate-900 border border-teal-500/10 shadow-xl flex flex-col gap-4 text-slate-100">
+                  <span className="text-[8px] font-mono text-teal-400 font-bold uppercase tracking-widest block">TELEMETRY: SUN_CYCLE</span>
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-teal-300 flex items-center gap-1">
+                    🌅 Planetary Light Cycle
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3 font-mono text-[10px] mt-2">
+                    <div className="p-3 bg-slate-950/50 rounded-xl border border-white/5">
+                      <span className="text-slate-400 uppercase text-[8px] block mb-0.5">🌅 SUNRISE</span>
+                      <span className="text-xs font-black text-teal-400">{guidePremiumData.sunrise}</span>
+                    </div>
+                    <div className="p-3 bg-slate-950/50 rounded-xl border border-white/5">
+                      <span className="text-slate-400 uppercase text-[8px] block mb-0.5">🌇 SUNSET</span>
+                      <span className="text-xs font-black text-indigo-400">{guidePremiumData.sunset}</span>
+                    </div>
+                  </div>
                 </div>
-                {isAudioPlaying && (
-                  <div className="flex items-end gap-0.5 h-3 ml-2">
-                    <span className="w-[2px] bg-teal-400 rounded-full animate-audio-bar-1" />
-                    <span className="w-[2px] bg-teal-400 rounded-full animate-audio-bar-2" />
-                    <span className="w-[2px] bg-teal-400 rounded-full animate-audio-bar-3" />
+
+                {/* Weather forecast */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    🌦️ Live Weather Radar
+                  </h4>
+                  <div className="flex flex-col gap-2">
+                    {weatherData.map((w, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/50 dark:bg-slate-950/30 border border-slate-200 dark:border-teal-500/5 text-xs">
+                        <span className="font-mono font-bold text-slate-405 uppercase">{w.day}</span>
+                        <span className="text-base" role="img" aria-label={w.summary}>{w.icon}</span>
+                        <span className="font-mono text-slate-500">{w.summary.substring(0, 10)}</span>
+                        <span className="font-mono font-bold text-slate-800 dark:text-white">{w.maxTemp}° / {w.minTemp}°</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Snapshot metadata items */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    📋 Core Metrics Dossier
+                  </h4>
+                  <div className="flex flex-col gap-2 text-xs">
+                    <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/5">
+                      <span className="text-slate-400 uppercase text-[9px] font-mono font-bold">Recommended Visit</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{snapshot.bestMonths}</span>
+                    </div>
+                    <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/5">
+                      <span className="text-slate-400 uppercase text-[9px] font-mono font-bold">Average Budget</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{snapshot.avgBudget}</span>
+                    </div>
+                    <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/5">
+                      <span className="text-slate-400 uppercase text-[9px] font-mono font-bold">Trip Duration</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{snapshot.duration}</span>
+                    </div>
+                    <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-white/5">
+                      <span className="text-slate-400 uppercase text-[9px] font-mono font-bold">Safety rating</span>
+                      <span className="font-bold text-slate-800 dark:text-white">{snapshot.safetyRating}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 2: Chronology & Culture */}
+          {activeTab === 'culture' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* Complete History Timeline */}
+                {cityData.history && (
+                  <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5">
+                    <div>
+                      <span className="text-[9px] font-mono text-indigo-400 font-bold tracking-widest uppercase">CHRONOLOGICAL HISTORICAL ENGINE</span>
+                      <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Historical Timeline</h3>
+                    </div>
+                    <div className="relative border-l border-slate-200 dark:border-teal-500/10 pl-6 ml-3 flex flex-col gap-6">
+                      {cityData.history.map((hist, idx) => (
+                        <div key={idx} className="relative">
+                          <div className="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-400 fill-indigo-400 flex items-center justify-center">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                          </div>
+                          <div className="flex justify-between items-baseline gap-4 flex-wrap">
+                            <span className="text-xs font-mono font-black text-indigo-400 uppercase tracking-widest">{hist.era}</span>
+                            <span className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider">{hist.event}</span>
+                          </div>
+                          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-semibold mt-1">
+                            {hist.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
 
-              <div className="absolute bottom-4 right-4 flex gap-1.5 bg-slate-950/75 border border-white/10 p-1 rounded-xl backdrop-blur-md">
-                <button 
-                  type="button"
-                  onClick={() => setPreviewAngle(prev => Math.max(-50, prev - 15))}
-                  className="px-2.5 py-1 text-xs font-mono font-bold text-slate-300 hover:text-white cursor-pointer"
-                >
-                  ◀ PAN L
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setPreviewAngle(prev => Math.min(50, prev + 15))}
-                  className="px-2.5 py-1 text-xs font-mono font-bold text-slate-300 hover:text-white cursor-pointer"
-                >
-                  PAN R ▶
-                </button>
+              {/* Sidebar Details: Architecture, Culture, UNESCO */}
+              <div className="lg:col-span-1 flex flex-col gap-6">
+                {/* Architectural styling */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300 flex items-center gap-1.5">
+                    <Landmark size={14} className="text-teal-400" /> Architectural Heritage
+                  </h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
+                    {guidePremiumData.architecture}
+                  </p>
+                </div>
+
+                {/* Cultural Importance */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300 flex items-center gap-1.5">
+                    <Sparkles size={14} className="text-indigo-400" /> Cultural Identity
+                  </h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
+                    {guidePremiumData.culture}
+                  </p>
+                </div>
+
+                {/* UNESCO Badge info */}
+                {guidePremiumData.unesco && (
+                  <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 shadow-xl flex flex-col gap-4">
+                    <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-605 dark:text-amber-400 flex items-center gap-1.5">
+                      🏛️ UNESCO World Heritage Status
+                    </h4>
+                    <p className="text-xs text-slate-700 dark:text-slate-200 font-semibold leading-relaxed font-mono">
+                      {guidePremiumData.unesco}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
+          )}
+
+          {/* Tab 3: Transit & Connections */}
+          {activeTab === 'transit' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* Connections terminals */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-6">
+                  <div>
+                    <span className="text-[9px] font-mono text-teal-405 font-bold tracking-widest uppercase">LOGISTICS CORRIDOR TERMINALS</span>
+                    <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Transit Terminal Connections</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Airports */}
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-3">
+                      <span className="font-mono font-bold text-[9px] text-teal-400 uppercase tracking-widest block">✈️ NEARBY AIRPORT TERMINALS</span>
+                      <div className="flex flex-col gap-2">
+                        {guidePremiumData.transit.airports.map((ap, idx) => (
+                          <div key={idx} className="flex justify-between items-center text-xs font-mono border-b border-slate-200/50 dark:border-white/5 pb-1">
+                            <span className="font-bold text-slate-800 dark:text-slate-200 truncate pr-1" title={ap.name}>{ap.name}</span>
+                            <span className="text-teal-400 font-black shrink-0">{ap.dist}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Railways */}
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-3">
+                      <span className="font-mono font-bold text-[9px] text-indigo-400 uppercase tracking-widest block">🚆 RAILWAY JUNCTION CONNECTIONS</span>
+                      <div className="flex flex-col gap-2">
+                        {guidePremiumData.transit.railways.map((rw, idx) => (
+                          <div key={idx} className="flex justify-between items-center text-xs font-mono border-b border-slate-200/50 dark:border-white/5 pb-1">
+                            <span className="font-bold text-slate-800 dark:text-slate-200 truncate pr-1" title={rw.name}>{rw.name}</span>
+                            <span className="text-indigo-400 font-black shrink-0">{rw.dist}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Road & local connections */}
+                  <div className="grid grid-cols-1 gap-4 font-mono text-xs">
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5">
+                      <span className="font-bold text-[9px] text-slate-400 uppercase tracking-widest block mb-1">🛣️ HIGHWAY ROAD CONNECTIVITY</span>
+                      <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">{guidePremiumData.transit.road}</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5">
+                      <span className="font-bold text-[9px] text-slate-400 uppercase tracking-widest block mb-1">🚏 LOCAL TRANSPORT LOGISTICS</span>
+                      <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">{guidePremiumData.transit.local}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar Emergency Helplines Contacts */}
+              <div className="lg:col-span-1 flex flex-col gap-6">
+                <div className="p-6 rounded-3xl bg-rose-500/5 border border-rose-500/20 shadow-xl flex flex-col gap-4 text-left">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-rose-500 flex items-center gap-1.5 font-bold">
+                    🚨 Emergency Helpline Contacts
+                  </h4>
+                  <div className="flex flex-col gap-3 font-mono text-xs mt-2">
+                    <div className="flex justify-between items-center p-2.5 bg-slate-900/60 rounded-xl border border-white/5 text-slate-300">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase">🚨 POLICE CONTROL</span>
+                      <a href={`tel:${guidePremiumData.emergency.police.split(' ')[0]}`} className="font-black text-rose-400 hover:underline">{guidePremiumData.emergency.police}</a>
+                    </div>
+                    <div className="flex justify-between items-center p-2.5 bg-slate-900/60 rounded-xl border border-white/5 text-slate-300">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase">🚑 MEDICAL HUB</span>
+                      <a href={`tel:${guidePremiumData.emergency.medical.split(' ')[0]}`} className="font-black text-teal-400 hover:underline">{guidePremiumData.emergency.medical}</a>
+                    </div>
+                    <div className="flex justify-between items-center p-2.5 bg-slate-900/60 rounded-xl border border-white/5 text-slate-300">
+                      <span className="text-[8px] font-bold text-slate-400 uppercase">📞 TOURIST HELP</span>
+                      <a href={`tel:${guidePremiumData.emergency.touristHelpline}`} className="font-black text-sky-400 hover:underline">{guidePremiumData.emergency.touristHelpline}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 4: Lodging & Culinary */}
+          {activeTab === 'culinary' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* Hotels / Stays list */}
+                {cityData.stays && (
+                  <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                    <h3 className="font-display font-black text-xl text-slate-900 dark:text-white uppercase tracking-wide">Premium Recommended Lodging</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {cityData.stays.map((stay, idx) => (
+                        <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-2">
+                          <span className="text-[8px] font-mono font-bold text-teal-400 uppercase tracking-widest">{stay.type}</span>
+                          <h5 className="font-display font-bold text-sm text-slate-900 dark:text-white truncate">{stay.name}</h5>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">{stay.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Restaurants & Cafes */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5">
+                  <h3 className="font-display font-black text-xl text-slate-900 dark:text-white uppercase tracking-wide">Culinary Food Map Directory</h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Restaurants */}
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-3">
+                      <span className="font-mono font-bold text-[9px] text-teal-405 uppercase tracking-widest block">🍽️ RECOMMENDED DINING RESTAURANTS</span>
+                      <div className="flex flex-col gap-2.5">
+                        {guidePremiumData.culinary.restaurants.map((rest, idx) => (
+                          <div key={idx} className="flex flex-col gap-0.5 text-xs">
+                            <span className="font-bold text-slate-800 dark:text-white">{rest.name}</span>
+                            <span className="text-[10px] font-mono text-slate-400 uppercase">{rest.type}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Cafes */}
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-3">
+                      <span className="font-mono font-bold text-[9px] text-indigo-400 uppercase tracking-widest block">☕ ARTISANAL CAFES & TEAHOUSE COORDS</span>
+                      <div className="flex flex-col gap-2.5">
+                        {guidePremiumData.culinary.cafes.map((cf, idx) => (
+                          <div key={idx} className="flex flex-col gap-0.5 text-xs">
+                            <span className="font-bold text-slate-800 dark:text-white">{cf.name}</span>
+                            <span className="text-[10px] font-mono text-indigo-400 uppercase font-semibold">Specialty: {cf.specialty}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Street food specialties */}
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-955/30 border border-slate-150 dark:border-white/5 flex flex-col gap-2 font-mono text-xs">
+                    <span className="font-bold text-[9px] text-slate-400 uppercase tracking-widest block">🍢 STREET FOOD EXPERIMENTS</span>
+                    <div className="flex flex-col gap-1">
+                      <span className="font-bold text-slate-800 dark:text-white">{guidePremiumData.culinary.streetFood[0].name}</span>
+                      <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-semibold italic">Specialties: {guidePremiumData.culinary.streetFood[0].specialties}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar: Shopping areas & nearby attractions */}
+              <div className="lg:col-span-1 flex flex-col gap-6">
+                {/* Shopping Sectors */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    🛍️ Premium Shopping Sectors
+                  </h4>
+                  <div className="flex flex-col gap-2.5">
+                    {guidePremiumData.shopping.map((sh, idx) => (
+                      <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5 text-xs">
+                        <h5 className="font-bold text-slate-800 dark:text-white uppercase">{sh.name}</h5>
+                        <p className="text-[10px] font-mono text-teal-400 font-semibold mt-0.5">{sh.specialty}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Nearby attractions list */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    🗺️ Top Nearby Attractions
+                  </h4>
+                  <div className="flex flex-col gap-2 font-mono text-[11px]">
+                    {cityData.attractions.map((attr, idx) => (
+                      <div key={idx} className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5 text-slate-700 dark:text-slate-200 font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0" />
+                        <span className="font-bold">{attr}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 5: AI Engines & Itinerary */}
+          {activeTab === 'planning' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+              {/* Daily scheduler */}
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* AI Daily Scheduler timeline */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="text-[9px] font-mono text-teal-400 font-bold tracking-widest uppercase">QUANTUM AI ITERATIONS ROUTER</span>
+                      <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
+                        <Sparkles size={18} className="text-teal-400 animate-pulse" /> AI Daily Scheduler Suggestions
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-6 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin">
+                    {generatedItinerary.map((d) => (
+                      <div key={d.day} className="flex flex-col gap-3 relative border-b border-slate-100 dark:border-white/5 pb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-teal-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center shrink-0 z-10">
+                            {d.day}
+                          </div>
+                          <h5 className="font-bold text-xs text-slate-800 dark:text-white uppercase font-display">{d.title}</h5>
+                        </div>
+                        
+                        <div className="flex flex-col gap-3.5 border-l border-slate-200 dark:border-teal-500/10 pl-4 ml-3">
+                          {d.timeline?.map((item, idx) => (
+                            <div key={idx} className="flex flex-col gap-1 text-[11px]">
+                              <div className="flex items-center gap-2 font-bold">
+                                <span>{item.icon}</span>
+                                <span className="text-slate-800 dark:text-white">{item.activity}</span>
+                                <span className="font-mono text-[9px] text-teal-400 font-medium bg-teal-500/5 px-2 py-0.5 rounded border border-teal-500/10 ml-auto shrink-0">{item.time}</span>
+                              </div>
+                              <p className="text-slate-500 dark:text-slate-400 pl-5 font-semibold leading-relaxed">{item.details}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* AI Recommendations */}
+                <div className="p-6 rounded-3xl bg-teal-500/5 border border-teal-500/25 shadow-xl flex flex-col gap-4 text-left">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-teal-400 flex items-center gap-1.5 font-bold">
+                    🧠 TravelVerse AI Smart Recommendations
+                  </h4>
+                  <div className="flex flex-col gap-2.5 font-mono text-xs text-slate-700 dark:text-slate-200">
+                    {guidePremiumData.aiRecommendations.map((rec, idx) => (
+                      <div key={idx} className="flex items-start gap-2 p-2.5 bg-slate-900/40 rounded-xl border border-white/5">
+                        <span className="text-teal-400 font-black shrink-0">►</span>
+                        <p className="font-semibold">{rec}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar Planner Parameters & Packing Checklist */}
+              <div className="lg:col-span-1 flex flex-col gap-6">
+                {/* Credits budget Matrix Estimator */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-400/45 font-bold select-none">
+                    <span>CALC: DEBIT_INDEX</span>
+                  </div>
+                  
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    Estimated Budget Calculator
+                  </h4>
+                  
+                  {/* Days Slider */}
+                  <div className="flex flex-col gap-2 border-b border-slate-200 dark:border-teal-500/10 pb-4">
+                    <div className="flex justify-between items-baseline font-mono text-xs font-bold uppercase text-slate-400">
+                      <span>Duration Days</span>
+                      <span className="text-teal-500 text-lg font-black">{estimatedDays} Days</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="14"
+                      value={estimatedDays}
+                      onChange={(e) => setEstimatedDays(parseInt(e.target.value))}
+                      className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Travel Tier buttons */}
+                  <div className="flex flex-col gap-2 border-b border-slate-200 dark:border-teal-500/10 pb-4">
+                    <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Travel Tier Level</span>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['Backpacker', 'Mid-range', 'Luxury'].map((t) => (
+                        <button
+                          key={t}
+                          onClick={() => setTravelerTier(t)}
+                          className={`py-2 rounded-xl border text-[10px] font-mono font-black uppercase transition-all cursor-pointer ${
+                            travelerTier === t
+                              ? 'bg-teal-500/10 border-teal-500 text-teal-400'
+                              : 'border-slate-200 dark:border-teal-500/10 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-850/50'
+                          }`}
+                        >
+                          {t.replace('-range', '')}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Budget breakdown */}
+                  <div className="flex flex-col gap-3 font-mono text-xs text-slate-500">
+                    <div className="flex justify-between items-center">
+                      <span>✈️ TRANSIT CORRIDORS:</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">₹{calculatedCosts.flights.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>🏨 LODGING ESTIMATE:</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">₹{calculatedCosts.lodging.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>🍔 MEALS INDEX:</span>
+                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.meals.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>🎟️ ACTIVITIES MATRIX:</span>
+                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.activities.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>🚕 SHUTTLES INDEX:</span>
+                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.transport.toLocaleString('en-IN')}</span>
+                    </div>
+                    
+                    <div className="flex justify-between items-baseline border-t border-slate-200 dark:border-teal-500/10 pt-3 text-slate-800 dark:text-white mt-1">
+                      <span className="text-[10px] font-bold uppercase">NET TOTAL ESTIMATE:</span>
+                      <span className="text-xl font-black text-teal-400">₹{calculatedCosts.total.toLocaleString('en-IN')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Packing Checklist */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    🎒 Packing Checklist
+                  </h4>
+                  <div className="flex flex-col gap-2 font-mono text-xs">
+                    {guidePremiumData.packingChecklist.map((item, idx) => {
+                      const isChecked = checkedPacking[idx] || false;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => setCheckedPacking(prev => ({ ...prev, [idx]: !isChecked }))}
+                          className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-white/5 text-left transition-colors cursor-pointer"
+                        >
+                          <span className={`w-4 h-4 rounded border flex items-center justify-center font-bold text-[10px] ${
+                            isChecked ? 'bg-teal-500 border-teal-500 text-slate-950' : 'border-slate-300 dark:border-slate-800 text-transparent'
+                          }`}>
+                            ✓
+                          </span>
+                          <span className={`font-semibold ${isChecked ? 'line-through text-slate-400' : 'text-slate-700 dark:text-slate-200'}`}>{item}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Safety guidelines advisory */}
+                <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 shadow-xl flex flex-col gap-4 text-left text-xs font-mono">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5 font-bold">
+                    ⚠️ Safety Guidelines
+                  </h4>
+                  <p className="text-slate-700 dark:text-slate-200 font-semibold leading-relaxed">
+                    Always carry a digital copy of your sector passport visa coordinates. Pre-book taxi transits inside vetted hotel hubs and avoid dark alleyways during late hours.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tab 6: Voyager Logs & FAQs */}
+          {activeTab === 'logs' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start text-left">
+              <div className="lg:col-span-2 flex flex-col gap-8">
+                {/* Photo Gallery (Masonry-like layout) */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h3 className="font-display font-black text-xl text-slate-900 dark:text-white uppercase tracking-wide">High-Quality Photo Gallery</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {guidePremiumData.gallery.map((imgUrl, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setGalleryLightbox(imgUrl)}
+                        className="h-40 rounded-2xl overflow-hidden border border-white/5 hover:border-teal-400/50 transition-all duration-300 transform hover:scale-[1.02] cursor-zoom-in"
+                      >
+                        <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Reviews Core Section */}
+                <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-6">
+                  <div>
+                    <span className="text-[9px] font-mono text-teal-400 font-bold tracking-widest uppercase">SECTION 01 // VOYAGER FEEDBACK LOGS</span>
+                    <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Voyager Reviews</h3>
+                  </div>
+
+                  {/* Input review form */}
+                  <form onSubmit={handleSubmitReview} className="p-4 rounded-2xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200 dark:border-teal-500/5 flex flex-col gap-4">
+                    <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest">LOG NEW FEEDBACK MATRIX</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-1 text-xs">
+                        <label className="font-mono font-bold text-slate-400 uppercase text-[9px]">YOUR NAME</label>
+                        <input
+                          type="text"
+                          value={reviewerName}
+                          onChange={(e) => setReviewerName(e.target.value)}
+                          className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-white text-xs"
+                          placeholder="Enter name..."
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1 text-xs">
+                        <label className="font-mono font-bold text-slate-400 uppercase text-[9px]">RATING TIER</label>
+                        <select
+                          value={reviewRating}
+                          onChange={(e) => setReviewRating(parseInt(e.target.value))}
+                          className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-mono font-bold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-teal-300 text-xs"
+                        >
+                          <option value="5">★★★★★ (5 Stars)</option>
+                          <option value="4">★★★★☆ (4 Stars)</option>
+                          <option value="3">★★★☆☆ (3 Stars)</option>
+                          <option value="2">★★☆☆☆ (2 Stars)</option>
+                          <option value="1">★☆☆☆☆ (1 Star)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1 text-xs">
+                      <label className="font-mono font-bold text-slate-400 uppercase text-[9px]">COMMENT STATEMENT</label>
+                      <textarea
+                        value={reviewComment}
+                        onChange={(e) => setReviewComment(e.target.value)}
+                        className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-white text-xs h-16 resize-none"
+                        placeholder="Share details of your travel sectors..."
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="py-2.5 bg-slate-900 text-white dark:bg-teal-500 dark:text-slate-955 hover:bg-teal-600 dark:hover:bg-teal-400 font-mono font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                    >
+                      <Send size={12} /> TRANSMIT FEEDBACK
+                    </button>
+                  </form>
+
+                  {/* List Reviews */}
+                  <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+                    {reviews.map((rev) => (
+                      <div key={rev.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/20 border border-slate-150 dark:border-teal-500/5 text-xs flex flex-col gap-2">
+                        <div className="flex justify-between items-center flex-wrap gap-2">
+                          <span className="font-bold text-slate-800 dark:text-slate-200">{rev.name}</span>
+                          <span className="text-[10px] text-teal-400 font-mono font-bold">{'★'.repeat(rev.rating)}</span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 leading-relaxed font-semibold italic">"{rev.comment}"</p>
+                        <span className="text-[8px] text-slate-400 font-mono font-bold uppercase self-end">{rev.date}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar: Festival calendar & FAQs & Did You Know */}
+              <div className="lg:col-span-1 flex flex-col gap-6">
+                {/* Did You Know? Facts Card */}
+                <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 text-left flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5 font-bold">
+                    💡 Did You Know?
+                  </h4>
+                  <ul className="list-disc list-inside flex flex-col gap-2 font-mono text-xs text-slate-700 dark:text-slate-200">
+                    {getCityFacts(cityData.name).map((fact, idx) => (
+                      <li key={idx} className="leading-relaxed font-semibold">{fact}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Festival Calendar */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    🎉 Annual Festival Calendar
+                  </h4>
+                  <div className="flex flex-col gap-3 font-mono text-xs">
+                    {guidePremiumData.festivals.map((fest, idx) => (
+                      <div key={idx} className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5">
+                        <div className="flex justify-between items-baseline font-bold">
+                          <span className="text-slate-800 dark:text-white uppercase truncate pr-1" title={fest.name}>{fest.name}</span>
+                          <span className="text-teal-400 text-[10px] shrink-0">{fest.season}</span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 leading-snug font-semibold">{fest.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Frequently Asked Questions FAQs */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300">
+                    ❓ FAQs Question Desk
+                  </h4>
+                  <div className="flex flex-col gap-3 font-mono text-xs">
+                    {guidePremiumData.faqs.map((faq, idx) => (
+                      <div key={idx} className="flex flex-col gap-1">
+                        <span className="font-bold text-slate-800 dark:text-white">Q: {faq.q}</span>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">A: {faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Destination Comparison Matrix Card */}
+                <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
+                  <div>
+                    <span className="text-[9px] font-mono text-indigo-400 font-bold tracking-widest uppercase">COMPARISON MATRIX</span>
+                    <h3 className="font-display font-black text-lg text-slate-900 dark:text-white mt-1 uppercase">Sector Comparison Grid</h3>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-[10px] text-slate-500 dark:text-slate-300 border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-200 dark:border-white/10 text-slate-400 font-bold">
+                          <th className="py-2.5">METRIC INDICATOR</th>
+                          <th className="py-2.5 text-teal-400">{cityData.name.toUpperCase()}</th>
+                          <th className="py-2.5 text-slate-500">ALT REGION A</th>
+                          <th className="py-2.5 text-slate-500">ALT REGION B</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200">
+                        <tr>
+                          <td className="py-3 text-slate-400">Budget Range</td>
+                          <td className="py-3 text-teal-400 font-bold">{travelerTier}</td>
+                          <td className="py-3">Backpacker</td>
+                          <td className="py-3">Luxury Elite</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 text-slate-400">Pace Density</td>
+                          <td className="py-3 text-indigo-400 font-bold">{pace}</td>
+                          <td className="py-3">Relaxed</td>
+                          <td className="py-3">Fast-Paced</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 text-slate-400">Family Rating</td>
+                          <td className="py-3 text-emerald-400">⭐⭐⭐⭐★</td>
+                          <td className="py-3">⭐⭐⭐⭐⭐</td>
+                          <td className="py-3">⭐⭐⭐★★</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 text-slate-400">Adventure Exertion</td>
+                          <td className="py-3 text-rose-400">High Exertion</td>
+                          <td className="py-3">Medium Exertion</td>
+                          <td className="py-3">Extreme Level</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 text-slate-400">Safety Index</td>
+                          <td className="py-3 text-teal-400">95% Score</td>
+                          <td className="py-3">90% Score</td>
+                          <td className="py-3">98% Score</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* 🎙️ SECTION 01 // NEURAL LOCAL GUIDES WITH VOICE SYNTHESIS CHAT */}
+      {activeTab !== 'telemetry' && activeTab !== 'logs' && (
+        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5 text-left relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-400/40 font-bold select-none">
+            <span>NEURAL: COMM_GUIDES</span>
+          </div>
+          <div>
+            <span className="text-[9px] font-mono text-indigo-400 font-bold tracking-widest uppercase">🎙️ SECTION 01 // NEURAL CORRIDORS</span>
+            <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
+              <Cpu size={18} className="text-indigo-400 animate-pulse" /> Local AI Guide Avatars
+            </h3>
           </div>
 
-          {/* Fullscreen Holographic 360° Portal Overlay */}
-          <AnimatePresence>
-            {isFullscreen360 && (
-              <div className="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-between overflow-hidden select-none">
-                {/* Background Panoramic Image */}
-                <div 
-                  className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden"
-                  onMouseDown={handleDragStart}
-                  onMouseMove={handleDragMove}
-                  onMouseUp={handleDragEnd}
-                  onMouseLeave={handleDragEnd}
-                  onTouchStart={handleDragStart}
-                  onTouchMove={handleDragMove}
-                  onTouchEnd={handleDragEnd}
+          {/* Guide Avatar Selectors */}
+          <div className="grid grid-cols-3 gap-3">
+            {Object.keys(guides).map((key) => {
+              const guide = guides[key];
+              const isSelected = selectedGuide === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setSelectedGuide(key)}
+                  className={`p-3 rounded-2xl border text-left flex flex-col sm:flex-row items-center gap-3 transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-indigo-500/10 border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.15)] text-indigo-900 dark:text-indigo-300'
+                      : 'border-slate-200 dark:border-teal-500/10 hover:bg-slate-50 dark:hover:bg-slate-850/50'
+                  }`}
                 >
                   <img
-                    src={displayImage}
-                    alt="Holographic View"
-                    className="absolute w-[150vw] h-[150vh] max-w-none object-cover opacity-90 transition-transform duration-200 pointer-events-none"
-                    style={{
-                      left: '-25vw',
-                      top: '-25vh',
-                      transform: `translate(${dragOffset.x + tiltOffset.x}px, ${dragOffset.y + tiltOffset.y}px) scale(1.15)`
-                    }}
+                    src={guide.avatar}
+                    alt={guide.name}
+                    className={`w-10 h-10 rounded-xl object-cover border-2 shrink-0 ${
+                      isSelected ? 'border-indigo-400' : 'border-slate-300 dark:border-slate-800'
+                    }`}
                   />
-                  <div className="absolute inset-0 bg-radial-gradient from-transparent via-slate-950/10 to-slate-950/80 pointer-events-none" />
+                  <div className="flex flex-col text-center sm:text-left overflow-hidden">
+                    <span className="font-display font-black text-[11px] truncate">{guide.name.split(' ')[0]}</span>
+                    <span className="text-[8px] font-mono text-slate-400 font-semibold truncate uppercase">{guide.role.split(' ')[0]}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Neural Chat Logs & Waveforms */}
+          <div className="flex flex-col gap-4 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 p-4 rounded-2xl min-h-[160px] max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
+            {chatMessages.map((msg, idx) => (
+              <div 
+                key={idx} 
+                className={`flex flex-col gap-1 max-w-[85%] ${
+                  msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start text-left'
+                }`}
+              >
+                <span className="text-[7.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">
+                  {msg.sender === 'user' ? user?.name || 'Explorer' : guides[selectedGuide].role}
+                </span>
+                <div 
+                  className={`px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                    msg.sender === 'user'
+                      ? 'bg-teal-500/15 text-slate-900 dark:text-teal-200 border border-teal-500/20 rounded-tr-none'
+                      : 'bg-indigo-500/10 text-slate-800 dark:text-indigo-200 border border-indigo-500/20 rounded-tl-none'
+                  }`}
+                >
+                  {msg.text}
                 </div>
-
-                {/* Laser scan lines & grid overlays */}
-                <div className="absolute inset-0 opacity-15 pointer-events-none bg-[linear-gradient(to_right,#0ea5e9_1px,transparent_1px),linear-gradient(to_bottom,#0ea5e9_1px,transparent_1px)] bg-[size:40px_40px]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#020617_90%)] pointer-events-none" />
-                
-                {/* Neon circular scopes */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-[80vw] h-[80vw] sm:w-[500px] sm:h-[500px] rounded-full border border-teal-500/20 flex items-center justify-center relative animate-pulse duration-[8s]">
-                    <div className="absolute inset-0 rounded-full border border-sky-400/10 scale-110" />
-                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-teal-500/10 animate-spin duration-[60s]" />
-                    <div className="w-10 h-10 border border-teal-400/40 relative">
-                      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-teal-400/40" />
-                      <div className="absolute left-1/2 top-0 w-[1px] h-full bg-teal-400/40" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Top UI Panel */}
-                <div className="relative z-10 w-full p-6 bg-gradient-to-b from-slate-950/90 to-transparent flex justify-between items-start backdrop-blur-sm">
-                  <div className="flex flex-col gap-1.5 text-left">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping" />
-                      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest font-black">HOLOGRAPHIC PORTAL LNK_360</span>
-                    </div>
-                    <h2 className="font-display font-black text-2xl text-white uppercase tracking-wider">{cityData.name} Sector</h2>
-                    <span className="text-[10px] font-mono text-slate-400">TELEMETRY: X={Math.round(dragOffset.x + tiltOffset.x)} Y={Math.round(dragOffset.y + tiltOffset.y)}</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsFullscreen360(false);
-                      setDragOffset({ x: 0, y: 0 });
-                      setTiltOffset({ x: 0, y: 0 });
-                    }}
-                    className="p-3 bg-slate-900/60 border border-white/10 hover:border-rose-500/50 hover:bg-slate-900 rounded-2xl text-rose-400 hover:text-rose-300 transition-all cursor-pointer flex items-center justify-center shadow-lg"
-                  >
-                    <Minimize2 size={16} />
-                  </button>
-                </div>
-
-                {/* Bottom UI Dashboard */}
-                <div className="relative z-10 w-full p-6 bg-gradient-to-t from-slate-950/95 to-transparent flex flex-col sm:flex-row justify-between items-center gap-4 backdrop-blur-sm">
-                  {/* Environmental Telemetry */}
-                  <div className="flex gap-6 text-[10px] font-mono text-slate-350">
-                    <div className="flex flex-col items-start">
-                      <span className="text-slate-500 uppercase">GYRO STACK</span>
-                      <span className="font-bold text-teal-400">{gyroPermission === 'granted' ? 'CONNECTED' : 'DISCONNECTED'}</span>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-slate-500 uppercase">ELEVATION</span>
-                      <span className="font-bold text-teal-400">3,250m Sector</span>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-slate-500 uppercase">ATMOSPHERE</span>
-                      <span className="font-bold text-teal-400">{isAudioPlaying ? 'SYNTH ACTIVE' : 'MUTED'}</span>
-                    </div>
-                  </div>
-
-                  {/* Gyro Sync CTA & Audio Toggle */}
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsAudioPlaying(!isAudioPlaying)}
-                      className={`px-4 py-2.5 rounded-xl border font-mono text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
-                        isAudioPlaying
-                          ? 'bg-teal-500/10 border-teal-500 text-teal-400'
-                          : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      {isAudioPlaying ? <Volume2 size={13} /> : <VolumeX size={13} />}
-                      {isAudioPlaying ? 'Mute Drone' : 'Drone Audio'}
-                    </button>
-
-                    {gyroPermission !== 'granted' && (
-                      <button
-                        type="button"
-                        onClick={requestGyroPermission}
-                        className="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-400 hover:to-sky-400 text-slate-950 rounded-xl text-xs font-mono font-bold shadow-lg shadow-teal-500/20 cursor-pointer uppercase"
-                      >
-                        Request Gyro Sync
-                      </button>
-                    )}
-                    
-                    <span className="hidden sm:inline text-[9px] font-mono text-slate-500 uppercase border border-slate-800/40 px-3 py-2.5 rounded-xl bg-slate-900/20">
-                      🖱️ Drag mouse or Tilt Phone to Pan
-                    </span>
-                  </div>
+              </div>
+            ))}
+            
+            {/* Waveform playing graphic */}
+            {isSpeaking && (
+              <div className="flex items-center gap-1.5 self-start pl-2">
+                <span className="text-[8px] font-mono text-indigo-400 font-bold uppercase tracking-wider animate-pulse">Voice streaming:</span>
+                <div className="flex items-end gap-0.5 h-3">
+                  <span className="w-[1.5px] h-2 bg-indigo-405 rounded-full animate-audio-bar-1" />
+                  <span className="w-[1.5px] h-3 bg-indigo-405 rounded-full animate-audio-bar-2" />
+                  <span className="w-[1.5px] h-1 bg-indigo-405 rounded-full animate-audio-bar-3" />
                 </div>
               </div>
             )}
-          </AnimatePresence>
+          </div>
 
-          {/* 🎙️ SECTION 01 // NEURAL LOCAL GUIDES WITH VOICE SYNTHESIS */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5 text-left animate-in fade-in duration-300">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
-              <span>NEURAL: COMM_GUIDES</span>
-            </div>
-            <div>
-              <span className="text-[9px] font-mono text-indigo-555 dark:text-indigo-400 font-bold tracking-widest uppercase">🎙️ SECTION 01 // NEURAL CORRIDORS</span>
-              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide flex items-center gap-1.5">
-                <Cpu size={18} className="text-indigo-400 animate-pulse" /> Local AI Guide Avatars
-              </h3>
-            </div>
-
-            {/* Guide Avatar Selectors */}
-            <div className="grid grid-cols-3 gap-3">
-              {Object.keys(guides).map((key) => {
-                const guide = guides[key];
-                const isSelected = selectedGuide === key;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setSelectedGuide(key)}
-                    className={`p-3 rounded-2xl border text-left flex flex-col sm:flex-row items-center gap-3 transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-indigo-500/10 border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.15)] text-indigo-900 dark:text-indigo-300'
-                        : 'border-slate-200 dark:border-teal-500/10 hover:bg-slate-50 dark:hover:bg-slate-850/50'
-                    }`}
-                  >
-                    <img
-                      src={guide.avatar}
-                      alt={guide.name}
-                      className={`w-10 h-10 rounded-xl object-cover border-2 shrink-0 ${
-                        isSelected ? 'border-indigo-400' : 'border-slate-300 dark:border-slate-800'
-                      }`}
-                    />
-                    <div className="flex flex-col text-center sm:text-left overflow-hidden">
-                      <span className="font-display font-black text-[11px] truncate">{guide.name.split(' ')[0]}</span>
-                      <span className="text-[8px] font-mono text-slate-400 font-semibold truncate uppercase">{guide.role.split(' ')[0]}</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Neural Chat Logs & Waveforms */}
-            <div className="flex flex-col gap-4 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 p-4 rounded-2xl min-h-[160px] max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
-              {chatMessages.map((msg, idx) => (
-                <div 
-                  key={idx} 
-                  className={`flex flex-col gap-1 max-w-[85%] ${
-                    msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start text-left'
-                  }`}
-                >
-                  <span className="text-[7.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">
-                    {msg.sender === 'user' ? user?.name || 'Explorer' : guides[selectedGuide].role}
-                  </span>
-                  <div 
-                    className={`px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
-                      msg.sender === 'user'
-                        ? 'bg-teal-500/15 text-slate-900 dark:text-teal-200 border border-teal-500/20 rounded-tr-none'
-                        : 'bg-indigo-500/10 text-slate-800 dark:text-indigo-200 border border-indigo-500/20 rounded-tl-none'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                </div>
-              ))}
-              
-              {/* Waveform playing graphic */}
-              {isSpeaking && (
-                <div className="flex items-center gap-1.5 self-start pl-2">
-                  <span className="text-[8px] font-mono text-indigo-400 font-bold uppercase tracking-wider animate-pulse">Voice streaming:</span>
-                  <div className="flex items-end gap-0.5 h-3">
-                    <span className="w-[1.5px] h-2 bg-indigo-400 rounded-full animate-audio-bar-1" />
-                    <span className="w-[1.5px] h-3 bg-indigo-400 rounded-full animate-audio-bar-2" />
-                    <span className="w-[1.5px] h-1 bg-indigo-400 rounded-full animate-audio-bar-3" />
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Guide Presets Trigger Buttons */}
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[8.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">Neural Presets</span>
-              <div className="flex flex-wrap gap-2">
-                {guides[selectedGuide].presets.map((preset, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => handleAskGuide(preset)}
-                    className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-teal-500/10 bg-white dark:bg-slate-900/30 hover:border-indigo-400/50 hover:bg-indigo-500/5 text-slate-650 dark:text-slate-350 text-[10px] font-semibold text-left transition-all cursor-pointer flex items-center gap-1"
-                  >
-                    <ChevronRight size={10} className="text-indigo-400 shrink-0" />
-                    {preset}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Custom Input Bar */}
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAskGuide(chatInput)}
-                  placeholder={`Ask ${guides[selectedGuide].name.split(' ')[0]} anything...`}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-400 transition-all text-slate-800 dark:text-slate-250"
-                />
-                
-                {/* Voice toggle button */}
+          {/* Guide Presets Trigger Buttons */}
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[8.5px] font-mono font-bold text-slate-400 uppercase tracking-widest">Neural Presets</span>
+            <div className="flex flex-wrap gap-2">
+              {guides[selectedGuide].presets.map((preset, idx) => (
                 <button
+                  key={idx}
                   type="button"
-                  onClick={() => {
-                    setIsVoiceEnabled(!isVoiceEnabled);
-                    if (isSpeaking && window.speechSynthesis) {
-                      window.speechSynthesis.cancel();
-                      setIsSpeaking(false);
-                    }
-                  }}
-                  className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg border transition-all cursor-pointer ${
-                    isVoiceEnabled
-                      ? 'bg-indigo-500/15 border-indigo-500/35 text-indigo-400'
-                      : 'border-slate-800 text-slate-500 hover:text-white'
-                  }`}
-                  title={isVoiceEnabled ? "Mute Speech Voice" : "Enable Speech Voice"}
+                  onClick={() => handleAskGuide(preset)}
+                  className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-teal-500/10 bg-white dark:bg-slate-900/30 hover:border-indigo-400/50 hover:bg-indigo-500/5 text-slate-600 dark:text-slate-300 text-[10px] font-semibold text-left transition-all cursor-pointer flex items-center gap-1"
                 >
-                  {isVoiceEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                  <ChevronRight size={10} className="text-indigo-400 shrink-0" />
+                  {preset}
                 </button>
-              </div>
+              ))}
+            </div>
+          </div>
 
+          {/* Custom Input Bar */}
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAskGuide(chatInput)}
+                placeholder={`Ask ${guides[selectedGuide].name.split(' ')[0]} anything...`}
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-400 transition-all text-slate-800 dark:text-slate-200"
+              />
+              
+              {/* Voice toggle button */}
               <button
                 type="button"
-                onClick={() => handleAskGuide(chatInput)}
-                className="px-5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-mono font-bold flex items-center gap-1 cursor-pointer transition-all shadow-md shadow-indigo-500/15"
+                onClick={() => {
+                  setIsVoiceEnabled(!isVoiceEnabled);
+                  if (isSpeaking && window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                    setIsSpeaking(false);
+                  }
+                }}
+                className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg border transition-all cursor-pointer ${
+                  isVoiceEnabled
+                    ? 'bg-indigo-500/15 border-indigo-500/35 text-indigo-400'
+                    : 'border-slate-800 text-slate-500 hover:text-white'
+                }`}
+                title={isVoiceEnabled ? "Mute Speech Voice" : "Enable Speech Voice"}
               >
-                <Send size={12} /> Transmit
+                {isVoiceEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
               </button>
-            </div>
-          </div>
-
-          {/* Historical Time Travel Mode */}
-          {cityData.history && (
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5 text-left">
-              <div>
-                <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="text-[9px] font-mono text-indigo-555 dark:text-indigo-400 font-bold tracking-widest uppercase">CHRONOLOGICAL ENGINE</span>
-                  <span className="px-2 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded-full flex items-center gap-1">
-                    ✓ Verified Historical Information
-                  </span>
-                </div>
-                <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Historical Time Travel</h3>
-              </div>
-
-              <div className="relative border-l border-slate-200 dark:border-teal-500/10 pl-6 ml-3 flex flex-col gap-6">
-                {cityData.history.map((hist, idx) => (
-                  <div key={idx} className="relative">
-                    <div className="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-400 flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                    </div>
-                    <div className="flex justify-between items-baseline gap-4">
-                      <span className="text-xs font-mono font-black text-indigo-455 dark:text-indigo-400 uppercase tracking-widest">{hist.era}</span>
-                      <span className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider">{hist.event}</span>
-                    </div>
-                    <p className="text-xs text-slate-655 dark:text-slate-350 leading-relaxed font-semibold mt-1">
-                      {hist.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* AI Photo Spot Finder */}
-          {cityData.photoSpots && (
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 flex items-center gap-1">
-                <Cpu size={14} className="text-teal-400" /> AI Photo Spot Coordinator
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {cityData.photoSpots.map((spot, idx) => (
-                  <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/20 border border-slate-150 dark:border-teal-500/5 flex flex-col gap-1.5">
-                    <div className="flex justify-between items-center">
-                      <span className="font-mono text-[9px] font-black text-teal-400 uppercase tracking-wider bg-teal-500/10 px-2 py-0.5 rounded-md">
-                        {spot.type}
-                      </span>
-                      <span className="text-[8px] font-mono text-slate-500 font-bold">LATENCY SYNC</span>
-                    </div>
-                    <h5 className="font-display font-bold text-xs text-slate-900 dark:text-white">{spot.name}</h5>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-snug">{spot.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Digital Nomad Hub */}
-          {cityData.nomadHub && (
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355">
-                Digital Nomad Coordinates
-              </h4>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-[10px]">
-                <div className="p-3 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5 flex flex-col gap-0.5">
-                  <span className="text-slate-400 text-[8px] font-bold uppercase">WiFi Speed</span>
-                  <span className="text-xs font-black text-teal-400">{cityData.nomadHub.internetSpeed}</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5 flex flex-col gap-0.5">
-                  <span className="text-slate-400 text-[8px] font-bold uppercase">Cowork Space</span>
-                  <span className="text-xs font-black text-slate-800 dark:text-white truncate" title={cityData.nomadHub.coworkingSpace}>{cityData.nomadHub.coworkingSpace.split(',')[0]}</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-teal-500/5 flex flex-col gap-0.5">
-                  <span className="text-slate-400 text-[8px] font-bold uppercase">Cost of Living</span>
-                  <span className="text-xs font-black text-sky-400 truncate">{cityData.nomadHub.costOfLiving.split(' ')[0]}</span>
-                </div>
-                <div className="p-3 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200/50 dark:border-teal-500/5 flex flex-col gap-0.5">
-                  <span className="text-slate-400 text-[8px] font-bold uppercase">Monthly Rent</span>
-                  <span className="text-xs font-black text-indigo-400">{cityData.nomadHub.monthlyRent.split(' ')[0]}</span>
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-teal-500/5 border border-teal-500/20 text-xs leading-relaxed text-slate-655 dark:text-slate-300 font-mono">
-                <span className="font-bold text-teal-450 uppercase text-[9px] block mb-0.5 font-mono">NOMAD VISA POLICY</span>
-                {cityData.nomadHub.visaInfo}
-              </div>
-
-              {/* Stay Recommendations */}
-              {cityData.stays && (
-                <div className="flex flex-col gap-2 border-t border-white/5 pt-4 mt-2">
-                  <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest">Smart Stay Matches</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {cityData.stays.map((stay, idx) => (
-                      <div key={idx} className="p-3 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5 flex flex-col gap-1 text-left">
-                        <span className="text-[8px] font-mono font-bold text-indigo-400 uppercase tracking-wider">{stay.type}</span>
-                        <h5 className="font-display font-bold text-xs text-slate-900 dark:text-white truncate">{stay.name}</h5>
-                        <p className="text-[9px] text-slate-500 leading-snug">{stay.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Travel Risk Intelligence */}
-          {cityData.riskAlerts && (
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 flex items-center gap-1.5">
-                <ShieldAlert size={14} className="text-rose-500 animate-pulse" /> Travel Risk Intelligence
-              </h4>
-              <div className="flex flex-col gap-3">
-                {cityData.riskAlerts.map((alert, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20 text-xs flex justify-between gap-3 items-start">
-                    <span className={`px-2 py-0.5 rounded text-[8px] font-mono font-bold uppercase ${
-                      alert.level === 'High' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
-                    }`}>
-                      {alert.level}
-                    </span>
-                    <div className="flex-1">
-                      <span className="font-bold text-[9px] uppercase tracking-wide text-slate-405 block mb-0.5">{alert.category} Warning</span>
-                      <p className="text-slate-655 dark:text-slate-350 font-semibold">{alert.text}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {/* Dossier Information Overview */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl relative overflow-hidden flex flex-col gap-6">
-            <div className="flex justify-between items-center flex-wrap gap-2">
-              <div>
-                <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 01 // OVERVIEW SUMMARY</span>
-                <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide my-0">Geographical Dossier</h3>
-              </div>
-              <span className="px-2 py-0.5 text-[8.5px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1 shrink-0">
-                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> Live Sourced API Data
-              </span>
-            </div>
-            
-            <p className="text-xs text-slate-600 dark:text-slate-355 leading-relaxed font-semibold">
-              {cityData.overview}
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-200 dark:border-teal-500/10 pt-6 text-xs font-mono font-bold text-slate-500">
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Capital City</span>
-                <span className="text-slate-900 dark:text-white">{countryData.capital}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Population</span>
-                <span className="text-slate-900 dark:text-white">{countryData.population}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Currency</span>
-                <span className="text-slate-900 dark:text-white">{countryData.currency}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Official Language</span>
-                <span className="text-slate-900 dark:text-white truncate">{countryData.languages}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Local Timezone</span>
-                <span className="text-slate-900 dark:text-white">{countryData.timezone}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] text-slate-400 uppercase tracking-widest">Sector Coordinates</span>
-                <span className="text-teal-555 dark:text-teal-400 font-black">{countryData.latlng[0].toFixed(2)}°N, {countryData.latlng[1].toFixed(2)}°E</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Sacred Site Etiquette & Guidelines Widget */}
-          {cityData && cityData.name && (['varanasi', 'dwarka', 'puri', 'rameshwaram', 'badrinath', 'ayodhya', 'rishikesh', 'haridwar', 'somnath', 'kedarnath', 'hampi', 'ellora', 'vaishnodevi', 'tirupati', 'meenakshi', 'goldentemple', 'bodhgaya', 'mahakaleshwar', 'shirdi', 'mecca', 'medina', 'westernwall', 'mountkailash', 'patnasahib', 'anandpursahib', 'sarnath', 'bomjesus', 'velankanni', 'palitana', 'ranakpur'].some(
-            shrine => cityData.name.toLowerCase().includes(shrine) || (cityData.id && cityData.id.toLowerCase().includes(shrine))
-          ) || 
-          cityData.tags?.some(t => ['spiritual', 'temple', 'shrine', 'pilgrimage', 'holy', 'sacred', 'religion'].includes(t.toLowerCase())) ||
-          (cityData.description && cityData.description.toLowerCase().match(/(temple|holy|sacred|shrine|pilgrimage|mosque|church|cathedral|synagogue|gurudwara)/i))) && (
-            <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/25 text-left flex flex-col gap-4">
-              <div>
-                <span className="text-[9px] font-mono text-amber-500 font-bold tracking-widest uppercase">🕌 SACRED PROTOCOLS ACTIVATED</span>
-                <h3 className="font-display font-black text-lg text-slate-900 dark:text-amber-400 mt-1 uppercase my-0">Spiritual Site Guidelines</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
-                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">👗 DRESS CODE PROTOCOL</span>
-                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Traditional conservative attire recommended. Keep shoulders and knees fully covered. Footwear prohibited past temple boundary.</p>
-                </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
-                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">🕒 OPENING / DARSHAN TIMINGS</span>
-                  <p className="text-slate-700 dark:text-slate-200 font-semibold">05:00 AM – 12:00 PM and 04:00 PM – 09:30 PM daily. Queue waiting times fluctuate from 45 mins to 3 hours.</p>
-                </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
-                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">📸 PHOTOGRAPHY RULES</span>
-                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Strictly prohibited inside the inner sanctum. Cameras and mobile phones must be deposited in secure lockers near gates.</p>
-                </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/45 border border-slate-200 dark:border-white/5 rounded-xl">
-                  <span className="text-[8.5px] text-slate-500 font-bold uppercase block mb-0.5">♿ ACCESSIBILITY</span>
-                  <p className="text-slate-700 dark:text-slate-200 font-semibold">Wheelchair assistance and rampways available at the main gate. Golf cart shuttles operational for senior citizens.</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Travel Advisories (Visa, Safety & Climate) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Visa & Safety Card */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350 flex items-center gap-1.5">
-                <ShieldAlert size={14} className="text-rose-500" /> Voyager Advisories
-              </h4>
-              <div className="flex flex-col gap-3.5 text-xs">
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 rounded-xl">
-                  <span className="font-bold text-teal-655 dark:text-teal-450 font-mono text-[9px] uppercase tracking-wider block mb-0.5">VISA REQUIREMENT</span>
-                  <p className="text-slate-600 dark:text-slate-350 font-semibold">{countryData.visa}</p>
-                </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 rounded-xl">
-                  <span className="font-bold text-rose-555 dark:text-rose-455 font-mono text-[9px] uppercase tracking-wider block mb-0.5">SAFETY TELEMETRY</span>
-                  <p className="text-slate-600 dark:text-slate-355 font-semibold">{countryData.safety}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Weather & Best Season Card */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 flex items-center gap-1.5">
-                <Thermometer size={14} className="text-sky-500" /> Climate Analysis
-              </h4>
-              <div className="flex flex-col gap-3.5 text-xs">
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 rounded-xl">
-                  <span className="font-bold text-teal-655 dark:text-teal-450 font-mono text-[9px] uppercase tracking-wider block mb-0.5">METEOROLOGY OVERVIEW</span>
-                  <p className="text-slate-600 dark:text-slate-355 font-semibold">{countryData.weatherOverview}</p>
-                </div>
-                <div className="p-3 bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 rounded-xl">
-                  <span className="font-bold text-sky-600 dark:text-sky-450 font-mono text-[9px] uppercase tracking-wider block mb-0.5">RECOMMENDED VOYAGE PERIOD</span>
-                  <p className="text-slate-600 dark:text-slate-355 font-semibold">{countryData.bestTime}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Attractions & Cuisine */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Top Attractions list */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350">Top Attractions</h4>
-              <div className="flex flex-col gap-2 font-mono text-[11px] text-slate-600 dark:text-slate-300">
-                {cityData.attractions.map((attr, idx) => (
-                  <div key={idx} className="flex items-center gap-2 p-2 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0" />
-                    <span className="font-bold">{attr}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Culinary Delicacies */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355">Local Cuisine</h4>
-              <div className="flex flex-col gap-2 font-mono text-[11px] text-slate-600 dark:text-slate-300">
-                {cityData.cuisine.map((food, idx) => (
-                  <div key={idx} className="flex items-center gap-2 p-2 rounded-xl bg-slate-100/50 dark:bg-slate-950/20 border border-slate-200 dark:border-teal-500/5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                    <span className="font-bold">{food}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Real-time Open-Meteo Weather Widget */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-5">
-            <div>
-              <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 02 // WEATHER METRICS</span>
-              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Real-time Weather Radar</h3>
-            </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 mt-2">
-              {weatherData.map((w, idx) => (
-                <div 
-                  key={idx} 
-                  className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-teal-500/5 flex flex-col items-center justify-center text-center gap-1.5 shadow-sm"
-                >
-                  <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest">{w.day}</span>
-                  <span className="text-2xl" role="img" aria-label={w.summary}>{w.icon}</span>
-                  <span className="text-[10px] text-slate-455 uppercase font-bold tracking-wider leading-none mt-1">{w.summary}</span>
-                  <span className="text-xs font-mono font-black text-slate-900 dark:text-white mt-0.5">
-                    {w.maxTemp}° / {w.minTemp}°
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Reviews Core Section */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-6">
-            <div>
-              <span className="text-[9px] font-mono text-teal-655 dark:text-teal-400 font-bold tracking-widest uppercase">SECTION 03 // VOYAGER FEEDBACK LOGS</span>
-              <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Voyager Reviews</h3>
-            </div>
-
-            {/* Input review form */}
-            <form onSubmit={handleSubmitReview} className="p-4 rounded-2xl bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200 dark:border-teal-500/5 flex flex-col gap-4">
-              <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest">LOG NEW FEEDBACK MATRIX</span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1 text-xs">
-                  <label className="font-mono font-bold text-slate-450 uppercase text-[9px]">YOUR NAME</label>
-                  <input
-                    type="text"
-                    value={reviewerName}
-                    onChange={(e) => setReviewerName(e.target.value)}
-                    className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-white text-xs"
-                    placeholder="Enter name..."
-                  />
-                </div>
-                <div className="flex flex-col gap-1 text-xs">
-                  <label className="font-mono font-bold text-slate-450 uppercase text-[9px]">RATING TIER</label>
-                  <select
-                    value={reviewRating}
-                    onChange={(e) => setReviewRating(parseInt(e.target.value))}
-                    className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-mono font-bold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-teal-300 text-xs"
-                  >
-                    <option value="5">★★★★★ (5 Stars)</option>
-                    <option value="4">★★★★☆ (4 Stars)</option>
-                    <option value="3">★★★☆☆ (3 Stars)</option>
-                    <option value="2">★★☆☆☆ (2 Stars)</option>
-                    <option value="1">★☆☆☆☆ (1 Star)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1 text-xs">
-                <label className="font-mono font-bold text-slate-450 uppercase text-[9px]">COMMENT STATEMENT</label>
-                <textarea
-                  value={reviewComment}
-                  onChange={(e) => setReviewComment(e.target.value)}
-                  className="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-white text-xs h-16 resize-none"
-                  placeholder="Share details of your travel sectors..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="py-2.5 bg-slate-900 text-white dark:bg-teal-500 dark:text-slate-950 hover:bg-teal-650 dark:hover:bg-teal-400 font-mono font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
-              >
-                <Send size={12} /> TRANSMIT FEEDBACK
-              </button>
-            </form>
-
-            {/* List Reviews */}
-            <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
-              {reviews.map((rev) => (
-                <div key={rev.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/20 border border-slate-150 dark:border-teal-500/5 text-xs flex flex-col gap-2">
-                  <div className="flex justify-between items-center flex-wrap gap-2">
-                    <span className="font-bold text-slate-800 dark:text-slate-200">{rev.name}</span>
-                    <span className="text-[10px] text-teal-605 dark:text-teal-400 font-mono font-bold">{'★'.repeat(rev.rating)}</span>
-                  </div>
-                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed font-semibold italic">"{rev.comment}"</p>
-                  <span className="text-[8px] text-slate-400 font-mono font-bold uppercase self-end">{rev.date}</span>
-                </div>
-              ))}
-            </div>
-            {/* Did You Know? Facts Card */}
-            <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-505/20 text-left flex flex-col gap-4">
-              <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5 font-bold">
-                💡 Did You Know?
-              </h4>
-              <ul className="list-disc list-inside flex flex-col gap-2 font-mono text-xs text-slate-700 dark:text-slate-200">
-                {getCityFacts(cityData.name).map((fact, idx) => (
-                  <li key={idx} className="leading-relaxed font-semibold">{fact}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Destination Comparison Matrix Card */}
-            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-              <div>
-                <span className="text-[9px] font-mono text-indigo-400 font-bold tracking-widest uppercase">COMPARISON MATRIX</span>
-                <h3 className="font-display font-black text-lg text-slate-900 dark:text-white mt-1 uppercase">Sector Comparison Grid</h3>
-              </div>
-              
-              <div className="overflow-x-auto">
-                <table className="w-full text-left font-mono text-[10px] text-slate-655 dark:text-slate-300 border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-200 dark:border-white/10 text-slate-400 font-bold">
-                      <th className="py-2.5">METRIC INDICATOR</th>
-                      <th className="py-2.5 text-teal-650 dark:text-teal-400">{cityData.name.toUpperCase()} (CURRENT)</th>
-                      <th className="py-2.5 text-slate-500">ALT REGIONAL SECTOR A</th>
-                      <th className="py-2.5 text-slate-500">ALT REGIONAL SECTOR B</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-white/5 font-semibold text-slate-700 dark:text-slate-200">
-                    <tr>
-                      <td className="py-3 text-slate-400">Budget Tier Range</td>
-                      <td className="py-3 text-teal-605 dark:text-teal-400 font-bold">{travelerTier}</td>
-                      <td className="py-3">Backpacker Budget</td>
-                      <td className="py-3">Luxury Elite Elite</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 text-slate-400">Pace / Action Density</td>
-                      <td className="py-3 text-indigo-500 dark:text-indigo-400 font-bold">{pace}</td>
-                      <td className="py-3">Relaxed / Slow</td>
-                      <td className="py-3">Balanced / High</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 text-slate-400">Family Friendliness</td>
-                      <td className="py-3 text-emerald-600 dark:text-emerald-400">⭐⭐⭐⭐★</td>
-                      <td className="py-3">⭐⭐⭐⭐⭐</td>
-                      <td className="py-3">⭐⭐⭐★★</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 text-slate-400">Adventure Exertion</td>
-                      <td className="py-3 text-rose-500 dark:text-rose-400">High Exertion</td>
-                      <td className="py-3">Medium Exertion</td>
-                      <td className="py-3">Extreme Level</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 text-slate-400">Travel Safety Index</td>
-                      <td className="py-3 text-teal-500 dark:text-teal-400">95% Confidence</td>
-                      <td className="py-3">90% Confidence</td>
-                      <td className="py-3">98% Confidence</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side (1 Column): Estimated Credits Calculator & Itinerary Generator */}
-        <div className="lg:col-span-1 flex flex-col gap-6 sticky top-6 self-start">
-          
-          {/* Voyager Hub Booking Sticky Panel */}
-          <div className="p-6 rounded-3xl bg-slate-900 border border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden text-left card-premium-hover">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-400 font-bold select-none">
-              <span>BOOKING_CORRIDOR</span>
-            </div>
-            <h4 className="font-display font-black text-xs uppercase tracking-wider text-teal-350 flex items-center gap-1.5 font-bold">
-              <MapPin size={13} className="text-teal-400" /> Voyager Hub Booking
-            </h4>
-            
-            <div className="flex flex-col gap-3.5 text-xs font-semibold text-slate-300 font-mono">
-              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400">ESTIMATED BUDGET</span>
-                <span className="text-sm font-black text-teal-400">₹{calculatedCosts.total.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400">LOCAL CLIMATE</span>
-                <span className="text-sm font-black text-sky-400">24°C // SUNNY</span>
-              </div>
-              <div className="flex justify-between items-center p-2.5 rounded-xl bg-slate-950/40 border border-white/5">
-                <span className="text-[9px] font-bold text-slate-400">RECOMMENDED LODGING</span>
-                <span className="text-[10px] text-slate-205 uppercase font-black">Taj Villa Res.</span>
-              </div>
             </div>
 
             <button
-              onClick={() => {
-                window.location.href = `/planner?dest=${cityData.name}`;
-              }}
-              className="w-full py-3 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-2xl text-xs font-mono font-black uppercase tracking-wider transition-all duration-300 transform active:scale-95 shadow-lg shadow-teal-500/20 flex items-center justify-center gap-1 cursor-pointer"
+              type="button"
+              onClick={() => handleAskGuide(chatInput)}
+              className="px-5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md shadow-indigo-500/15"
             >
-              Plan Your Journey →
-            </button>
-          </div>
-          {/* Credits budget Matrix Estimator */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-teal-450 dark:text-teal-400/40 font-bold select-none">
-              <span>CALC: DEBIT_INDEX</span>
-            </div>
-            
-            <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350">
-              Estimated Credits Matrix
-            </h4>
-            
-            {/* Days Slider */}
-            <div className="flex flex-col gap-2 border-b border-slate-200 dark:border-teal-500/10 pb-4">
-              <div className="flex justify-between items-baseline font-mono text-xs font-bold uppercase text-slate-450">
-                <span>Duration Days</span>
-                <span className="text-teal-500 text-lg font-black">{estimatedDays} Days</span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="14"
-                value={estimatedDays}
-                onChange={(e) => setEstimatedDays(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer"
-              />
-            </div>
-
-            {/* Travel Tier buttons */}
-            <div className="flex flex-col gap-2 border-b border-slate-200 dark:border-teal-500/10 pb-4">
-              <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Travel Tier Level</span>
-              <div className="grid grid-cols-3 gap-2">
-                {['Backpacker', 'Mid-range', 'Luxury'].map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setTravelerTier(t)}
-                    className={`py-2 rounded-xl border text-[10px] font-mono font-black uppercase transition-all cursor-pointer ${
-                      travelerTier === t
-                        ? 'bg-teal-500/10 border-teal-500 text-teal-605 dark:text-teal-400'
-                        : 'border-slate-200 dark:border-teal-500/10 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-850/50'
-                    }`}
-                  >
-                    {t.replace('-range', '')}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Detailed cost rows */}
-            <div className="flex flex-col gap-3 font-mono text-xs text-slate-500">
-              <div className="flex justify-between items-center">
-                <span>✈️ TRANSIT CORRIDORS:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-250">₹{calculatedCosts.flights.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>🏨 LODGING ESTIMATE:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-250">₹{calculatedCosts.lodging.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>🍔 MEALS INDEX:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-250">₹{calculatedCosts.meals.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>🎟️ ACTIVITIES MATRIX:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-250">₹{calculatedCosts.activities.toLocaleString('en-IN')}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>🚕 SHUTTLES INDEX:</span>
-                <span className="font-bold text-slate-800 dark:text-slate-250">₹{calculatedCosts.transport.toLocaleString('en-IN')}</span>
-              </div>
-              
-              <div className="flex justify-between items-baseline border-t border-slate-200 dark:border-teal-500/10 pt-3 text-slate-800 dark:text-white mt-1">
-                <span className="text-[10px] font-bold uppercase">NET TOTAL ESTIMATE:</span>
-                <span className="text-xl font-black text-teal-655 dark:text-teal-400">₹{calculatedCosts.total.toLocaleString('en-IN')}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* AI Itinerary Core compiler widget */}
-          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-4 text-left">
-            <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350 flex items-center gap-1">
-              <Sparkles size={14} className="text-teal-400 animate-pulse" /> AI Daily Scheduler
-            </h4>
-
-            {/* Travel Style Selector */}
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest text-left">Travel Style Preference</span>
-              <select
-                value={travelStyle}
-                onChange={(e) => setTravelStyle(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-mono font-bold text-xs focus:outline-none focus:border-teal-500 text-slate-700 dark:text-teal-300"
-              >
-                {['Solo', 'Couple', 'Family', 'Group', 'Senior Citizen', 'Backpacker', 'Luxury', 'Adventure', 'Road Trip'].map((style) => (
-                  <option key={style} value={style}>{style.toUpperCase()}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Daily Sightseeing Pace Selector */}
-            <div className="flex flex-col gap-1.5">
-              <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest text-left">Daily Sightseeing Pace</span>
-              <select
-                value={pace}
-                onChange={(e) => setPace(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-slate-50/50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 font-mono font-bold text-xs focus:outline-none focus:border-teal-500 text-slate-700 dark:text-teal-300"
-              >
-                {['Relaxed', 'Balanced', 'Fast-Paced'].map((p) => (
-                  <option key={p} value={p}>{p.toUpperCase()}</option>
-                ))}
-              </select>
-            </div>
-            
-            {/* Tag Selection */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-widest">Select Interests</span>
-              <div className="flex flex-wrap gap-1.5">
-                {interestOptions.slice(0, 6).map((tag) => {
-                  const isSelected = selectedInterests.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      onClick={() => handleInterestToggle(tag)}
-                      className={`px-2 py-1 text-[9px] font-mono font-bold rounded-lg border transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-teal-500 border-teal-500 text-slate-950 shadow-sm'
-                          : 'border-slate-200 dark:border-teal-500/10 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-850/50'
-                      }`}
-                    >
-                      {tag.toUpperCase()}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Compiled Days Timeline preview */}
-            <div className="flex flex-col gap-5 border-t border-slate-200 dark:border-teal-500/10 pt-4 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin">
-              {generatedItinerary.map((d) => (
-                <div key={d.day} className="flex flex-col gap-2 relative text-left">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-teal-500 text-slate-950 font-bold font-mono text-[10px] flex items-center justify-center shrink-0 z-10">
-                      {d.day}
-                    </div>
-                    <h5 className="font-bold text-xs text-slate-800 dark:text-white uppercase font-display">{d.title}</h5>
-                  </div>
-                  
-                  <div className="flex flex-col gap-2.5 border-l border-slate-200 dark:border-teal-500/10 pl-3.5 ml-2.5">
-                    {d.timeline?.map((item, idx) => (
-                      <div key={idx} className="flex flex-col gap-0.5 text-[11px]">
-                        <div className="flex items-center gap-1.5 font-bold">
-                          <span>{item.icon}</span>
-                          <span className="text-slate-800 dark:text-white">{item.activity}</span>
-                          <span className="font-mono text-[9px] text-teal-400 font-medium bg-teal-500/5 px-1.5 py-0.2 rounded border border-teal-500/10 ml-auto shrink-0">{item.time}</span>
-                        </div>
-                        <p className="text-slate-500 dark:text-slate-400 pl-5 font-semibold leading-relaxed">{item.details}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={handleSaveItinerary}
-              className="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all shadow-md shadow-teal-500/10 flex items-center justify-center gap-1.5 mt-2 cursor-pointer"
-            >
-              <Save size={13} /> SAVE COMPILED TARGET
+              <Send size={12} /> Transmit
             </button>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Customize Photo Modal */}
       <AnimatePresence>
@@ -1971,7 +1926,7 @@ export const DestinationDetails = () => {
                     value={customPhotoUrl}
                     onChange={(e) => setCustomPhotoUrl(e.target.value)}
                     placeholder="https://images.unsplash.com/photo-..."
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-650 focus:outline-none focus:border-teal-400 transition-all font-mono"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:border-teal-400 transition-all font-mono"
                   />
                 </div>
 
@@ -1995,12 +1950,38 @@ export const DestinationDetails = () => {
                       setIsEditPhotoOpen(false);
                       setCustomPhotoUrl('');
                     }}
-                    className="px-5 py-2 bg-teal-500 hover:bg-teal-400 text-slate-950 rounded-xl text-xs font-mono font-bold shadow transition-all cursor-pointer"
+                    className="px-5 py-2 bg-teal-500 hover:bg-teal-400 text-slate-955 rounded-xl text-xs font-mono font-bold shadow transition-all cursor-pointer"
                   >
                     SAVE PHOTO
                   </button>
                 </div>
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* High-Quality Photo Gallery Lightbox Modal */}
+      <AnimatePresence>
+        {galleryLightbox && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-xl p-4 cursor-zoom-out"
+            onClick={() => setGalleryLightbox(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="max-w-4xl max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl relative border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img src={galleryLightbox} alt="Expanded Lightbox" className="max-w-full max-h-[80vh] object-contain" />
+              <button
+                onClick={() => setGalleryLightbox(null)}
+                className="absolute top-4 right-4 p-3 bg-slate-950/70 border border-white/10 text-white rounded-full hover:bg-slate-900 transition-all cursor-pointer"
+              >
+                ✕
+              </button>
             </motion.div>
           </div>
         )}
