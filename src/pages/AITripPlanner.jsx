@@ -108,7 +108,7 @@ export const AITripPlanner = () => {
       interval = setInterval(() => {
         setDocDay(prev => {
           if (prev >= (itinerary?.days?.length || 1) - 1) {
-            setDocPlaying(false);
+            setTimeout(() => setDocPlaying(false), 0);
             return prev;
           }
           return prev + 1;

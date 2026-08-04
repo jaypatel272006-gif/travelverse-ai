@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '../utils/supabaseClient';
 
 const AppContext = createContext();
@@ -15,12 +15,12 @@ export const AppContextProvider = ({ children }) => {
   // Alert/Toast Notification helper
   const [toast, setToast] = useState(null);
 
-  const showToast = (message, type = 'success') => {
+  const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => {
       setToast(null);
     }, 4000);
-  };
+  }, []);
 
   const safeJSONParse = (key, fallback) => {
     try {
@@ -168,7 +168,27 @@ export const AppContextProvider = ({ children }) => {
   // Custom destination photos state
   const [customPhotos, setCustomPhotos] = useState(() => safeJSONParse('tv_custom_photos', {}));
 
-  const updateDestinationPhoto = async (id, imageUrl) => {
+  // XP Award Operation (Optimized to prevent nested rendering loops)
+  const awardXp = useCallback((amount, reason) => {
+    setUserXp(prev => {
+      const newXp = prev + amount;
+      const threshold = userLevel * 1000;
+      if (newXp >= threshold) {
+        setTimeout(() => {
+          setUserLevel(lvl => {
+            const newLvl = lvl + 1;
+            showToast(`LEVEL UP! You are now Level ${newLvl}! 🚀`, 'success');
+            return newLvl;
+          });
+        }, 0);
+        return newXp - threshold;
+      } else {
+        return newXp;
+      }
+    });
+  }, [userLevel, showToast]);
+
+  const updateDestinationPhoto = useCallback(async (id, imageUrl) => {
     setCustomPhotos(prev => {
       const updated = { ...prev, [id]: imageUrl };
       localStorage.setItem('tv_custom_photos', JSON.stringify(updated));
@@ -194,15 +214,13 @@ export const AppContextProvider = ({ children }) => {
     } else {
       showToast('Destination photo updated locally!', 'success');
     }
-  };
+  }, [user, showToast]);
 
   // Effect to sync activeTheme classes directly on document.body
   useEffect(() => {
     const bodyClasses = document.body.classList;
-    // Remove all previous theme classes
     const themePrefixes = ['theme-space', 'theme-luxury', 'theme-himalayan', 'theme-temple', 'theme-ocean', 'theme-minimal', 'theme-cyberpunk'];
     themePrefixes.forEach(cls => bodyClasses.remove(cls));
-    // Add active class
     bodyClasses.add(`theme-${activeTheme}`);
     localStorage.setItem('tv_active_theme', activeTheme);
   }, [activeTheme]);
@@ -225,10 +243,10 @@ export const AppContextProvider = ({ children }) => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
+  }, [showToast]);
 
   // Offline caching method
-  const saveItineraryOffline = (itinerary) => {
+  const saveItineraryOffline = useCallback((itinerary) => {
     const alreadySaved = offlineItineraries.some(i => i.id === itinerary.id);
     if (alreadySaved) {
       showToast('Sanctuary data already buffered in offline memory.', 'success');
@@ -238,8 +256,7 @@ export const AppContextProvider = ({ children }) => {
     setOfflineItineraries(updated);
     localStorage.setItem('tv_offline_itineraries', JSON.stringify(updated));
     showToast('Sanctuary data cached offline. Ready for remote flight.', 'success');
-  };
-
+  }, [offlineItineraries, showToast]);
 
   // Sync theme to DOM
   useEffect(() => {
@@ -374,7 +391,6 @@ export const AppContextProvider = ({ children }) => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
-        // Fetch public profile from profiles table
         const { data: profileData } = await supabase
           .from('profiles')
           .select('*')
@@ -398,7 +414,6 @@ export const AppContextProvider = ({ children }) => {
           if (profileData.dashboard_widgets) setDashboardWidgets(profileData.dashboard_widgets);
           setDashboardPreset(profileData.dashboard_preset);
         } else {
-          // If profile does not exist yet (e.g. during trigger execution lag)
           setUser({
             id: session.user.id,
             name: session.user.user_metadata?.name || session.user.email.split('@')[0],
@@ -483,13 +498,12 @@ export const AppContextProvider = ({ children }) => {
     return () => subscription?.unsubscribe();
   }, []);
 
-  const toggleTheme = () => {
-
+  const toggleTheme = useCallback(() => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
+  }, []);
 
   // Auth Operations
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     if (supabase) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
@@ -497,7 +511,6 @@ export const AppContextProvider = ({ children }) => {
       }
       return { success: true };
     } else {
-      // Basic mock authentication: accepts any valid looking login or checks local credentials
       const registeredUsers = JSON.parse(localStorage.getItem('tv_registered_users') || '[]');
       const matchedUser = registeredUsers.find(u => u.email === email && u.password === password);
 
@@ -512,7 +525,6 @@ export const AppContextProvider = ({ children }) => {
         showToast(`Welcome back, ${matchedUser.name}!`);
         return { success: true };
       } else {
-        // Allow fallback default login for demo purposes
         if (email === 'demo@travelverse.ai' && password === 'password') {
           const demoUser = {
             name: 'Alex Mercer',
@@ -528,9 +540,9 @@ export const AppContextProvider = ({ children }) => {
         return { success: false, message: 'Invalid email or password.' };
       }
     }
-  };
+  }, [showToast]);
 
-  const register = async (name, email, password) => {
+  const register = useCallback(async (name, email, password) => {
     if (supabase) {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -573,17 +585,17 @@ export const AppContextProvider = ({ children }) => {
       showToast('Registration successful! Welcome to TravelVerse AI.');
       return { success: true };
     }
-  };
+  }, [showToast]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     if (supabase) {
       await supabase.auth.signOut();
     }
     setUser(null);
     showToast('Logged out successfully.');
-  };
+  }, [showToast]);
 
-  const updateProfile = async (updatedInfo) => {
+  const updateProfile = useCallback(async (updatedInfo) => {
     if (!user) return;
     const newProfile = { ...user, ...updatedInfo };
     setUser(newProfile);
@@ -603,7 +615,6 @@ export const AppContextProvider = ({ children }) => {
         console.error("Supabase Profile Sync Error:", error);
       }
     } else {
-      // Sync back to registered users list as well
       const registeredUsers = JSON.parse(localStorage.getItem('tv_registered_users') || '[]');
       const index = registeredUsers.findIndex(u => u.email === user.email);
       if (index !== -1) {
@@ -612,10 +623,10 @@ export const AppContextProvider = ({ children }) => {
       }
     }
     showToast('Profile updated successfully.');
-  };
+  }, [user, showToast]);
 
   // Wishlist Operations
-  const toggleWishlist = async (type, item) => {
+  const toggleWishlist = useCallback(async (type, item) => {
     let exists = false;
     setWishlist(prev => {
       const list = prev[type] || [];
@@ -666,15 +677,15 @@ export const AppContextProvider = ({ children }) => {
         }
       }
     }
-  };
+  }, [user, awardXp, showToast]);
 
-  const isInWishlist = (type, id) => {
+  const isInWishlist = useCallback((type, id) => {
     const list = wishlist[type] || [];
     return list.some(x => x.id === id);
-  };
+  }, [wishlist]);
 
   // Itinerary Operations
-  const saveItinerary = async (itinerary) => {
+  const saveItinerary = useCallback(async (itinerary) => {
     const localId = Date.now().toString();
     const dateSavedStr = new Date().toLocaleDateString();
     
@@ -733,9 +744,9 @@ export const AppContextProvider = ({ children }) => {
     showToast('Itinerary saved to local dashboard!');
     setTimeout(() => awardXp(500, `Planned trip to ${itinerary.destination}`), 100);
     return localId;
-  };
+  }, [user, awardXp, showToast]);
 
-  const deleteItinerary = async (id) => {
+  const deleteItinerary = useCallback(async (id) => {
     setItineraries(prev => prev.filter(x => x.id !== id));
     
     if (supabase && user?.id) {
@@ -754,9 +765,9 @@ export const AppContextProvider = ({ children }) => {
     } else {
       showToast('Itinerary deleted.');
     }
-  };
+  }, [user, showToast]);
 
-  const updateItinerary = async (updatedItinerary) => {
+  const updateItinerary = useCallback(async (updatedItinerary) => {
     setItineraries(prev => prev.map(x => x.id === updatedItinerary.id ? updatedItinerary : x));
     
     if (supabase && user?.id) {
@@ -787,17 +798,17 @@ export const AppContextProvider = ({ children }) => {
     } else {
       showToast('Itinerary updated successfully.');
     }
-  };
+  }, [user, showToast]);
 
   // Budget Tracker Operations
-  const updateBudget = (target, savings) => {
+  const updateBudget = useCallback((target, savings) => {
     setBudget({ target: parseFloat(target), currentSavings: parseFloat(savings) });
     showToast('Budget tracker updated.');
     setTimeout(() => awardXp(200, 'Updated savings target metrics'), 100);
-  };
+  }, [awardXp, showToast]);
 
   // Journal Operations (Social Travel Layer)
-  const addJournal = async (title, location, date, content, image) => {
+  const addJournal = useCallback(async (title, location, date, content, image) => {
     const localId = Date.now().toString();
     const formattedDate = date || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const fallbackImage = image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=400&q=80';
@@ -853,47 +864,29 @@ export const AppContextProvider = ({ children }) => {
     setJournals(prev => [newJournal, ...prev]);
     showToast('Travel journal entry logged successfully!');
     setTimeout(() => awardXp(300, `Logged travel journal "${title}"`), 100);
-  };
-
-  // XP Award Operation
-  const awardXp = (amount, reason) => {
-    setUserXp(prev => {
-      const newXp = prev + amount;
-      const threshold = userLevel * 1000;
-      if (newXp >= threshold) {
-        setUserLevel(lvl => {
-          const newLvl = lvl + 1;
-          showToast(`LEVEL UP! You are now Level ${newLvl}! 🚀`, 'success');
-          return newLvl;
-        });
-        return newXp - threshold;
-      } else {
-        return newXp;
-      }
-    });
-  };
+  }, [user, awardXp, showToast]);
 
   // Dynamic helpers to parse stamps and pilgrimage progress for missions
-  const getSpiritualStamps = () => {
+  const getSpiritualStamps = useCallback(() => {
     try {
       const saved = localStorage.getItem('tv_spiritual_stamps');
       return saved ? JSON.parse(saved) : [];
     } catch (e) {
       return [];
     }
-  };
+  }, []);
 
-  const getJyotirlingas = () => {
+  const getJyotirlingas = useCallback(() => {
     try {
       const saved = localStorage.getItem('tv_jyotirlinga_progress');
       return saved ? JSON.parse(saved) : [];
     } catch (e) {
       return [];
     }
-  };
+  }, []);
 
   // Dynamic Gamified Achievement System
-  const achievements = [
+  const achievements = useMemo(() => [
     {
       id: 'ach-1',
       title: 'Incredible Explorer',
@@ -982,62 +975,76 @@ export const AppContextProvider = ({ children }) => {
       unlocked: wishlist.destinations.some(d => ['dwarka', 'somnath', 'kutch'].some(x => d.name.toLowerCase().includes(x))) ||
                 itineraries.some(i => ['dwarka', 'somnath', 'kutch'].some(x => i.destination.toLowerCase().includes(x)))
     }
-  ];
+  ], [itineraries, wishlist, journals, userLevel, getSpiritualStamps, getJyotirlingas]);
+
+  // Memoize Provider Value to eliminate cascading updates
+  const contextValue = useMemo(() => ({
+    theme,
+    toggleTheme,
+    user,
+    login,
+    register,
+    logout,
+    updateProfile,
+    wishlist,
+    toggleWishlist,
+    isInWishlist,
+    itineraries,
+    saveItinerary,
+    updateItinerary,
+    deleteItinerary,
+    budget,
+    updateBudget,
+    journals,
+    addJournal,
+    achievements,
+    twinPreferences,
+    setTwinPreferences,
+    userXp,
+    userLevel,
+    awardXp,
+    departureHub,
+    setDepartureHub,
+    dashboardWidgets,
+    setDashboardWidgets,
+    dashboardPreset,
+    setDashboardPreset,
+    uiThemeStyle,
+    setUiThemeStyle,
+    mapMarkers,
+    setMapMarkers,
+    blockedDates,
+    setBlockedDates,
+    watchlistItems,
+    setWatchlistItems,
+    vaultMemories,
+    setVaultMemories,
+    aiAutonomy,
+    setAiAutonomy,
+    toast,
+    showToast,
+    activeTheme,
+    setActiveTheme,
+    isOnline,
+    saveItineraryOffline,
+    offlineItineraries,
+    customPhotos,
+    updateDestinationPhoto
+  }), [
+    theme, toggleTheme, user, login, register, logout, updateProfile, wishlist,
+    toggleWishlist, isInWishlist, itineraries, saveItinerary, updateItinerary,
+    deleteItinerary, budget, updateBudget, journals, addJournal, achievements,
+    twinPreferences, setTwinPreferences, userXp, userLevel, awardXp, departureHub,
+    setDepartureHub, dashboardWidgets, setDashboardWidgets, dashboardPreset,
+    setDashboardPreset, uiThemeStyle, setUiThemeStyle, mapMarkers, setMapMarkers,
+    blockedDates, setBlockedDates, watchlistItems, setWatchlistItems, vaultMemories,
+    setVaultMemories, aiAutonomy, setAiAutonomy, toast, showToast, activeTheme,
+    setActiveTheme, isOnline, saveItineraryOffline, offlineItineraries, customPhotos,
+    updateDestinationPhoto
+  ]);
 
   return (
-    <AppContext.Provider value={{
-      theme,
-      toggleTheme,
-      user,
-      login,
-      register,
-      logout,
-      updateProfile,
-      wishlist,
-      toggleWishlist,
-      isInWishlist,
-      itineraries,
-      saveItinerary,
-      updateItinerary,
-      deleteItinerary,
-      budget,
-      updateBudget,
-      journals,
-      addJournal,
-      achievements,
-      twinPreferences,
-      setTwinPreferences,
-      userXp,
-      userLevel,
-      awardXp,
-      departureHub,
-      setDepartureHub,
-      dashboardWidgets,
-      setDashboardWidgets,
-      dashboardPreset,
-      setDashboardPreset,
-      uiThemeStyle,
-      setUiThemeStyle,
-      mapMarkers,
-      setMapMarkers,
-      blockedDates,
-      setBlockedDates,
-      watchlistItems,
-      setWatchlistItems,
-      vaultMemories,
-      setVaultMemories,
-      aiAutonomy,
-      setAiAutonomy,
-      toast,
-      showToast,
-      activeTheme,
-      setActiveTheme,
-      isOnline,
-      saveItineraryOffline,
-      offlineItineraries,
-      customPhotos,
-      updateDestinationPhoto
-    }}>
+    <AppContext.Provider value={contextValue}>
       {children}
       
       {/* Global Toast component */}
