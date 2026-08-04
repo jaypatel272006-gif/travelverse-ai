@@ -155,7 +155,7 @@ export const DestinationCard = memo(({ destination }) => {
             ? '0 30px 60px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(20, 184, 166, 0.15)' 
             : '0 8px 30px rgba(0, 0, 0, 0.04)'
         }}
-        className="group relative flex flex-col h-full rounded-[28px] overflow-hidden border border-slate-200/50 dark:border-white/5 bg-white dark:bg-slate-950/40 transition-all duration-300 select-none shadow-[0_10px_40px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
+        className="group relative flex flex-col h-full rounded-[28px] overflow-hidden border border-slate-200/50 dark:border-teal-500/20 bg-white dark:bg-slate-950/20 glass-card-neo transition-all duration-300 select-none shadow-[0_10px_40px_rgba(0,0,0,0.03)] dark:shadow-[0_12px_45px_rgba(0,0,0,0.4)]"
       >
         {/* Glare Overlay */}
         {isHovered && (
