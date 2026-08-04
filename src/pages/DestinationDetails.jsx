@@ -422,15 +422,27 @@ export const DestinationDetails = () => {
         setCountryData(resolvedCountry);
 
         // Fetch Weather using coordinates
-        const lat = resolvedCountry.latlng[0];
-        const lon = resolvedCountry.latlng[1];
+        const lat = (resolvedCountry && resolvedCountry.latlng && resolvedCountry.latlng[0] !== undefined)
+          ? resolvedCountry.latlng[0]
+          : (resolvedCity && resolvedCity.lat ? resolvedCity.lat : 20);
+        const lon = (resolvedCountry && resolvedCountry.latlng && resolvedCountry.latlng[1] !== undefined)
+          ? resolvedCountry.latlng[1]
+          : (resolvedCity && resolvedCity.lon ? resolvedCity.lon : 77);
         const resolvedWeather = await fetchWeatherForecast(lat, lon);
         setWeatherData(resolvedWeather);
 
         // Load Persisted Reviews
         const savedReviews = localStorage.getItem(`travelverse_reviews_${baseDest.id}`);
         if (savedReviews) {
-          setReviews(JSON.parse(savedReviews));
+          try {
+            setReviews(JSON.parse(savedReviews));
+          } catch (e) {
+            console.warn("Failed to parse reviews from localStorage:", e);
+            setReviews([
+              { id: 1, name: 'Commander Alex', rating: 5, comment: 'Incredible coordinates mapping. The historical quarters are a must-see.', date: '2026-05-12' },
+              { id: 2, name: 'Sora Tanaka', rating: 4, comment: 'Stunning landscapes. Weather was exactly as compiled by the forecast matrix.', date: '2026-06-01' }
+            ]);
+          }
         } else {
           // Seed initial feedback logs
           const seed = [
