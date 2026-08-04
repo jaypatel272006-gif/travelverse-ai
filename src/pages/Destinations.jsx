@@ -100,7 +100,7 @@ export const Destinations = () => {
             </h3>
             <button 
               onClick={clearFilters}
-              className="text-[10px] font-bold text-teal-605 dark:text-teal-400 hover:underline uppercase tracking-wide"
+              className="text-[10px] font-bold text-teal-600 dark:text-teal-400 hover:underline uppercase tracking-wide"
             >
               Reset All
             </button>
@@ -108,7 +108,7 @@ export const Destinations = () => {
 
           {/* Region Filter */}
           <div className="flex flex-col gap-2.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-455">Regions</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Regions</h4>
             <div className="flex flex-col gap-1.5">
               {regions.map((reg) => (
                 <button
@@ -117,7 +117,7 @@ export const Destinations = () => {
                   className={`px-3 py-2 text-xs font-semibold rounded-xl text-left transition-all ${
                     selectedRegion === reg
                       ? 'bg-teal-500/10 text-teal-600 dark:bg-teal-400/10 dark:text-teal-400 font-bold'
-                      : 'text-slate-600 dark:text-slate-355 hover:bg-slate-50 dark:hover:bg-slate-800/30'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/30'
                   }`}
                 >
                   {reg}
@@ -128,9 +128,9 @@ export const Destinations = () => {
 
           {/* Price Range Slider */}
           <div className="flex flex-col gap-2.5">
-            <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-slate-455">
+            <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-slate-400">
               <span>Max Budget Limit</span>
-              <span className="text-teal-555 dark:text-teal-400">₹{maxPrice.toLocaleString('en-IN')}</span>
+              <span className="text-teal-500 dark:text-teal-400">₹{maxPrice.toLocaleString('en-IN')}</span>
             </div>
             <input
               type="range"
@@ -145,7 +145,7 @@ export const Destinations = () => {
 
           {/* Activity Tags Filter */}
           <div className="flex flex-col gap-2.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-455">Experience Tags</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Experience Tags</h4>
             <div className="flex flex-wrap gap-1.5">
               {allTags.map((tag) => {
                 const isSelected = selectedTags.includes(tag);
@@ -156,7 +156,7 @@ export const Destinations = () => {
                     className={`px-2.5 py-1 text-[11px] font-medium rounded-lg border transition-all ${
                       isSelected
                         ? 'bg-teal-500 border-teal-500 text-white shadow-sm'
-                        : 'border-slate-150 dark:border-slate-800 text-slate-600 dark:text-slate-355 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                        : 'border-slate-150 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                     }`}
                   >
                     {tag}
@@ -195,7 +195,7 @@ export const Destinations = () => {
             <div className="flex items-center gap-3 w-full sm:w-auto shrink-0 justify-end">
               <button
                 onClick={() => setShowFiltersMobile(true)}
-                className="lg:hidden flex items-center gap-1.5 px-4 py-3 border border-slate-205 dark:border-slate-855 bg-white dark:bg-slate-900 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-300"
+                className="lg:hidden flex items-center gap-1.5 px-4 py-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-300"
               >
                 <SlidersHorizontal size={14} /> Filters
               </button>
@@ -278,7 +278,7 @@ export const Destinations = () => {
 
               {/* Mobile Region Filters */}
               <div className="flex flex-col gap-2.5">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-455">Regions</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Regions</h4>
                 <div className="flex flex-wrap gap-2">
                   {regions.map((reg) => (
                     <button
@@ -286,8 +286,8 @@ export const Destinations = () => {
                       onClick={() => setSelectedRegion(reg)}
                       className={`px-3.5 py-2 text-xs font-semibold rounded-xl transition-all ${
                         selectedRegion === reg
-                          ? 'bg-teal-505 text-white'
-                          : 'bg-slate-50 dark:bg-slate-855 text-slate-605 dark:text-slate-305'
+                          ? 'bg-teal-500 text-white'
+                          : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
                       }`}
                     >
                       {reg}
@@ -298,9 +298,9 @@ export const Destinations = () => {
 
               {/* Mobile Budget slider */}
               <div className="flex flex-col gap-2.5">
-                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-slate-455">
+                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-slate-400">
                   <span>Max Budget Limit</span>
-                  <span className="text-teal-555 font-bold">₹{maxPrice.toLocaleString('en-IN')}</span>
+                  <span className="text-teal-500 font-bold">₹{maxPrice.toLocaleString('en-IN')}</span>
                 </div>
                 <input
                   type="range"
@@ -315,7 +315,7 @@ export const Destinations = () => {
 
               {/* Mobile tag filters */}
               <div className="flex flex-col gap-2.5">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-455">Experience Tags</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Experience Tags</h4>
                 <div className="flex flex-wrap gap-2">
                   {allTags.map((tag) => {
                     const isSelected = selectedTags.includes(tag);
@@ -325,7 +325,7 @@ export const Destinations = () => {
                         onClick={() => toggleTag(tag)}
                         className={`px-3 py-1.5 text-[11px] font-medium rounded-xl border transition-all ${
                           isSelected
-                            ? 'bg-teal-505 border-teal-505 text-white'
+                            ? 'bg-teal-500 border-teal-500 text-white'
                             : 'border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-350'
                         }`}
                       >
@@ -339,13 +339,13 @@ export const Destinations = () => {
               <div className="mt-4 flex gap-3">
                 <button
                   onClick={clearFilters}
-                  className="flex-1 py-3 border border-slate-205 dark:border-slate-805 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300"
+                  className="flex-1 py-3 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300"
                 >
                   Reset
                 </button>
                 <button
                   onClick={() => setShowFiltersMobile(false)}
-                  className="flex-1 py-3 bg-teal-655 text-white rounded-xl text-xs font-bold shadow"
+                  className="flex-1 py-3 bg-teal-600 text-white rounded-xl text-xs font-bold shadow"
                 >
                   Apply Filters
                 </button>

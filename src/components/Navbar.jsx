@@ -446,7 +446,7 @@ export const Navbar = () => {
                       `flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                         isActive
                           ? 'bg-teal-500/10 text-teal-600 dark:bg-teal-400/10 dark:text-teal-400'
-                          : 'text-slate-655 dark:text-slate-305 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                       }`
                     }
                   >
@@ -467,7 +467,7 @@ export const Navbar = () => {
                       `flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                         isActive
                           ? 'bg-teal-500/10 text-teal-600 dark:bg-teal-400/10 dark:text-teal-400'
-                          : 'text-slate-655 dark:text-slate-305 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                       }`
                     }
                   >

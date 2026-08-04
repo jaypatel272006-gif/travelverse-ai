@@ -77,11 +77,11 @@ export const Achievements = () => {
         {/* Global Stats */}
         <div className="flex gap-4 relative z-10 text-left font-mono text-[10px]">
           <div>
-            <span className="text-slate-650 block text-[8px] font-black uppercase">Unlocked Badges</span>
+            <span className="text-slate-600 block text-[8px] font-black uppercase">Unlocked Badges</span>
             <span className="text-teal-400 font-bold">{achievements.filter(a => a.unlocked).length} / {achievements.length}</span>
           </div>
           <div>
-            <span className="text-slate-650 block text-[8px] font-black uppercase">Global Rank</span>
+            <span className="text-slate-600 block text-[8px] font-black uppercase">Global Rank</span>
             <span className="text-teal-400 font-bold">#4 / 45k</span>
           </div>
         </div>
@@ -153,7 +153,7 @@ export const Achievements = () => {
                       <div className="text-2xl">{badge ? badge.icon : '🚀'}</div>
                       <div>
                         <h4 className="font-display font-extrabold text-xs text-white">{m.title}</h4>
-                        <p className="text-[10px] text-slate-405 mt-1 max-w-md">{m.desc}</p>
+                        <p className="text-[10px] text-slate-400 mt-1 max-w-md">{m.desc}</p>
                       </div>
                     </div>
                     

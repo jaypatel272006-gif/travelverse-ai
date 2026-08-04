@@ -985,7 +985,7 @@ export const Home = () => {
                           to={result.link}
                           onClick={() => { setSearchQuery(''); setSearchFocusIndex(-1); }}
                           className={`flex items-center gap-2.5 px-4 py-2.5 hover:bg-teal-500/10 rounded-2xl transition-all duration-200 text-teal-400 font-mono text-[10px] uppercase font-bold ${
-                            isFocused ? 'bg-teal-500/20 border-l-2 border-teal-455 pl-5 text-teal-300' : ''
+                            isFocused ? 'bg-teal-500/20 border-l-2 border-teal-400 pl-5 text-teal-300' : ''
                           }`}
                         >
                           ⚙️ {result.name}
@@ -2708,7 +2708,7 @@ export const Home = () => {
                     </div>
 
                     <h4 className="font-display font-extrabold text-sm text-white">{discoveryFeed[feedIndex].title}</h4>
-                    <p className="text-slate-355 leading-relaxed">{discoveryFeed[feedIndex].desc}</p>
+                    <p className="text-slate-300 leading-relaxed">{discoveryFeed[feedIndex].desc}</p>
                     
                     <div className="border-t border-white/5 pt-3 flex flex-col gap-2 font-mono text-[9px] text-slate-450">
                       <div>

@@ -462,7 +462,7 @@ export const Flights = () => {
         </div>
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow"
+          className="w-full py-3 px-6 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow"
         >
           <Search size={14} /> Search Flights
         </button>
@@ -607,7 +607,7 @@ export const Flights = () => {
                   name="stops"
                   checked={stopsFilter === 'all'}
                   onChange={() => setStopsFilter('all')}
-                  className="rounded-full text-teal-655 focus:ring-teal-500"
+                  className="rounded-full text-teal-600 focus:ring-teal-500"
                 />
                 <span>All Flights</span>
               </label>
@@ -617,7 +617,7 @@ export const Flights = () => {
                   name="stops"
                   checked={stopsFilter === 'direct'}
                   onChange={() => setStopsFilter('direct')}
-                  className="rounded-full text-teal-655 focus:ring-teal-500"
+                  className="rounded-full text-teal-600 focus:ring-teal-500"
                 />
                 <span>Non-stop only</span>
               </label>
@@ -627,7 +627,7 @@ export const Flights = () => {
                   name="stops"
                   checked={stopsFilter === 'stops'}
                   onChange={() => setStopsFilter('stops')}
-                  className="rounded-full text-teal-655 focus:ring-teal-500"
+                  className="rounded-full text-teal-600 focus:ring-teal-500"
                 />
                 <span>1+ Stops</span>
               </label>
@@ -760,7 +760,7 @@ export const Flights = () => {
 
                   {/* Seat Class Description */}
                   {layout && (
-                    <p className="text-[11px] text-slate-500 dark:text-slate-455 text-center italic px-4 bg-slate-50 dark:bg-slate-950/40 py-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center italic px-4 bg-slate-50 dark:bg-slate-950/40 py-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
                       {layout.description}
                     </p>
                   )}
@@ -783,7 +783,7 @@ export const Flights = () => {
 
                   <button
                     onClick={confirmBooking}
-                    className="w-full py-3.5 bg-teal-655 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-md transition-colors mt-2"
+                    className="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow-md transition-colors mt-2"
                   >
                     Confirm Booking (₹{selectedFlight.price.toLocaleString('en-IN')})
                   </button>

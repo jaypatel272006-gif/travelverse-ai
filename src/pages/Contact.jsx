@@ -102,7 +102,7 @@ export const Contact = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Mercer"
-                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500"
               />
             </div>
             
@@ -113,7 +113,7 @@ export const Contact = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@example.com"
-                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500"
               />
             </div>
 
@@ -124,7 +124,7 @@ export const Contact = () => {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="Flight booking cancellation or planning query"
-                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500"
               />
             </div>
 
@@ -134,13 +134,13 @@ export const Contact = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your request details here..."
-                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500 h-28 resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 h-28 resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5"
+              className="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5"
             >
               <Send size={13} />
               Submit Ticket

@@ -106,7 +106,7 @@ export const PWAInstallPrompt = () => {
         <div className="flex gap-3 mt-4 justify-end">
           <button
             onClick={handleDismiss}
-            className="px-4 py-2 rounded-xl border border-slate-700 hover:bg-slate-805 text-slate-300 font-semibold text-xs transition-all"
+            className="px-4 py-2 rounded-xl border border-slate-700 hover:bg-slate-800 text-slate-300 font-semibold text-xs transition-all"
           >
             Later
           </button>

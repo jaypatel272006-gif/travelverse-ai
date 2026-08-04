@@ -86,7 +86,7 @@ export class ErrorBoundary extends React.Component {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mt-2">
               <button
                 onClick={this.handleReload}
-                className="py-3 px-4 rounded-xl border border-slate-800 hover:bg-slate-805 font-bold text-xs flex items-center justify-center gap-1.5 transition-all text-slate-200"
+                className="py-3 px-4 rounded-xl border border-slate-800 hover:bg-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-all text-slate-200"
               >
                 <RefreshCw size={13} />
                 Force System Reboot

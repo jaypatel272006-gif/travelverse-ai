@@ -13,7 +13,7 @@ export const Loader = ({ size = 'medium', className = '' }) => {
   return (
     <div className={`flex flex-col items-center justify-center gap-3 ${className}`}>
       <div className={`relative ${sizes[size] || sizes.medium} rounded-full border-t-teal-500 border-r-transparent border-b-teal-500/20 border-l-transparent animate-spin`} />
-      <span className="text-[10px] font-bold text-slate-455 font-mono uppercase tracking-widest animate-pulse">Syncing Matrix...</span>
+      <span className="text-[10px] font-bold text-slate-400 font-mono uppercase tracking-widest animate-pulse">Syncing Matrix...</span>
     </div>
   );
 };

@@ -141,7 +141,7 @@ export const Weather = () => {
         />
         <button
           type="submit"
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 px-4 py-2 bg-teal-605 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow"
         >
           Check weather
         </button>
@@ -170,7 +170,7 @@ export const Weather = () => {
               
               <div className="flex justify-between items-start flex-wrap gap-4">
                 <div>
-                  <span className="text-[10px] font-bold text-teal-650 uppercase tracking-widest flex items-center gap-1">
+                  <span className="text-[10px] font-bold text-teal-600 uppercase tracking-widest flex items-center gap-1">
                     <Navigation size={10} /> Live Conditions
                   </span>
                   <h3 className="font-display font-extrabold text-2xl text-slate-850 dark:text-slate-100 mt-1">
@@ -183,7 +183,7 @@ export const Weather = () => {
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
                       {getWeatherInfo(weatherData.current.weathercode).label}
                     </span>
-                    <span className="text-[10px] text-slate-455 block mt-0.5">Updated just now</span>
+                    <span className="text-[10px] text-slate-400 block mt-0.5">Updated just now</span>
                   </div>
                   {getWeatherInfo(weatherData.current.weathercode).icon}
                 </div>

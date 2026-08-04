@@ -210,7 +210,7 @@ export const RecognitionEngine = () => {
                   <h3 className="font-display font-black text-2xl text-slate-900 dark:text-white mt-1">
                     {scannedResult.name}
                   </h3>
-                  <span className="text-xs text-slate-455 font-bold font-mono">
+                  <span className="text-xs text-slate-400 font-bold font-mono">
                     📍 {scannedResult.location}
                   </span>
                 </div>
@@ -224,7 +224,7 @@ export const RecognitionEngine = () => {
               {/* Description */}
               <div className="flex flex-col gap-1">
                 <span className="text-[8.5px] text-slate-400 uppercase font-black font-mono">Landmark Bio</span>
-                <p className="text-xs text-slate-650 dark:text-slate-300 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">
                   {scannedResult.description}
                 </p>
               </div>

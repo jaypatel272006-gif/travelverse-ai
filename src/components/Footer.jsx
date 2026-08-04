@@ -37,7 +37,7 @@ export const Footer = () => {
               Travel<span className="text-teal-400">Verse</span>
             </span>
           </Link>
-          <p className="text-xs text-slate-455 leading-relaxed font-mono uppercase tracking-wide">
+          <p className="text-xs text-slate-400 leading-relaxed font-mono uppercase tracking-wide">
             curating the next epoch of global exploration. Our AI-driven engine maps travel genomes to coordinates, providing zero-friction trajectories.
           </p>
           {/* Social Links with Premium Magnetic Hover */}

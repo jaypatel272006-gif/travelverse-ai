@@ -64,7 +64,7 @@ export const Register = () => {
           <h2 className="font-display font-extrabold text-xl text-slate-850 dark:text-slate-100 mt-2">
             Create your TravelVerse account
           </h2>
-          <p className="text-xs text-slate-455">Join thousands of travelers planning custom adventures.</p>
+          <p className="text-xs text-slate-400">Join thousands of travelers planning custom adventures.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -134,7 +134,7 @@ export const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
+            className="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
           >
             <UserPlus size={13} />
             {loading ? 'Creating Account...' : 'Register'}

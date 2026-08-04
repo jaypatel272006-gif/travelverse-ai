@@ -359,7 +359,7 @@ export const DreamTripGenerator = () => {
                     <div className="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/30 flex items-center justify-center font-mono text-[9px] font-bold shrink-0 mt-0.5">
                       {idx + 1}
                     </div>
-                    <p className="text-xs text-slate-650 dark:text-slate-300 leading-relaxed font-semibold">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">
                       {item}
                     </p>
                   </div>

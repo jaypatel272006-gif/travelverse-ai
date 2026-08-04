@@ -443,7 +443,7 @@ export const Hotels = () => {
                 setSelectedProximityFilters([]);
                 setSelectedBudgetFilter('All');
               }} 
-              className="text-[10px] font-bold text-teal-505 uppercase hover:underline"
+              className="text-[10px] font-bold text-teal-500 uppercase hover:underline"
             >
               Reset
             </button>
@@ -541,7 +541,7 @@ export const Hotels = () => {
           <div className="flex flex-col gap-2.5">
             <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider text-slate-400">
               <span>Max Budget/Night</span>
-              <span className="text-teal-555 font-bold">₹{priceFilter.toLocaleString('en-IN')}</span>
+              <span className="text-teal-500 font-bold">₹{priceFilter.toLocaleString('en-IN')}</span>
             </div>
             <input
               type="range"
@@ -608,7 +608,7 @@ export const Hotels = () => {
               </div>
 
               {bookedReceipt ? (
-                <div className="flex flex-col gap-4 font-mono text-xs text-slate-655 dark:text-slate-300">
+                <div className="flex flex-col gap-4 font-mono text-xs text-slate-600 dark:text-slate-300">
                   <div className="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-400 font-bold flex items-start gap-2.5">
                     <CheckCircle className="shrink-0" size={18} />
                     <div>
@@ -682,7 +682,7 @@ export const Hotels = () => {
                     </button>
                     <button 
                       onClick={confirmRoomBooking}
-                      className="px-5 py-2.5 bg-teal-605 hover:bg-teal-700 text-white text-xs font-mono font-bold rounded-xl cursor-pointer shadow-md shadow-teal-500/10"
+                      className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-mono font-bold rounded-xl cursor-pointer shadow-md shadow-teal-500/10"
                     >
                       Confirm Booking
                     </button>

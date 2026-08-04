@@ -317,7 +317,7 @@ export const DestinationCard = memo(({ destination }) => {
             {/* Season & Duration Metadata */}
             <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-500 dark:text-slate-400 mb-4 border-y border-slate-100 dark:border-white/5 py-2.5">
               <div className="flex items-center gap-1">☀️ <span className="font-bold text-slate-800 dark:text-slate-200">{season}</span></div>
-              <div className="flex items-center gap-1">⏳ <span className="font-bold text-slate-800 dark:text-slate-205">{duration}</span></div>
+              <div className="flex items-center gap-1">⏳ <span className="font-bold text-slate-800 dark:text-slate-200">{duration}</span></div>
             </div>
 
             {/* Badges / Tags */}
@@ -354,7 +354,7 @@ export const DestinationCard = memo(({ destination }) => {
                 />
                 <span>Compare Sector</span>
               </label>
-              <span className="text-slate-455 font-mono text-[9px] uppercase">{region}</span>
+              <span className="text-slate-400 font-mono text-[9px] uppercase">{region}</span>
             </div>
 
             {/* CTAs */}

@@ -390,7 +390,7 @@ export const AdventureRoulette = () => {
                     <span className="text-3xl select-none">{itinerary.icon}</span>
                     {itinerary.destination}
                   </h3>
-                  <span className="text-[10px] text-slate-455 font-bold font-mono">Surprise coordinates mapped</span>
+                  <span className="text-[10px] text-slate-400 font-bold font-mono">Surprise coordinates mapped</span>
                 </div>
                 
                 <span className="px-3 py-1 bg-indigo-500/15 border border-indigo-500/20 text-indigo-400 font-mono text-[10px] font-bold rounded-lg uppercase">
@@ -433,7 +433,7 @@ export const AdventureRoulette = () => {
                 <div className="max-h-[140px] overflow-y-auto pr-1 flex flex-col gap-2 scrollbar-thin text-[10.5px]">
                   {itinerary.agenda.map((day, dIdx) => (
                     <div key={dIdx} className="p-2 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-150 dark:border-white/5">
-                      <span className="font-bold text-slate-700 dark:text-slate-305 block font-mono text-[10px] uppercase">DAY 0{day.day} // {day.title}</span>
+                      <span className="font-bold text-slate-700 dark:text-slate-300 block font-mono text-[10px] uppercase">DAY 0{day.day} // {day.title}</span>
                       <p className="text-[10px] text-slate-500 mt-1 leading-normal">
                         {day.timeline.filter(t => t.activity.includes('Attraction') || t.activity.includes('Exploration')).map(t => t.activity.replace('Morning Main Attraction: ', '').replace('Afternoon Exploration: ', '')).join(' ➔ ') || 'Transit and orientation overview.'}
                       </p>
@@ -444,7 +444,7 @@ export const AdventureRoulette = () => {
 
               {/* Warnings / Advice */}
               <div className="flex flex-col gap-2 text-[10px] border-t border-slate-200/20 dark:border-white/5 pt-3.5 leading-relaxed">
-                <div className="flex justify-between font-mono text-slate-455">
+                <div className="flex justify-between font-mono text-slate-400">
                   <span>WALKING EXERTION</span>
                   <span className="text-slate-400 font-bold">{itinerary.walkingDist} / Day</span>
                 </div>

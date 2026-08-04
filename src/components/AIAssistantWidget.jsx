@@ -147,7 +147,7 @@ export const AIAssistantWidget = () => {
                 onClick={() => {
                   navigate('/planner');
                 }}
-                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/20 cursor-pointer"
               >
                 ✈️ PLAN TRIP
               </button>
@@ -156,7 +156,7 @@ export const AIAssistantWidget = () => {
                 onClick={() => {
                   navigate('/road-trip-os');
                 }}
-                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/20 cursor-pointer"
               >
                 🚗 ROAD TRIP
               </button>
@@ -165,7 +165,7 @@ export const AIAssistantWidget = () => {
                 onClick={() => {
                   handleSend('Give me a quick budget breakdown template');
                 }}
-                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-405 rounded-lg hover:bg-teal-500/20 cursor-pointer"
+                className="px-2.5 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/20 cursor-pointer"
               >
                 💰 BUDGETS
               </button>

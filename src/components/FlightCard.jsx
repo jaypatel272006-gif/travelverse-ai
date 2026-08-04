@@ -111,7 +111,7 @@ export const FlightCard = memo(({ flight, onBook }) => {
             </button>
             <button
               onClick={() => onBook(flight)}
-              className="px-5 py-2.5 text-xs font-bold rounded-xl bg-teal-655 hover:bg-teal-700 text-white dark:bg-teal-500 dark:hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
+              className="px-5 py-2.5 text-xs font-bold rounded-xl bg-teal-600 hover:bg-teal-700 text-white dark:bg-teal-500 dark:hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
             >
               Select
             </button>
@@ -124,7 +124,7 @@ export const FlightCard = memo(({ flight, onBook }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="px-6 py-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 flex justify-between items-center cursor-pointer hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors"
       >
-        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-455 uppercase tracking-wider flex items-center gap-1.5">
+        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
           Flight Details & Baggage
         </span>
         <motion.div

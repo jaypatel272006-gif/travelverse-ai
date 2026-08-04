@@ -173,7 +173,7 @@ export const Challenges = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-3 rounded-t-xl text-[11px] font-bold font-mono tracking-wider transition-all whitespace-nowrap cursor-pointer ${
               activeTab === tab.id 
-                ? 'border-b-2 border-teal-500 text-teal-605 dark:text-teal-400 bg-teal-500/5' 
+                ? 'border-b-2 border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/5' 
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -213,7 +213,7 @@ export const Challenges = () => {
                         <div className={`w-16 h-16 rounded-full border-4 flex items-center justify-center text-2xl relative font-display font-black tracking-tighter ${
                           isUnlocked 
                             ? 'border-teal-400/35 text-teal-400 bg-teal-500/5 rotate-[-12deg] shadow-lg animate-pulse duration-4000' 
-                            : 'border-slate-800 text-slate-655'
+                            : 'border-slate-800 text-slate-600'
                         }`}>
                           {stamp.slice(0, 3).toUpperCase()}
                           {isUnlocked && (
@@ -272,19 +272,19 @@ export const Challenges = () => {
                   <span className="text-white font-bold">{userLevel}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">ACTIVE RANK</span>
+                  <span className="text-slate-400">ACTIVE RANK</span>
                   <span className="text-teal-400 font-bold uppercase">{currentRank}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">STAMPS UNLOCKED</span>
+                  <span className="text-slate-400">STAMPS UNLOCKED</span>
                   <span className="text-white font-bold">{unlockedStampsList.length} STAMPS</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">TRIPS LOGGED</span>
+                  <span className="text-slate-400">TRIPS LOGGED</span>
                   <span className="text-white font-bold">{itineraries.length} PLANNED</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">WISHLIST SPOTS</span>
+                  <span className="text-slate-400">WISHLIST SPOTS</span>
                   <span className="text-white font-bold">
                     {wishlist.destinations.length + wishlist.hotels.length + wishlist.flights.length} SAVED
                   </span>
@@ -340,7 +340,7 @@ export const Challenges = () => {
                     <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-mono font-bold text-xs transition-all duration-300 shadow-md ${
                       isUnlocked 
                         ? 'bg-teal-950/80 border-teal-400 text-teal-400 shadow-teal-500/10' 
-                        : 'bg-slate-900 border-white/10 text-slate-655'
+                        : 'bg-slate-900 border-white/10 text-slate-600'
                     }`}>
                       0{idx + 1}
                     </div>
@@ -353,7 +353,7 @@ export const Challenges = () => {
                     </span>
 
                     <span className={`mt-2 px-2 py-0.5 rounded text-[8px] font-mono uppercase tracking-wider font-bold ${
-                      isUnlocked ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-slate-900 text-slate-650'
+                      isUnlocked ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-slate-900 text-slate-600'
                     }`}>
                       {isUnlocked ? 'unlocked' : 'locked'}
                     </span>
@@ -417,7 +417,7 @@ export const Challenges = () => {
                         
                         <div className="mt-3.5 flex items-center gap-1">
                           <CheckCircle size={11} className={isTried ? 'text-emerald-400' : 'text-slate-700'} />
-                          <span className={`font-mono text-[8px] font-bold uppercase ${isTried ? 'text-emerald-400' : 'text-slate-650'}`}>
+                          <span className={`font-mono text-[8px] font-bold uppercase ${isTried ? 'text-emerald-400' : 'text-slate-600'}`}>
                             {isTried ? 'TRIED & LOGGED' : 'MARK AS TRIED'}
                           </span>
                         </div>
@@ -441,11 +441,11 @@ export const Challenges = () => {
                   <span className="text-teal-400 font-bold uppercase">{dietaryPref}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">DISHES EXPERIENCED</span>
+                  <span className="text-slate-400">DISHES EXPERIENCED</span>
                   <span className="text-white font-bold">{triedFoods.length} TRIED</span>
                 </div>
                 <div className="flex justify-between border-b border-white/5 pb-1">
-                  <span className="text-slate-455">FOOD BADGES UNLOCKED</span>
+                  <span className="text-slate-400">FOOD BADGES UNLOCKED</span>
                   <span className="text-white font-bold">
                     {triedFoods.length >= 3 ? '2 BADGES' : (triedFoods.length > 0 ? '1 BADGE' : '0 BADGES')}
                   </span>

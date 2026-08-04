@@ -850,9 +850,9 @@ export const DestinationDetails = () => {
         <span>&gt;</span>
         <Link to="/destinations" className="hover:text-teal-400 transition-colors">DESTINATIONS</Link>
         <span>&gt;</span>
-        <span className="text-slate-405">{countryData.name}</span>
+        <span className="text-slate-400">{countryData.name}</span>
         <span>&gt;</span>
-        <span className="text-teal-650 dark:text-teal-400">{cityData.name}</span>
+        <span className="text-teal-600 dark:text-teal-400">{cityData.name}</span>
       </nav>
 
       {/* Cinematic Full-screen/Taller Hero Banner with entrance animations */}
@@ -939,7 +939,7 @@ export const DestinationDetails = () => {
                 : 'border-transparent hover:bg-white/5 hover:border-white/10'
             }`}
           >
-            <span className={`text-[11px] font-bold block ${activeTab === tab.id ? 'text-teal-400' : 'text-slate-205 dark:text-white'}`}>{tab.label}</span>
+            <span className={`text-[11px] font-bold block ${activeTab === tab.id ? 'text-teal-400' : 'text-slate-200 dark:text-white'}`}>{tab.label}</span>
             <span className="text-[8px] font-mono text-slate-400 uppercase tracking-wider block mt-0.5">{tab.desc}</span>
           </button>
         ))}
@@ -1101,7 +1101,7 @@ export const DestinationDetails = () => {
                   <div className="flex flex-col gap-2">
                     {weatherData.map((w, idx) => (
                       <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/50 dark:bg-slate-950/30 border border-slate-200 dark:border-teal-500/5 text-xs">
-                        <span className="font-mono font-bold text-slate-405 uppercase">{w.day}</span>
+                        <span className="font-mono font-bold text-slate-400 uppercase">{w.day}</span>
                         <span className="text-base" role="img" aria-label={w.summary}>{w.icon}</span>
                         <span className="font-mono text-slate-500">{w.summary.substring(0, 10)}</span>
                         <span className="font-mono font-bold text-slate-800 dark:text-white">{w.maxTemp}° / {w.minTemp}°</span>
@@ -1194,7 +1194,7 @@ export const DestinationDetails = () => {
                 {/* UNESCO Badge info */}
                 {guidePremiumData.unesco && (
                   <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/20 shadow-xl flex flex-col gap-4">
-                    <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-605 dark:text-amber-400 flex items-center gap-1.5">
+                    <h4 className="font-display font-black text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
                       🏛️ UNESCO World Heritage Status
                     </h4>
                     <p className="text-xs text-slate-700 dark:text-slate-200 font-semibold leading-relaxed font-mono">
@@ -1213,7 +1213,7 @@ export const DestinationDetails = () => {
                 {/* Connections terminals */}
                 <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/30 border border-slate-200 dark:border-teal-500/10 shadow-xl flex flex-col gap-6">
                   <div>
-                    <span className="text-[9px] font-mono text-teal-405 font-bold tracking-widest uppercase">LOGISTICS CORRIDOR TERMINALS</span>
+                    <span className="text-[9px] font-mono text-teal-400 font-bold tracking-widest uppercase">LOGISTICS CORRIDOR TERMINALS</span>
                     <h3 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase tracking-wide">Transit Terminal Connections</h3>
                   </div>
 
@@ -1311,7 +1311,7 @@ export const DestinationDetails = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Restaurants */}
                     <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/30 border border-slate-150 dark:border-white/5 flex flex-col gap-3">
-                      <span className="font-mono font-bold text-[9px] text-teal-405 uppercase tracking-widest block">🍽️ RECOMMENDED DINING RESTAURANTS</span>
+                      <span className="font-mono font-bold text-[9px] text-teal-400 uppercase tracking-widest block">🍽️ RECOMMENDED DINING RESTAURANTS</span>
                       <div className="flex flex-col gap-2.5">
                         {guidePremiumData.culinary.restaurants.map((rest, idx) => (
                           <div key={idx} className="flex flex-col gap-0.5 text-xs">
@@ -1501,15 +1501,15 @@ export const DestinationDetails = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span>🍔 MEALS INDEX:</span>
-                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.meals.toLocaleString('en-IN')}</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">₹{calculatedCosts.meals.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>🎟️ ACTIVITIES MATRIX:</span>
-                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.activities.toLocaleString('en-IN')}</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">₹{calculatedCosts.activities.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>🚕 SHUTTLES INDEX:</span>
-                      <span className="font-bold text-slate-805 dark:text-slate-200">₹{calculatedCosts.transport.toLocaleString('en-IN')}</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200">₹{calculatedCosts.transport.toLocaleString('en-IN')}</span>
                     </div>
                     
                     <div className="flex justify-between items-baseline border-t border-slate-200 dark:border-teal-500/10 pt-3 text-slate-800 dark:text-white mt-1">
@@ -1828,9 +1828,9 @@ export const DestinationDetails = () => {
               <div className="flex items-center gap-1.5 self-start pl-2">
                 <span className="text-[8px] font-mono text-indigo-400 font-bold uppercase tracking-wider animate-pulse">Voice streaming:</span>
                 <div className="flex items-end gap-0.5 h-3">
-                  <span className="w-[1.5px] h-2 bg-indigo-405 rounded-full animate-audio-bar-1" />
-                  <span className="w-[1.5px] h-3 bg-indigo-405 rounded-full animate-audio-bar-2" />
-                  <span className="w-[1.5px] h-1 bg-indigo-405 rounded-full animate-audio-bar-3" />
+                  <span className="w-[1.5px] h-2 bg-indigo-400 rounded-full animate-audio-bar-1" />
+                  <span className="w-[1.5px] h-3 bg-indigo-400 rounded-full animate-audio-bar-2" />
+                  <span className="w-[1.5px] h-1 bg-indigo-400 rounded-full animate-audio-bar-3" />
                 </div>
               </div>
             )}

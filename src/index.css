@@ -30,24 +30,24 @@
   /* Custom slate shades used in code */
   --color-slate-105: #ebf0f5;
   --color-slate-150: #eaf0f6;
-  --color-slate-205: #d6dee9;
+  --color-slate-200: #d6dee9;
   --color-slate-350: #bcccdc;
-  --color-slate-355: #b0c4de;
-  --color-slate-405: #8fa3bc;
+  --color-slate-300: #b0c4de;
+  --color-slate-400: #8fa3bc;
   --color-slate-450: #7b8ea5;
-  --color-slate-455: #73869c;
-  --color-slate-655: #3c4b5e;
-  --color-slate-805: #1a2333;
+  --color-slate-400: #73869c;
+  --color-slate-600: #3c4b5e;
+  --color-slate-800: #1a2333;
   --color-slate-850: #141d2e;
-  --color-slate-855: #101826;
+  --color-slate-800: #101826;
 
   /* Custom teal shades used in code */
   --color-teal-350: #40dfc9;
   --color-teal-450: #20c6b4;
-  --color-teal-555: #10a697;
-  --color-teal-605: #0e857b;
-  --color-teal-650: #0e7e75;
-  --color-teal-655: #0f7a72;
+  --color-teal-500: #10a697;
+  --color-teal-600: #0e857b;
+  --color-teal-600: #0e7e75;
+  --color-teal-600: #0f7a72;
 }
 
 @layer base {
@@ -908,4 +908,4 @@ textarea:focus-visible {
 .content-visibility-auto {
   content-visibility: auto;
   contain-intrinsic-size: 0 400px;
-}
+}

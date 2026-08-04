@@ -53,16 +53,16 @@ export const Wishlist = () => {
             onClick={() => setActiveTab(t.key)}
             className={`pb-3 px-4 text-center font-bold border-b-2 text-xs flex items-center gap-1.5 transition-all whitespace-nowrap ${
               activeTab === t.key
-                ? 'border-teal-500 text-teal-650 dark:text-teal-400 font-black'
-                : 'border-transparent text-slate-400 hover:text-slate-655'
+                ? 'border-teal-500 text-teal-600 dark:text-teal-400 font-black'
+                : 'border-transparent text-slate-400 hover:text-slate-600'
             }`}
           >
             {t.icon}
             {t.label}
             <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold ${
               activeTab === t.key 
-                ? 'bg-teal-500/10 text-teal-650 dark:bg-teal-450/15 dark:text-teal-450' 
-                : 'bg-slate-50 dark:bg-slate-855 text-slate-400'
+                ? 'bg-teal-500/10 text-teal-600 dark:bg-teal-450/15 dark:text-teal-450' 
+                : 'bg-slate-50 dark:bg-slate-800 text-slate-400'
             }`}>
               {counts[t.key]}
             </span>

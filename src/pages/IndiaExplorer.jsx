@@ -637,7 +637,7 @@ export const IndiaExplorer = () => {
                           className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer ${
                             isVisited
                               ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                              : 'bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-white/5 text-slate-655 dark:text-slate-400 hover:border-teal-500/10'
+                              : 'bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:border-teal-500/10'
                           }`}
                         >
                           <span>{shrine}</span>
@@ -747,7 +747,7 @@ export const IndiaExplorer = () => {
                           className={`flex items-center justify-between p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                             isEaten
                               ? 'bg-teal-500/10 border-teal-500/30 text-teal-400'
-                              : 'bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-white/5 text-slate-655 dark:text-slate-400 hover:border-teal-500/10'
+                              : 'bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 hover:border-teal-500/10'
                           }`}
                         >
                           <div>
@@ -828,8 +828,8 @@ export const IndiaExplorer = () => {
                   </div>
 
                   <div className="flex gap-2 bg-slate-900 p-1.5 rounded-xl border border-white/10 text-[9.5px] font-mono">
-                    <button onClick={() => setBattleKey('goa-andaman')} className={`px-3 py-1 rounded transition-all cursor-pointer ${battleKey === 'goa-andaman' ? 'bg-teal-505 text-slate-950 font-bold bg-teal-500' : 'text-slate-400 hover:text-white'}`}>GOA VS ANDAMAN</button>
-                    <button onClick={() => setBattleKey('kedarnath-badrinath')} className={`px-3 py-1 rounded transition-all cursor-pointer ${battleKey === 'kedarnath-badrinath' ? 'bg-teal-505 text-slate-950 font-bold bg-teal-500' : 'text-slate-400 hover:text-white'}`}>KEDAR VS BADRI</button>
+                    <button onClick={() => setBattleKey('goa-andaman')} className={`px-3 py-1 rounded transition-all cursor-pointer ${battleKey === 'goa-andaman' ? 'bg-teal-500 text-slate-950 font-bold bg-teal-500' : 'text-slate-400 hover:text-white'}`}>GOA VS ANDAMAN</button>
+                    <button onClick={() => setBattleKey('kedarnath-badrinath')} className={`px-3 py-1 rounded transition-all cursor-pointer ${battleKey === 'kedarnath-badrinath' ? 'bg-teal-500 text-slate-950 font-bold bg-teal-500' : 'text-slate-400 hover:text-white'}`}>KEDAR VS BADRI</button>
                   </div>
                 </div>
 
@@ -890,7 +890,7 @@ export const IndiaExplorer = () => {
                         <h4 className="font-display font-extrabold text-xs text-slate-900 dark:text-white uppercase leading-tight">{item.country}</h4>
                         <span className="text-[10px] text-slate-500 font-bold block mt-0.5">{item.cost}</span>
                       </div>
-                      <span className="text-[9px] text-slate-655 font-bold uppercase">{item.rank}</span>
+                      <span className="text-[9px] text-slate-600 font-bold uppercase">{item.rank}</span>
                     </div>
                   ))}
                 </div>
@@ -1018,7 +1018,7 @@ export const IndiaExplorer = () => {
               <button
                 type="button"
                 onClick={() => setIsFullscreenHUD(false)}
-                className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-500 rounded-xl text-emerald-400 hover:text-emerald-305 font-bold text-xs uppercase tracking-wide cursor-pointer transition-all"
+                className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 hover:border-emerald-500 rounded-xl text-emerald-400 hover:text-emerald-300 font-bold text-xs uppercase tracking-wide cursor-pointer transition-all"
               >
                 Close HUD
               </button>

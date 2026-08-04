@@ -676,7 +676,7 @@ export const SpiritualUniverse = () => {
                   {dirSearch && (
                     <button 
                       onClick={() => setDirSearch('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-405 hover:text-slate-600 dark:hover:text-slate-200"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                     >
                       ✕
                     </button>
@@ -709,7 +709,7 @@ export const SpiritualUniverse = () => {
                     <select
                       value={dirRegion}
                       onChange={(e) => setDirRegion(e.target.value)}
-                      className="bg-transparent text-xs text-slate-755 dark:text-slate-300 font-bold focus:outline-none"
+                      className="bg-transparent text-xs text-slate-700 dark:text-slate-300 font-bold focus:outline-none"
                     >
                       <option value="All">All Regions</option>
                       <option value="North India">North India</option>
@@ -792,7 +792,7 @@ export const SpiritualUniverse = () => {
                             {dest.tags.map(t => (
                               <span 
                                 key={t}
-                                className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-950 text-[9px] font-semibold text-slate-500 dark:text-slate-455"
+                                className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-950 text-[9px] font-semibold text-slate-500 dark:text-slate-400"
                               >
                                 #{t}
                               </span>
@@ -802,7 +802,7 @@ export const SpiritualUniverse = () => {
                           {/* CTA Button */}
                           <Link 
                             to={`/destination/${dest.id}`}
-                            className="w-full py-2.5 rounded-xl bg-teal-500/10 hover:bg-teal-500 text-teal-605 dark:text-teal-400 dark:hover:text-slate-950 font-bold transition-all text-center flex items-center justify-center gap-1"
+                            className="w-full py-2.5 rounded-xl bg-teal-500/10 hover:bg-teal-500 text-teal-600 dark:text-teal-400 dark:hover:text-slate-950 font-bold transition-all text-center flex items-center justify-center gap-1"
                           >
                             <span>Explore Sanctuary Portal</span>
                             <ArrowRight size={12} />
@@ -1040,13 +1040,13 @@ export const SpiritualUniverse = () => {
                   <div className="flex gap-2">
                     <button 
                       onClick={checkAllJyotirlingas}
-                      className="px-3 py-1.5 rounded-lg bg-teal-500/10 text-teal-605 dark:text-teal-405 font-bold hover:bg-teal-500/20"
+                      className="px-3 py-1.5 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold hover:bg-teal-500/20"
                     >
                       Check All Shrines
                     </button>
                     <button 
                       onClick={clearAllJyotirlingas}
-                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-650 dark:text-slate-350 font-bold hover:bg-slate-200 dark:hover:bg-slate-700/80"
+                      className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-350 font-bold hover:bg-slate-200 dark:hover:bg-slate-700/80"
                     >
                       Clear Progress
                     </button>
@@ -1114,7 +1114,7 @@ export const SpiritualUniverse = () => {
                             <Award size={22} />
                           </div>
                           <span className="font-bold text-[11px] leading-tight">{badge.name}</span>
-                          <span className="text-[9px] text-slate-405 dark:text-slate-500 mt-1 font-medium">{badge.desc}</span>
+                          <span className="text-[9px] text-slate-400 dark:text-slate-500 mt-1 font-medium">{badge.desc}</span>
                           <span className="text-[8px] mt-2 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-slate-950/20 text-slate-500">
                             {isUnlocked ? 'Active' : 'Locked'}
                           </span>
@@ -1277,7 +1277,7 @@ export const SpiritualUniverse = () => {
                           onClick={() => setPlannerBudget(b)}
                           className={`py-2 rounded-lg font-bold text-[10px] border transition-all ${
                             plannerBudget === b
-                              ? 'bg-teal-500/10 border-teal-500 text-teal-605 dark:text-teal-400'
+                              ? 'bg-teal-500/10 border-teal-500 text-teal-600 dark:text-teal-400'
                               : 'border-slate-200 dark:border-slate-850 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-950'
                           }`}
                         >
@@ -1340,7 +1340,7 @@ export const SpiritualUniverse = () => {
                         <Sparkles size={20} />
                       </div>
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-350">No Active Spiritual Path</span>
-                      <p className="text-[10px] text-slate-455 max-w-xs">
+                      <p className="text-[10px] text-slate-400 max-w-xs">
                         Configure the parameters on the left and click Compile to compute a custom pilgrimage plan with safety forecasts.
                       </p>
                     </div>
@@ -1392,7 +1392,7 @@ export const SpiritualUniverse = () => {
                       <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-900">
                         <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-850">
                           <span className="font-bold text-slate-700 dark:text-slate-350">Pilgrimage Budget Summary</span>
-                          <span className="font-bold text-teal-605 dark:text-teal-400 text-xs">₹{compiledItinerary.costs.total.toLocaleString('en-IN')}</span>
+                          <span className="font-bold text-teal-600 dark:text-teal-400 text-xs">₹{compiledItinerary.costs.total.toLocaleString('en-IN')}</span>
                         </div>
                         <div className="grid grid-cols-5 gap-2 text-center mt-3 text-[9px] text-slate-500 font-medium">
                           <div>
@@ -1445,10 +1445,10 @@ export const SpiritualUniverse = () => {
                         <span className="text-[9px] font-bold uppercase tracking-wider text-rose-500 flex items-center gap-1">
                           <ShieldAlert size={12} /> Contingency Protocol
                         </span>
-                        <p className="text-[10px] text-rose-605 dark:text-rose-400 leading-relaxed font-medium">
+                        <p className="text-[10px] text-rose-600 dark:text-rose-400 leading-relaxed font-medium">
                           {compiledItinerary.contingencyPlan}
                         </p>
-                        <div className="text-[9px] text-slate-405 dark:text-slate-500 mt-1">
+                        <div className="text-[9px] text-slate-400 dark:text-slate-500 mt-1">
                           Emergency Assistance Contact: <strong>{compiledItinerary.emergencyServices}</strong>
                         </div>
                       </div>
@@ -1829,7 +1829,7 @@ export const SpiritualUniverse = () => {
                 <div className="flex gap-4 mt-6 w-full max-w-sm relative z-20">
                   <button 
                     onClick={handlePrintCertificate}
-                    className="flex-1 py-2.5 rounded-xl border border-slate-850 hover:bg-slate-805 text-slate-300 font-bold transition-all text-xs flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2.5 rounded-xl border border-slate-850 hover:bg-slate-800 text-slate-300 font-bold transition-all text-xs flex items-center justify-center gap-1.5"
                   >
                     <Printer size={13} /> Print Certificate
                   </button>

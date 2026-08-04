@@ -375,7 +375,7 @@ export const LegacyCapsule = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-3 rounded-t-xl text-[11px] font-bold font-mono tracking-wider transition-all whitespace-nowrap cursor-pointer ${
               activeTab === tab.id 
-                ? 'border-b-2 border-teal-500 text-teal-605 dark:text-teal-400 bg-teal-500/5' 
+                ? 'border-b-2 border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/5' 
                 : 'text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -644,7 +644,7 @@ export const LegacyCapsule = () => {
 
               <button
                 onClick={handlePrintPass}
-                className="w-full py-3 bg-teal-505 hover:bg-teal-600 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-black font-mono text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg mt-4 flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-3 bg-teal-500 hover:bg-teal-600 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-black font-mono text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg mt-4 flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Printer size={13} /> PRINT BOARDING PASS PROTOCOL
               </button>
@@ -706,7 +706,7 @@ export const LegacyCapsule = () => {
                   </div>
 
                   <div className="flex flex-col gap-1 mt-4">
-                    <span className="text-[8px] font-mono text-slate-555 font-bold">CLASS CABIN STATUS</span>
+                    <span className="text-[8px] font-mono text-slate-500 font-bold">CLASS CABIN STATUS</span>
                     <span className="text-white font-mono text-xs font-bold">{cabinClass}</span>
                     <span className="text-[10px] text-slate-400 font-semibold">{user?.name || 'Alex Mercer'}</span>
                   </div>
@@ -741,7 +741,7 @@ export const LegacyCapsule = () => {
                   <div>
                     <span className="text-[8.5px] font-mono font-bold text-teal-400 uppercase tracking-widest block mb-1">TRAVELVERSE OS CERTIFICATE</span>
                     <h3 className="font-display font-black text-xl text-white m-0">Explorer Rank Credentials</h3>
-                    <span className="text-[10px] text-slate-455 font-bold font-mono block mt-1">VERIFICATION PROTOCOL STATUS</span>
+                    <span className="text-[10px] text-slate-400 font-bold font-mono block mt-1">VERIFICATION PROTOCOL STATUS</span>
                   </div>
 
                   <p className="text-[11px] text-slate-400 max-w-sm leading-relaxed font-semibold mt-1">

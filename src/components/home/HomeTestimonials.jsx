@@ -29,7 +29,7 @@ export const HomeTestimonials = ({
             ))}
           </div>
 
-          <p className="text-xs sm:text-sm text-slate-655 dark:text-slate-350 italic leading-relaxed max-w-xl font-semibold">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-350 italic leading-relaxed max-w-xl font-semibold">
             "{testimonials[activeTestimonial].comment}"
           </p>
         </div>
@@ -41,10 +41,10 @@ export const HomeTestimonials = ({
           <span className="text-xs font-bold text-slate-800 dark:text-white font-mono">
             {testimonials[activeTestimonial].name}
           </span>
-          <div className="flex items-center gap-1.5 text-[9px] text-slate-455 font-bold uppercase tracking-wider font-mono">
+          <div className="flex items-center gap-1.5 text-[9px] text-slate-400 font-bold uppercase tracking-wider font-mono">
             <span>{testimonials[activeTestimonial].role}</span>
             <span>•</span>
-            <span className="text-teal-655 dark:text-teal-400">
+            <span className="text-teal-600 dark:text-teal-400">
               Visited {testimonials[activeTestimonial].destination} {testimonials[activeTestimonial].country}
             </span>
           </div>

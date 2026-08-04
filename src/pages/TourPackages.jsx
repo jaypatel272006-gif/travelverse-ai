@@ -144,7 +144,7 @@ export const TourPackages = () => {
                           className={`flex-1 pb-3 text-center font-bold border-b-2 text-xs transition-all ${
                             activeTab === t.key
                               ? 'border-teal-500 text-teal-600 dark:text-teal-400 font-extrabold'
-                              : 'border-transparent text-slate-400 hover:text-slate-655'
+                              : 'border-transparent text-slate-400 hover:text-slate-600'
                           }`}
                         >
                           {t.label}
@@ -229,18 +229,18 @@ export const TourPackages = () => {
                     </div>
 
                     {/* Booking actions bar */}
-                    <div className="border-t border-slate-100 dark:border-slate-805 pt-4 flex justify-between items-center mt-4">
+                    <div className="border-t border-slate-100 dark:border-slate-800 pt-4 flex justify-between items-center mt-4">
                       <div>
                         <span className="text-[10px] text-slate-400">Package pricing</span>
                         <div className="flex items-baseline gap-1">
                           <span className="text-2xl font-black text-slate-800 dark:text-slate-100">₹{selectedTour.price.toLocaleString('en-IN')}</span>
-                          <span className="text-[10px] text-slate-405">/person</span>
+                          <span className="text-[10px] text-slate-400">/person</span>
                         </div>
                       </div>
 
                       <button
                         onClick={handleBookTour}
-                        className="px-6 py-3 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow cursor-pointer"
+                        className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow cursor-pointer"
                       >
                         Book Package Itinerary
                       </button>
@@ -253,7 +253,7 @@ export const TourPackages = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col gap-6"
                   >
-                    <div className="p-4 rounded-xl bg-teal-500/5 dark:bg-teal-950/20 border border-teal-555/20 text-slate-700 dark:text-slate-300 text-left">
+                    <div className="p-4 rounded-xl bg-teal-500/5 dark:bg-teal-950/20 border border-teal-500/20 text-slate-700 dark:text-slate-300 text-left">
                       <h4 className="font-bold text-sm text-slate-850 dark:text-slate-150 mb-1">Booking Package Details</h4>
                       <p className="leading-relaxed font-semibold">
                         You are reserving "{selectedTour.name}" for {selectedTour.duration}.
@@ -294,20 +294,20 @@ export const TourPackages = () => {
                       </div>
                       <div className="flex justify-between text-sm font-black text-slate-800 dark:text-slate-100 border-t border-slate-100 dark:border-slate-800 pt-3 mt-1">
                         <span>Total Due</span>
-                        <span className="text-teal-555 dark:text-teal-400">₹{Math.round(selectedTour.price * travelersCount * 1.1).toLocaleString('en-IN')}</span>
+                        <span className="text-teal-500 dark:text-teal-400">₹{Math.round(selectedTour.price * travelersCount * 1.1).toLocaleString('en-IN')}</span>
                       </div>
                     </div>
 
                     <div className="flex gap-3 mt-2">
                       <button
                         onClick={() => setCheckoutStep(false)}
-                        className="flex-1 py-3.5 border border-slate-205 dark:border-slate-805 text-slate-600 dark:text-slate-300 font-bold rounded-xl"
+                        className="flex-1 py-3.5 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl"
                       >
                         Back to Details
                       </button>
                       <button
                         onClick={confirmTourBooking}
-                        className="flex-1 py-3.5 bg-teal-655 hover:bg-teal-700 text-white font-bold rounded-xl shadow transition-colors"
+                        className="flex-1 py-3.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow transition-colors"
                       >
                         Confirm Booking
                       </button>

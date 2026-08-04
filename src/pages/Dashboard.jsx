@@ -1159,7 +1159,7 @@ export const Dashboard = () => {
                   {v.mediaUrl && <img src={v.mediaUrl} className="w-10 h-10 object-cover rounded-lg border border-white/5" alt={v.title} />}
                   <div className="flex-1 min-w-0">
                     <span className="font-bold text-white block truncate">{v.title}</span>
-                    <span className="text-[9px] text-slate-405 block truncate">{v.description}</span>
+                    <span className="text-[9px] text-slate-400 block truncate">{v.description}</span>
                   </div>
                 </div>
               ))}
@@ -1267,7 +1267,7 @@ export const Dashboard = () => {
                 type="text" placeholder="Add Planet name" value={newPlanetName} onChange={(e) => setNewPlanetName(e.target.value)}
                 className="px-2 py-1 bg-slate-950 border border-white/5 rounded text-[10px] flex-1 text-white"
               />
-              <button type="submit" className="px-2.5 py-1 bg-purple-650 hover:bg-purple-700 text-white rounded text-[10px] font-mono font-bold">LAUNCH</button>
+              <button type="submit" className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded text-[10px] font-mono font-bold">LAUNCH</button>
             </form>
           </div>
         );
@@ -1384,7 +1384,7 @@ export const Dashboard = () => {
             <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse relative block">
               <span className="absolute inset-0 rounded-full bg-teal-400/50 scale-150 animate-ping" />
             </span>
-            <span className="text-[10px] text-teal-655 dark:text-teal-400 font-mono font-bold tracking-widest uppercase">
+            <span className="text-[10px] text-teal-600 dark:text-teal-400 font-mono font-bold tracking-widest uppercase">
               TRAVELVERSE OS v2.100 // ACTIVE PRESENCE: {activeWorkspace.toUpperCase()} WORKSPACE
             </span>
           </div>
@@ -1432,7 +1432,7 @@ export const Dashboard = () => {
                 {user.name}
               </h3>
               <p className="text-[10px] text-slate-400 dark:text-slate-400 font-mono truncate">{user.email}</p>
-              <span className="inline-block px-2.5 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-655 dark:text-teal-400 font-bold font-mono text-[9px] mt-1.5 uppercase">
+              <span className="inline-block px-2.5 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-bold font-mono text-[9px] mt-1.5 uppercase">
                 LEVEL {userLevel} VOYAGER
               </span>
             </div>
@@ -1475,25 +1475,25 @@ export const Dashboard = () => {
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Active Projects</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{itineraries.length}</span>
-            <span className="text-[9px] text-teal-655 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Saved Plans</span>
+            <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Saved Plans</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Persona Mode</span>
             <span className="text-sm font-black font-mono text-slate-800 dark:text-teal-400 uppercase truncate mt-1">{activePersona}</span>
-            <span className="text-[9px] text-teal-655 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">AI Template</span>
+            <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">AI Template</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">Custom Rules</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{customRules.length}</span>
-            <span className="text-[9px] text-teal-655 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Active Rules</span>
+            <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Active Rules</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-teal-500/5 text-center flex flex-col gap-1 h-full justify-center">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">OS XP Ledger</span>
             <span className="text-2xl font-black text-slate-850 dark:text-white">{userXp}</span>
-            <span className="text-[9px] text-teal-655 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Level {userLevel} Core</span>
+            <span className="text-[9px] text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-1">Level {userLevel} Core</span>
           </div>
         </div>
       </div>
@@ -1512,7 +1512,7 @@ export const Dashboard = () => {
             key={tab.id}
             onClick={() => setDashboardTab(tab.id)}
             className={`px-4 py-3 rounded-t-xl text-[11px] font-bold font-mono tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-              dashboardTab === tab.id ? 'border-b-2 border-teal-500 text-teal-605 dark:text-teal-400 bg-teal-500/5' : 'text-slate-500 hover:text-slate-855'
+              dashboardTab === tab.id ? 'border-b-2 border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/5' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             {tab.label}
@@ -1530,7 +1530,7 @@ export const Dashboard = () => {
             <div className="p-5 rounded-3xl glass-neo border border-teal-500/10 flex justify-between items-center flex-wrap gap-4 text-left">
               <div>
                 <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0">Workspace customizer</h4>
-                <p className="text-[11px] text-slate-455">Configure screens, layouts, split configurations, and load widget decks.</p>
+                <p className="text-[11px] text-slate-400">Configure screens, layouts, split configurations, and load widget decks.</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -1759,7 +1759,7 @@ export const Dashboard = () => {
               <div>
                 <span className="text-[9px] font-bold text-teal-450 uppercase tracking-widest font-mono">Goals Visualization</span>
                 <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Create Travel Planet</h4>
-                <p className="text-[11px] mt-1 text-slate-455">Map custom target locations to a simulated planet in your travel orbit.</p>
+                <p className="text-[11px] mt-1 text-slate-400">Map custom target locations to a simulated planet in your travel orbit.</p>
               </div>
 
               <form onSubmit={handleAddPlanet} className="flex flex-col gap-3.5">
@@ -1819,7 +1819,7 @@ export const Dashboard = () => {
             <div className="lg:col-span-2 flex flex-col gap-6 text-left">
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10">
                 <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0 mb-1 flex items-center gap-1.5"><Settings size={14} className="text-teal-400" /> Recommendation Logic override rule builder</h4>
-                <p className="text-[11px] text-slate-455 mb-4">Set conditional triggers that instruct Atlas to modify hotel, activity, or flight suggestions automatically without code.</p>
+                <p className="text-[11px] text-slate-400 mb-4">Set conditional triggers that instruct Atlas to modify hotel, activity, or flight suggestions automatically without code.</p>
                 
                 <form onSubmit={handleAddRule} className="grid grid-cols-1 sm:grid-cols-5 gap-3 items-end p-4 rounded-2xl bg-slate-950 border border-white/5 mb-6">
                   <div className="flex flex-col gap-1 col-span-1">
@@ -1885,7 +1885,7 @@ export const Dashboard = () => {
               {/* Dynamic control cockpit sliders */}
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10">
                 <div className="mb-4">
-                  <span className="text-[9px] font-bold text-teal-455 uppercase tracking-widest font-mono">Interactive Telemetry Cockpit</span>
+                  <span className="text-[9px] font-bold text-teal-400 uppercase tracking-widest font-mono">Interactive Telemetry Cockpit</span>
                   <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Dynamic Travel Controls</h4>
                 </div>
 
@@ -1920,7 +1920,7 @@ export const Dashboard = () => {
                             <div className="w-1.5 h-1.5 bg-teal-400 rounded-full" />
                             <span className="font-bold text-slate-200">{item.name}</span>
                           </div>
-                          <span className="text-teal-455 font-bold">{item.score}% Match</span>
+                          <span className="text-teal-400 font-bold">{item.score}% Match</span>
                         </div>
                       ))}
                     </div>
@@ -1935,7 +1935,7 @@ export const Dashboard = () => {
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10 flex flex-col gap-4">
                 <div>
                   <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0 mb-1">AI Travel Personas</h4>
-                  <p className="text-[11px] text-slate-455 leading-relaxed">Switch configurations instantly to adapt preferences sliders.</p>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">Switch configurations instantly to adapt preferences sliders.</p>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   {[
@@ -1953,7 +1953,7 @@ export const Dashboard = () => {
                       }`}
                     >
                       <span className="font-bold block text-[11px] mb-0.5">{p.id}</span>
-                      <span className="text-[9.5px] text-slate-555 leading-normal block">{p.desc}</span>
+                      <span className="text-[9.5px] text-slate-500 leading-normal block">{p.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -1963,7 +1963,7 @@ export const Dashboard = () => {
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10 flex flex-col gap-4">
                 <div>
                   <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0 mb-1">Atlas Cognitive Memory</h4>
-                  <p className="text-[11px] text-slate-455">Add, edit, or wipe custom items saved inside the travel intelligence registry.</p>
+                  <p className="text-[11px] text-slate-400">Add, edit, or wipe custom items saved inside the travel intelligence registry.</p>
                 </div>
 
                 <form onSubmit={handleAddMemory} className="flex gap-2">
@@ -1978,7 +1978,7 @@ export const Dashboard = () => {
                   {aiMemories.map(m => (
                     <div key={m.id} className="p-2 rounded-xl bg-slate-900/40 border border-teal-500/5 flex justify-between items-center text-[10.5px]">
                       <span className="text-slate-300 italic truncate pr-2">"{m.text}"</span>
-                      <button onClick={() => setAiMemories(aiMemories.filter(x => x.id !== m.id))} className="text-rose-505 hover:text-rose-400 font-mono text-[9px] font-bold">REMOVE</button>
+                      <button onClick={() => setAiMemories(aiMemories.filter(x => x.id !== m.id))} className="text-rose-500 hover:text-rose-400 font-mono text-[9px] font-bold">REMOVE</button>
                     </div>
                   ))}
                 </div>
@@ -2004,19 +2004,19 @@ export const Dashboard = () => {
               
               {/* Radar logs */}
               <div className="p-5 rounded-3xl glass-neo border border-teal-500/10">
-                <span className="text-[9px] font-bold text-teal-455 uppercase tracking-widest font-mono">Radar telemetry readouts</span>
+                <span className="text-[9px] font-bold text-teal-400 uppercase tracking-widest font-mono">Radar telemetry readouts</span>
                 <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5 mb-3">Live updates feed</h4>
                 <div className="flex flex-col gap-2.5 font-mono text-[11px] max-h-[180px] overflow-y-auto">
                   <div className="p-2 rounded bg-slate-900/60 border-l-2 border-teal-400 text-slate-300">
-                    <span className="text-teal-455 font-bold mr-1.5">[17:05]</span>
+                    <span className="text-teal-400 font-bold mr-1.5">[17:05]</span>
                     Satellite feed connected: Leh-Ladakh NH-3 Highway clear of landslide debris.
                   </div>
                   <div className="p-2 rounded bg-slate-900/60 border-l-2 border-amber-400 text-slate-300">
-                    <span className="text-amber-455 font-bold mr-1.5">[16:58]</span>
+                    <span className="text-amber-400 font-bold mr-1.5">[16:58]</span>
                     Weather warning update: Heavy monsoons in Munnar valleys. Outstation hiking routes restricted.
                   </div>
                   <div className="p-2 rounded bg-slate-900/60 border-l-2 border-sky-400 text-slate-300">
-                    <span className="text-sky-455 font-bold mr-1.5">[16:32]</span>
+                    <span className="text-sky-400 font-bold mr-1.5">[16:32]</span>
                     Price drop indicator: Flights DEL to GOI dropped by 18% matching flight class settings.
                   </div>
                 </div>
@@ -2029,7 +2029,7 @@ export const Dashboard = () => {
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10 flex flex-col gap-4">
                 <div>
                   <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0 mb-1">Smart Deal Hunters</h4>
-                  <p className="text-[11px] text-slate-455">Deploy automated bots that search flight and hotel pricing databases.</p>
+                  <p className="text-[11px] text-slate-400">Deploy automated bots that search flight and hotel pricing databases.</p>
                 </div>
 
                 <form onSubmit={handleAddHunt} className="flex flex-col gap-3">
@@ -2088,7 +2088,7 @@ export const Dashboard = () => {
             <div className="lg:col-span-2 flex flex-col gap-6 text-left">
               <div className="p-6 rounded-3xl glass-neo border border-teal-500/10">
                 <div className="mb-4">
-                  <span className="text-[9px] font-bold text-teal-455 uppercase tracking-widest font-mono">Predictive Intelligence Studio</span>
+                  <span className="text-[9px] font-bold text-teal-400 uppercase tracking-widest font-mono">Predictive Intelligence Studio</span>
                   <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Experience Simulation Studio</h4>
                   <p className="text-[11px] text-slate-400">Generate projected travel metrics, crowds density forecasts, and pace fatigue rates before booking.</p>
                 </div>
@@ -2118,7 +2118,7 @@ export const Dashboard = () => {
                     <span className="text-[9px] font-mono text-slate-400 font-bold uppercase">Budget (₹)</span>
                     <input type="number" value={simBudget} onChange={(e) => setSimBudget(parseInt(e.target.value) || 0)} className="px-2 py-1.5 bg-slate-900 border border-white/5 rounded text-[11px] text-white font-mono" />
                   </div>
-                  <button type="submit" className="py-2 bg-teal-500 text-slate-950 font-mono font-bold rounded-lg text-[10px] transition-all hover:bg-teal-650">
+                  <button type="submit" className="py-2 bg-teal-500 text-slate-950 font-mono font-bold rounded-lg text-[10px] transition-all hover:bg-teal-600">
                     {isSimulating ? 'SIMULATING...' : 'RUN SIMULATION'}
                   </button>
                 </form>
@@ -2162,7 +2162,7 @@ export const Dashboard = () => {
             <div className="lg:col-span-1 p-6 rounded-3xl glass-neo border border-teal-500/10 text-left flex flex-col gap-4 w-full">
               <div>
                 <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0 mb-1">Multi-Route Comparator</h4>
-                <p className="text-[11px] text-slate-455">Compare 6 simulated routing variants side by side.</p>
+                <p className="text-[11px] text-slate-400">Compare 6 simulated routing variants side by side.</p>
               </div>
 
               <div className="flex flex-col gap-2.5 max-h-[420px] overflow-y-auto pr-1">
@@ -2172,7 +2172,7 @@ export const Dashboard = () => {
                       <span className="font-bold text-teal-400">{item.type}</span>
                       <span className="text-white font-bold">{item.cost}</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 text-slate-405 text-[9px]">
+                    <div className="grid grid-cols-2 gap-1.5 text-slate-400 text-[9px]">
                       <span>Dist: {item.distance}</span>
                       <span>Time: {item.duration}</span>
                       <span>Carbon: {item.carbon}</span>
@@ -2192,7 +2192,7 @@ export const Dashboard = () => {
               <div className="absolute inset-0 bg-cyber opacity-30 pointer-events-none" />
               
               <div>
-                <span className="text-[9px] font-bold text-teal-455 uppercase tracking-widest font-mono">Sentient Travel Secretary</span>
+                <span className="text-[9px] font-bold text-teal-400 uppercase tracking-widest font-mono">Sentient Travel Secretary</span>
                 <h3 className="font-display font-black text-lg text-slate-900 dark:text-white mt-0.5">Travel Command Center AI</h3>
                 <p className="text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                   Type instructions in natural language. Atlas parses constraints and executes commands on itineraries, profiles, and preferences instantly.
@@ -2202,7 +2202,7 @@ export const Dashboard = () => {
               {/* Console Output logs screen */}
               <div className="p-4 bg-slate-950 rounded-2xl border border-teal-500/10 h-72 overflow-y-auto flex flex-col gap-1.5 font-mono text-[11px] text-slate-350 scrollbar-thin">
                 {consoleLogs.map((log, idx) => (
-                  <div key={idx} className={log.startsWith('>') ? 'text-teal-400 font-bold' : 'text-slate-355 leading-relaxed'}>
+                  <div key={idx} className={log.startsWith('>') ? 'text-teal-400 font-bold' : 'text-slate-300 leading-relaxed'}>
                     {log}
                   </div>
                 ))}
@@ -2230,7 +2230,7 @@ export const Dashboard = () => {
 
               {/* Suggestions shortcuts helper */}
               <div className="flex gap-2 items-center flex-wrap mt-1 text-[10px] text-slate-400">
-                <span className="font-bold font-mono uppercase text-teal-505">Suggested commands:</span>
+                <span className="font-bold font-mono uppercase text-teal-500">Suggested commands:</span>
                 {[
                   "Create a 10-day Switzerland trip under ₹2 lakh.",
                   "Show me beach destinations with cool weather.",
@@ -2279,7 +2279,7 @@ export const Dashboard = () => {
 
               <form onSubmit={handleCreateWorkspace} className="flex flex-col gap-4 text-xs">
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-[9px] text-slate-405 font-bold uppercase">Workspace Name</label>
+                  <label className="font-mono text-[9px] text-slate-400 font-bold uppercase">Workspace Name</label>
                   <input
                     type="text" placeholder="e.g. My Operations Deck" value={customWorkspaceName} onChange={(e) => setCustomWorkspaceName(e.target.value)}
                     className="px-3 py-2 bg-slate-950 border border-white/5 text-white rounded-xl"
@@ -2288,7 +2288,7 @@ export const Dashboard = () => {
                 </div>
                 
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-[9px] text-slate-405 font-bold uppercase">Grid Layout Mode</label>
+                  <label className="font-mono text-[9px] text-slate-400 font-bold uppercase">Grid Layout Mode</label>
                   <select
                     value={customWorkspaceLayout} onChange={(e) => setCustomWorkspaceLayout(e.target.value)}
                     className="px-2 py-2 bg-slate-950 border border-white/5 text-white rounded-xl"
@@ -2302,7 +2302,7 @@ export const Dashboard = () => {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-[9px] text-slate-405 font-bold uppercase mb-1">Select Included Widget Decks</label>
+                  <label className="font-mono text-[9px] text-slate-400 font-bold uppercase mb-1">Select Included Widget Decks</label>
                   <div className="grid grid-cols-2 gap-2 text-[10.5px] font-mono text-slate-350">
                     {[
                       { id: 'itinerary', label: 'Quantum Planner' },

@@ -315,7 +315,7 @@ export const AITripPlanner = () => {
             <span className="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse relative block">
               <span className="absolute inset-0 rounded-full bg-teal-400/50 scale-200 animate-ping" />
             </span>
-            <span className="text-[10px] text-teal-650 dark:text-teal-400 font-mono font-bold tracking-widest uppercase">
+            <span className="text-[10px] text-teal-600 dark:text-teal-400 font-mono font-bold tracking-widest uppercase">
               AI INTEL CORE // SYNAPSE PLANNER
             </span>
           </div>
@@ -406,7 +406,7 @@ export const AITripPlanner = () => {
                         className={`px-3 py-2.5 text-xs font-mono font-bold rounded-xl border transition-all cursor-pointer ${
                           destination === d.name
                             ? 'bg-teal-500 border-teal-500 text-slate-950 shadow-[0_0_15px_rgba(45,212,191,0.3)]'
-                            : 'border-slate-200 dark:border-teal-500/10 text-slate-605 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                            : 'border-slate-200 dark:border-teal-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                         }`}
                       >
                         {d.name.toUpperCase()}
@@ -495,7 +495,7 @@ export const AITripPlanner = () => {
                         )}
                         <div>
                           <span className="font-display font-black text-sm block tracking-wide">{b.type.toUpperCase()}</span>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-455 mt-2.5 leading-relaxed font-semibold">{b.desc}</p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2.5 leading-relaxed font-semibold">{b.desc}</p>
                         </div>
                         <span className="text-teal-600 dark:text-teal-450 font-mono font-bold text-xs mt-3 block">{b.estimate}</span>
                       </button>
@@ -533,7 +533,7 @@ export const AITripPlanner = () => {
                         className={`p-4 rounded-xl border text-center font-bold text-xs transition-all cursor-pointer ${
                           isSelected
                             ? 'bg-teal-500 border-teal-500 text-slate-955 shadow-[0_0_15px_rgba(45,212,191,0.3)]'
-                            : 'border-slate-200 dark:border-teal-500/10 text-slate-605 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                            : 'border-slate-200 dark:border-teal-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                         }`}
                       >
                         {opt}
@@ -556,7 +556,7 @@ export const AITripPlanner = () => {
                     <Sparkles size={18} className="text-teal-400" />
                     Configure Travel Style & Pacing
                   </h3>
-                  <p className="text-xs text-slate-505 dark:text-slate-400 font-medium">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                     Customize the pace and style of your activities. Our engine will adapt the hourly plan to optimize rest and walking distance.
                   </p>
                 </div>
@@ -579,7 +579,7 @@ export const AITripPlanner = () => {
                             className={`px-3 py-2.5 text-[10px] font-mono font-bold rounded-xl border transition-all relative cursor-pointer ${
                               travelStyle === style
                                 ? 'bg-teal-500 border-teal-500 text-slate-950 shadow-[0_0_15px_rgba(45,212,191,0.3)]'
-                                : 'border-slate-200 dark:border-teal-500/10 text-slate-605 dark:text-slate-405 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                                : 'border-slate-200 dark:border-teal-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                             }`}
                           >
                             {isTwinMatch && (
@@ -611,7 +611,7 @@ export const AITripPlanner = () => {
                             className={`px-3 py-2.5 text-[10px] font-mono font-bold rounded-xl border transition-all relative cursor-pointer ${
                               pace === p
                                 ? 'bg-teal-500 border-teal-500 text-slate-950 shadow-[0_0_15px_rgba(45,212,191,0.3)]'
-                                : 'border-slate-200 dark:border-teal-500/10 text-slate-655 dark:text-slate-405 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                                : 'border-slate-200 dark:border-teal-500/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
                             }`}
                           >
                             {isTwinMatch && (
@@ -634,7 +634,7 @@ export const AITripPlanner = () => {
               {step > 1 ? (
                 <button
                   onClick={() => setStep(step - 1)}
-                  className="px-5 py-3 border border-slate-250 dark:border-teal-500/20 bg-white dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-xs font-mono font-bold rounded-xl text-slate-655 dark:text-teal-400 cursor-pointer"
+                  className="px-5 py-3 border border-slate-250 dark:border-teal-500/20 bg-white dark:bg-slate-900/30 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-xs font-mono font-bold rounded-xl text-slate-600 dark:text-teal-400 cursor-pointer"
                 >
                   PREVIOUS
                 </button>
@@ -646,7 +646,7 @@ export const AITripPlanner = () => {
                 <button
                   disabled={step === 1 && !destination}
                   onClick={() => setStep(step + 1)}
-                  className="px-6 py-3 bg-slate-900 text-white dark:bg-teal-500 dark:text-slate-950 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 hover:bg-teal-605 dark:hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
+                  className="px-6 py-3 bg-slate-900 text-white dark:bg-teal-500 dark:text-slate-950 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 hover:bg-teal-600 dark:hover:bg-teal-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
                 >
                   CONTINUE
                   <ArrowRight size={14} />
@@ -740,7 +740,7 @@ export const AITripPlanner = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent pointer-events-none" />
                 </div>
                 <div className="p-6 text-left">
-                  <span className="text-[9px] font-mono font-bold text-teal-605 dark:text-teal-400 uppercase tracking-widest">
+                  <span className="text-[9px] font-mono font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">
                     HOLOGRAPH PLAN READOUT
                   </span>
                   {isEditingPlan ? (
@@ -769,7 +769,7 @@ export const AITripPlanner = () => {
                       <h3 className="font-display font-black text-2xl text-slate-900 dark:text-white mt-1 leading-snug tracking-wide">
                         {itinerary.destination}
                       </h3>
-                      <span className="text-[10px] font-mono font-bold text-slate-405 dark:text-slate-400 mt-1 block uppercase tracking-wider">
+                      <span className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-400 mt-1 block uppercase tracking-wider">
                         {itinerary.country} • {itinerary.duration} DAYS STAY • {itinerary.budgetType.toUpperCase()} TIER
                       </span>
                     </>
@@ -780,7 +780,7 @@ export const AITripPlanner = () => {
               {/* Budget Cost Breakdown card */}
               <div className="p-6 rounded-3xl border border-slate-200/50 dark:border-teal-500/10 bg-white dark:bg-slate-900/40 shadow-xl glass-neo text-left flex flex-col gap-5">
                 <div className="flex justify-between items-center flex-wrap gap-2 pb-2 border-b border-slate-100 dark:border-teal-500/5">
-                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 my-0">
+                  <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300 my-0">
                     ESTIMATED DEBIT TELEMETRY
                   </h4>
                   <span className="px-1.5 py-0.5 text-[8px] font-bold font-mono uppercase bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded flex items-center gap-1">
@@ -900,7 +900,7 @@ export const AITripPlanner = () => {
 
                 <div className="pt-4 border-t border-slate-200 dark:border-teal-500/10 flex justify-between items-baseline mt-2">
                   <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-widest">NET DEBIT COST</span>
-                  <span className="text-2xl font-mono font-black text-teal-555 dark:text-teal-400">₹{itinerary.costs.total.toLocaleString('en-IN')}</span>
+                  <span className="text-2xl font-mono font-black text-teal-500 dark:text-teal-400">₹{itinerary.costs.total.toLocaleString('en-IN')}</span>
                 </div>
               </div>
 
@@ -910,7 +910,7 @@ export const AITripPlanner = () => {
                   <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-350 flex items-center gap-2">
                     <Wallet size={14} className="text-teal-400" /> GLOBAL COST SIMULATOR
                   </h4>
-                  <p className="text-[10px] text-slate-505 dark:text-slate-400 leading-normal font-mono font-bold uppercase tracking-wider">
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-normal font-mono font-bold uppercase tracking-wider">
                     Compare Projected Expense Vectors (₹)
                   </p>
                   <div className="flex flex-col gap-3.5 mt-2 font-mono text-[10px]">
@@ -928,9 +928,9 @@ export const AITripPlanner = () => {
                         <div key={tier.name} className={`p-2.5 rounded-xl border transition-all ${isCurrent ? 'bg-teal-550/10 border-teal-500/30' : 'border-transparent bg-slate-950/20'}`}>
                           <div className="flex justify-between items-center mb-1 font-bold">
                             <span className={isCurrent ? 'text-teal-400' : 'text-slate-400'}>{tier.name.toUpperCase()}</span>
-                            <span className={isCurrent ? 'text-teal-450 font-black' : 'text-slate-305'}>₹{totalCost.toLocaleString('en-IN')}</span>
+                            <span className={isCurrent ? 'text-teal-450 font-black' : 'text-slate-300'}>₹{totalCost.toLocaleString('en-IN')}</span>
                           </div>
-                          <div className="w-full bg-slate-100 dark:bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-205 dark:border-teal-500/5">
+                          <div className="w-full bg-slate-100 dark:bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-200 dark:border-teal-500/5">
                             <div className={`${tier.color} h-full rounded-full`} style={{ width: `${Math.min(100, (totalCost / 648000) * 100)}%` }} />
                           </div>
                         </div>
@@ -942,7 +942,7 @@ export const AITripPlanner = () => {
 
               {/* Packing checklist */}
               <div className="p-6 rounded-3xl border border-slate-200/50 dark:border-teal-500/10 bg-white dark:bg-slate-900/40 shadow-xl glass-neo text-left">
-                <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-355 mb-4">
+                <h4 className="font-display font-black text-xs uppercase tracking-wider text-slate-800 dark:text-teal-300 mb-4">
                   CHECKLIST TELEMETRY
                 </h4>
                 <div className="flex flex-col gap-2.5 font-mono text-[11px] text-slate-600 dark:text-slate-300">
@@ -1033,11 +1033,11 @@ export const AITripPlanner = () => {
                   </div>
                   <div className="flex flex-col gap-1.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-teal-500/5">
                     <span className="font-bold text-[10px] text-teal-400 uppercase tracking-wider block mb-0.5">🚇 Transit Protocols</span>
-                    <p className="text-[11px] text-slate-655 dark:text-slate-300 leading-relaxed font-semibold">{itinerary.transportationAdvice}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">{itinerary.transportationAdvice}</p>
                   </div>
                   <div className="flex flex-col gap-1.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-teal-500/5">
                     <span className="font-bold text-[10px] text-rose-400 uppercase tracking-wider block mb-0.5">⚠️ Emergency Node</span>
-                    <p className="text-[11px] text-slate-655 dark:text-slate-300 leading-relaxed font-semibold">{itinerary.emergencyServices}</p>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed font-semibold">{itinerary.emergencyServices}</p>
                   </div>
                 </div>
               </div>
@@ -1227,7 +1227,7 @@ export const AITripPlanner = () => {
                                           {item.time}
                                         </span>
                                       </div>
-                                      <p className="text-[11px] text-slate-655 dark:text-slate-400 leading-relaxed font-semibold">
+                                      <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed font-semibold">
                                         {item.details}
                                       </p>
                                     </div>
@@ -1324,7 +1324,7 @@ export const AITripPlanner = () => {
                             </ul>
                           </div>
                           <div className="flex flex-col gap-1.5 border-t border-slate-200 dark:border-white/5 pt-3">
-                            <span className="text-slate-455 text-[8px] font-bold uppercase">☕ REST AREA STATIONS</span>
+                            <span className="text-slate-400 text-[8px] font-bold uppercase">☕ REST AREA STATIONS</span>
                             <ul className="list-disc pl-4 flex flex-col gap-1 text-slate-700 dark:text-slate-200 font-semibold">
                               {itinerary.roadTrip.restAreas.map((stop, idx) => <li key={idx}>{stop}</li>)}
                             </ul>
@@ -1342,9 +1342,9 @@ export const AITripPlanner = () => {
                         </div>
 
                         <div className="p-5 rounded-3xl bg-rose-500/5 border border-rose-500/20 flex flex-col gap-1.5 text-left font-mono">
-                          <span className="text-[8px] font-bold text-rose-500 dark:text-rose-455 uppercase tracking-widest">🚨 EMERGENCY ROAD HELP</span>
+                          <span className="text-[8px] font-bold text-rose-500 dark:text-rose-400 uppercase tracking-widest">🚨 EMERGENCY ROAD HELP</span>
                           <h5 className="text-xs font-black text-slate-900 dark:text-white">{itinerary.roadTrip.emergencyContacts.details}</h5>
-                          <span className="text-base font-black text-rose-505 dark:text-rose-400">{itinerary.roadTrip.emergencyContacts.phone}</span>
+                          <span className="text-base font-black text-rose-500 dark:text-rose-400">{itinerary.roadTrip.emergencyContacts.phone}</span>
                           <p className="text-[9px] text-slate-500 font-semibold leading-normal">Available 24/7. Integrates automatically with your vehicle telemetry beacon.</p>
                         </div>
                       </div>
@@ -1362,7 +1362,7 @@ export const AITripPlanner = () => {
                       <h4 className="font-display font-black text-xl text-slate-900 dark:text-white mt-1 uppercase">
                         🎬 AI Travel Documentary Generator
                       </h4>
-                      <p className="text-xs text-slate-505 dark:text-slate-400 font-semibold mt-1">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">
                         Generate a simulated travel documentary video storyboard of your itinerary with voiceover telemetry and ambient sound mixes.
                       </p>
                     </div>
@@ -1438,7 +1438,7 @@ export const AITripPlanner = () => {
                               }
                             }
                           }}
-                          className="px-4 py-2.5 bg-teal-500 hover:bg-teal-650 text-slate-950 font-bold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-teal-500/10"
+                          className="px-4 py-2.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-teal-500/10"
                         >
                           {docPlaying ? '⏸ PAUSE PREVIEW' : '▶ PLAY SIMULATION'}
                         </button>

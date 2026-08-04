@@ -74,7 +74,7 @@ export const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="demo@travelverse.ai"
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-slate-105"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-slate-100"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ export const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-205 dark:border-slate-805 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-slate-105"
+                className="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-800 dark:text-slate-100"
               />
               <button
                 type="button"
@@ -103,7 +103,7 @@ export const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 bg-teal-655 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
+            className="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-bold transition-all shadow flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
           >
             <LogIn size={13} />
             {loading ? 'Signing In...' : 'Sign In'}

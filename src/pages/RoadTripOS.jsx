@@ -557,7 +557,7 @@ export const RoadTripOS = () => {
 
               <button
                 type="submit"
-                className="w-full py-2 bg-teal-655 hover:bg-teal-700 text-white rounded-lg text-xs font-bold transition-all hover:scale-[1.02] cursor-pointer"
+                className="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold transition-all hover:scale-[1.02] cursor-pointer"
               >
                 LOG COST
               </button>
@@ -874,7 +874,7 @@ export const RoadTripOS = () => {
                 }`}>
                   <div className="flex justify-between">
                     <span className="text-base">{b.icon}</span>
-                    <span className={`text-[7.5px] font-bold uppercase ${b.unlocked ? 'text-teal-400 animate-pulse' : 'text-slate-650'}`}>
+                    <span className={`text-[7.5px] font-bold uppercase ${b.unlocked ? 'text-teal-400 animate-pulse' : 'text-slate-600'}`}>
                       {b.unlocked ? 'UNLOCKED' : 'LOCKED'}
                     </span>
                   </div>

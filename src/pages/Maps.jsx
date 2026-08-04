@@ -433,14 +433,14 @@ export const Maps = () => {
               <form onSubmit={handleAddCustomPin} className="flex flex-col gap-3">
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-0.5 flex-1">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">Pin Name</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">Pin Name</span>
                     <input 
                       type="text" placeholder="e.g. Mumbai" value={newPinName} onChange={(e) => setNewPinName(e.target.value)}
                       className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white" required
                     />
                   </div>
                   <div className="flex flex-col gap-0.5 w-24">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">Type</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">Type</span>
                     <select 
                       value={newPinType} onChange={(e) => setNewPinType(e.target.value)}
                       className="px-1 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white"
@@ -454,14 +454,14 @@ export const Maps = () => {
 
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-0.5 flex-1">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">Latitude (-90 to 90)</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">Latitude (-90 to 90)</span>
                     <input 
                       type="text" placeholder="19.076" value={newPinLat} onChange={(e) => setNewPinLat(e.target.value)}
                       className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white font-mono" required
                     />
                   </div>
                   <div className="flex flex-col gap-0.5 flex-1">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">Longitude (-180 to 180)</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">Longitude (-180 to 180)</span>
                     <input 
                       type="text" placeholder="72.877" value={newPinLon} onChange={(e) => setNewPinLon(e.target.value)}
                       className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white font-mono" required
@@ -470,7 +470,7 @@ export const Maps = () => {
                 </div>
 
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-mono text-slate-455 uppercase">Optional Photo Image Link</span>
+                  <span className="text-[9px] font-mono text-slate-400 uppercase">Optional Photo Image Link</span>
                   <input 
                     type="url" placeholder="https://images.unsplash.com/..." value={newPinImage} onChange={(e) => setNewPinImage(e.target.value)}
                     className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white"
@@ -478,7 +478,7 @@ export const Maps = () => {
                 </div>
 
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-mono text-slate-455 uppercase">Explorer Notes / Memory logs</span>
+                  <span className="text-[9px] font-mono text-slate-400 uppercase">Explorer Notes / Memory logs</span>
                   <textarea 
                     placeholder="Describe this spot or logs..." value={newPinNotes} onChange={(e) => setNewPinNotes(e.target.value)}
                     className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white h-12 resize-none"
@@ -501,7 +501,7 @@ export const Maps = () => {
                 
                 <form onSubmit={handleDrawRoute} className="flex flex-col gap-3">
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">Start Pin Point</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">Start Pin Point</span>
                     <select 
                       value={routeStartId} onChange={(e) => setRouteStartId(e.target.value)}
                       className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white text-[11px]" required
@@ -514,7 +514,7 @@ export const Maps = () => {
                   </div>
 
                   <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-mono text-slate-455 uppercase">End Destination Point</span>
+                    <span className="text-[9px] font-mono text-slate-400 uppercase">End Destination Point</span>
                     <select 
                       value={routeEndId} onChange={(e) => setRouteEndId(e.target.value)}
                       className="px-2 py-1.5 rounded-lg bg-slate-950 border border-white/5 text-white text-[11px]" required
@@ -596,7 +596,7 @@ export const Maps = () => {
               </p>
 
               {/* Coordinates specs */}
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-150 dark:border-white/5 flex justify-between text-[10px] font-mono text-slate-600 dark:text-slate-355">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-150 dark:border-white/5 flex justify-between text-[10px] font-mono text-slate-600 dark:text-slate-300">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-[8.5px] text-slate-400 uppercase font-bold tracking-wider">Longitude</span>
                   <span>{selectedPin.coords.lon.toFixed(4)}° E</span>
@@ -619,7 +619,7 @@ export const Maps = () => {
                     className={`py-2 rounded-xl border text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       isWishlisted
                         ? 'bg-rose-50 border-rose-200 text-rose-500 dark:bg-rose-950/80 dark:border-rose-900'
-                        : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-655 dark:text-slate-300'
+                        : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-300'
                     }`}
                   >
                     <Heart size={12} fill={isWishlisted ? 'currentColor' : 'none'} />
@@ -627,7 +627,7 @@ export const Maps = () => {
                   </button>
                   <a
                     href={`/planner?destination=${selectedPin.name}`}
-                    className="py-2 bg-teal-605 hover:bg-teal-700 text-white rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 shadow"
+                    className="py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 shadow"
                   >
                     <Calendar size={12} /> Plan Custom Itinerary
                   </a>

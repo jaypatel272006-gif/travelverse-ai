@@ -57,7 +57,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
         />
         <button
           onClick={() => toggleWishlist('hotels', hotel)}
-          className="absolute top-4 right-4 p-2.5 rounded-full glass border shadow-sm transition-all duration-300 transform active:scale-90 z-10 text-slate-605 dark:text-slate-300 hover:text-rose-500"
+          className="absolute top-4 right-4 p-2.5 rounded-full glass border shadow-sm transition-all duration-300 transform active:scale-90 z-10 text-slate-600 dark:text-slate-300 hover:text-rose-500"
         >
           <Heart size={16} fill={isWishlisted ? 'currentColor' : 'none'} />
         </button>
@@ -70,7 +70,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
           <div className="flex justify-between items-start gap-4 mb-2">
             <div>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100 hover:text-teal-655 dark:hover:text-teal-400 transition-colors my-0">
+                <h4 className="text-lg font-bold text-slate-800 dark:text-slate-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors my-0">
                   {hotel.name}
                 </h4>
                 {hotel.isLiveVerified ? (
@@ -83,7 +83,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 text-slate-555 flex-wrap">
+              <div className="flex items-center gap-2 text-slate-500 flex-wrap">
                 <div className="flex items-center gap-1">
                   <MapPin size={13} className="text-slate-400" />
                   <span className="text-xs font-medium">{hotel.location || hotel.destination}</span>
@@ -91,7 +91,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
                 {hotel.website && (
                   <>
                     <span className="text-slate-300 dark:text-slate-700">•</span>
-                    <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="text-xs text-teal-605 dark:text-teal-400 hover:underline font-mono font-bold">
+                    <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="text-xs text-teal-600 dark:text-teal-400 hover:underline font-mono font-bold">
                       Official Website
                     </a>
                   </>
@@ -123,7 +123,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
             {amenities.map((amenity) => (
               <span
                 key={amenity}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 dark:bg-slate-800/40 text-slate-655 dark:text-slate-300 border border-slate-100 dark:border-slate-800"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-50 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800"
               >
                 {renderAmenityIcon(amenity)}
                 {amenity}
@@ -154,7 +154,7 @@ export const HotelCard = memo(({ hotel, onBook }) => {
             </button>
             <button
               onClick={() => onBook(hotel, rooms[0])}
-              className="px-5 py-2.5 text-xs font-bold rounded-xl bg-teal-655 hover:bg-teal-700 text-white dark:bg-teal-500 dark:hover:bg-teal-600 transition-colors shadow-sm"
+              className="px-5 py-2.5 text-xs font-bold rounded-xl bg-teal-600 hover:bg-teal-700 text-white dark:bg-teal-500 dark:hover:bg-teal-600 transition-colors shadow-sm"
             >
               Book Now
             </button>
@@ -190,12 +190,12 @@ export const RoomSelectionList = ({ hotel, onSelectRoom }) => {
             <div>
               <div className="flex justify-between items-start">
                 <h6 className="font-bold text-slate-850 dark:text-slate-202">{room.type}</h6>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-655 dark:text-emerald-400">
+                <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">
                   Refundable
                 </span>
               </div>
               
-              <div className="flex items-center gap-4 mt-3 text-xs text-slate-555 dark:text-slate-400">
+              <div className="flex items-center gap-4 mt-3 text-xs text-slate-500 dark:text-slate-400">
                 <div className="flex items-center gap-1">
                   <BedDouble size={12} className="text-teal-500" />
                   <span>{room.bed}</span>
@@ -214,7 +214,7 @@ export const RoomSelectionList = ({ hotel, onSelectRoom }) => {
               </div>
               <button
                 onClick={() => onSelectRoom(hotel, room)}
-                className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white dark:bg-slate-105 dark:text-slate-900 hover:bg-teal-655 dark:hover:bg-teal-400 transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:bg-teal-600 dark:hover:bg-teal-400 transition-colors"
               >
                 Choose
               </button>
