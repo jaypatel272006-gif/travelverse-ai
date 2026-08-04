@@ -315,11 +315,31 @@ export const UniverseExplorer = () => {
     };
     window.addEventListener('resize', handleResize);
 
+    // Intersection observer to pause rendering when scrolled out of view
+    let isIntersecting = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+    }, { threshold: 0 });
+    if (mountRef.current) {
+      observer.observe(mountRef.current);
+    }
+
     // Animation loop
     const startTime = Date.now();
     let animationFrameId;
+    let lastFrameTime = performance.now();
+    const fpsInterval = 1000 / 60;
+
     let animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      
+      if (document.hidden || !isIntersecting) return;
+
+      const now = performance.now();
+      const elapsed = now - lastFrameTime;
+      if (elapsed < fpsInterval) return;
+      lastFrameTime = now - (elapsed % fpsInterval);
+
       const elapsedTime = (Date.now() - startTime) / 1000;
 
       // Core rotation
@@ -333,7 +353,8 @@ export const UniverseExplorer = () => {
         // Only update orbit angle if not zooming into this specific planet
         const angle = elapsedTime * data.speed;
         
-        if (!selectedPlanet || selectedPlanet.id !== data.id) {
+        const currentSelected = selectedPlanetRef.current;
+        if (!currentSelected || currentSelected.id !== data.id) {
           mesh.position.x = Math.cos(angle) * data.orbitRadius;
           mesh.position.z = Math.sin(angle) * data.orbitRadius;
           mesh.position.y = Math.sin(angle * 2.5) * 3; // Waves movement
@@ -384,6 +405,7 @@ export const UniverseExplorer = () => {
       cancelAnimationFrame(animationFrameId);
       clearInterval(alertInterval);
       window.removeEventListener('resize', handleResize);
+      if (observer) observer.disconnect();
       if (renderer.domElement) {
         renderer.domElement.removeEventListener('click', handleCanvasClick);
         renderer.domElement.removeEventListener('mousemove', handleCanvasMouseMove);
@@ -404,7 +426,7 @@ export const UniverseExplorer = () => {
       });
       renderer.dispose();
     };
-  }, [selectedPlanet]);
+  }, []);
 
   const handleResetCamera = () => {
     setSelectedPlanet(null);
