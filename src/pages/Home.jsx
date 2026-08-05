@@ -1831,8 +1831,17 @@ export const Home = () => {
                       </div>
                     </div>
 
-                    <div className="absolute inset-0 z-0">
-                      <FuturisticGlobe />
+                    <div className="absolute inset-0 z-0 bg-[#0B1023]/40 flex flex-col justify-end p-5 font-mono text-[9px] text-slate-500 overflow-hidden select-none">
+                      <div className="w-full h-full flex items-center justify-center relative">
+                        <div className="absolute w-44 h-44 rounded-full border border-teal-500/10 animate-ping" />
+                        <div className="absolute w-28 h-28 rounded-full border border-sky-500/5 animate-pulse" />
+                        <Compass className="text-teal-500/30 animate-spin" size={32} style={{ animationDuration: '10s' }} />
+                        <span className="absolute text-[8px] tracking-widest text-teal-400/40 uppercase">Ecosystem Scan Active</span>
+                      </div>
+                      <div className="flex justify-between border-t border-white/5 pt-2 relative z-10 bg-slate-950/80 p-2 rounded-lg">
+                        <span>SYS_NODE: ALPHA_DECK</span>
+                        <span className="text-emerald-400">TELEMETRY STABLE</span>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
