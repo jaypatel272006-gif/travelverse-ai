@@ -60,6 +60,7 @@ export const CinematicLoader = ({ onComplete }) => {
     let renderer;
     let reqId;
     let handleResize;
+    let observer;
     const gsapTweens = [];
 
     try {
@@ -219,7 +220,7 @@ export const CinematicLoader = ({ onComplete }) => {
 
       // Intersection observer to pause rendering when scrolled out of view
       let isIntersecting = true;
-      const observer = new IntersectionObserver(([entry]) => {
+      observer = new IntersectionObserver(([entry]) => {
         isIntersecting = entry.isIntersecting;
       }, { threshold: 0 });
       if (canvasRef.current) {

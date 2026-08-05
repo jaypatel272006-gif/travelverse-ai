@@ -7,7 +7,7 @@ import {
   PlaneTakeoff, Heart, Globe, Settings, Play, Square, Eye, Leaf, ShieldAlert, 
   BookOpen, Share2, Layers, Cpu, Music, Zap, Flame, UserCheck, CheckCircle2,
   Volume2, Compass as DiscoveryIcon, Sparkle, AlertOctagon, HelpCircle, Sun, Moon, Mic,
-  ShieldCheck, Lock
+  ShieldCheck, Lock, CloudSun
 } from 'lucide-react';
 import { DestinationCard } from '../components/DestinationCard';
 import { FuturisticGlobe } from '../components/FuturisticGlobe';
