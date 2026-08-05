@@ -61,6 +61,7 @@ export const CinematicLoader = ({ onComplete }) => {
     let reqId;
     let handleResize;
     let observer;
+    let scene;
     const gsapTweens = [];
 
     try {
@@ -69,7 +70,7 @@ export const CinematicLoader = ({ onComplete }) => {
       const width = canvasRef.current.clientWidth;
       const height = canvasRef.current.clientHeight;
       
-      const scene = new THREE.Scene();
+      scene = new THREE.Scene();
       
       const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
       camera.position.z = 220;
