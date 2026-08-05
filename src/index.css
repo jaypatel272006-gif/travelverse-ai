@@ -166,51 +166,51 @@
 /* Glass Effects */
 
 .glass {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
 
 .dark .glass {
-  background: rgba(11, 15, 25, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
 }
 
 .dark .glass-card {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
 }
 
 /* Futuristic Liquid Glassmorphism System */
 .glass-neo {
-  background: rgba(8, 12, 22, 0.65) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(20, 184, 166, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
 }
 
 .glass-card-neo {
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.22);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-neo:hover {
-  border-color: rgba(20, 184, 166, 0.35) !important;
-  box-shadow: 0 0 30px rgba(20, 184, 166, 0.18);
-  transform: translateY(-2px) scale(1.01);
+  border-color: rgba(91, 127, 255, 0.45) !important; /* Accent Blue glow border */
+  box-shadow: 0 0 30px rgba(91, 127, 255, 0.2); /* Soft blue shadow glow */
+  transform: translateY(-4px) scale(1.005);
 }
 
 /* Floating Animation */
