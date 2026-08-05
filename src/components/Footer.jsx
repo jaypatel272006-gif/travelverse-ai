@@ -18,7 +18,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-900/60 pt-28 pb-14 px-8 sm:px-16 lg:px-20 w-full text-left relative overflow-hidden">
+    <footer className="bg-slate-950/60 text-slate-400 border-t border-white/5 pt-28 pb-14 px-8 sm:px-16 lg:px-20 w-full text-left relative overflow-hidden backdrop-blur-md">
       {/* Decorative background gradients */}
       <div className="absolute left-0 bottom-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-sky-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -29,11 +29,11 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14 mb-20 relative z-10">
         {/* Brand Details */}
         <div className="flex flex-col gap-6">
-          <Link to="/" className="flex items-center gap-2 select-none group focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg w-max">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform duration-300">
-              <Sparkles size={18} />
+          <Link to="/" className="flex items-center gap-2.5 select-none group focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-xl w-max">
+            <div className="w-8.5 h-8.5 rounded-xl bg-gradient-to-tr from-teal-500 to-teal-400 flex items-center justify-center text-slate-950 shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform duration-300">
+              <Sparkles size={16} />
             </div>
-            <span className="font-display font-extrabold text-xl tracking-tight text-white">
+            <span className="font-display font-black text-lg tracking-tight text-white">
               Travel<span className="text-teal-400">Verse</span>
             </span>
           </Link>
