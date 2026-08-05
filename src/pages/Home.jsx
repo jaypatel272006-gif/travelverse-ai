@@ -1263,7 +1263,11 @@ export const Home = () => {
                   }
                 }}
                 className="px-4 py-2.5 bg-rose-950/20 border border-rose-500/20 text-rose-400 hover:bg-rose-500/10 rounded-xl cursor-pointer"
-              >
+                🔄 RESET SYSTEM CORES
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
                   {/* Cinematic Premium Hero Title - Split Column System */}
         <div className="w-full py-8 md:py-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
