@@ -6,53 +6,70 @@
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-display: "Outfit", system-ui, -apple-system, sans-serif;
 
-  --color-brand-50: #f0fdfa;
-  --color-brand-100: #ccfbf1;
-  --color-brand-200: #99f6e4;
-  --color-brand-500: #0d9488;
-  --color-brand-600: #0d9488;
-  --color-brand-700: #0f766e;
-  --color-brand-800: #115e59;
-  --color-brand-900: #134e4a;
-
-  --color-accent-50: #fdf2f8;
-  --color-accent-100: #fce7f3;
-  --color-accent-500: #db2777;
-  --color-accent-600: #be185d;
-  --color-accent-700: #9d174d;
+  /* Theme Core Palette Overrides */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-850: #0B1023; /* Secondary panels */
+  --color-slate-900: #0B1023; /* Secondary panels */
+  --color-slate-950: #050816; /* Deep Navy background */
 
   --color-dark-50: #f8fafc;
   --color-dark-100: #f1f5f9;
-  --color-dark-800: #1e293b;
-  --color-dark-900: #0f172a;
-  --color-dark-950: #030712;
+  --color-dark-800: #0B1023; /* Secondary panels */
+  --color-dark-900: #0B1023; /* Secondary panels */
+  --color-dark-950: #050816; /* Deep Navy background */
 
-  /* Custom slate shades used in code */
-  --color-slate-105: #ebf0f5;
-  --color-slate-150: #eaf0f6;
-  --color-slate-200: #d6dee9;
-  --color-slate-350: #bcccdc;
-  --color-slate-300: #b0c4de;
-  --color-slate-400: #8fa3bc;
-  --color-slate-450: #7b8ea5;
-  --color-slate-400: #73869c;
-  --color-slate-600: #3c4b5e;
-  --color-slate-800: #1a2333;
-  --color-slate-850: #141d2e;
-  --color-slate-800: #101826;
+  /* Override brand to correspond to Accent Cyan & Accent Blue */
+  --color-brand-50: #e6f9ff;
+  --color-brand-100: #b3ecff;
+  --color-brand-200: #80e0ff;
+  --color-brand-500: #5B7FFF; /* Accent Blue */
+  --color-brand-600: #8B5CF6; /* Accent Purple */
+  --color-brand-700: #7c3aed;
+  --color-brand-800: #6d28d9;
+  --color-brand-900: #5b21b6;
 
-  /* Custom teal shades used in code */
-  --color-teal-350: #40dfc9;
-  --color-teal-450: #20c6b4;
-  --color-teal-500: #10a697;
-  --color-teal-600: #0e857b;
-  --color-teal-600: #0e7e75;
-  --color-teal-600: #0f7a72;
+  /* Override teal to correspond to Accent Cyan & Accent Blue */
+  --color-teal-350: #4FD1FF; /* Accent Cyan */
+  --color-teal-450: #5B7FFF; /* Accent Blue */
+  --color-teal-500: #5B7FFF; /* Accent Blue */
+  --color-teal-600: #8B5CF6; /* Accent Purple */
+  --color-teal-700: #7c3aed;
+  --color-teal-800: #6d28d9;
+  --color-teal-900: #5b21b6;
+  --color-teal-400: #4FD1FF; /* Accent Cyan */
+
+  /* Accent Purple and other highlights */
+  --color-indigo-50: #f5f3ff;
+  --color-indigo-100: #ede9fe;
+  --color-indigo-200: #ddd6fe;
+  --color-indigo-300: #c084fc;
+  --color-indigo-400: #a78bfa;
+  --color-indigo-500: #8B5CF6; /* Accent Purple */
+  --color-indigo-600: #7c3aed;
+  --color-indigo-700: #6d28d9;
+  --color-indigo-800: #5b21b6;
+  --color-indigo-900: #4c1d95;
+
+  /* Success / Warning / Error mappings */
+  --color-emerald-500: #00E676;
+  --color-emerald-600: #00c853;
+  --color-amber-500: #FFB547;
+  --color-amber-600: #ff9100;
+  --color-rose-500: #FF4D6D;
+  --color-rose-600: #ff1744;
 }
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -65,8 +82,8 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: #050816;
+    color: #f8fafc;
     overflow-x: hidden;
     transition:
       background-color 0.3s ease,
@@ -74,8 +91,8 @@
   }
 
   .dark body {
-    background-color: #0b0f19;
-    color: #f1f5f9;
+    background-color: #050816;
+    color: #f8fafc;
   }
 
   /* Global typography upgrades for spacing, weights, and heights */
