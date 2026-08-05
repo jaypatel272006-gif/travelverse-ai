@@ -192,6 +192,16 @@ const stopProceduralSound = (audioCtxRef, activeNodesRef) => {
   } catch(e){}
 };
 
+const STATIC_STARS = Array.from({ length: 25 }).map((_, i) => ({
+  id: i,
+  width: `${(i * 7.3 % 3) + 1.5}px`,
+  height: `${(i * 7.3 % 3) + 1.5}px`,
+  top: `${(i * 13.7 % 100)}%`,
+  left: `${(i * 29.3 % 100)}%`,
+  animationDelay: `${(i * 0.4 % 5)}s`,
+  animationDuration: `${(i * 0.7 % 3) + 2.5}s`
+}));
+
 export const Home = () => {
   const navigate = useNavigate();
   const { departureHub, setDepartureHub, showToast } = useApp();
@@ -1059,17 +1069,17 @@ export const Home = () => {
 
           {/* Floating Space Dust Particles */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-            {Array.from({ length: 25 }).map((_, i) => (
+            {STATIC_STARS.map((star) => (
               <div
-                key={i}
+                key={star.id}
                 className="absolute bg-teal-400/20 rounded-full blur-[1px] animate-star-glow"
                 style={{
-                  width: `${Math.random() * 3 + 1.5}px`,
-                  height: `${Math.random() * 3 + 1.5}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  animationDuration: `${Math.random() * 3 + 2.5}s`
+                  width: star.width,
+                  height: star.height,
+                  top: star.top,
+                  left: star.left,
+                  animationDelay: star.animationDelay,
+                  animationDuration: star.animationDuration
                 }}
               />
             ))}
