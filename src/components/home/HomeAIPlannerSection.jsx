@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Calendar, Plane, MapPin, ChevronRight } from 'lucide-react';
+import { Sparkles, Calendar, Plane, MapPin, ChevronRight, Play, CloudSun, TrendingUp, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const HomeAIPlannerSection = () => {
+  const navigate = useNavigate();
+
   const timelineNodes = [
     { type: 'flight', title: 'Quantum Flight UK-200', desc: 'Indira Gandhi Terminal to Tokyo Haneda Grid', time: '08:00 AM', status: 'CONFIRMED' },
     { type: 'hotel', title: 'Aman Tokyo Station Lodge', desc: 'Zenith luxury capsule premium stay reservations', time: '14:30 PM', status: 'RESERVED' },
@@ -16,9 +19,10 @@ export const HomeAIPlannerSection = () => {
   ];
 
   return (
-    <section className="py-20 relative overflow-hidden bg-slate-950 border-b border-white/10 px-4 sm:px-6 lg:px-8">
-      {/* Light spotlight background decoration */}
-      <div className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(20,184,166,0.04)_0%,transparent_70%)] pointer-events-none z-0" />
+    <section className="py-24 relative overflow-hidden bg-slate-950 border-b border-white/10 px-4 sm:px-6 lg:px-8">
+      {/* Dynamic backdrop accent lights */}
+      <div className="absolute top-1/4 left-0 w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(91,127,255,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
+      <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(139,92,246,0.03)_0%,transparent_70%)] pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center xl:text-left mb-12 flex flex-col xl:flex-row xl:items-end justify-between gap-6">
@@ -27,18 +31,60 @@ export const HomeAIPlannerSection = () => {
               <Sparkles size={10} className="animate-pulse" /> Autonomous Itinerary Core
             </span>
             <h2 className="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight leading-tight">
-              AI Planner <span className="gradient-text">Cockpit</span>
+              AI Planner <span className="text-[#5B7FFF]">Cockpit</span>
             </h2>
-            <p className="text-slate-400 text-sm font-mono max-w-xl">
+            <p className="text-slate-400 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed">
               Zero-fatigue itinerary synthesis. Generates real-time node sequences customized for weather, fatigue, and local timelines.
             </p>
           </div>
           <button 
             type="button" 
-            className="self-center xl:self-auto px-5 py-3 rounded-xl bg-slate-900 border border-white/10 hover:border-teal-500/30 text-xs font-mono text-teal-400 hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-md"
+            onClick={() => navigate('/planner')}
+            className="self-center xl:self-auto px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-teal-500/30 text-xs font-mono text-teal-400 hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-md hover:scale-105 active:scale-95"
           >
             LAUNCH AI PLANNERS <ChevronRight size={14} />
           </button>
+        </div>
+
+        {/* Horizontal Pipeline Progress Trail */}
+        <div className="w-full mb-12 bg-slate-900/60 p-6 rounded-3xl border border-white/10 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(91,127,255,0.08),transparent_50%)] pointer-events-none" />
+          <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest font-black block mb-4 text-center">AI Synthesis Sequential Array Pipeline</span>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+            {[
+              { label: 'Choose Destination', status: 'done' },
+              { label: 'Flights Stream', status: 'done' },
+              { label: 'Hotel Booking', status: 'done' },
+              { label: 'Atmospheric Weather', status: 'active' },
+              { label: 'Budget Optimize', status: 'pending' },
+              { label: 'Generate Matrix', status: 'pending' },
+              { label: 'Trip Ready', status: 'pending' }
+            ].map((step, idx) => (
+              <React.Fragment key={step.label}>
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center font-mono text-[9px] font-bold border transition-all ${
+                    step.status === 'done' 
+                      ? 'bg-teal-500/20 border-teal-500 text-teal-400 shadow-[0_0_10px_rgba(20,184,166,0.2)]'
+                      : step.status === 'active'
+                      ? 'bg-[#8B5CF6]/20 border-[#8B5CF6] text-purple-400 animate-pulse shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                      : 'bg-slate-950 border-white/10 text-slate-650'
+                  }`}>
+                    {idx + 1}
+                  </div>
+                  <span className={`text-[10px] font-mono font-bold tracking-wide uppercase ${
+                    step.status === 'done' ? 'text-teal-400' : step.status === 'active' ? 'text-purple-450' : 'text-slate-650'
+                  }`}>
+                    {step.label}
+                  </span>
+                </div>
+                {idx < 6 && (
+                  <div className={`hidden md:block h-0.5 flex-1 transition-all ${
+                    step.status === 'done' ? 'bg-teal-500/30' : 'bg-white/5'
+                  }`} />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
 
         {/* Dashboard Split Grid */}
@@ -52,22 +98,22 @@ export const HomeAIPlannerSection = () => {
                 <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-black flex items-center gap-1.5">
                   <Calendar size={13} className="text-teal-400" /> Active Configuration Workspace
                 </span>
-                <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-900/80 p-4 rounded-2xl border border-white/5">
+                  <div className="bg-slate-900/60 p-4.5 rounded-2xl border border-white/5">
                     <span className="text-[8px] font-mono text-slate-500 uppercase block font-black">Destination Target</span>
                     <span className="text-sm font-bold text-white block mt-1">Tokyo Grid, JP</span>
                   </div>
-                  <div className="bg-slate-900/80 p-4 rounded-2xl border border-white/5">
+                  <div className="bg-slate-900/60 p-4.5 rounded-2xl border border-white/5">
                     <span className="text-[8px] font-mono text-slate-500 uppercase block font-black">Travel DNA Profile</span>
-                    <span className="text-sm font-bold text-teal-400 block mt-1">Adventure Solo (92)</span>
+                    <span className="text-sm font-bold text-teal-450 block mt-1">Adventure Solo (92)</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-900/80 p-4 rounded-2xl border border-white/5 flex flex-col gap-3">
+                <div className="bg-slate-900/60 p-4.5 rounded-2xl border border-white/5 flex flex-col gap-3">
                   <span className="text-[8px] font-mono text-slate-500 uppercase font-black block">AI Recommendations Engine</span>
                   <div className="flex flex-col gap-2">
                     {recommendations.map((rec) => (
@@ -118,10 +164,10 @@ export const HomeAIPlannerSection = () => {
                         {isFlight ? <Plane className="text-teal-400" size={13} /> : <MapPin className="text-teal-400" size={13} />}
                         <h4 className="text-xs font-bold text-white font-mono uppercase">{node.title}</h4>
                       </div>
-                      <span className="px-2 py-0.5 rounded bg-slate-800 border border-white/10 font-mono text-[8px] text-teal-400 font-bold">{node.status}</span>
+                      <span className="px-2 py-0.5 rounded bg-slate-900 border border-white/10 font-mono text-[8px] text-teal-400 font-bold">{node.status}</span>
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed font-semibold">{node.desc}</p>
-                    <span className="text-[9px] font-mono text-slate-500 uppercase">{node.time}</span>
+                    <p className="text-xs text-slate-450 leading-relaxed font-semibold">{node.desc}</p>
+                    <span className="text-[9px] font-mono text-slate-600 uppercase">{node.time}</span>
                   </motion.div>
                 );
               })}
