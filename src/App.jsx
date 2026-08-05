@@ -179,7 +179,7 @@ function App() {
       <Navbar />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-start">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 flex items-start">
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
             <AnimatePresence mode="wait">
