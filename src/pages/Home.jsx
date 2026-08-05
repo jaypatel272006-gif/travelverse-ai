@@ -1517,9 +1517,6 @@ export const Home = () => {
               </div>
             </div>
           </div>
-        </div>king-widest text-teal-500">SCROLL TO TELEMETRY</span>
-            <ArrowRight size={13} className="text-teal-400 rotate-90" />
-          </div>
         </div>
 
         {/* Command Center Main Layout */}
