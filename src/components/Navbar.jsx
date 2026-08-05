@@ -194,22 +194,22 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-3' : 'py-5'}`}>
-      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full px-4 sm:px-6 lg:px-8 ${isScrolled ? 'py-3.5' : 'py-5'}`}>
+      <div className={`max-w-7xl mx-auto rounded-3xl transition-all duration-300 ${
         isScrolled 
-          ? 'glass-neo shadow-[0_12px_40px_rgba(0,0,0,0.35),0_0_25px_rgba(20,184,166,0.08)] px-6 py-2.5' 
-          : 'bg-transparent border-transparent px-6 py-3.5 shadow-none'
+          ? 'glass-neo shadow-[0_16px_50px_rgba(5,8,22,0.65),0_0_20px_rgba(91,127,255,0.06)] px-6 py-2 border-white/10' 
+          : 'bg-transparent border-transparent px-6 py-3 shadow-none'
       } flex items-center justify-between`}>
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2 select-none group shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-lg">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
-            <Sparkles size={18} className="animate-pulse" />
+        <Link to="/" className="flex items-center gap-2.5 select-none group shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none rounded-xl">
+          <div className="w-8.5 h-8.5 rounded-xl bg-gradient-to-tr from-teal-500 to-teal-400 flex items-center justify-center text-slate-950 shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
+            <Sparkles size={16} className="animate-pulse" />
           </div>
           <div className="flex items-center gap-1.5 align-middle">
-            <span className="font-display font-extrabold text-xl tracking-tight text-slate-800 dark:text-slate-100 bg-clip-text">
-              Travel<span className="text-teal-600 dark:text-teal-400">Verse</span>
+            <span className="font-display font-black text-lg tracking-tight text-white">
+              Travel<span className="text-teal-400">Verse</span>
             </span>
-            <span className="px-1.5 py-0.5 text-[7.5px] font-black font-mono tracking-widest bg-gradient-to-r from-teal-500 to-sky-400 text-slate-950 rounded uppercase shadow-[0_0_8px_rgba(45,212,191,0.4)] animate-pulse">
+            <span className="px-1.5 py-0.5 text-[7px] font-black font-mono tracking-widest bg-gradient-to-r from-teal-500 to-teal-400 text-slate-950 rounded uppercase shadow-[0_0_8px_rgba(91,127,255,0.3)] animate-pulse">
               2100 OS
             </span>
           </div>
@@ -229,10 +229,10 @@ export const Navbar = () => {
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.03] active:scale-[0.97] relative ${
+                    `flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.03] active:scale-[0.97] relative ${
                       isActive
-                        ? 'text-teal-600 dark:text-teal-400 font-bold'
-                        : 'text-slate-600 dark:text-slate-350 hover:bg-slate-100/60 dark:hover:bg-slate-800/40 border border-transparent'
+                        ? 'text-teal-400 font-bold'
+                        : 'text-slate-350 hover:bg-white/5 border border-transparent'
                     }`
                   }
                 >
@@ -243,7 +243,7 @@ export const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="activeUnderline"
-                          className="absolute bottom-0 left-4 right-4 h-0.5 bg-teal-500 dark:bg-teal-450 rounded-full"
+                          className="absolute bottom-0 left-3 right-3 h-0.5 bg-teal-500 rounded-full shadow-[0_0_8px_rgba(91,127,255,0.4)]"
                           transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -331,11 +331,23 @@ export const Navbar = () => {
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* Spotlight Palette Trigger */}
+          {/* Spotlight Palette Search Bar Trigger */}
+          <div
+            onClick={() => setIsPaletteOpen(true)}
+            className="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-950/60 border border-white/10 hover:border-teal-500/30 text-slate-400 hover:text-slate-350 cursor-pointer transition-all duration-300 select-none text-[11px] font-mono w-56 justify-between focus-within:ring-2 focus-within:ring-teal-500"
+          >
+            <div className="flex items-center gap-2">
+              <Search size={13} className="text-teal-400" />
+              <span className="text-[10px] tracking-wide">Search coordinates...</span>
+            </div>
+            <span className="text-[8px] font-bold bg-white/10 px-1.5 py-0.5 rounded text-slate-500 font-sans">Ctrl K</span>
+          </div>
+
+          {/* Mobile search trigger fallback */}
           <button
             onClick={() => setIsPaletteOpen(true)}
-            className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 relative transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
-            title="Command Palette (Ctrl + K)"
+            className="md:hidden p-2.5 rounded-xl border border-slate-800 hover:bg-white/5 text-slate-300 relative transition-all duration-300 outline-none w-10 h-10 flex items-center justify-center cursor-pointer"
+            title="Command Palette"
           >
             <Search size={15} />
           </button>
