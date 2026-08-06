@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, Send, Sparkles, X, Mic, Volume2, ShieldAlert, BadgeInfo, CheckCircle } from 'lucide-react';
+import { Cpu, Send, Sparkles, X, Mic, Volume2, ShieldAlert, BadgeInfo, CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SUGGESTIONS = [
