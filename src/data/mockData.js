@@ -1484,7 +1484,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 4670,
     price: 22000,
-    image: '',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original',
     description: 'The home of the revered saint Sai Baba. Located in Maharashtra, it attracts millions of multi-faith pilgrims celebrating universal peace and charity.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 34 },
