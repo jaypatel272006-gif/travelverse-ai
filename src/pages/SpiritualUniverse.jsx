@@ -102,7 +102,7 @@ const DiyaLamp = () => (
       <path d="M50,10 C15,10 5,35 5,45 C5,55 25,55 50,55 C75,55 95,55 95,45 C95,35 85,10 50,10 Z" />
       <ellipse cx="50" cy="22" rx="35" ry="10" className="text-amber-900/90 fill-current" />
     </svg>
-    <div className="absolute top-1 w-2.5 h-5 rounded-full bg-gradient-to-t from-red-500 via-orange-400 to-yellow-250 animate-flame-pulse shadow-[0_0_12px_#f59e0b,0_0_4px_#ef4444]" />
+    <div className="absolute top-1 w-2.5 h-5 rounded-full bg-gradient-to-t from-red-500 via-orange-400 to-yellow-350 animate-flame-pulse shadow-[0_0_12px_#f59e0b,0_0_4px_#ef4444]" trim="true" />
   </div>
 );
 
@@ -295,7 +295,7 @@ export const SpiritualUniverse = () => {
             Spiritual Sanctuary
             <span className="text-sm font-normal text-amber-500 font-mono hidden sm:inline">(Pavitra Operating System)</span>
           </h1>
-          <p className="text-xs text-amber-250/70 max-w-md mt-0">
+          <p className="text-xs text-amber-200/70 max-w-md mt-0">
             A peaceful, dedicated space to trace pilgrimage trails, track holy stamps, and plan satvik journeys with the guidance of spiritual mentors.
           </p>
         </div>
@@ -329,7 +329,7 @@ export const SpiritualUniverse = () => {
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer border ${
               activeSubTab === tab.id
                 ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-amber-450 border-amber-500/10 hover:border-amber-500/25 bg-amber-950/10'
+                : 'text-amber-400 border border-amber-500/10 hover:border-amber-500/25 bg-amber-950/10'
             }`}
           >
             {tab.icon}
@@ -364,7 +364,7 @@ export const SpiritualUniverse = () => {
                   />
                 </div>
                 <div className="flex items-center gap-2 bg-[#0c0a09] px-3.5 py-2 rounded-xl border border-amber-500/20">
-                  <span className="text-[9px] font-mono uppercase text-amber-550">Faith:</span>
+                  <span className="text-[9px] font-mono uppercase text-amber-500">Faith:</span>
                   <select
                     value={dirFaith}
                     onChange={(e) => setDirFaith(e.target.value)}
@@ -493,7 +493,7 @@ export const SpiritualUniverse = () => {
                 {hoveredNode && (
                   <div className="absolute bottom-4 right-4 bg-[#0c0a09]/95 border border-amber-500/20 p-3 rounded-xl font-mono text-[9px] text-left max-w-xs shadow-xl animate-fade-in">
                     <span className="text-amber-400 font-bold block">{hoveredNode.name}</span>
-                    <span className="text-amber-550 block mt-0.5">{hoveredNode.state} • {hoveredNode.faith}</span>
+                    <span className="text-amber-500 block mt-0.5">{hoveredNode.state} • {hoveredNode.faith}</span>
                     <p className="text-slate-400 mt-1 leading-normal">{hoveredNode.desc}</p>
                   </div>
                 )}
@@ -514,7 +514,7 @@ export const SpiritualUniverse = () => {
                           className={`p-3 rounded-xl text-left font-mono border transition-all cursor-pointer ${
                             isSelected
                               ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-md'
-                              : 'bg-amber-950/5 border-amber-500/10 hover:border-amber-500/20 text-amber-250/70'
+                              : 'bg-amber-950/5 border-amber-500/10 hover:border-amber-500/20 text-amber-200/70'
                           }`}
                         >
                           <span className="text-[10px] font-bold block">{circ.name}</span>
@@ -527,7 +527,7 @@ export const SpiritualUniverse = () => {
 
                 <div className="bg-[#130f0c] border border-amber-500/15 p-5 rounded-3xl text-left flex-1 font-mono leading-relaxed">
                   <span className="text-[9px] font-mono text-amber-500 uppercase tracking-widest font-bold block mb-2.5">Circuit Intel</span>
-                  <p className="text-[10px] text-amber-250/75">{CIRCUITS[selectedCircuit]?.desc}</p>
+                  <p className="text-[10px] text-amber-200/75">{CIRCUITS[selectedCircuit]?.desc}</p>
                   <div className="mt-4 flex flex-col gap-2">
                     <span className="text-[8.5px] text-slate-500 uppercase font-black block">Shrines included:</span>
                     <div className="flex flex-wrap gap-1.5">
@@ -558,7 +558,7 @@ export const SpiritualUniverse = () => {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-amber-950/10 border border-amber-500/15 p-5 rounded-2xl text-left">
                 <div>
                   <h4 className="font-display font-black text-sm text-amber-200 mt-0">12 Jyotirlinga Mahapilgrimage Log</h4>
-                  <p className="text-[10px] text-amber-250/70 mt-1 max-w-md">Seek blessings across the twelve light-form shrines of Shiva. Log your visits to earn seals and print your certified pilgrimage dossier.</p>
+                  <p className="text-[10px] text-amber-200/70 mt-1 max-w-md">Seek blessings across the twelve light-form shrines of Shiva. Log your visits to earn seals and print your certified pilgrimage dossier.</p>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => setVisitedJyotirlingas(JYOTIRLINGAS.map(j => j.name))} className="px-3.5 py-1.5 border border-amber-500/25 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold rounded-xl transition-all cursor-pointer font-mono">COMPLETE ALL</button>
@@ -577,7 +577,7 @@ export const SpiritualUniverse = () => {
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer min-h-[110px] ${
                         isVisited
                           ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-[0_0_12px_rgba(217,119,6,0.15)]'
-                          : 'bg-[#130f0c] border-amber-500/10 hover:border-amber-500/25 text-amber-250/50'
+                          : 'bg-[#130f0c] border-amber-500/10 hover:border-amber-500/25 text-amber-200/50'
                       }`}
                     >
                       <div className="flex justify-between items-start w-full">
@@ -607,7 +607,7 @@ export const SpiritualUniverse = () => {
                     <h4 className="font-display font-black text-sm text-amber-300 mt-0">{faith.name}</h4>
                     <span className="text-[9px] font-mono text-amber-550 uppercase font-black">{faith.timings}</span>
                   </div>
-                  <div className="flex flex-col gap-3 font-mono text-[9.5px] leading-relaxed text-amber-250/80">
+                  <div className="flex flex-col gap-3 font-mono text-[9.5px] leading-relaxed text-amber-200/80">
                     <div>
                       <span className="text-amber-500 font-bold uppercase block text-[8px] tracking-wider">Focus Areas:</span>
                       <p className="mt-0.5">{faith.focus}</p>
@@ -641,7 +641,7 @@ export const SpiritualUniverse = () => {
             >
               {/* Form card */}
               <div className="lg:col-span-4 bg-[#130f0c] border border-amber-500/15 p-5 rounded-3xl text-left flex flex-col gap-4">
-                <span className="text-[9px] font-mono text-amber-550 uppercase tracking-widest font-black">Configure Pilgrim path</span>
+                <span className="text-[9px] font-mono text-amber-500 uppercase tracking-widest font-black">Configure Pilgrim path</span>
                 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[9px] font-mono text-amber-500 font-bold uppercase">Spiritual Tradition</label>
@@ -726,8 +726,8 @@ export const SpiritualUniverse = () => {
                           {/* Dotted indicator */}
                           <div className="absolute -left-[17px] top-1 w-2 h-2 rounded-full bg-amber-500 border border-amber-400 shadow-[0_0_5px_#f59e0b]" />
                           <span className="font-bold text-amber-300 block">{day.title}</span>
-                          <div className="flex flex-col gap-1.5 text-amber-250/70 leading-relaxed text-[9px] pl-1">
-                            <p className="m-0"><span className="text-amber-550 font-bold uppercase">🌅 Morning:</span> {day.activities.morning}</p>
+                          <div className="flex flex-col gap-1.5 text-amber-200/70 leading-relaxed text-[9px] pl-1">
+                            <p className="m-0"><span className="text-amber-500 font-bold uppercase">🌅 Morning:</span> {day.activities.morning}</p>
                             <p className="m-0"><span className="text-amber-550 font-bold uppercase">🕌 Afternoon:</span> {day.activities.afternoon}</p>
                             <p className="m-0"><span className="text-amber-550 font-bold uppercase">🔥 Evening:</span> {day.activities.evening}</p>
                           </div>
@@ -772,7 +772,7 @@ export const SpiritualUniverse = () => {
                         <span className="text-xl shrink-0">{av.avatar}</span>
                         <div>
                           <span className="text-[10px] font-mono font-bold block">{av.name}</span>
-                          <span className="text-[8px] font-mono text-amber-600 block">{av.role}</span>
+                          <span className="text-[8px] font-mono text-amber-500 block">{av.role}</span>
                         </div>
                       </button>
                     );
