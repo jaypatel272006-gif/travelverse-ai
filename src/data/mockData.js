@@ -1220,7 +1220,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3410,
     price: 23000,
-    image: 'https://images.unsplash.com/photo-1627662237834-44c3c6f1c1f5?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The ancient capital kingdom of Lord Krishna. Situated in Gujarat where the Gomti River meets the Arabian Sea, featuring a majestic 5-story sandstone spire.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 59, y: 32 },
