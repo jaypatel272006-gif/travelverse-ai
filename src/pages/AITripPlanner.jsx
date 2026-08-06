@@ -1,10 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Calendar, Wallet, CheckSquare, Plus, ArrowRight, Printer, Save, CheckCircle, RefreshCw, Thermometer, Wind, Eye, Cpu, Terminal } from 'lucide-react';
+import { Sparkles, Calendar, Wallet, CheckSquare, Plus, ArrowRight, Printer, Save, CheckCircle, RefreshCw, Thermometer, Wind, Eye, Cpu, Terminal, MapPin, Plane, Home, CloudSun } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
 import { generateDetailedItinerary } from '../utils/itineraryEngine';
+
+const WORKFLOW_STAGES = [
+  { key: 'dest', label: 'Sector Resolution', desc: 'Resolving coordinates...', icon: <MapPin size={14} /> },
+  { key: 'flights', label: 'Sky-Lane Mapping', desc: 'Sourcing transit vectors...', icon: <Plane size={14} /> },
+  { key: 'hotels', label: 'Accommodation Calibration', desc: 'Profiling glass lodging...', icon: <Home size={14} /> },
+  { key: 'weather', label: 'Atmospheric Scan', desc: 'Syncing meteorological parameters...', icon: <CloudSun size={14} /> },
+  { key: 'budget', label: 'Asset Allocations', desc: 'Balancing credit ledgers...', icon: <Wallet size={14} /> },
+  { key: 'optimize', label: 'Route Optimization', desc: 'Synthesizing itinerary DNA...', icon: <Cpu size={14} /> },
+  { key: 'ready', label: 'System Directives Primed', desc: 'Finalizing holographic readout...', icon: <CheckCircle size={14} /> }
+];
 
 export const AITripPlanner = () => {
   const { saveItinerary, user, twinPreferences } = useApp();
@@ -678,57 +688,118 @@ export const AITripPlanner = () => {
           </motion.div>
         )}
 
-        {/* Space-Age Retro-Futuristic Terminal Loading Console */}
-        {generating && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="w-full max-w-xl mx-auto rounded-3xl bg-slate-950 border border-teal-500/30 shadow-2xl p-6 flex flex-col gap-5 relative overflow-hidden"
-          >
-            {/* Header console buttons bar */}
-            <div className="flex justify-between items-center border-b border-teal-500/10 pb-3 shrink-0">
-              <div className="flex gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-              </div>
-              <span className="text-[9px] font-mono text-teal-450/60 font-bold uppercase tracking-widest">
-                Cognitive Compiler Terminal v5.9
-              </span>
-            </div>
-
-            {/* Simulated terminal logs screen */}
-            <div className="flex-1 min-h-[200px] max-h-[300px] overflow-y-auto font-mono text-[10px] text-emerald-400 leading-relaxed text-left flex flex-col gap-2 scrollbar-thin select-none">
-              {terminalLogs.map((log, idx) => (
-                <div key={idx} className={`${log.startsWith('   ') ? 'text-teal-400 font-semibold pl-2' : 'text-emerald-400 font-bold'}`}>
-                  {log}
+        {/* Animated AI Workflow Pipeline */}
+        {generating && (() => {
+          const currentStage = Math.min(6, Math.floor(generatingProgress / 14.5));
+          return (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="w-full max-w-xl mx-auto rounded-3xl bg-slate-900/60 border border-teal-500/20 shadow-2xl p-6 flex flex-col gap-5 relative overflow-hidden backdrop-blur-xl"
+            >
+              {/* Header console buttons bar */}
+              <div className="flex justify-between items-center border-b border-white/10 pb-3 shrink-0">
+                <div className="flex gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
                 </div>
-              ))}
-              <div ref={terminalEndRef} />
-              
-              {/* Blinking Prompt Cursor */}
-              <div className="flex items-center gap-1 text-emerald-400 font-bold mt-1">
-                <span>&gt;&gt; COMPILING DATA STREAMS</span>
-                <span className="w-1.5 h-3.5 bg-emerald-400 animate-cursor-blink" />
+                <span className="text-[9px] font-mono text-teal-400/80 font-bold uppercase tracking-widest">
+                  AI Quantum Planner Engine
+                </span>
               </div>
-            </div>
 
-            {/* Telemetry Progress Info */}
-            <div className="flex flex-col gap-2 border-t border-teal-500/10 pt-4 shrink-0">
-              <div className="flex justify-between items-center text-[9px] font-mono font-bold text-teal-450 uppercase">
-                <span>Progress limits</span>
-                <span>{generatingProgress}% Compiled</span>
+              {/* Simulated ChatGPT planning text */}
+              <div className="p-4 rounded-2xl bg-slate-950/80 border border-white/5 text-left font-mono">
+                <div className="flex items-center gap-2 mb-2 text-teal-400">
+                  <Cpu size={14} className="animate-spin" />
+                  <span className="text-[9px] font-bold uppercase tracking-wider">AI Travel Twin Thinking...</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed min-h-[44px] border-l-2 border-teal-500/30 pl-3">
+                  {generatingProgress < 15 && `Analyzing travel genome for "${destination}". Resolving sector coordinates...`}
+                  {generatingProgress >= 15 && generatingProgress < 30 && `Mapping active sky lanes from departure hub. Sourcing flight routes...`}
+                  {generatingProgress >= 30 && generatingProgress < 45 && `Calibrating accommodation rates. Filtering hotels against budget index...`}
+                  {generatingProgress >= 45 && generatingProgress < 60 && `Scanning atmospheric data. Computing local weather suitability...`}
+                  {generatingProgress >= 60 && generatingProgress < 75 && `Checking credit thresholds. Formulating asset allocation breakdown...`}
+                  {generatingProgress >= 75 && generatingProgress < 90 && `Synthesizing walking fatigue thresholds. Optimizing daily schedules...`}
+                  {generatingProgress >= 90 && `System directives calibrated successfully. Itinerary ready for takeoff!`}
+                </p>
               </div>
-              <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden border border-teal-500/10">
-                <div 
-                  className="h-full bg-gradient-to-r from-teal-500 to-emerald-400 rounded-full transition-all duration-300" 
-                  style={{ width: `${generatingProgress}%` }}
-                />
+
+              {/* Workflow Stages Pipeline */}
+              <div className="flex flex-col gap-3">
+                {WORKFLOW_STAGES.map((stage, idx) => {
+                  const isActive = (idx === currentStage);
+                  const isDone = (idx < currentStage);
+                  return (
+                    <div key={stage.key} className="relative">
+                      {/* Animated connecting line */}
+                      {idx < WORKFLOW_STAGES.length - 1 && (
+                        <div className="absolute left-[20px] top-[36px] bottom-[-16px] w-[2px] bg-slate-800/80 overflow-hidden z-0">
+                          <div 
+                            className={`h-full w-full bg-gradient-to-b from-teal-400 to-indigo-500 transition-transform duration-500 origin-top ${
+                              isDone ? 'scale-y-100' : 'scale-y-0'
+                            }`}
+                          />
+                        </div>
+                      )}
+                      
+                      <div className={`flex items-center gap-3.5 p-3 rounded-2xl border transition-all z-10 relative ${
+                        isActive 
+                          ? 'bg-teal-500/5 border-teal-500/40 shadow-[0_0_20px_rgba(20,184,166,0.08)]' 
+                          : isDone
+                            ? 'bg-white/5 border-white/10 opacity-90'
+                            : 'bg-transparent border-transparent opacity-45'
+                      }`}>
+                        {/* Icon Indicator Circle */}
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
+                          isActive 
+                            ? 'bg-teal-500 text-slate-950 animate-pulse font-bold shadow-[0_0_12px_rgba(45,212,191,0.4)]' 
+                            : isDone
+                              ? 'bg-emerald-500/20 text-emerald-400 font-semibold'
+                              : 'bg-slate-950 border border-white/5 text-slate-500'
+                        }`}>
+                          {isDone ? <CheckCircle size={14} className="text-emerald-400" /> : stage.icon}
+                        </div>
+                        
+                        <div className="text-left leading-normal flex-1">
+                          <div className="flex justify-between items-center">
+                            <span className={`text-[11px] font-bold ${isActive ? 'text-white' : isDone ? 'text-slate-300' : 'text-slate-500'}`}>
+                              {stage.label}
+                            </span>
+                            {isActive && (
+                              <span className="text-[7px] font-mono font-bold bg-teal-500/20 text-teal-450 px-1.5 py-0.5 rounded uppercase tracking-wider animate-pulse">
+                                Active
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[9px] text-slate-400 mt-0.5 leading-relaxed font-mono">
+                            {stage.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          </motion.div>
-        )}
+
+              {/* Progress Slider */}
+              <div className="flex flex-col gap-2 border-t border-white/10 pt-4 shrink-0">
+                <div className="flex justify-between items-center text-[9px] font-mono font-bold text-teal-450 uppercase">
+                  <span>Compilation Status</span>
+                  <span>{generatingProgress}%</span>
+                </div>
+                <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-white/5">
+                  <div 
+                    className="h-full bg-gradient-to-r from-teal-500 to-indigo-500 rounded-full transition-all duration-300" 
+                    style={{ width: `${generatingProgress}%` }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          );
+        })()}
 
         {/* Display itinerary summary */}
         {itinerary && (

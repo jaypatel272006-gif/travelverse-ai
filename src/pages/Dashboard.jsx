@@ -229,6 +229,54 @@ const UniverseGalaxyVisualizer = ({ galaxies, planets }) => {
   );
 };
 
+// Animated Number Counter Widget
+const AnimatedNumber = ({ value }) => {
+  const [current, setCurrent] = useState(0);
+  useEffect(() => {
+    let start = 0;
+    const duration = 1000;
+    const steps = 50;
+    const increment = value / steps;
+    let stepCount = 0;
+    const timer = setInterval(() => {
+      stepCount++;
+      start += increment;
+      if (stepCount >= steps) {
+        setCurrent(value);
+        clearInterval(timer);
+      } else {
+        setCurrent(Math.floor(start));
+      }
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [value]);
+  return <span>{current.toLocaleString()}</span>;
+};
+
+// Live Animated Spark Graph
+const AnimatedChart = () => {
+  const [data, setData] = useState([50, 30, 70, 90, 60, 80, 45]);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setData(prev => prev.map(val => Math.min(100, Math.max(10, val + Math.round((Math.random() - 0.5) * 20)))));
+    }, 1500);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <div className="flex items-end justify-between gap-1.5 h-16 w-full mt-2 bg-slate-950/60 p-2 rounded-xl border border-white/5">
+      {data.map((val, i) => (
+        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+          <div 
+            className="w-full bg-gradient-to-t from-teal-500/50 to-teal-400 rounded-t-sm transition-all duration-500" 
+            style={{ height: `${val}%` }}
+          />
+          <span className="text-[6px] font-mono text-slate-500">{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const Dashboard = () => {
   const { 
     user, updateProfile, logout, itineraries, deleteItinerary, updateItinerary, 
@@ -300,35 +348,47 @@ export const Dashboard = () => {
     try {
       const saved = localStorage.getItem('tv_workspace_presets');
       return saved ? JSON.parse(saved) : [
-        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['itinerary', 'map'] },
-        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'deals'] },
-        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['map'] },
+        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['upcoming', 'passport'] },
+        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'currency'] },
+        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['flights'] },
         { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
       ];
     } catch (e) {
       console.warn("Failed to parse tv_workspace_presets:", e);
       return [
-        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['itinerary', 'map'] },
-        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'deals'] },
-        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['map'] },
+        { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['upcoming', 'passport'] },
+        { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'currency'] },
+        { id: 'roadtrip', name: 'Road Trip Workspace', layout: 'single', widgets: ['flights'] },
         { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
       ];
     }
   });
 
-  // Floating Window Coordinates for modular widgets (Supports all 10 widgets)
+  // Floating Window Coordinates for modular widgets (Supports all widgets)
   const [widgetPositions, setWidgetPositions] = useState(() => {
     const defaultPositions = {
-      itinerary: { x: 20, y: 110, w: 460, h: 420, z: 10 },
-      map: { x: 500, y: 110, w: 460, h: 420, z: 5 },
-      budget: { x: 20, y: 550, w: 460, h: 360, z: 5 },
-      memories: { x: 500, y: 550, w: 460, h: 360, z: 5 },
-      radar: { x: 20, y: 110, w: 450, h: 350, z: 4 },
-      deals: { x: 490, y: 110, w: 460, h: 350, z: 4 },
-      rules: { x: 20, y: 110, w: 450, h: 350, z: 6 },
-      universe: { x: 490, y: 110, w: 450, h: 350, z: 6 },
-      simulation: { x: 20, y: 480, w: 450, h: 350, z: 7 },
-      command: { x: 490, y: 480, w: 450, h: 350, z: 7 }
+      upcoming: { x: 20, y: 110, w: 460, h: 220, z: 10 },
+      passport: { x: 500, y: 110, w: 460, h: 220, z: 8 },
+      visa: { x: 20, y: 350, w: 460, h: 220, z: 5 },
+      budget: { x: 500, y: 350, w: 460, h: 220, z: 5 },
+      weather: { x: 20, y: 590, w: 460, h: 220, z: 5 },
+      packing: { x: 500, y: 590, w: 460, h: 220, z: 5 },
+      currency: { x: 20, y: 830, w: 460, h: 220, z: 5 },
+      streak: { x: 500, y: 830, w: 460, h: 220, z: 5 },
+      countries: { x: 20, y: 1070, w: 460, h: 220, z: 5 },
+      memories: { x: 500, y: 1070, w: 460, h: 220, z: 5 },
+      recommendations: { x: 20, y: 1310, w: 460, h: 220, z: 5 },
+      emergency: { x: 500, y: 1310, w: 460, h: 220, z: 5 },
+      insurance: { x: 20, y: 1550, w: 460, h: 220, z: 5 },
+      charts: { x: 500, y: 1550, w: 460, h: 220, z: 5 },
+      flights: { x: 20, y: 1790, w: 460, h: 220, z: 5 },
+      command: { x: 500, y: 1790, w: 460, h: 220, z: 7 },
+      map: { x: 20, y: 2030, w: 460, h: 420, z: 5 },
+      radar: { x: 500, y: 2030, w: 460, h: 220, z: 4 },
+      deals: { x: 20, y: 2470, w: 460, h: 350, z: 4 },
+      rules: { x: 500, y: 2470, w: 460, h: 350, z: 6 },
+      universe: { x: 20, y: 2840, w: 460, h: 350, z: 6 },
+      simulation: { x: 500, y: 2840, w: 460, h: 350, z: 7 }
     };
     const saved = localStorage.getItem('tv_widget_positions');
     if (!saved) return defaultPositions;
@@ -1017,60 +1077,320 @@ export const Dashboard = () => {
     showToast('Temporal matrix date blocked.', 'success');
   };
 
-  // Render Widget Selector Content (Expanded to all 10 widgets fully)
+  // Render Widget Selector Content (Expanded to all 16 widgets fully)
   const renderWidget = (wId) => {
     switch (wId) {
-      case 'passport':
+      case 'upcoming': {
+        const nextTrip = itineraries[0] || { destination: 'Varanasi', duration: 5, date: 'Aug 15, 2026' };
         return (
-          <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
+          <div className="flex flex-col justify-between h-full font-mono text-left">
             <div>
-              <h4 className="font-bold text-xs uppercase tracking-wider text-teal-400 font-mono mb-2 flex justify-between items-center">
-                <span>🛂 Digital Passport & stamps</span>
-                <span className="text-[9px] text-slate-500 font-normal">Level 1 Explorer</span>
-              </h4>
-              <div className="p-4 rounded-2xl bg-slate-900/60 border border-teal-500/10 flex items-center gap-4 relative overflow-hidden">
-                <div className="w-14 h-16 rounded border border-white/10 bg-slate-950 flex flex-col justify-center items-center text-slate-600 relative overflow-hidden shrink-0">
-                  <User size={24} />
-                  <span className="text-[7px] font-mono font-bold mt-1 text-slate-500">VISAGE LINK</span>
-                  <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                </div>
-                
-                <div className="flex-1 font-mono text-[9px] text-slate-400 flex flex-col gap-1">
-                  <div><span className="font-bold text-slate-550">PASSPORT NO:</span> <span className="text-white">TV-2100-JP</span></div>
-                  <div><span className="font-bold text-slate-550">ISSUING PORT:</span> <span className="text-white">DELHI HUB</span></div>
-                  <div><span className="font-bold text-slate-550">SECTOR STATUS:</span> <span className="text-emerald-450 font-black">ACTIVE</span></div>
-                </div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider">Upcoming Departure</span>
+                <span className="text-[8px] bg-teal-500/10 text-teal-400 px-1.5 py-0.5 rounded border border-teal-500/20">CONFIRMED</span>
               </div>
-
-              {/* Stamps grid */}
-              <div className="grid grid-cols-3 gap-2 mt-3">
-                {[
-                  { id: 'goa', name: 'GOA', emoji: '🏖️', desc: 'Coastal Sector', match: 'goa' },
-                  { id: 'jaipur', name: 'JAIPUR', emoji: '🛕', desc: 'Royal Sector', match: 'jaipur' },
-                  { id: 'delhi', name: 'DELHI', emoji: '🏙️', desc: 'Capital Hub', match: 'delhi' }
-                ].map(stamp => {
-                  const isUnlocked = itineraries.some(it => it.destination?.toLowerCase().includes(stamp.match)) ||
-                                    (unlockedStamps && unlockedStamps.some(s => s.toLowerCase().includes(stamp.match)));
-                  return (
-                    <div 
-                      key={stamp.id}
-                      className={`p-2 rounded-xl border flex flex-col items-center justify-center text-center gap-1 transition-all ${
-                        isUnlocked 
-                          ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.15)]' 
-                          : 'border-white/5 bg-slate-950/40 text-slate-600'
-                      }`}
-                    >
-                      <span className={`text-base ${isUnlocked ? 'animate-bounce' : 'opacity-30'}`}>{stamp.emoji}</span>
-                      <span className="text-[8.5px] font-black tracking-wider block font-mono">{stamp.name}</span>
-                      <span className="text-[7px] text-slate-500 uppercase font-mono tracking-widest">{stamp.desc}</span>
-                    </div>
-                  );
-                })}
+              <h3 className="text-sm font-black text-white leading-tight">{nextTrip.destination.toUpperCase()}</h3>
+              <p className="text-[10px] text-slate-400 mt-1">Duration: {nextTrip.duration} Days • Target: Aug 15</p>
+            </div>
+            <div className="mt-3 bg-slate-955 p-2.5 rounded-xl border border-white/5 flex flex-col gap-1 text-[9px]">
+              <div className="flex justify-between">
+                <span className="text-slate-500">T-MINUS:</span>
+                <span className="text-white font-bold">10d 04h 12m</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">SECTOR STATUS:</span>
+                <span className="text-emerald-405 font-bold">GREEN</span>
               </div>
             </div>
           </div>
         );
-
+      }
+      case 'passport':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Voyager Passport</span>
+              <div className="p-3 rounded-xl bg-slate-950 border border-white/5 flex items-center gap-3 relative overflow-hidden">
+                <div className="w-10 h-12 rounded border border-white/10 bg-slate-900 flex flex-col justify-center items-center text-slate-500 shrink-0">
+                  <User size={16} />
+                </div>
+                <div className="flex-1 text-[9px] text-slate-400 leading-tight">
+                  <div>NO: <span className="text-white">TV-2100-JP</span></div>
+                  <div>LEVEL: <span className="text-white font-bold"><AnimatedNumber value={userLevel} /></span></div>
+                  <div>STATUS: <span className="text-emerald-400 font-bold">ACTIVE</span></div>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 mt-2 text-center text-[8.5px]">
+              {['Surat', 'Mumbai', 'Delhi'].map(st => (
+                <div key={st} className="p-1 rounded bg-teal-500/5 border border-teal-500/10 text-teal-400 font-bold animate-pulse">
+                  {st.toUpperCase()}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case 'visa':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Visa Control Center</span>
+              <div className="flex flex-col gap-1.5 text-[9px] text-slate-400">
+                <div className="flex justify-between items-center p-1.5 bg-slate-950 border border-white/5 rounded-lg">
+                  <span className="text-white">Schengen (Europe)</span>
+                  <span className="text-emerald-400 font-bold">APPROVED</span>
+                </div>
+                <div className="flex justify-between items-center p-1.5 bg-slate-950 border border-white/5 rounded-lg">
+                  <span className="text-white">Japan (e-Visa)</span>
+                  <span className="text-amber-400 font-bold animate-pulse">IN PROCESS</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-[8px] text-slate-500 leading-relaxed">
+              * Automagic renewal active.
+            </div>
+          </div>
+        );
+      case 'budget':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Asset Ledger</span>
+              <div className="grid grid-cols-2 gap-2 text-[9px]">
+                <div className="p-2 bg-slate-950 rounded-xl border border-white/5 text-center">
+                  <span className="text-slate-500 block uppercase text-[7.5px]">Savings</span>
+                  <span className="text-white font-bold text-xs">₹<AnimatedNumber value={budget.currentSavings} /></span>
+                </div>
+                <div className="p-2 bg-slate-950 rounded-xl border border-white/5 text-center">
+                  <span className="text-slate-500 block uppercase text-[7.5px]">Limit Cap</span>
+                  <span className="text-white font-bold text-xs">₹<AnimatedNumber value={budget.target} /></span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-3">
+              <div className="w-full bg-slate-905 h-1.5 rounded-full overflow-hidden border border-white/5">
+                <div className="h-full bg-gradient-to-r from-teal-500 to-indigo-500" style={{ width: '68%' }} />
+              </div>
+            </div>
+          </div>
+        );
+      case 'weather':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Meteorological Scan</span>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                  <Cloud size={16} />
+                </div>
+                <div>
+                  <span className="text-white font-bold text-xs">24°C</span>
+                  <span className="text-[8.5px] text-slate-400 block mt-0.5">Partly Cloudy • Zurich</span>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 text-[8.5px] text-slate-500 mt-2">
+              <div>UV: <span className="text-slate-300 font-bold">Low (2)</span></div>
+              <div>RAIN: <span className="text-slate-300 font-bold">12%</span></div>
+              <div>WIND: <span className="text-slate-300 font-bold">14 km/h</span></div>
+            </div>
+          </div>
+        );
+      case 'packing':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Packing Telemetry</span>
+              <div className="flex flex-col gap-1.5 text-[9px] text-slate-400">
+                <div className="flex items-center gap-1.5">
+                  <Check size={10} className="text-teal-400" />
+                  <span>Passport & Documents (Locked)</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Check size={10} className="text-teal-400" />
+                  <span>Universal Charger Adapter</span>
+                </div>
+                <div className="flex items-center gap-1.5 opacity-50">
+                  <div className="w-2.5 h-2.5 border border-slate-500 rounded-sm shrink-0" />
+                  <span>Alpine Jacket Layer</span>
+                </div>
+              </div>
+            </div>
+            <span className="text-[8px] text-slate-500 mt-2 block">* Auto-curated base.</span>
+          </div>
+        );
+      case 'currency':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Exchange Scales</span>
+              <div className="flex flex-col gap-2 text-[9px] text-slate-450">
+                <div className="flex justify-between items-center p-1.5 bg-slate-950 border border-white/5 rounded-lg">
+                  <span className="text-white">1 USD</span>
+                  <span className="text-teal-400 font-bold">₹83.45 INR</span>
+                </div>
+                <div className="flex justify-between items-center p-1.5 bg-slate-950 border border-white/5 rounded-lg">
+                  <span className="text-white">1 EUR</span>
+                  <span className="text-teal-400 font-bold">₹90.12 INR</span>
+                </div>
+              </div>
+            </div>
+            <div className="w-full bg-slate-950 h-1 rounded-full mt-2 overflow-hidden border border-white/5">
+              <div className="h-full bg-teal-400 animate-pulse" style={{ width: '100%' }} />
+            </div>
+          </div>
+        );
+      case 'streak':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Travel Streak Ledger</span>
+              <div className="flex items-center justify-between bg-slate-950/80 p-2.5 border border-white/5 rounded-xl">
+                <div className="text-left">
+                  <span className="text-[8px] text-slate-500 block">CURRENT STREAK</span>
+                  <span className="text-white font-black text-sm"><AnimatedNumber value={12} /> Days</span>
+                </div>
+                <span className="text-xl">🔥</span>
+              </div>
+            </div>
+            <div className="mt-2 flex flex-col gap-1">
+              <div className="flex justify-between text-[8px] text-slate-550">
+                <span>XP PROGRESS: {userXp}/2500</span>
+                <span>LEVEL {userLevel}</span>
+              </div>
+              <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-teal-500 to-indigo-500" style={{ width: '48%' }} />
+              </div>
+            </div>
+          </div>
+        );
+      case 'countries':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Countries Mapped</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-black text-white"><AnimatedNumber value={6} /></span>
+                <span className="text-slate-500 text-[10px] uppercase font-bold">Sectors Mapped</span>
+              </div>
+            </div>
+            <div className="flex gap-1 flex-wrap mt-2">
+              {['IN', 'CH', 'JP', 'TH', 'UK', 'US'].map(flag => (
+                <span key={flag} className="px-1.5 py-0.5 bg-slate-950 border border-white/5 text-slate-400 font-bold rounded text-[8px]">
+                  {flag}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      case 'memories':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Memory Vault</span>
+              <div className="flex flex-col gap-1.5 max-h-[140px] overflow-y-auto pr-1">
+                {vaultMemories.slice(0, 2).map(v => (
+                  <div key={v.id} className="p-2 rounded-xl bg-slate-950 border border-white/5 flex gap-2">
+                    <div className="flex-1 min-w-0">
+                      <span className="font-bold text-white block truncate text-[9.5px]">{v.title}</span>
+                      <span className="text-[8.5px] text-slate-450 block truncate">{v.description}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button 
+              onClick={() => {
+                const title = prompt('Enter memory title:');
+                if (title) {
+                  setVaultMemories([{ id: Date.now().toString(), title, description: 'Saved memory log' }, ...vaultMemories]);
+                  showToast('Memory logged.', 'success');
+                }
+              }}
+              className="w-full py-1.5 bg-slate-850 hover:bg-slate-800 text-slate-200 text-[8.5px] font-bold rounded-lg mt-2 uppercase cursor-pointer"
+            >
+              + Cache Memory log
+            </button>
+          </div>
+        );
+      case 'recommendations':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Autonomy Directives</span>
+              <div className="p-2 bg-slate-950 border border-white/5 rounded-xl leading-relaxed text-[9px] text-slate-400">
+                <span className="text-teal-400 font-bold block mb-1">PROPOSAL: Bali, Indonesia</span>
+                Perfect weather conditions matched against your travel genome for the next fortnight cycle.
+              </div>
+            </div>
+            <button 
+              onClick={() => showToast('AI recommendation synced.', 'info')}
+              className="w-full py-1 bg-teal-500 text-slate-950 font-bold text-[8px] rounded-lg mt-2 uppercase cursor-pointer"
+            >
+              Load Teleport Grid
+            </button>
+          </div>
+        );
+      case 'emergency':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block mb-2">Emergency Hub</span>
+              <div className="flex flex-col gap-1 text-[9px] text-rose-350">
+                <div className="p-1.5 bg-rose-500/5 border border-rose-500/15 rounded-lg flex justify-between">
+                  <span>Local Patrol:</span>
+                  <span className="font-bold">112</span>
+                </div>
+                <div className="p-1.5 bg-rose-500/5 border border-rose-500/15 rounded-lg flex justify-between">
+                  <span>Medical Center:</span>
+                  <span className="font-bold">+91 108</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-[8px] text-rose-400/80 leading-normal mt-1 border-t border-rose-500/10 pt-1.5">
+              ⚠️ Local coordinates active. SOS trigger calibrated.
+            </div>
+          </div>
+        );
+      case 'insurance':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block mb-2">Insurance Ledger</span>
+              <div className="p-2.5 rounded-xl bg-slate-950 border border-white/5 flex flex-col gap-1 text-[9px] text-slate-450 leading-relaxed">
+                <div>POLICY: <span className="text-white font-bold">INS-2100-88A</span></div>
+                <div>EXPIRES: <span className="text-white">Dec 31, 2026</span></div>
+                <div>COVERAGE: <span className="text-emerald-400 font-bold">GLOBAL MEDICAL</span></div>
+              </div>
+            </div>
+            <span className="text-[8px] text-slate-500 mt-2 block">* Auto-validated via regulatory nodes.</span>
+          </div>
+        );
+      case 'charts':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider block">Telemetry Index Scan</span>
+              <AnimatedChart />
+            </div>
+          </div>
+        );
+      case 'flights':
+        return (
+          <div className="flex flex-col justify-between h-full font-mono text-left">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] text-teal-400 font-bold uppercase tracking-wider">Flight Transit Status</span>
+                <span className="text-[8px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">ON TIME</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-slate-950 border border-white/5 text-[9px] text-slate-400 flex flex-col gap-1 leading-normal">
+                <div>FLIGHT: <span className="text-white font-bold">AI-LX22</span></div>
+                <div>ROUTE: <span className="text-white">DEL ➔ ZRH</span></div>
+                <div>SPEED: <span className="text-white"><AnimatedNumber value={820} /> km/h</span></div>
+              </div>
+            </div>
+          </div>
+        );
       case 'itinerary':
         return (
           <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
@@ -1156,73 +1476,6 @@ export const Dashboard = () => {
               </div>
               <button type="submit" className="py-1 bg-teal-500 text-slate-950 font-bold font-mono text-[10px] rounded-lg">CACHE PIN</button>
             </form>
-          </div>
-        );
-      case 'budget': {
-        const simTotal = simLodgingBudget + simFlightsBudget + simFoodBudget + simTransportBudget + simShoppingBudget + simEmergencyBudget;
-        const isBudgetOverdraft = simTotal > budget.currentSavings;
-        return (
-          <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-teal-400 font-mono">Quantum Cost Simulator</h4>
-            
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] text-slate-500 uppercase">🏨 Hotel: ₹{simLodgingBudget.toLocaleString()}</span>
-                  <input type="range" min="5000" max="150000" step="5000" value={simLodgingBudget} onChange={(e) => setSimLodgingBudget(parseInt(e.target.value))} className="w-full h-1 bg-slate-800 rounded accent-teal-400" />
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] text-slate-500 uppercase">✈️ Flight: ₹{simFlightsBudget.toLocaleString()}</span>
-                  <input type="range" min="5000" max="150000" step="5000" value={simFlightsBudget} onChange={(e) => setSimFlightsBudget(parseInt(e.target.value))} className="w-full h-1 bg-slate-800 rounded accent-teal-400" />
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] text-slate-500 uppercase">🍛 Food: ₹{simFoodBudget.toLocaleString()}</span>
-                  <input type="range" min="2000" max="50000" step="2000" value={simFoodBudget} onChange={(e) => setSimFoodBudget(parseInt(e.target.value))} className="w-full h-1 bg-slate-800 rounded accent-teal-400" />
-                </div>
-              </div>
-
-              <div className="p-3 bg-slate-950 border border-teal-500/10 rounded-xl flex flex-col items-center justify-center relative">
-                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">PROJECTIONS</span>
-                <span className="text-sm font-black font-mono text-white">₹{simTotal.toLocaleString()}</span>
-                <span className="text-[7.5px] text-slate-500 font-mono">Cap: ₹{budget.target.toLocaleString()}</span>
-                {isBudgetOverdraft && (
-                  <span className="text-[7px] text-red-400 font-bold uppercase tracking-wider mt-1.5 animate-pulse">Overdraft warning</span>
-                )}
-              </div>
-            </div>
-          </div>
-        );
-      }
-      case 'memories':
-        return (
-          <div className="flex flex-col gap-4 text-left text-xs h-full justify-between pr-1">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-teal-400 font-mono">Memory Vault Log</h4>
-            <div className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-1">
-              {vaultMemories.map(v => (
-                <div key={v.id} className="p-2 rounded-xl bg-slate-900/60 border border-teal-500/10 flex gap-2">
-                  {v.mediaUrl && <img src={v.mediaUrl} className="w-10 h-10 object-cover rounded-lg border border-white/5" alt={v.title} />}
-                  <div className="flex-1 min-w-0">
-                    <span className="font-bold text-white block truncate">{v.title}</span>
-                    <span className="text-[9px] text-slate-400 block truncate">{v.description}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2 border-t border-slate-200/5 dark:border-teal-500/10 pt-3">
-              <button 
-                onClick={() => {
-                  const title = prompt('Enter memory title:');
-                  const desc = prompt('Enter memory description:');
-                  if (title) {
-                    setVaultMemories([{ id: Date.now().toString(), title, description: desc || 'Saved memory log', location: 'Custom coordinates' }, ...vaultMemories]);
-                    showToast('Memory logged in vault.', 'success');
-                  }
-                }}
-                className="w-full py-1.5 bg-slate-850 hover:bg-slate-800 text-slate-200 text-[10px] font-bold font-mono rounded-lg"
-              >
-                + LOG NEW MEMORY
-              </button>
-            </div>
           </div>
         );
       case 'radar':
@@ -1367,7 +1620,7 @@ export const Dashboard = () => {
                 placeholder="Type command..."
                 className="px-2 py-1.5 bg-slate-950 border border-teal-500/15 text-white font-mono text-[10px] rounded-lg flex-1"
               />
-              <button type="submit" className="px-3 bg-teal-500 text-slate-950 font-bold font-mono text-[10px] rounded-lg">EXE</button>
+              <button type="submit" className="px-3 bg-teal-500 text-slate-950 font-bold font-mono text-[10px] rounded-lg cursor-pointer">EXE</button>
             </form>
           </div>
         );
@@ -1609,7 +1862,7 @@ export const Dashboard = () => {
               {/* Active Widgets selector checklist */}
               <div className="flex items-center gap-3 text-[10.5px] font-mono text-slate-400 flex-wrap">
                 <span className="font-bold uppercase text-teal-450">LOADED DECK:</span>
-                {['itinerary', 'map', 'budget', 'memories', 'radar', 'deals', 'rules', 'universe', 'simulation', 'command', 'passport'].map(wId => {
+                {['upcoming', 'passport', 'visa', 'budget', 'weather', 'packing', 'currency', 'streak', 'countries', 'memories', 'recommendations', 'emergency', 'insurance', 'charts', 'flights', 'command', 'map', 'radar', 'deals', 'rules', 'universe', 'simulation'].map(wId => {
                   const isActive = activeWSPreset.widgets.includes(wId);
                   return (
                     <label key={wId} className="flex items-center gap-1.5 cursor-pointer">
@@ -1688,17 +1941,28 @@ export const Dashboard = () => {
                   
                   {activeWSPreset.widgets.map((wId) => {
                     const defaultPositions = {
-                      itinerary: { x: 20, y: 110, w: 460, h: 420, z: 10 },
-                      map: { x: 500, y: 110, w: 460, h: 420, z: 5 },
-                      budget: { x: 20, y: 550, w: 460, h: 360, z: 5 },
-                      memories: { x: 500, y: 550, w: 460, h: 360, z: 5 },
-                      radar: { x: 20, y: 110, w: 450, h: 350, z: 4 },
-                      deals: { x: 490, y: 110, w: 460, h: 350, z: 4 },
-                      rules: { x: 20, y: 110, w: 450, h: 350, z: 6 },
-                      universe: { x: 490, y: 110, w: 450, h: 350, z: 6 },
-                      simulation: { x: 20, y: 480, w: 450, h: 350, z: 7 },
-                      command: { x: 490, y: 480, w: 450, h: 350, z: 7 },
-                      passport: { x: 20, y: 110, w: 460, h: 420, z: 8 }
+                      upcoming: { x: 20, y: 110, w: 460, h: 220, z: 10 },
+                      passport: { x: 500, y: 110, w: 460, h: 220, z: 8 },
+                      visa: { x: 20, y: 350, w: 460, h: 220, z: 5 },
+                      budget: { x: 500, y: 350, w: 460, h: 220, z: 5 },
+                      weather: { x: 20, y: 590, w: 460, h: 220, z: 5 },
+                      packing: { x: 500, y: 590, w: 460, h: 220, z: 5 },
+                      currency: { x: 20, y: 830, w: 460, h: 220, z: 5 },
+                      streak: { x: 500, y: 830, w: 460, h: 220, z: 5 },
+                      countries: { x: 20, y: 1070, w: 460, h: 220, z: 5 },
+                      memories: { x: 500, y: 1070, w: 460, h: 220, z: 5 },
+                      recommendations: { x: 20, y: 1310, w: 460, h: 220, z: 5 },
+                      emergency: { x: 500, y: 1310, w: 460, h: 220, z: 5 },
+                      insurance: { x: 20, y: 1550, w: 460, h: 220, z: 5 },
+                      charts: { x: 500, y: 1550, w: 460, h: 220, z: 5 },
+                      flights: { x: 20, y: 1790, w: 460, h: 220, z: 5 },
+                      command: { x: 500, y: 1790, w: 460, h: 220, z: 7 },
+                      map: { x: 20, y: 2030, w: 460, h: 420, z: 5 },
+                      radar: { x: 500, y: 2030, w: 460, h: 220, z: 4 },
+                      deals: { x: 20, y: 2470, w: 460, h: 350, z: 4 },
+                      rules: { x: 500, y: 2470, w: 460, h: 350, z: 6 },
+                      universe: { x: 20, y: 2840, w: 460, h: 350, z: 6 },
+                      simulation: { x: 500, y: 2840, w: 460, h: 350, z: 7 }
                     };
                     const item = widgetPositions[wId];
                     const isValid = item && 

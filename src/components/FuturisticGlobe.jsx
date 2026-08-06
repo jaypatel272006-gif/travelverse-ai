@@ -1,43 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
-import { useApp } from '../context/AppContext';
-import { mockDestinations } from '../data/mockData';
-import { MapPin, Plane, CloudSun, Compass, X, Calendar, Eye } from 'lucide-react';
 
-const GLOBE_COORDS = [
-  { name: 'Goa', lat: 15.2993, lon: 74.1240, destId: 'dest-goa' },
-  { name: 'Jaipur', lat: 26.9124, lon: 75.7873, destId: 'dest-jaipur' },
-  { name: 'Kerala', lat: 10.8505, lon: 76.2711, destId: 'dest-kerala' },
-  { name: 'Kashmir', lat: 34.0837, lon: 74.7973, destId: 'dest-kashmir' },
-  { name: 'Ladakh', lat: 34.1526, lon: 77.5771, destId: 'dest-ladakh' },
-  { name: 'Agra', lat: 27.1767, lon: 78.0081, destId: 'dest-agra' },
-  { name: 'Varanasi', lat: 25.3176, lon: 82.9739, destId: 'dest-varanasi' },
-  { name: 'Mumbai', lat: 19.0760, lon: 72.8777, destId: 'dest-mumbai' },
-  { name: 'Udaipur', lat: 24.5854, lon: 73.7125, destId: 'dest-udaipur' },
-  { name: 'Delhi', lat: 28.7041, lon: 77.1025, destId: 'dest-delhi' },
-  { name: 'Ziro Valley', lat: 27.6328, lon: 93.8378, destId: 'dest-ziro' },
-  { name: 'Tawang', lat: 27.5861, lon: 91.8594, destId: 'dest-tawang' },
-  { name: 'Spiti Valley', lat: 32.2461, lon: 78.0349, destId: 'dest-spiti' },
-  { name: 'Gokarna', lat: 14.5479, lon: 74.3188, destId: 'dest-gokarna' },
-  { name: 'Majuli', lat: 26.9602, lon: 94.2188, destId: 'dest-majuli' }
+// Country Coordinate Mapping
+const COUNTRIES_LIST = [
+  { name: 'India', code: 'IN', lat: 20.5937, lon: 78.9629 },
+  { name: 'Switzerland', code: 'CH', lat: 46.8182, lon: 8.2275 },
+  { name: 'Japan', code: 'JP', lat: 36.2048, lon: 138.2529 },
+  { name: 'France', code: 'FR', lat: 46.2276, lon: 2.2137 },
+  { name: 'USA', code: 'US', lat: 37.0902, lon: -95.7129 },
+  { name: 'Australia', code: 'AU', lat: -25.2744, lon: 133.7751 },
+  { name: 'Brazil', code: 'BR', lat: -14.2350, lon: -51.9253 },
+  { name: 'UAE', code: 'AE', lat: 23.4241, lon: 53.8478 }
 ];
 
-const DEPARTURE_HUBS = {
-  'Delhi': { name: 'Delhi', lat: 28.7041, lon: 77.1025 },
-  'Mumbai': { name: 'Mumbai', lat: 19.0760, lon: 72.8777 },
-  'Surat': { name: 'Surat', lat: 21.1702, lon: 72.8311 },
-  'Bengaluru': { name: 'Bengaluru', lat: 12.9716, lon: 77.5946 },
-  'Chennai': { name: 'Chennai', lat: 13.0827, lon: 80.2707 }
-};
-
-export const FuturisticGlobe = ({ onSelectDestination }) => {
+export const FuturisticGlobe = ({ selectedCountry, viewMode = 'hologram', onSelectCountry }) => {
   const mountRef = useRef(null);
-  const { departureHub } = useApp();
-  const [activePin, setActivePin] = useState(null);
-  const [hoveredPinName, setHoveredPinName] = useState('');
+  const [loadingTexture, setLoadingTexture] = useState(false);
 
   const convertLatLonToVector3 = (lat, lon, radius) => {
     const phi = (90 - lat) * (Math.PI / 180);
@@ -52,12 +32,12 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
   useEffect(() => {
     if (!mountRef.current) return;
 
-    const width = mountRef.current.clientWidth;
-    const height = mountRef.current.clientHeight;
+    const width = mountRef.current.clientWidth || 600;
+    const height = mountRef.current.clientHeight || 500;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.z = 220;
+    camera.position.set(0, 80, 200);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -67,155 +47,182 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.enableZoom = true;
-    controls.minDistance = 120;
-    controls.maxDistance = 350;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.4;
+    controls.minDistance = 90;
+    controls.maxDistance = 300;
+    controls.autoRotate = selectedCountry ? false : true;
+    controls.autoRotateSpeed = 0.5;
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x2dd4bf, 1.8);
-    dirLight.position.set(5, 3, 5);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    dirLight.position.set(50, 30, 50);
     scene.add(dirLight);
 
-    const radius = 55;
+    const radius = 50;
 
-    // 1. Procedural Holographic Sphere
-    const globeGeometry = new THREE.SphereGeometry(radius, 40, 40);
-    const globeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x112240,
+    // Loading Textures (Public unpkg marbles)
+    setLoadingTexture(true);
+    const textureLoader = new THREE.TextureLoader();
+    
+    const dayTexture = textureLoader.load(
+      'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+      () => setLoadingTexture(false),
+      undefined,
+      () => setLoadingTexture(false)
+    );
+    
+    // Globe Mesh setup
+    const globeGeometry = new THREE.SphereGeometry(radius, 64, 64);
+    
+    const satelliteMaterial = new THREE.MeshPhongMaterial({
+      map: dayTexture,
+      shininess: 15,
+      specular: new THREE.Color('grey')
+    });
+
+    const hologramMaterial = new THREE.MeshBasicMaterial({
+      color: 0x0ea5e9,
       wireframe: true,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.18
     });
-    const globeMesh = new THREE.Mesh(globeGeometry, globeMaterial);
+
+    const globeMesh = new THREE.Mesh(globeGeometry, viewMode === 'satellite' ? satelliteMaterial : hologramMaterial);
     scene.add(globeMesh);
 
-    // 2. Procedural Glowing Dot continents
-    const dotsCount = 2000;
+    // Procedural Dot Continents (Hologram Mode only)
+    const dotsCount = 1800;
     const dotGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(dotsCount * 3);
-    const colorArray = new Float32Array(dotsCount * 3);
     const landColor = new THREE.Color(0x2dd4bf);
-    
+    const colors = new Float32Array(dotsCount * 3);
+
     for (let i = 0; i < dotsCount; i++) {
       const u = Math.random();
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
-      
-      const x = radius * Math.sin(phi) * Math.cos(theta);
-      const y = radius * Math.sin(phi) * Math.sin(theta);
-      const z = radius * Math.cos(phi);
-      
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
 
-      colorArray[i * 3] = landColor.r;
-      colorArray[i * 3 + 1] = landColor.g;
-      colorArray[i * 3 + 2] = landColor.b;
+      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = radius * Math.cos(phi);
+
+      colors[i * 3] = landColor.r;
+      colors[i * 3 + 1] = landColor.g;
+      colors[i * 3 + 2] = landColor.b;
     }
-    
+
     dotGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    dotGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
-    
+    dotGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const dotMaterial = new THREE.PointsMaterial({
-      size: 1.5,
+      size: 1.2,
       vertexColors: true,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.7,
       sizeAttenuation: true
     });
-    
     const dotGlobe = new THREE.Points(dotGeometry, dotMaterial);
-    globeMesh.add(dotGlobe);
+    scene.add(dotGlobe);
+    dotGlobe.visible = viewMode === 'hologram';
 
-    // 3. Pinned Travel Destinations
-    const pinGeometry = new THREE.SphereGeometry(1.5, 16, 16);
-    const pinsGroup = new THREE.Group();
-    const pinObjects = [];
+    // Interactive Country Beacons Group
+    const beaconsGroup = new THREE.Group();
+    scene.add(beaconsGroup);
 
-    GLOBE_COORDS.forEach((pin) => {
-      const isHub = pin.name.toLowerCase() === departureHub.toLowerCase();
-      const pinMat = new THREE.MeshBasicMaterial({
-        color: isHub ? 0x38bdf8 : 0xf43f5e,
+    const countryBeacons = [];
+    COUNTRIES_LIST.forEach((c) => {
+      const pos = convertLatLonToVector3(c.lat, c.lon, radius);
+      
+      // Floating Node Marker
+      const markerGeo = new THREE.SphereGeometry(1.2, 16, 16);
+      const markerMat = new THREE.MeshBasicMaterial({
+        color: 0x2dd4bf,
         transparent: true,
-        opacity: 0.95
+        opacity: 0.9
       });
-      const pinMesh = new THREE.Mesh(pinGeometry, pinMat);
-      const pos = convertLatLonToVector3(pin.lat, pin.lon, radius + 0.5);
-      pinMesh.position.copy(pos);
-      pinMesh.userData = pin;
-      pinsGroup.add(pinMesh);
-      pinObjects.push(pinMesh);
+      const marker = new THREE.Mesh(markerGeo, markerMat);
+      marker.position.copy(pos);
+      marker.userData = c;
+      beaconsGroup.add(marker);
+      countryBeacons.push(marker);
 
-      // Pulsing glow rings around each pin
-      const ringGeo = new THREE.RingGeometry(1.8, 2.2, 32);
+      // Outer Pulse Ring
+      const ringGeo = new THREE.RingGeometry(1.6, 2.4, 32);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: isHub ? 0x38bdf8 : 0xf43f5e,
+        color: 0x2dd4bf,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.6
       });
-      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-      ringMesh.position.copy(pos);
-      ringMesh.lookAt(new THREE.Vector3(0, 0, 0));
-      ringMesh.userData = { isRing: true };
-      pinsGroup.add(ringMesh);
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(pos);
+      ring.lookAt(0, 0, 0);
+      ring.userData = { isPulse: true };
+      beaconsGroup.add(ring);
     });
-    globeMesh.add(pinsGroup);
 
-    // 4. Dynamic Flight Paths (emitting from current active hub)
-    const flightGroup = new THREE.Group();
-    const activeHub = DEPARTURE_HUBS[departureHub] || DEPARTURE_HUBS['Delhi'];
-    const startPoint = convertLatLonToVector3(activeHub.lat, activeHub.lon, radius);
-    
-    const curves = [];
-    const flightParticles = [];
+    // Active Highlight Beams (Large Cylinder laser shooting up from selected)
+    const activeHighlightGroup = new THREE.Group();
+    scene.add(activeHighlightGroup);
 
-    GLOBE_COORDS.forEach((pin) => {
-      if (pin.name.toLowerCase() === departureHub.toLowerCase()) return;
+    const updateHighlight = (countryName) => {
+      // Clear previous highlight elements
+      while (activeHighlightGroup.children.length > 0) {
+        const obj = activeHighlightGroup.children[0];
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) obj.material.dispose();
+        activeHighlightGroup.remove(obj);
+      }
 
-      const endPoint = convertLatLonToVector3(pin.lat, pin.lon, radius);
-      const midPoint = new THREE.Vector3().addVectors(startPoint, endPoint).multiplyScalar(0.5);
-      const dist = startPoint.distanceTo(endPoint);
-      midPoint.normalize().multiplyScalar(radius + dist * 0.4); // Curved height
+      const match = COUNTRIES_LIST.find(c => c.name.toLowerCase() === countryName?.toLowerCase());
+      if (match) {
+        const basePos = convertLatLonToVector3(match.lat, match.lon, radius);
+        
+        // Vertical Laser Beam
+        const beamGeo = new THREE.CylinderGeometry(0.1, 1.5, 20, 16, 1, true);
+        beamGeo.translate(0, 10, 0); // shift pivot so it bases on globe
+        const beamMat = new THREE.MeshBasicMaterial({
+          color: 0x06b6d4,
+          transparent: true,
+          opacity: 0.5,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending
+        });
+        const beam = new THREE.Mesh(beamGeo, beamMat);
+        beam.position.copy(basePos);
+        beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), basePos.clone().normalize());
+        activeHighlightGroup.add(beam);
 
-      const curve = new THREE.QuadraticBezierCurve3(startPoint, midPoint, endPoint);
-      curves.push(curve);
+        // Ground Glowing Ring
+        const glowRingGeo = new THREE.RingGeometry(2.0, 3.8, 32);
+        const glowRingMat = new THREE.MeshBasicMaterial({
+          color: 0x26c6da,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.9
+        });
+        const glowRing = new THREE.Mesh(glowRingGeo, glowRingMat);
+        glowRing.position.copy(convertLatLonToVector3(match.lat, match.lon, radius + 0.4));
+        glowRing.lookAt(0, 0, 0);
+        glowRing.userData = { isGlow: true };
+        activeHighlightGroup.add(glowRing);
+      }
+    };
 
-      const points = curve.getPoints(50);
-      const pathGeo = new THREE.BufferGeometry().setFromPoints(points);
-      const pathMat = new THREE.LineBasicMaterial({
-        color: 0x0ea5e9,
-        transparent: true,
-        opacity: 0.35
-      });
-      const flightLine = new THREE.Line(pathGeo, pathMat);
-      flightGroup.add(flightLine);
+    updateHighlight(selectedCountry);
 
-      const particleGeo = new THREE.SphereGeometry(0.7, 8, 8);
-      const particleMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
-      const particle = new THREE.Mesh(particleGeo, particleMat);
-      particle.userData = { curve, progress: Math.random() };
-      flightGroup.add(particle);
-      flightParticles.push(particle);
-    });
-    globeMesh.add(flightGroup);
-
-    // 5. Weather Systems Overlay (Orbital storm clouds)
+    // Weather Systems Overlay (Orbital storm clouds)
     const weatherGroup = new THREE.Group();
     const weatherCount = 8;
     const weatherNodes = [];
     for (let i = 0; i < weatherCount; i++) {
-      const stormGeo = new THREE.DodecahedronGeometry(2, 1);
+      const stormGeo = new THREE.DodecahedronGeometry(1.8, 1);
       const stormMat = new THREE.MeshBasicMaterial({
         color: 0x38bdf8,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.25,
         wireframe: true
       });
       const stormMesh = new THREE.Mesh(stormGeo, stormMat);
@@ -224,7 +231,7 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
-      const r = radius + 6;
+      const r = radius + 4;
       
       stormMesh.position.set(
         r * Math.sin(phi) * Math.cos(theta),
@@ -238,9 +245,46 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
       weatherGroup.add(stormMesh);
       weatherNodes.push(stormMesh);
     }
-    globeMesh.add(weatherGroup);
+    scene.add(weatherGroup);
 
-    // Interaction Raycaster
+    // Dynamic Flight Paths (glowing curved route rails)
+    const flightGroup = new THREE.Group();
+    const curves = [];
+    const flightParticles = [];
+    
+    // Connect Delhi to all other nodes
+    const hubPos = convertLatLonToVector3(20.5937, 78.9629, radius); // India center as hub
+    COUNTRIES_LIST.forEach((pin) => {
+      if (pin.name === 'India') return;
+      const targetPos = convertLatLonToVector3(pin.lat, pin.lon, radius);
+      const midPoint = new THREE.Vector3().addVectors(hubPos, targetPos).multiplyScalar(0.5);
+      const dist = hubPos.distanceTo(targetPos);
+      midPoint.normalize().multiplyScalar(radius + dist * 0.35);
+
+      const curve = new THREE.QuadraticBezierCurve3(hubPos, midPoint, targetPos);
+      curves.push(curve);
+
+      const points = curve.getPoints(50);
+      const pathGeo = new THREE.BufferGeometry().setFromPoints(points);
+      const pathMat = new THREE.LineBasicMaterial({
+        color: 0x0ea5e9,
+        transparent: true,
+        opacity: 0.25
+      });
+      const flightLine = new THREE.Line(pathGeo, pathMat);
+      flightGroup.add(flightLine);
+
+      // Pulsing particle node on path
+      const pGeo = new THREE.SphereGeometry(0.5, 8, 8);
+      const pMat = new THREE.MeshBasicMaterial({ color: 0x2dd4bf });
+      const particle = new THREE.Mesh(pGeo, pMat);
+      particle.userData = { curve, progress: Math.random() };
+      flightGroup.add(particle);
+      flightParticles.push(particle);
+    });
+    scene.add(flightGroup);
+
+    // Raycaster for click interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -250,55 +294,48 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(pinObjects);
+      const intersects = raycaster.intersectObjects(countryBeacons);
 
       if (intersects.length > 0) {
-        const clickedPin = intersects[0].object;
-        const pinData = clickedPin.userData;
-        
-        const destObj = mockDestinations.find(d => d.id === pinData.destId);
-        if (destObj) {
-          setActivePin(destObj);
-          if (onSelectDestination) {
-            onSelectDestination(destObj);
-          }
+        const clickedC = intersects[0].object.userData;
+        if (onSelectCountry) {
+          onSelectCountry(clickedC.name);
         }
-
-        controls.autoRotate = false;
-        const targetPos = clickedPin.position.clone().normalize().multiplyScalar(190);
-        
-        gsap.to(camera.position, {
-          x: targetPos.x,
-          y: targetPos.y,
-          z: targetPos.z,
-          duration: 1.2,
-          ease: 'power2.out',
-          onUpdate: () => {
-            controls.update();
-          }
-        });
-      }
-    };
-
-    const handleCanvasMouseMove = (event) => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(pinObjects);
-
-      if (intersects.length > 0) {
-        setHoveredPinName(intersects[0].object.userData.name);
-        document.body.style.cursor = 'pointer';
-      } else {
-        setHoveredPinName('');
-        document.body.style.cursor = 'default';
       }
     };
 
     renderer.domElement.addEventListener('click', handleCanvasClick);
-    renderer.domElement.addEventListener('mousemove', handleCanvasMouseMove);
+
+    // Animate Camera to focus country
+    const focusCountry = (countryName) => {
+      const match = COUNTRIES_LIST.find(c => c.name.toLowerCase() === countryName?.toLowerCase());
+      if (match) {
+        controls.autoRotate = false;
+        const targetPos = convertLatLonToVector3(match.lat, match.lon, radius * 2.3);
+        const lookTarget = convertLatLonToVector3(match.lat, match.lon, radius);
+
+        gsap.to(camera.position, {
+          x: targetPos.x,
+          y: targetPos.y,
+          z: targetPos.z,
+          duration: 1.6,
+          ease: 'power2.inOut',
+          onUpdate: () => controls.update()
+        });
+
+        gsap.to(controls.target, {
+          x: lookTarget.x,
+          y: lookTarget.y,
+          z: lookTarget.z,
+          duration: 1.6,
+          ease: 'power2.inOut'
+        });
+      }
+    };
+
+    if (selectedCountry) {
+      focusCountry(selectedCountry);
+    }
 
     const handleResize = () => {
       if (!mountRef.current) return;
@@ -310,62 +347,60 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     };
     window.addEventListener('resize', handleResize);
 
-    // Intersection observer to pause rendering when scrolled out of view
-    let isIntersecting = true;
-    const observer = new IntersectionObserver(([entry]) => {
-      isIntersecting = entry.isIntersecting;
-    }, { threshold: 0 });
-    if (mountRef.current) {
-      observer.observe(mountRef.current);
-    }
-
-    // Animation Loop
+    // Animation Tick
     const startTime = Date.now();
     let animationFrameId;
-    let lastFrameTime = performance.now();
-    const fpsInterval = 1000 / 60;
-
     let animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      
-      if (document.hidden || !isIntersecting) return;
+      const elapsedSeconds = (Date.now() - startTime) / 1000;
 
-      const now = performance.now();
-      const elapsed = now - lastFrameTime;
-      if (elapsed < fpsInterval) return;
-      lastFrameTime = now - (elapsed % fpsInterval);
+      // Smooth idle rotation if no country is selected
+      if (!selectedCountry) {
+        globeMesh.rotation.y = elapsedSeconds * 0.04;
+        dotGlobe.rotation.y = elapsedSeconds * 0.04;
+        beaconsGroup.rotation.y = elapsedSeconds * 0.04;
+        activeHighlightGroup.rotation.y = elapsedSeconds * 0.04;
+        flightGroup.rotation.y = elapsedSeconds * 0.04;
+      } else {
+        globeMesh.rotation.y = 0;
+        dotGlobe.rotation.y = 0;
+        beaconsGroup.rotation.y = 0;
+        activeHighlightGroup.rotation.y = 0;
+        flightGroup.rotation.y = 0;
+      }
 
-      const elapsedTime = (Date.now() - startTime) / 1000;
+      // Live daylight light sweep
+      dirLight.position.x = Math.cos(elapsedSeconds * 0.1) * 150;
+      dirLight.position.z = Math.sin(elapsedSeconds * 0.1) * 150;
 
-      // Slow rotation
-      globeMesh.rotation.y = elapsedTime * 0.02;
-
-      // Day/Night Shadow light sweep
-      dirLight.position.x = Math.cos(elapsedTime * 0.1) * 150;
-      dirLight.position.z = Math.sin(elapsedTime * 0.1) * 150;
-
-      // Animate rings
-      pinsGroup.children.forEach((child) => {
-        if (child.userData.isRing) {
-          const scale = 1.0 + Math.sin(elapsedTime * 5) * 0.25;
+      // Animate pulsing rings
+      beaconsGroup.children.forEach(child => {
+        if (child.userData.isPulse) {
+          const scale = 1.0 + Math.sin(elapsedSeconds * 4) * 0.2;
           child.scale.set(scale, scale, 1);
-          child.material.opacity = 0.5 - (scale - 0.75) * 0.5;
+          child.material.opacity = 0.6 - (scale - 0.8) * 0.5;
         }
       });
 
-      // Animate flight paths
-      flightParticles.forEach((part) => {
-        part.userData.progress += 0.003;
-        if (part.userData.progress > 1) {
-          part.userData.progress = 0;
+      // Animate active glow cylinder
+      activeHighlightGroup.children.forEach(child => {
+        if (child.userData.isGlow) {
+          const scale = 1.0 + Math.sin(elapsedSeconds * 5) * 0.15;
+          child.scale.set(scale, scale, 1);
         }
-        const pos = part.userData.curve.getPointAt(part.userData.progress);
-        part.position.copy(pos);
+      });
+
+      // Animate flight particles
+      flightParticles.forEach(p => {
+        p.userData.progress += 0.0035;
+        if (p.userData.progress > 1) p.userData.progress = 0;
+        const pos = p.userData.curve.getPointAt(p.userData.progress);
+        p.position.copy(pos);
       });
 
       // Rotate weather systems
       weatherNodes.forEach(node => {
-        node.position.applyAxisAngle(node.userData.axis, node.userData.speed * 0.01);
+        node.position.applyAxisAngle(node.userData.axis, node.userData.speed * 0.015);
       });
 
       controls.update();
@@ -377,91 +412,36 @@ export const FuturisticGlobe = ({ onSelectDestination }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
-      if (observer) observer.disconnect();
       if (renderer.domElement) {
         renderer.domElement.removeEventListener('click', handleCanvasClick);
-        renderer.domElement.removeEventListener('mousemove', handleCanvasMouseMove);
       }
       if (mountRef.current) {
         mountRef.current.innerHTML = '';
       }
       
-      scene.traverse((object) => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) {
-          if (Array.isArray(object.material)) {
-            object.material.forEach(mat => mat.dispose());
+      scene.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach(m => m.dispose());
           } else {
-            object.material.dispose();
+            obj.material.dispose();
           }
         }
       });
       renderer.dispose();
     };
-  }, [departureHub]);
+  }, [selectedCountry, viewMode]);
 
   return (
-    <div className="w-full h-full relative">
-      <div ref={mountRef} className="w-full h-full min-h-[380px] cursor-grab active:cursor-grabbing" />
-
-      {hoveredPinName && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-slate-950/80 border border-teal-500/30 rounded-xl text-teal-400 font-bold text-xs uppercase tracking-widest pointer-events-none shadow-lg backdrop-blur-md">
-          {hoveredPinName}
+    <div className="w-full h-full relative flex items-center justify-center">
+      {loadingTexture && (
+        <div className="absolute z-10 flex flex-col items-center gap-2 font-mono text-[9px] text-teal-400">
+          <div className="w-6 h-6 rounded-full border border-teal-500 border-t-transparent animate-spin" />
+          <span>DOWNLOADING ORBITAL TEXTURES...</span>
         </div>
       )}
-
-      {activePin && (
-        <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 p-5 rounded-2xl glass-neo border border-teal-500/20 text-slate-200 shadow-2xl flex flex-col gap-4 text-left animate-in fade-in slide-in-from-bottom-5 z-20">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-[9px] font-bold text-teal-400 uppercase tracking-widest text-left">Selected Hub Node</span>
-              <h4 className="font-display font-extrabold text-lg text-white mt-0.5 flex items-center gap-1.5 text-left">
-                <MapPin size={15} className="text-rose-500" />
-                {activePin.name}, {activePin.country}
-              </h4>
-            </div>
-            <button 
-              onClick={() => setActivePin(null)} 
-              className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <X size={14} />
-            </button>
-          </div>
-
-          <img 
-            src={activePin.image} 
-            alt={activePin.name} 
-            className="w-full h-28 object-cover rounded-xl border border-white/5"
-          />
-
-          <p className="text-[11px] text-slate-400 leading-relaxed font-semibold">
-            {activePin.description}
-          </p>
-
-          <div className="grid grid-cols-2 gap-3 text-[10px] bg-slate-950/40 p-2.5 rounded-xl border border-white/5 font-semibold">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-slate-500 uppercase font-bold text-[8px]">Index Price</span>
-              <span className="text-white font-mono">₹{activePin.price.toLocaleString('en-IN')} / traveller</span>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-slate-500 uppercase font-bold text-[8px]">Weather Advisory</span>
-              <span className="text-teal-400 font-mono">Moderate / Active</span>
-            </div>
-          </div>
-
-          <Link
-            to={`/destination/${activePin.id}`}
-            className="py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-center text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <Eye size={13} />
-            Inspect Coordinates
-          </Link>
-        </div>
-      )}
-
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] text-slate-500 uppercase tracking-widest font-bold pointer-events-none flex items-center gap-1.5 select-none opacity-60">
-        <Compass size={11} className="animate-spin duration-3000" /> Drag to spin globe • Tap pins to inspect details
-      </div>
+      <div ref={mountRef} className="w-full h-full min-h-[460px] cursor-grab active:cursor-grabbing" />
     </div>
   );
 };

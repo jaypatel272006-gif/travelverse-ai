@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sun, Moon, Heart, User, LogOut, Compass, Sparkles, Map, X,
-  CloudSun, CalendarDays, Landmark, Layers, Mic, Search, ArrowRight 
+  CloudSun, CalendarDays, Landmark, Layers, Mic, Search, ArrowRight, Bell 
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -18,12 +18,24 @@ export const Navbar = () => {
   const [voiceTooltip, setVoiceTooltip] = useState('Voice Commands');
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [paletteQuery, setPaletteQuery] = useState('');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: 'Sector Calibrated', desc: 'Solar matrices for Kashi Temple have aligned.', read: false, time: '2m ago' },
+    { id: 2, title: 'Flight Transit Clear', desc: 'Route delta from NYC to Tokyo is green.', read: false, time: '12m ago' },
+    { id: 3, title: 'XP Ledger Calibrated', desc: 'Commander profile earned 1,200 XP.', read: true, time: '1h ago' }
+  ]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -181,6 +193,34 @@ export const Navbar = () => {
     logout();
     setShowProfileMenu(false);
     navigate('/login');
+  };
+
+  const filteredItems = engineLinks.concat(navLinks).filter(item => 
+    item.label.toLowerCase().includes(paletteQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [paletteQuery]);
+
+  const handlePaletteKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev + 1) % Math.max(1, filteredItems.length));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev - 1 + filteredItems.length) % Math.max(1, filteredItems.length));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredItems[selectedIndex]) {
+        navigate(filteredItems[selectedIndex].path);
+        setIsPaletteOpen(false);
+        setPaletteQuery('');
+        setSelectedIndex(0);
+      }
+    } else if (e.key === 'Escape') {
+      setIsPaletteOpen(false);
+    }
   };
 
   const burgerVariants = {
@@ -375,6 +415,55 @@ export const Navbar = () => {
             {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
+          {/* Telemetry Notifications Center */}
+          <div className="relative">
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 relative transition-all duration-300 focus-visible:ring-2 focus-visible:ring-teal-500 outline-none hover:scale-[1.05] active:scale-[0.95]"
+              title="Telemetry Alerts"
+            >
+              <Bell size={15} />
+              {notifications.some(n => !n.read) && (
+                <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-teal-400 border border-slate-900 shadow-[0_0_8px_rgba(45,212,191,0.6)] animate-pulse" />
+              )}
+            </button>
+
+            <AnimatePresence>
+              {showNotifications && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 mt-2.5 w-72 rounded-2xl glass-neo shadow-2xl p-3.5 z-50 text-left border border-white/10"
+                  >
+                    <div className="flex justify-between items-center pb-2 border-b border-white/5 mb-2">
+                      <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider">Telemetry Alerts</span>
+                      <button 
+                        onClick={() => setNotifications(notifications.map(n => ({ ...n, read: true })))}
+                        className="text-[9px] text-teal-400 hover:underline font-mono cursor-pointer"
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                    <div className="flex flex-col gap-2 max-h-[220px] overflow-y-auto">
+                      {notifications.map(n => (
+                        <div key={n.id} className={`p-2.5 rounded-xl border transition-all ${n.read ? 'bg-transparent border-transparent' : 'bg-teal-500/5 border-teal-500/10'}`}>
+                          <div className="flex justify-between items-center">
+                            <span className="text-[10px] font-bold text-white">{n.title}</span>
+                            <span className="text-[8px] font-mono text-slate-500">{n.time}</span>
+                          </div>
+                          <p className="text-[9px] text-slate-400 mt-1 leading-relaxed">{n.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+
           {/* Wishlist Icon */}
           <Link
             to="/wishlist"
@@ -507,6 +596,15 @@ export const Navbar = () => {
             <motion.div animate={isOpen ? "opened" : "closed"} custom="bottom" variants={burgerVariants} className="w-5 h-0.5 bg-slate-500 dark:bg-slate-300 rounded" />
           </button>
         </div>
+        {/* Scroll Progress Bar */}
+        {isScrolled && (
+          <div className="absolute bottom-0 left-6 right-6 h-[1.5px] bg-white/5 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-teal-400 to-indigo-500 transition-all duration-75"
+              style={{ width: `${scrollProgress}%` }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Mobile Drawer navigation */}
@@ -675,6 +773,7 @@ export const Navbar = () => {
                   placeholder="Type a command or coordinate..."
                   value={paletteQuery}
                   onChange={(e) => setPaletteQuery(e.target.value)}
+                  onKeyDown={handlePaletteKeyDown}
                   className="bg-transparent border-none outline-none text-white text-xs w-full placeholder-slate-500 focus:ring-0 focus:outline-none font-mono"
                   autoFocus
                 />
@@ -683,18 +782,22 @@ export const Navbar = () => {
 
               <div className="mt-4 flex flex-col gap-1 max-h-[250px] overflow-y-auto">
                 <span className="text-[8px] font-mono font-bold text-slate-500 uppercase tracking-widest px-2 mb-1">AI TELEPORT DIRECTIVES</span>
-                {engineLinks.concat(navLinks).filter(item => item.label.toLowerCase().includes(paletteQuery.toLowerCase())).map(item => (
+                {filteredItems.map((item, idx) => (
                   <Link
                     key={item.path}
                     to={item.path}
                     onClick={() => { setIsPaletteOpen(false); setPaletteQuery(''); }}
-                    className="flex items-center justify-between p-2.5 hover:bg-white/5 rounded-xl text-xs font-semibold text-slate-300 hover:text-teal-400 transition-colors"
+                    className={`flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      idx === selectedIndex 
+                        ? 'bg-teal-500/15 text-teal-400 border-l-2 border-teal-500 pl-4 shadow-[0_0_15px_rgba(20,184,166,0.08)]' 
+                        : 'text-slate-350 hover:bg-white/5 hover:text-white'
+                    }`}
                   >
                     <div className="flex items-center gap-2">
                       {item.icon}
                       <span>{item.label}</span>
                     </div>
-                    <ArrowRight size={12} className="text-slate-600" />
+                    <ArrowRight size={12} className={idx === selectedIndex ? 'text-teal-400' : 'text-slate-600'} />
                   </Link>
                 ))}
               </div>
