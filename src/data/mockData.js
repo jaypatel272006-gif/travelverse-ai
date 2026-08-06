@@ -2360,7 +2360,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3120,
     price: 105000,
-    image: '',
+    image: 'https://res.cloudinary.com/icelandtours/g_auto,f_auto,c_fill,w_3840,q_auto:good/Aerial_view_of_famous_Hallgrimskirkja_Cathedral_and_the_city_of_Reykjavik_in_Iceland_2048x1364_jpg_9e12c95a02.webp',
     description: 'The land of fire and ice. Famous for active volcanoes, glaciers, black sand beaches, hot springs, and majestic waterfalls.',
     tags: ['Nature', 'Adventure', 'Offbeat'],
     coordinates: { x: 38, y: 15 },
