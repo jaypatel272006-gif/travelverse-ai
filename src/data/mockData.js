@@ -813,7 +813,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 4210,
     price: 38000,
-    image: '',
+    image: 'https://discover-uttarakhand.com/wp-content/uploads/2026/03/Kedarnath-Temple.webp',
     description: 'One of the most sacred Hindu shrines. Located high in the Garhwal Himalayas near Mandakini river, this ancient temple is dedicated to Lord Shiva.',
     tags: ['Spiritual', 'Adventure', 'Nature', 'Offbeat'],
     coordinates: { x: 64, y: 29 },
