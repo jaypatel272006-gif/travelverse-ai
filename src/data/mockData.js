@@ -1484,7 +1484,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 4670,
     price: 22000,
-    image: 'https://saishishirtours.in/wp-content/uploads/2025/07/Sai-Baba-Samadhi-Mandir.jpg',
+    image: '',
     description: 'The home of the revered saint Sai Baba. Located in Maharashtra, it attracts millions of multi-faith pilgrims celebrating universal peace and charity.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 34 },
