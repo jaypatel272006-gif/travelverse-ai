@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Heart, MapPin, ArrowRight, Sparkles, Bookmark, Eye, X } from 'lucide-react';
+import { Star, Heart, MapPin, ArrowRight, Sparkles, Bookmark, Eye, X, Sun, Clock, DollarSign } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { getResponsiveSrcSet } from '../utils/responsiveImages';
 
@@ -11,37 +11,52 @@ export const DestinationCard = memo(({ destination }) => {
   const { id, name, image, region, country, rating, reviewsCount, price, tags, description } = destination;
   const isWishlisted = isInWishlist('destinations', id);
 
-  // Local helper for season and duration
-  const getSeasonAndDuration = (targetId) => {
+  // Compute cinematic details: AI Match, score, weather & duration
+  const getCinematicDetails = (targetId, baseRating, basePrice) => {
+    // Derive match score and destination score
+    const matchScore = Math.min(100, Math.round(baseRating * 20)); // e.g. 4.9 -> 98%
+    const destScore = (baseRating * 2).toFixed(1); // e.g. 4.9 -> 9.8
+
+    let weatherText = '☀️ 24°C';
+    let durationText = '4-5 Days';
+
     switch (targetId) {
       case 'dest-goa':
-        return { season: 'Nov - Feb', duration: '4-5 Days' };
+        weatherText = '🌴 28°C'; durationText = '4 Days'; break;
       case 'dest-jaipur':
-        return { season: 'Oct - Mar', duration: '3-4 Days' };
+        weatherText = '🕌 31°C'; durationText = '3 Days'; break;
       case 'dest-delhi':
-        return { season: 'Oct - Mar', duration: '2-3 Days' };
+        weatherText = '🏙️ 24°C'; durationText = '3 Days'; break;
       case 'dest-agra':
-        return { season: 'Nov - Feb', duration: '2 Days' };
+        weatherText = '🏛️ 27°C'; durationText = '2 Days'; break;
       case 'dest-leh':
-        return { season: 'May - Sep', duration: '7-9 Days' };
+        weatherText = '❄️ 12°C'; durationText = '8 Days'; break;
       case 'dest-kerala':
-        return { season: 'Sep - Mar', duration: '6-8 Days' };
+        weatherText = '🌿 26°C'; durationText = '6 Days'; break;
       case 'dest-varanasi':
-        return { season: 'Oct - Mar', duration: '2-3 Days' };
+        weatherText = '🕉️ 30°C'; durationText = '3 Days'; break;
       default:
-        return { season: 'Oct - Mar', duration: '4-5 Days' };
+        weatherText = '☀️ 24°C'; durationText = '5 Days'; break;
     }
-  };
-  const { season, duration } = getSeasonAndDuration(id);
 
-  // 3D Tilt State
+    return {
+      matchScore,
+      destScore,
+      weatherText,
+      durationText,
+      budgetFormatted: `₹${basePrice.toLocaleString('en-IN')}`
+    };
+  };
+
+  const { matchScore, destScore, weatherText, durationText, budgetFormatted } = getCinematicDetails(id, rating, price);
+
+  // 3D Tilt coordinates
   const cardRef = useRef(null);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [glareX, setGlareX] = useState(50);
   const [glareY, setGlareY] = useState(50);
   const [isHovered, setIsHovered] = useState(false);
-  const [isCompared, setIsCompared] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showQuickView, setShowQuickView] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
@@ -49,15 +64,12 @@ export const DestinationCard = memo(({ destination }) => {
 
   useEffect(() => {
     isMounted.current = true;
-    
     const handleCloseEvent = () => {
       if (isMounted.current) {
         setShowQuickView(false);
       }
     };
-    
     window.addEventListener('tv_close_all_previews', handleCloseEvent);
-    
     return () => {
       isMounted.current = false;
       window.removeEventListener('tv_close_all_previews', handleCloseEvent);
@@ -67,44 +79,22 @@ export const DestinationCard = memo(({ destination }) => {
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    // Relative mouse coordinates from center (-0.5 to 0.5)
-    const mouseX = (e.clientX - rect.left) / width - 0.5;
-    const mouseY = (e.clientY - rect.top) / height - 0.5;
+    const w = rect.width;
+    const h = rect.height;
+    const mouseX = (e.clientX - rect.left) / w - 0.5;
+    const mouseY = (e.clientY - rect.top) / h - 0.5;
 
-    // Set rotation degrees (max 12deg)
     setRotateX(-mouseY * 12);
     setRotateY(mouseX * 12);
-
-    // Glare coordinates
-    setGlareX(((e.clientX - rect.left) / width) * 100);
-    setGlareY(((e.clientY - rect.top) / height) * 100);
+    setGlareX(((e.clientX - rect.left) / w) * 100);
+    setGlareY(((e.clientY - rect.top) / h) * 100);
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
+  const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
     setIsHovered(false);
     setRotateX(0);
     setRotateY(0);
-  };
-
-  const handleCompareToggle = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsCompared(prev => {
-      const next = !prev;
-      if (next) {
-        showToast(`${name} added to comparison matrix.`, 'success');
-      } else {
-        showToast(`${name} removed from comparison matrix.`, 'info');
-      }
-      return next;
-    });
   };
 
   const handleBookmarkToggle = (e) => {
@@ -112,11 +102,7 @@ export const DestinationCard = memo(({ destination }) => {
     e.stopPropagation();
     setIsBookmarked(prev => {
       const next = !prev;
-      if (next) {
-        showToast(`${name} added to saved dossiers.`, 'success');
-      } else {
-        showToast(`${name} removed from saved dossiers.`, 'info');
-      }
+      showToast(`${name} ${next ? 'bookmarked' : 'unbookmarked'}.`, 'success');
       return next;
     });
   };
@@ -124,10 +110,7 @@ export const DestinationCard = memo(({ destination }) => {
   const handleQuickViewClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Broadcast event to close any other active quick preview modals
     window.dispatchEvent(new CustomEvent('tv_close_all_previews'));
-    
     setShowQuickView(true);
     setIsImageLoading(true);
   };
@@ -139,10 +122,10 @@ export const DestinationCard = memo(({ destination }) => {
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         style={{
           transformStyle: 'preserve-3d',
           perspective: 1000
@@ -150,233 +133,146 @@ export const DestinationCard = memo(({ destination }) => {
         animate={{
           rotateX: isHovered ? rotateX : 0,
           rotateY: isHovered ? rotateY : 0,
-          y: isHovered ? -12 : 0,
-          boxShadow: isHovered 
-            ? '0 30px 60px rgba(0, 0, 0, 0.45), 0 10px 30px rgba(20, 184, 166, 0.15)' 
-            : '0 8px 30px rgba(0, 0, 0, 0.04)'
+          y: isHovered ? -10 : 0
         }}
-        className="group relative flex flex-col h-full rounded-[28px] overflow-hidden border border-slate-200/50 dark:border-teal-500/20 bg-white dark:bg-slate-950/20 glass-card-neo transition-all duration-300 select-none shadow-[0_10px_40px_rgba(0,0,0,0.03)] dark:shadow-[0_12px_45px_rgba(0,0,0,0.4)]"
+        className="group relative w-full h-[470px] rounded-[32px] overflow-hidden border border-slate-200/50 dark:border-white/5 bg-slate-950 transition-shadow duration-500 shadow-2xl select-none"
       >
-        {/* Glare Overlay */}
-        {isHovered && (
-          <div
-            className="absolute inset-0 pointer-events-none z-30 transition-opacity duration-300 opacity-25"
-            style={{
-              background: `radial-gradient(circle 180px at ${glareX}% ${glareY}%, rgba(255,255,255,0.7), transparent 80%)`
-            }}
-          />
-        )}
-
-        {/* Holographic Border Glow */}
-        {isHovered && (
-          <div 
-            className="absolute inset-0 pointer-events-none rounded-2xl z-20 border-[1.5px] opacity-60 transition-opacity duration-300"
-            style={{
-              borderColor: 'transparent',
-              background: `radial-gradient(circle 200px at ${glareX}% ${glareY}%, rgba(45, 212, 191, 0.8), rgba(219, 39, 119, 0.4) 50%, transparent) border-box`,
-              WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude'
-            }}
-          />
-        )}
-
-        {/* Image Container - Larger & Responsive */}
-        <div 
-          className="relative aspect-[16/10] overflow-hidden w-full"
-          style={{ transform: 'translateZ(20px)' }}
-        >
+        {/* Full Image Background (Cinematic Large Photography) */}
+        <div className="absolute inset-0 z-0">
           <img
             src={customPhotos[id] || image}
             srcSet={getResponsiveSrcSet(customPhotos[id] || image)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             alt={name}
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[1200ms] cubic-bezier(0.16, 1, 0.3, 1)"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
             loading="lazy"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-              e.target.srcset = '';
+          />
+          {/* Layered cinematic gradient shadow mask */}
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent z-10" />
+        </div>
+
+        {/* Glare Reflection Light */}
+        {isHovered && (
+          <div
+            className="absolute inset-0 pointer-events-none z-20 transition-opacity duration-300 opacity-20"
+            style={{
+              background: `radial-gradient(circle 220px at ${glareX}% ${glareY}%, rgba(255,255,255,0.8), transparent 80%)`
             }}
           />
-          
-          {/* Soft Premium Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent opacity-95" />
+        )}
 
-          {/* Region Tag & Modern Badges */}
-          <div className="absolute top-4 left-4 flex gap-1.5 flex-wrap max-w-[80%] items-center z-20">
-            <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono tracking-wide uppercase bg-slate-950/80 border border-teal-500/20 text-teal-400 rounded-full backdrop-blur-md">
-              {region}
+        {/* Floating Top HUD */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-25">
+          {/* Match Score Badge */}
+          <div className="flex gap-2">
+            <span className="px-3 py-1 text-[8px] font-mono font-bold tracking-wider uppercase rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 backdrop-blur-md shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+              ✨ {matchScore}% MATCH
             </span>
-            {rating >= 4.7 && (
-              <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono uppercase bg-indigo-950/90 border border-indigo-500/30 text-indigo-300 backdrop-blur-md rounded-full flex items-center gap-1 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                <Sparkles size={9} className="text-indigo-400 animate-pulse" /> AI Recommended
-              </span>
-            )}
-            <span className="px-2.5 py-1 text-[8.5px] font-bold font-mono uppercase bg-slate-950/80 border border-emerald-500/20 text-emerald-400 backdrop-blur-md rounded-full flex items-center gap-1">
-              ✓ Verified
+            <span className="px-3 py-1 text-[8px] font-mono font-bold uppercase rounded-full bg-teal-500/15 border border-teal-500/30 text-teal-400 backdrop-blur-md">
+              ★ {destScore} SCORE
             </span>
           </div>
 
-          {/* Quick-Action Controls (Top-Right Icons) */}
-          <div className="absolute top-4 right-4 flex gap-1.5 z-20">
-            {/* Bookmark Button */}
+          {/* Frosted Action Controllers */}
+          <div className="flex gap-2">
             <motion.button
               onClick={handleBookmarkToggle}
-              whileHover={{ scale: 1.15, rotate: 5 }}
+              whileHover={{ scale: 1.12 }}
               whileTap={{ scale: 0.95 }}
-              className={`p-2.5 rounded-full border shadow-sm transition-all duration-300 backdrop-blur-md ${
+              className={`p-2 rounded-full border backdrop-blur-md transition-all cursor-pointer ${
                 isBookmarked
                   ? 'bg-teal-500/90 border-teal-400 text-slate-950'
                   : 'bg-slate-950/60 border-white/10 text-slate-300 hover:text-white'
               }`}
             >
-              <Bookmark size={14} fill={isBookmarked ? 'currentColor' : 'none'} className="transition-colors duration-200" />
+              <Bookmark size={12} fill={isBookmarked ? 'currentColor' : 'none'} />
             </motion.button>
-
-            {/* Favorite Button */}
             <motion.button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleWishlist('destinations', destination);
-              }}
-              whileHover={{ scale: 1.15, rotate: -5 }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist('destinations', destination); }}
+              whileHover={{ scale: 1.12 }}
               whileTap={{ scale: 0.95 }}
-              className={`p-2.5 rounded-full border shadow-sm transition-all duration-300 backdrop-blur-md ${
+              className={`p-2 rounded-full border backdrop-blur-md transition-all cursor-pointer ${
                 isWishlisted
                   ? 'bg-rose-500/90 border-rose-450 text-white'
                   : 'bg-slate-950/60 border-white/10 text-slate-300 hover:text-rose-400'
               }`}
             >
-              <Heart size={14} fill={isWishlisted ? 'currentColor' : 'none'} className="transition-colors duration-200" />
+              <Heart size={12} fill={isWishlisted ? 'currentColor' : 'none'} />
             </motion.button>
-          </div>
-
-          {/* Premium Hover Actions Overlay (Buttons Appear) */}
-          <div className="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2.5 z-10">
-            <motion.button
-              onClick={handleQuickViewClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2.5 rounded-xl bg-teal-500 text-slate-950 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer"
-            >
-              <Eye size={12} />
-              Quick Preview
-            </motion.button>
-            <motion.button
-              onClick={handleCompareToggle}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg cursor-pointer ${
-                isCompared
-                  ? 'bg-emerald-500 text-slate-950'
-                  : 'bg-slate-900 border border-white/10 text-white hover:bg-slate-800'
-              }`}
-            >
-              Compare
-            </motion.button>
-          </div>
-
-          {/* Price Tag Overlay */}
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end z-10">
-            <div className="flex items-center gap-1 text-white">
-              <MapPin size={14} className="text-teal-400" />
-              <span className="text-xs font-semibold drop-shadow-md">{country}</span>
-            </div>
-            <div className="flex flex-col items-end">
-              <span className="text-[8.5px] text-teal-300 uppercase tracking-widest font-bold font-mono">Starts at</span>
-              <span className="text-lg font-black text-white leading-none">₹{price.toLocaleString('en-IN')}</span>
-            </div>
           </div>
         </div>
 
-        {/* Content Panel */}
-        <div 
-          className="p-6 flex-1 flex flex-col justify-between"
-          style={{ transform: 'translateZ(10px)' }}
-        >
+        {/* Sliding Apple Glass Card overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-5 z-25 bg-slate-950/75 backdrop-blur-lg border-t border-white/10 rounded-t-[28px] transform translate-y-[140px] group-hover:translate-y-0 transition-transform duration-500 ease-out flex flex-col gap-4 text-left">
+          
+          {/* Header metadata row */}
           <div>
-            {/* Header / Title & Star Rating */}
-            <div className="flex justify-between items-start gap-2 mb-2">
-              <h3 className="text-lg font-bold tracking-tight text-slate-800 dark:text-slate-100 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors duration-300 line-clamp-1">
-                {name}
-              </h3>
-              <div className="flex items-center gap-1 shrink-0 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-slate-200/50 dark:border-white/5">
-                <Star size={12} className="text-amber-500 fill-amber-500" />
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{rating}</span>
-                <span className="text-[9px] text-slate-400 font-mono">({reviewsCount})</span>
+            <div className="flex justify-between items-start gap-1">
+              <div>
+                <span className="text-[8px] font-mono text-teal-400 font-bold uppercase tracking-wider">{region}</span>
+                <h3 className="text-base font-display font-black text-white leading-tight mt-0.5">{name}</h3>
+                <div className="flex items-center gap-1 mt-1 text-[10px] text-slate-400 font-mono">
+                  <MapPin size={10} className="text-teal-400 shrink-0" />
+                  <span>{country}</span>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-[7.5px] text-slate-500 uppercase tracking-widest font-mono block">Starts at</span>
+                <span className="text-base font-black text-teal-400 font-mono">{budgetFormatted}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Description & Tags (Shown clearly when sliding up) */}
+          <div className="flex flex-col gap-3 border-t border-white/5 pt-3.5">
+            <p className="text-[11px] text-slate-350 leading-relaxed line-clamp-3">
+              {description}
+            </p>
+            
+            {/* Quick Metrics display */}
+            <div className="grid grid-cols-2 gap-2 text-[9px] font-mono text-slate-400 bg-slate-950/50 p-2.5 rounded-xl border border-white/5">
+              <div className="flex items-center gap-1.5">
+                <Sun size={11} className="text-amber-400 shrink-0" />
+                <span>{weatherText}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Clock size={11} className="text-teal-400 shrink-0" />
+                <span>{durationText}</span>
               </div>
             </div>
 
-            {/* Description */}
-            <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 leading-relaxed">
-              {description}
-            </p>
-
-            {/* Season & Duration Metadata */}
-            <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-slate-500 dark:text-slate-400 mb-4 border-y border-slate-100 dark:border-white/5 py-2.5">
-              <div className="flex items-center gap-1">☀️ <span className="font-bold text-slate-800 dark:text-slate-200">{season}</span></div>
-              <div className="flex items-center gap-1">⏳ <span className="font-bold text-slate-800 dark:text-slate-200">{duration}</span></div>
-            </div>
-
-            {/* Badges / Tags */}
-            <div className="flex flex-wrap gap-1 mb-4">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 text-[9px] font-bold uppercase rounded bg-teal-50 dark:bg-teal-950/20 text-teal-700 dark:text-teal-300 border border-teal-100/50 dark:border-teal-900/10"
-                >
+            {/* Tags list */}
+            <div className="flex flex-wrap gap-1.5">
+              {tags.slice(0, 3).map(tag => (
+                <span key={tag} className="px-2 py-0.5 rounded bg-white/5 border border-white/5 text-[8.5px] uppercase font-mono text-slate-400">
                   {tag}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Footer Actions */}
-          <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex flex-col gap-4 mt-auto">
-            <div className="flex justify-between items-center text-[10px]">
-              <label className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 cursor-pointer select-none">
-                <input 
-                  type="checkbox" 
-                  onClick={(e) => e.stopPropagation()} 
-                  checked={isCompared}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setIsCompared(checked);
-                    if (checked) {
-                      showToast(`${name} added to comparison matrix.`, 'success');
-                    } else {
-                      showToast(`${name} removed from comparison matrix.`, 'info');
-                    }
-                  }}
-                  className="rounded text-teal-500 focus:ring-teal-500 bg-slate-950 border-white/5 w-3 h-3" 
-                />
-                <span>Compare Sector</span>
-              </label>
-              <span className="text-slate-400 font-mono text-[9px] uppercase">{region}</span>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex justify-between items-center gap-4">
-              <Link
-                to={`/destination/${id}`}
-                className="text-xs font-bold text-teal-600 dark:text-teal-400 flex items-center gap-1 hover:underline group-hover:gap-2 transition-all duration-300"
-              >
-                Explore Dossier
-                <ArrowRight size={14} />
-              </Link>
-              <Link
-                to={`/planner?destination=${name}`}
-                className="px-4 py-2 text-xs font-mono font-bold uppercase rounded-xl bg-gradient-to-r from-teal-500 to-sky-500 text-slate-950 hover:shadow-[0_0_15px_rgba(45,212,191,0.4)] transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] cursor-pointer shadow-md"
-              >
-                Plan Itinerary
-              </Link>
-            </div>
+          {/* Interactive buttons */}
+          <div className="grid grid-cols-2 gap-2.5 border-t border-white/5 pt-3 mt-auto">
+            <button
+              onClick={handleQuickViewClick}
+              className="py-2.5 rounded-xl border border-white/10 text-white font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors hover:bg-white/5 cursor-pointer"
+            >
+              <Eye size={12} />
+              Quick Preview
+            </button>
+            <Link
+              to={`/destination/${id}`}
+              className="py-2.5 rounded-xl bg-teal-500 text-slate-950 font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02] shadow-[0_0_15px_rgba(45,212,191,0.2)]"
+            >
+              Dossier File
+              <ArrowRight size={12} />
+            </Link>
           </div>
+
         </div>
       </motion.div>
-      {/* Quick View Modal Overlay rendered via React Portal */}
+
+      {/* Quick View Portal overlay */}
       {createPortal(
         <AnimatePresence>
           {showQuickView && (
@@ -412,17 +308,11 @@ export const DestinationCard = memo(({ destination }) => {
                     src={customPhotos[id] || image}
                     alt={name}
                     className="w-full h-full object-cover"
-                    onLoad={() => {
-                      if (isMounted.current) {
-                        setIsImageLoading(false);
-                      }
-                    }}
+                    onLoad={() => { if (isMounted.current) setIsImageLoading(false); }}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80';
-                      if (isMounted.current) {
-                        setIsImageLoading(false);
-                      }
+                      if (isMounted.current) setIsImageLoading(false);
                     }}
                   />
                 </div>
@@ -430,8 +320,8 @@ export const DestinationCard = memo(({ destination }) => {
                 <div>
                   <div className="flex justify-between items-start">
                     <h3 className="text-xl font-bold text-white">{name}</h3>
-                    <span className="text-amber-500 font-bold flex items-center gap-1">
-                      ★ {rating} <span className="text-xs text-slate-400 font-normal font-mono">({reviewsCount})</span>
+                    <span className="text-teal-400 font-bold flex items-center gap-1.5 font-mono text-xs">
+                      ★ {destScore} SCORE
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-2 leading-relaxed">{description}</p>
@@ -440,12 +330,13 @@ export const DestinationCard = memo(({ destination }) => {
                 <div className="grid grid-cols-2 gap-3 text-xs text-slate-350 font-mono bg-slate-950/40 p-3 rounded-xl border border-white/5">
                   <div>Region: <span className="text-teal-400 font-bold">{region}</span></div>
                   <div>Country: <span className="text-teal-400 font-bold">{country}</span></div>
-                  <div>Best Season: <span className="text-teal-400 font-bold">{season}</span></div>
-                  <div>Duration: <span className="text-teal-400 font-bold">{duration}</span></div>
+                  <div>Weather Index: <span className="text-teal-400 font-bold">{weatherText}</span></div>
+                  <div>Ideal Duration: <span className="text-teal-400 font-bold">{durationText}</span></div>
+                  <div>AI Match Rating: <span className="text-emerald-400 font-bold">{matchScore}% MATCH</span></div>
                 </div>
 
                 <div className="flex justify-between items-center mt-2 border-t border-white/5 pt-4">
-                  <span className="text-lg font-black text-white">₹{price.toLocaleString('en-IN')}</span>
+                  <span className="text-lg font-black text-white font-mono">{budgetFormatted}</span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowQuickView(false)}
@@ -458,7 +349,7 @@ export const DestinationCard = memo(({ destination }) => {
                       onClick={() => setShowQuickView(false)}
                       className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-xl text-xs font-bold transition-all"
                     >
-                      Go to Dossier
+                      Explore Dossier
                     </Link>
                   </div>
                 </div>
