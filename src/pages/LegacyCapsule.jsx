@@ -1,292 +1,151 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Clock, Award, ShieldAlert, Download, Heart, Compass, Plus, Trash2, Calendar, FileText, Share2, Printer } from 'lucide-react';
+import { 
+  Camera, Clock, Heart, Compass, Plus, Trash2, Calendar, 
+  Share2, Eye, MapPin, Film, FolderHeart, Activity, Award, ShieldAlert 
+} from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
-export const LegacyCapsule = () => {
-  const { user, userLevel, awardXp, showToast } = useApp();
-  const [activeTab, setActiveTab] = useState('poster'); // poster, capsule, pass
-  
-  // Poster states
-  const [selectedDest, setSelectedDest] = useState('Kyoto');
-  const [tagline, setTagline] = useState('NEON STREETS & ANCIENT SPIRITS');
-  const [artStyle, setArtStyle] = useState('Cyber Neon 2100'); // Cyber Neon 2100, Retro 1980s, Minimalist Vector
-  const canvasRef = useRef(null);
+// High-fidelity database of memories
+const INITIAL_MEMORIES = [
+  {
+    id: 'mem-1',
+    title: 'Sunrise at Varanasi Ghats',
+    date: '2026-05-12',
+    location: 'Varanasi, India',
+    coords: { x: 140, y: 120 },
+    category: 'Cultural',
+    mediaType: 'image',
+    mediaUrl: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=600&q=80',
+    journal: 'The sun emerged as a golden orb casting warm light across the Ganga Aarti. The smell of incense and sound of chants made me feel a deep, calm connection to the flow of time itself.',
+    album: 'Cultural Trails'
+  },
+  {
+    id: 'mem-2',
+    title: 'Himalayan Base Camp Trek',
+    date: '2026-03-24',
+    location: 'Kedarnath, India',
+    coords: { x: 120, y: 90 },
+    category: 'Adventure',
+    mediaType: 'image',
+    mediaUrl: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80',
+    journal: 'Trekking at 11,750 ft was physically exhausting, but seeing the temple spires emerge from the morning fog made the struggle instantly fade. A moment of absolute clarity.',
+    album: 'Mountain Peaks'
+  },
+  {
+    id: 'mem-3',
+    title: 'Exploring Gion district',
+    date: '2025-11-18',
+    location: 'Kyoto, Japan',
+    coords: { x: 230, y: 110 },
+    category: 'Urban',
+    mediaType: 'video',
+    mediaUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80',
+    journal: 'Rainy night in Gion. The neon reflections on wet cobblestones created a stunning blend of past and future. I spent hours photographing the wooden arches.',
+    album: 'Urban Grids'
+  },
+  {
+    id: 'mem-4',
+    title: 'Glacial Aurora over Tromso',
+    date: '2025-01-05',
+    location: 'Tromso, Norway',
+    coords: { x: 90, y: 50 },
+    category: 'Nature',
+    mediaType: 'image',
+    mediaUrl: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=600&q=80',
+    journal: 'The aurora waves danced in green and purple spirals across the Arctic sky. Standing on the frozen fjord, I felt incredibly small yet deeply connected to the cosmos.',
+    album: 'Mountain Peaks'
+  }
+];
 
-  // Time Capsule states
-  const [capsules, setCapsules] = useState(() => {
-    try {
-      const saved = localStorage.getItem('tv_time_capsules');
-      return saved ? JSON.parse(saved) : [
-        {
-          id: 'cap-1',
-          title: 'Voyage to the Northern Lights',
-          destination: 'Tromso, Norway',
-          unlockDate: '2026-12-25T00:00:00.000Z',
-          message: 'Dear Self, I hope you finally saw the green aurora waves in Norway. Remember the chilly nights and hot cocoa!',
-          sealed: true
-        }
-      ];
-    } catch (e) {
-      console.warn("Failed to parse tv_time_capsules:", e);
-      return [
-        {
-          id: 'cap-1',
-          title: 'Voyage to the Northern Lights',
-          destination: 'Tromso, Norway',
-          unlockDate: '2026-12-25T00:00:00.000Z',
-          message: 'Dear Self, I hope you finally saw the green aurora waves in Norway. Remember the chilly nights and hot cocoa!',
-          sealed: true
-        }
-      ];
-    }
+export const LegacyCapsule = () => {
+  const { user, showToast, awardXp } = useApp();
+  const [activeTab, setActiveTab] = useState('library'); // library, albums, map, capsule
+  const [selectedYear, setSelectedYear] = useState('All'); // All, 2026, 2025
+  const [activeMemory, setActiveMemory] = useState(null); // Active memory for lightbox preview
+  
+  // Custom states
+  const [memories, setMemories] = useState(() => {
+    const saved = localStorage.getItem('tv_travel_memories');
+    return saved ? JSON.parse(saved) : INITIAL_MEMORIES;
   });
+
+  const [capsules, setCapsules] = useState(() => {
+    const saved = localStorage.getItem('tv_time_capsules');
+    return saved ? JSON.parse(saved) : [
+      {
+        id: 'cap-1',
+        title: 'Arctic Solar Waves',
+        destination: 'Tromso, Norway',
+        unlockDate: '2026-12-25T00:00:00.000Z',
+        message: 'Dear Self, remember the green aurora spirals floating over the fjord. Keep seeking clean mountain valleys.',
+        sealed: true
+      }
+    ];
+  });
+
+  // State for creating new memories
+  const [newTitle, setNewTitle] = useState('');
+  const [newLoc, setNewLoc] = useState('');
+  const [newJournal, setNewJournal] = useState('');
+  const [newImg, setNewImg] = useState('');
+  const [newAlbum, setNewAlbum] = useState('Mountain Peaks');
+
+  // Capsule input states
   const [capTitle, setCapTitle] = useState('');
   const [capDest, setCapDest] = useState('');
   const [capDate, setCapDate] = useState('');
   const [capMsg, setCapMsg] = useState('');
 
-  // Boarding Pass states
-  const [ticketDest, setTicketDest] = useState('Kyoto');
-  const [cabinClass, setCabinClass] = useState('Hologram Suite'); // First Class Quantum, Hologram Suite, Cyber Deck Coach
+  useEffect(() => {
+    localStorage.setItem('tv_travel_memories', JSON.stringify(memories));
+  }, [memories]);
 
-  // Save capsules to local storage
   useEffect(() => {
     localStorage.setItem('tv_time_capsules', JSON.stringify(capsules));
   }, [capsules]);
 
-  // Determine Explorer Rank based on Level
-  const getExplorerRank = (level) => {
-    if (level === 1) return 'Traveler';
-    if (level <= 3) return 'Voyage Explorer';
-    if (level <= 5) return 'Galactic Adventurer';
-    if (level <= 7) return 'Cyber Pathfinder';
-    if (level <= 9) return 'Horizon Voyager';
-    return 'Planetary Legend';
-  };
-  const currentRank = getExplorerRank(userLevel);
-
-  // Redraw poster on canvas
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || activeTab !== 'poster') return;
-    const ctx = canvas.getContext('2d');
-    
-    // Set high DPI scale
-    canvas.width = 800;
-    canvas.height = 1100;
-    
-    ctx.clearRect(0, 0, 800, 1100);
-
-    if (artStyle === 'Cyber Neon 2100') {
-      // Background gradient
-      const grad = ctx.createRadialGradient(400, 550, 50, 400, 550, 600);
-      grad.addColorStop(0, '#111026');
-      grad.addColorStop(0.5, '#070510');
-      grad.addColorStop(1, '#020105');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 800, 1100);
-
-      // Neon grid lines
-      ctx.strokeStyle = 'rgba(20, 184, 166, 0.15)';
-      ctx.lineWidth = 1;
-      for (let i = 0; i < 800; i += 40) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, 1100);
-        ctx.stroke();
-      }
-      for (let j = 0; j < 1100; j += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, j);
-        ctx.lineTo(800, j);
-        ctx.stroke();
-      }
-
-      // Neon glowing circles (cyber orb)
-      const glowGrad = ctx.createRadialGradient(400, 420, 0, 400, 420, 240);
-      glowGrad.addColorStop(0, 'rgba(99, 102, 241, 0.45)');
-      glowGrad.addColorStop(0.5, 'rgba(20, 184, 166, 0.15)');
-      glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = glowGrad;
-      ctx.beginPath();
-      ctx.arc(400, 420, 240, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Cyber lines & rings
-      ctx.strokeStyle = '#14b8a6';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(400, 420, 200, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.strokeStyle = '#6366f1';
-      ctx.setLineDash([10, 15]);
-      ctx.beginPath();
-      ctx.arc(400, 420, 220, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Typography
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'black 90px "Arial Black", Impact, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.shadowColor = '#14b8a6';
-      ctx.shadowBlur = 20;
-      ctx.fillText(selectedDest.toUpperCase(), 400, 780);
-
-      ctx.fillStyle = '#22d3ee';
-      ctx.font = 'bold 22px "Courier New", monospace';
-      ctx.shadowBlur = 8;
-      ctx.fillText(tagline.toUpperCase(), 400, 830);
-
-      // Watermark
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.font = 'bold 12px "Courier New", monospace';
-      ctx.shadowBlur = 0;
-      ctx.fillText('TRAVELVERSE DIGITAL CORE // OS 2200 // PROJECT LEGACY', 400, 1040);
-      
-      // Border frame
-      ctx.strokeStyle = '#14b8a6';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(30, 30, 740, 1040);
-
-    } else if (artStyle === 'Retro 1980s') {
-      // Synthwave gradient background
-      const grad = ctx.createLinearGradient(0, 0, 0, 1100);
-      grad.addColorStop(0, '#020005');
-      grad.addColorStop(0.4, '#1b092f');
-      grad.addColorStop(0.7, '#8e1b6d');
-      grad.addColorStop(1, '#ff4785');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 800, 1100);
-
-      // Sliced Retro Sun
-      const sunGrad = ctx.createLinearGradient(400, 200, 400, 600);
-      sunGrad.addColorStop(0, '#ffdf00');
-      sunGrad.addColorStop(1, '#ff2a85');
-      ctx.fillStyle = sunGrad;
-      
-      for (let i = 0; i < 20; i++) {
-        const yStart = 200 + i * 20;
-        const height = 14 + (i * 0.3);
-        // Crop arc inside sun bounds
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(400, 400, 200, 0, Math.PI * 2);
-        ctx.clip();
-        ctx.fillRect(200, yStart, 400, height);
-        ctx.restore();
-      }
-
-      // Grid landscape lines converging to center horizon (Y=600)
-      ctx.strokeStyle = '#2adeff';
-      ctx.lineWidth = 1.5;
-      for (let i = -400; i <= 1200; i += 80) {
-        ctx.beginPath();
-        ctx.moveTo(i, 1100);
-        ctx.lineTo(400, 580);
-        ctx.stroke();
-      }
-      // Horizontal grid lines
-      for (let j = 580; j <= 1100; j += (1100 - j) * 0.15 + 4) {
-        ctx.beginPath();
-        ctx.moveTo(0, j);
-        ctx.lineTo(800, j);
-        ctx.stroke();
-      }
-
-      // Title Text
-      ctx.fillStyle = '#2adeff';
-      ctx.font = 'italic italic bold 100px "Arial Black", Impact, sans-serif';
-      ctx.textAlign = 'center';
-      
-      // Neon glow stroke
-      ctx.strokeStyle = '#ff2a85';
-      ctx.lineWidth = 12;
-      ctx.strokeText(selectedDest.toUpperCase(), 400, 820);
-      
-      ctx.fillText(selectedDest.toUpperCase(), 400, 820);
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'italic bold 20px sans-serif';
-      ctx.fillText(tagline.toUpperCase(), 400, 875);
-
-      // Watermark
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.font = 'bold 12px "Courier New", monospace';
-      ctx.fillText('RETRO WAVE SYSTEM VECTORS // SOUVENIR PROTOCOL', 400, 1030);
-
-      // Border frame
-      ctx.strokeStyle = '#ff2a85';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(30, 30, 740, 1040);
-
-    } else {
-      // Minimalist Vector
-      ctx.fillStyle = '#faf8f5';
-      ctx.fillRect(0, 0, 800, 1100);
-
-      // Terracotta circle sun
-      ctx.fillStyle = '#e07a5f';
-      ctx.beginPath();
-      ctx.arc(400, 400, 180, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Sage green sand dune curve
-      ctx.fillStyle = '#81b29a';
-      ctx.beginPath();
-      ctx.moveTo(0, 750);
-      ctx.bezierCurveTo(200, 680, 500, 850, 800, 720);
-      ctx.lineTo(800, 1100);
-      ctx.lineTo(0, 1100);
-      ctx.closePath();
-      ctx.fill();
-
-      // Deep navy wave bottom
-      ctx.fillStyle = '#f4f1de';
-      ctx.beginPath();
-      ctx.moveTo(0, 880);
-      ctx.bezierCurveTo(300, 920, 600, 820, 800, 870);
-      ctx.lineTo(800, 1100);
-      ctx.lineTo(0, 1100);
-      ctx.closePath();
-      ctx.fill();
-
-      // Minimalist Frame Border
-      ctx.strokeStyle = '#3d405b';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(40, 40, 720, 1020);
-
-      // Text block
-      ctx.fillStyle = '#3d405b';
-      ctx.font = 'bold 64px "Georgia", serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(selectedDest, 400, 960);
-
-      ctx.font = 'italic 16px "Georgia", serif';
-      ctx.fillText(tagline, 400, 1000);
+  const handleAddMemory = (e) => {
+    e.preventDefault();
+    if (!newTitle || !newLoc) {
+      showToast('Please specify a title and location for the memory.', 'error');
+      return;
     }
-  }, [selectedDest, tagline, artStyle, activeTab]);
 
-  // Download Canvas Souvenir
-  const handleDownloadPoster = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const url = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = `travelverse-poster-${selectedDest.toLowerCase()}.png`;
-    link.href = url;
-    link.click();
-    awardXp(300, `Generated & exported poster for ${selectedDest}`);
-    showToast('Poster exported successfully! (+300 XP)', 'success');
+    const defaultImg = newImg || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80';
+    const newEntry = {
+      id: `mem-${Date.now()}`,
+      title: newTitle,
+      date: new Date().toISOString().split('T')[0],
+      location: newLoc,
+      coords: { x: 100 + Math.random() * 150, y: 80 + Math.random() * 80 },
+      category: 'Explore',
+      mediaType: 'image',
+      mediaUrl: defaultImg,
+      journal: newJournal || 'A snapshot of a premium journey preserved in my Travel OS memories archive.',
+      album: newAlbum
+    };
+
+    setMemories([newEntry, ...memories]);
+    awardXp(200, `Preserved Memory: ${newTitle}`);
+    showToast(`Archived memory of ${newTitle}!`, 'success');
+
+    // Reset inputs
+    setNewTitle('');
+    setNewLoc('');
+    setNewJournal('');
+    setNewImg('');
   };
 
-  // Add Time Capsule Form Submit
+  const handleDeleteMemory = (id, title) => {
+    setMemories(prev => prev.filter(m => m.id !== id));
+    showToast(`Removed memory of ${title}.`, 'info');
+  };
+
   const handleAddCapsule = (e) => {
     e.preventDefault();
     if (!capTitle || !capDest || !capDate || !capMsg) {
-      showToast('Please fill out all capsule specifications.', 'error');
+      showToast('Please configure all fields to seal the time capsule.', 'error');
       return;
     }
 
@@ -300,490 +159,484 @@ export const LegacyCapsule = () => {
     };
 
     setCapsules([newCap, ...capsules]);
-    awardXp(200, `Sealed future time capsule for ${capDest}`);
-    showToast('Digital capsule sealed & encrypted! (+200 XP)', 'success');
-    
-    // Clear Form
+    awardXp(300, `Sealed Time Capsule for ${capDest}`);
+    showToast(`Sealed time capsule for ${capDest}!`, 'success');
+
     setCapTitle('');
     setCapDest('');
     setCapDate('');
     setCapMsg('');
   };
 
-  // Delete capsule
-  const handleDeleteCapsule = (id) => {
-    setCapsules(capsules.filter(c => c.id !== id));
-    showToast('Capsule data record deleted.');
-  };
+  // Filter memories by year
+  const filteredMemories = memories.filter(m => {
+    if (selectedYear === 'All') return true;
+    return m.date.startsWith(selectedYear);
+  });
 
-  // Unseal time capsule helper
-  const handleUnsealCapsule = (cap) => {
-    const isReady = new Date(cap.unlockDate) <= new Date();
-    if (!isReady) {
-      showToast('Quantum unlock coordinates not yet reached!', 'error');
-      return;
-    }
-
-    setCapsules(capsules.map(c => c.id === cap.id ? { ...c, sealed: false } : c));
-    awardXp(150, `Unsealed time capsule: ${cap.title}`);
-    showToast(`Time capsule "${cap.title}" unsealed!`, 'success');
-  };
-
-  // Capsule Countdown component
-  const CountdownText = ({ targetDate }) => {
-    const [timeLeft, setTimeLeft] = useState('');
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        const diff = new Date(targetDate) - new Date();
-        if (diff <= 0) {
-          setTimeLeft('UNSEAL READY');
-          clearInterval(interval);
-          return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / (1000 * 60)) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-
-        setTimeLeft(`${days}d ${hours}h ${mins}m ${secs}s`);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }, [targetDate]);
-
-    return <span>{timeLeft}</span>;
-  };
-
-  // Print Pass
-  const handlePrintPass = () => {
-    window.print();
-    awardXp(100, 'Printed boarding pass');
-    showToast('Boarding pass sent to print queue.', 'success');
-  };
+  // Derived stats
+  const totalCountries = new Set(memories.map(m => m.location.split(', ').pop())).size;
+  const albumsList = ['Mountain Peaks', 'Cultural Trails', 'Urban Grids'];
 
   return (
-    <div className="py-4 text-left flex flex-col gap-8 w-full">
-      {/* Header Title */}
-      <div className="flex justify-between items-start flex-wrap gap-4">
-        <div>
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-850 dark:text-slate-100 mb-2 mt-0">
-            Travel Legacy & Souvenir Lab
-          </h1>
-          <p className="text-sm text-slate-500 max-w-xl">
-            Preserve your journeys across generations. Generate retro-futuristic travel posters, write messages to your future self in locked time capsules, and print digital boarding passes.
-          </p>
-        </div>
+    <div className="w-full flex flex-col gap-8 text-left font-sans text-slate-800 dark:text-slate-100 py-4 relative">
+      
+      {/* Styles for interactive card fanning */}
+      <style>{`
+        .photo-stack-container:hover .stack-card-1 {
+          transform: rotate(-7deg) translate(-14px, -8px) scale(0.98);
+        }
+        .photo-stack-container:hover .stack-card-2 {
+          transform: rotate(7deg) translate(14px, -8px) scale(0.98);
+        }
+        .photo-stack-container:hover .stack-card-main {
+          transform: translateY(-10px) scale(1.02);
+        }
+      `}</style>
+
+      {/* Header Panel */}
+      <div className="flex flex-col gap-2 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/5 to-transparent blur-xl pointer-events-none" />
+        <span className="text-[10px] text-teal-400 font-mono font-bold uppercase tracking-widest">
+          LEGACY LEDGER SYSTEM // CLOUD ARCHIVE
+        </span>
+        <h1 className="font-display font-black text-3xl sm:text-4xl text-slate-900 dark:text-white mt-0 tracking-tight">
+          Travel Memories
+        </h1>
+        <p className="text-sm text-slate-400 font-semibold max-w-2xl mt-0">
+          An emotional timeline of your journeys. View photo stacks, review AI-synthesized diaries, collect stamps, and seal future time capsules.
+        </p>
       </div>
 
-      {/* Tabs Menu Navigation */}
-      <div className="flex border-b border-slate-200/20 dark:border-teal-500/10 overflow-x-auto gap-2 py-1 scrollbar-thin relative z-10 w-full">
+      {/* Overview Statistics (Frosted Glass telemetry cards) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { id: 'poster', label: '🎨 AI Travel Poster Lab' },
-          { id: 'capsule', label: '🔒 Digital Time Capsule' },
-          { id: 'pass', label: '🎫 Boarding Passes & Ranks' }
+          { label: 'Visited Countries', val: totalCountries, desc: 'Logged global borders' },
+          { label: 'Days Traveled', val: memories.length * 4, desc: 'Accumulated travel logs' },
+          { label: 'Saved Memories', val: memories.length, desc: 'Photos & video journals' },
+          { label: 'Sealed Capsules', val: capsules.filter(c => c.sealed).length, desc: 'Future locks active' }
+        ].map((stat, i) => (
+          <div key={i} className="p-4 rounded-3xl glass-neo border border-slate-200/50 dark:border-white/5 flex flex-col gap-1 text-left">
+            <span className="text-[8px] font-mono text-slate-500 uppercase tracking-wider font-black">{stat.label}</span>
+            <span className="text-2xl font-black text-slate-900 dark:text-teal-400 font-mono">{stat.val}</span>
+            <span className="text-[9px] text-slate-400 font-mono mt-0.5">{stat.desc}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Tab Selectors (Apple Photos design) */}
+      <div className="flex flex-wrap gap-2 pb-1 border-b border-slate-200 dark:border-white/5">
+        {[
+          { id: 'library', label: 'Library', icon: <Camera size={14} /> },
+          { id: 'albums', label: 'Albums Stack', icon: <FolderHeart size={14} /> },
+          { id: 'map', label: 'Memories Map', icon: <Compass size={14} /> },
+          { id: 'capsule', label: 'Time Capsules', icon: <Clock size={14} /> }
         ].map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-3 rounded-t-xl text-[11px] font-bold font-mono tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === tab.id 
-                ? 'border-b-2 border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/5' 
-                : 'text-slate-500 hover:text-slate-300'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+              activeTab === tab.id
+                ? 'bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20'
+                : 'text-slate-650 dark:text-slate-400 hover:bg-slate-950/40'
             }`}
           >
+            {tab.icon}
             {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Main Tab Panels */}
-      <div className="w-full">
-        
-        {/* TAB 1: AI Travel Poster Lab */}
-        {activeTab === 'poster' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full text-xs">
-            
-            {/* Left form controls (5 cols) */}
-            <div className="lg:col-span-5 p-5 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-teal-500/10 shadow-sm flex flex-col gap-4 text-left">
-              <div>
-                <span className="text-[9px] font-mono font-bold text-teal-400 uppercase tracking-widest block">POSTER CONFIG MODULE</span>
-                <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Poster Vector Specifications</h4>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400">CHOOSE TARGET DESTINATION</span>
-                <select 
-                  value={selectedDest} onChange={(e) => setSelectedDest(e.target.value)}
-                  className="px-2.5 py-2 rounded-xl bg-slate-950 border border-white/5 text-white text-[11.5px]"
-                >
-                  <option value="Kyoto">Kyoto, Japan</option>
-                  <option value="Agra">Agra, India</option>
-                  <option value="Goa">Goa Beaches</option>
-                  <option value="Kashmir">Kashmir Valley</option>
-                  <option value="Ladakh">Ladakh Highlands</option>
-                  <option value="Tromso">Tromso Lights</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400 font-bold">CUSTOM TAGLINE QUOTE</span>
-                <input 
-                  type="text" value={tagline} onChange={(e) => setTagline(e.target.value)}
-                  placeholder="e.g. FIND YOUR INNER EQUILIBRIUM"
-                  className="px-3 py-2 rounded-xl bg-slate-950 border border-white/5 text-white"
-                  maxLength={40}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-mono font-bold text-slate-400 block mb-0.5">ART FILTER ENGINE</span>
-                <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1 rounded-xl border border-white/5 font-mono text-[9.5px] font-bold text-slate-500">
-                  {['Cyber Neon 2100', 'Retro 1980s', 'Minimalist Vector'].map(style => (
+      {/* Tab Panels */}
+      <div className="w-full text-xs">
+        <AnimatePresence mode="wait">
+          
+          {/* TAB 1: LIBRARY */}
+          {activeTab === 'library' && (
+            <motion.div
+              key="library"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col gap-6"
+            >
+              {/* Floating Library Header controls */}
+              <div className="flex justify-between items-center bg-slate-950/40 border border-white/5 p-4 rounded-2xl">
+                <div className="flex gap-2">
+                  {['All', '2026', '2025'].map(y => (
                     <button
-                      key={style}
-                      onClick={() => setArtStyle(style)}
-                      className={`px-1 py-2 rounded-lg cursor-pointer transition-colors ${
-                        artStyle === style ? 'bg-slate-800 text-white font-bold' : 'hover:bg-slate-900'
+                      key={y}
+                      onClick={() => setSelectedYear(y)}
+                      className={`px-3 py-1.5 rounded-lg text-[9px] font-mono font-bold uppercase transition-colors cursor-pointer ${
+                        selectedYear === y ? 'bg-teal-500 text-slate-950' : 'text-slate-450 hover:text-white'
                       }`}
                     >
-                      {style.split(' ')[0].toUpperCase()}
+                      {y}
                     </button>
                   ))}
                 </div>
+                <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">{filteredMemories.length} snaps loaded</span>
               </div>
 
-              <button
-                onClick={handleDownloadPoster}
-                className="w-full py-3 bg-teal-500 hover:bg-teal-600 text-slate-950 font-black font-mono text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-teal-500/10 mt-4 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Download size={13} /> DOWNLOAD VECTOR POSTER (+300 XP)
-              </button>
-            </div>
-
-            {/* Right Interactive Preview (7 cols) */}
-            <div className="lg:col-span-7 flex flex-col items-center justify-center p-6 rounded-3xl bg-slate-950 border border-teal-500/10 shadow-2xl relative min-h-[400px]">
-              <div className="absolute inset-0 grid-cyber opacity-15 pointer-events-none" />
-              
-              <div className="w-full max-w-sm aspect-[8/11] bg-slate-900 rounded-2xl border border-white/10 shadow-2xl overflow-hidden relative z-10 scale-[0.95] sm:scale-100 transition-transform">
-                <canvas ref={canvasRef} className="w-full h-full object-contain" />
-              </div>
-            </div>
-
-          </div>
-        )}
-
-        {/* TAB 2: Digital Time Capsule */}
-        {activeTab === 'capsule' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full text-xs">
-            
-            {/* Left form inputs (5 cols) */}
-            <form onSubmit={handleAddCapsule} className="lg:col-span-5 p-5 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-teal-500/10 shadow-sm flex flex-col gap-4 text-left">
-              <div>
-                <span className="text-[9px] font-mono font-bold text-teal-400 uppercase tracking-widest block">SEAL FUTURE DREAMS</span>
-                <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Encrypt New Travel Capsule</h4>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400">CAPSULE TITLE</span>
-                <input 
-                  type="text" value={capTitle} onChange={(e) => setCapTitle(e.target.value)}
-                  placeholder="e.g. My Next Decadal Voyage Goals"
-                  className="px-3 py-2 rounded-xl bg-slate-950 border border-white/5 text-white" required
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono font-bold text-slate-400">DESTINATION TARGET</span>
-                  <input 
-                    type="text" value={capDest} onChange={(e) => setCapDest(e.target.value)}
-                    placeholder="e.g. Tromso, Norway"
-                    className="px-3 py-2 rounded-xl bg-slate-950 border border-white/5 text-white" required
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-mono font-bold text-slate-400">UNLOCK TIMESTAMP</span>
-                  <input 
-                    type="date" value={capDate} onChange={(e) => setCapDate(e.target.value)}
-                    className="px-3 py-2 rounded-xl bg-slate-950 border border-white/5 text-white font-mono" required
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400">MESSAGE TO FUTURE SELF</span>
-                <textarea 
-                  value={capMsg} onChange={(e) => setCapMsg(e.target.value)}
-                  placeholder="Describe your current hopes, expected achievements, or logs for when you open this..."
-                  className="px-3 py-2 rounded-xl bg-slate-950 border border-white/5 text-white h-24 resize-none" required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black font-mono text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg mt-4 cursor-pointer"
-              >
-                SEAL TIME CAPSULE PROTOCOL (+200 XP)
-              </button>
-            </form>
-
-            {/* Right Sealed capsules list (7 cols) */}
-            <div className="lg:col-span-7 flex flex-col gap-5 text-left">
-              <div className="p-5 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-teal-500/10 shadow-sm flex flex-col gap-4">
-                <div>
-                  <span className="text-[9px] font-mono font-bold text-teal-400 uppercase tracking-widest block">ENCRYPTED VAULT RECORDS</span>
-                  <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Sealed Souvenirs Vault</h4>
-                </div>
-
-                {capsules.length === 0 ? (
-                  <div className="p-8 text-center rounded-2xl bg-slate-950/20 border border-dashed border-white/5 text-slate-500">
-                    No time capsules sealed. Encrypt your first capsule on the left!
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-4 max-h-[360px] overflow-y-auto pr-1 scrollbar-thin">
-                    {capsules.map(cap => {
-                      const isPast = new Date(cap.unlockDate) <= new Date();
-                      return (
-                        <div 
-                          key={cap.id}
-                          className={`p-4 rounded-2xl border flex flex-col gap-3 relative overflow-hidden transition-all ${
-                            cap.sealed 
-                              ? 'bg-slate-950/40 border-indigo-500/10 shadow' 
-                              : 'bg-emerald-950/20 border-emerald-500/20'
-                          }`}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <span className="text-[9px] font-mono font-bold text-indigo-400 uppercase block">CAPSULE LOG</span>
-                              <h5 className="font-display font-extrabold text-sm text-white mt-0.5 mb-1">{cap.title}</h5>
-                              <span className="text-[9.5px] text-slate-400 font-semibold">{cap.destination}</span>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <span className={`px-2 py-0.5 font-mono text-[9px] font-bold rounded uppercase ${
-                                isPast ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
-                              }`}>
-                                {cap.sealed ? 'Sealed' : 'Opened'}
-                              </span>
-                              <button onClick={() => handleDeleteCapsule(cap.id)} className="p-1 rounded bg-slate-950 text-rose-500 hover:bg-slate-900 transition-colors">
-                                <Trash2 size={11} />
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Message rendering (blurred if sealed) */}
-                          <div className="p-3 bg-slate-950/80 rounded-xl border border-white/5 relative">
-                            {cap.sealed ? (
-                              <div className="filter blur-sm select-none text-[10px] text-slate-600 leading-normal pointer-events-none">
-                                {cap.message}
-                              </div>
-                            ) : (
-                              <p className="text-[10px] text-slate-300 leading-relaxed font-semibold m-0">{cap.message}</p>
-                            )}
-                            
-                            {cap.sealed && (
-                              <div className="absolute inset-0 flex items-center justify-center bg-slate-950/30">
-                                <span className="font-mono text-[9.5px] font-bold text-slate-400 flex items-center gap-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-white/5">
-                                  <Clock size={11} className="text-indigo-400" />
-                                  <CountdownText targetDate={cap.unlockDate} />
-                                </span>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Bottom Action */}
-                          {cap.sealed && (
-                            <button
-                              onClick={() => handleUnsealCapsule(cap)}
-                              className={`py-2 rounded-xl font-bold font-mono text-[10px] transition-all cursor-pointer ${
-                                isPast 
-                                  ? 'bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black' 
-                                  : 'bg-slate-950 border border-white/5 text-slate-500 cursor-not-allowed'
-                              }`}
-                              disabled={!isPast}
-                            >
-                              {isPast ? 'UNSEAL TIME CAPSULE RECORD' : 'COUNTDOWN PROTOCOL ACTIVE'}
-                            </button>
-                          )}
+              {/* Photos grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {filteredMemories.map(mem => (
+                  <div
+                    key={mem.id}
+                    onClick={() => setActiveMemory(mem)}
+                    className="group bg-slate-950/50 border border-white/5 rounded-3xl overflow-hidden hover:border-teal-500/20 transition-all cursor-pointer flex flex-col justify-between shadow-lg"
+                  >
+                    <div className="relative aspect-[11/10] overflow-hidden w-full bg-slate-900">
+                      <img
+                        src={mem.mediaUrl}
+                        alt={mem.title}
+                        className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
+                      {mem.mediaType === 'video' && (
+                        <div className="absolute top-3 right-3 p-1.5 rounded-full bg-slate-950/60 border border-white/10 text-teal-400">
+                          <Film size={11} />
                         </div>
-                      );
-                    })}
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col gap-1.5 text-left">
+                      <span className="text-[8.5px] font-mono text-teal-400 uppercase font-black">{mem.date}</span>
+                      <h4 className="font-display font-extrabold text-xs text-white leading-tight mt-0">{mem.title}</h4>
+                      <div className="flex items-center gap-1 text-[9px] text-slate-400 font-mono mt-0.5">
+                        <MapPin size={10} className="text-teal-400 shrink-0" />
+                        <span>{mem.location}</span>
+                      </div>
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
-
-          </div>
-        )}
-
-        {/* TAB 3: Boarding Passes & Certificates */}
-        {activeTab === 'pass' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full text-xs">
-            
-            {/* Left controllers (4 cols) */}
-            <div className="lg:col-span-4 p-5 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-teal-500/10 shadow-sm flex flex-col gap-4 text-left">
-              <div>
-                <span className="text-[9px] font-mono font-bold text-teal-400 uppercase tracking-widest block">PASS DECK ROUTER</span>
-                <h4 className="font-display font-black text-sm text-slate-900 dark:text-white mt-0.5">Custom Boarding Pass</h4>
+                ))}
               </div>
 
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400 font-bold">FLIGHT DESTINATION</span>
-                <select 
-                  value={ticketDest} onChange={(e) => setTicketDest(e.target.value)}
-                  className="px-2.5 py-2 rounded-xl bg-slate-950 border border-white/5 text-white text-[11.5px]"
-                >
-                  <option value="Kyoto Core">Kyoto, Japan</option>
-                  <option value="Agra Hub">Agra, India</option>
-                  <option value="Goa Coast">Goa Beaches</option>
-                  <option value="Kashmir Valley">Kashmir, India</option>
-                  <option value="Ladakh Altitude">Ladakh, India</option>
-                  <option value="Tromso Aurora">Tromso, Norway</option>
-                </select>
+              {/* Form to preserve a new memory */}
+              <div className="bg-slate-950/40 border border-white/5 p-6 rounded-3xl text-left mt-6 flex flex-col gap-4">
+                <span className="text-[9px] font-mono text-teal-400 font-bold uppercase tracking-widest">Preserve Voyage memory</span>
+                <form onSubmit={handleAddMemory} className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] text-slate-400 uppercase">Memory Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Sunrise over Taj"
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      className="p-2.5 rounded-xl bg-[#0c0a09] border border-white/5 text-xs text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] text-slate-400 uppercase">Location</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Agra, India"
+                      value={newLoc}
+                      onChange={(e) => setNewLoc(e.target.value)}
+                      className="p-2.5 rounded-xl bg-[#0c0a09] border border-white/5 text-xs text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5 md:col-span-2">
+                    <label className="text-[9px] text-slate-400 uppercase">Journal Reflection</label>
+                    <textarea
+                      placeholder="Describe the emotions and ambient details..."
+                      rows="2"
+                      value={newJournal}
+                      onChange={(e) => setNewJournal(e.target.value)}
+                      className="p-2.5 rounded-xl bg-[#0c0a09] border border-white/5 text-xs text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] text-slate-400 uppercase">Image URL (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="https://images.unsplash.com/..."
+                      value={newImg}
+                      onChange={(e) => setNewImg(e.target.value)}
+                      className="p-2.5 rounded-xl bg-[#0c0a09] border border-white/5 text-xs text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] text-slate-400 uppercase">Choose Album Stack</label>
+                    <select
+                      value={newAlbum}
+                      onChange={(e) => setNewAlbum(e.target.value)}
+                      className="p-2.5 rounded-xl bg-[#0c0a09] border border-white/5 text-xs text-slate-300 cursor-pointer"
+                    >
+                      {albumsList.map(a => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    className="md:col-span-2 py-3 rounded-xl bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all hover:scale-101 cursor-pointer"
+                  >
+                    PRESERVE MEMORY
+                  </button>
+                </form>
               </div>
+            </motion.div>
+          )}
 
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-mono font-bold text-slate-400 font-bold">CABIN SUITE CLASS</span>
-                <select 
-                  value={cabinClass} onChange={(e) => setCabinClass(e.target.value)}
-                  className="px-2.5 py-2 rounded-xl bg-slate-950 border border-white/5 text-white text-[11.5px]"
-                >
-                  <option value="First Class Quantum">First Class Quantum</option>
-                  <option value="Hologram Suite">Hologram Suite</option>
-                  <option value="Cyber Deck Coach">Cyber Deck Coach</option>
-                </select>
-              </div>
+          {/* TAB 2: ALBUMS STACK */}
+          {activeTab === 'albums' && (
+            <motion.div
+              key="albums"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {albumsList.map(albName => {
+                const nested = memories.filter(m => m.album === albName);
+                if (nested.length === 0) return null;
+                return (
+                  <div key={albName} className="flex flex-col items-center gap-4">
+                    
+                    {/* Apple stacked container */}
+                    <div className="relative w-48 h-60 photo-stack-container cursor-pointer">
+                      
+                      {/* Stack card 1 (Backwards card rotated left) */}
+                      {nested[2] && (
+                        <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-lg transform rotate-[-4deg] scale-95 transition-transform duration-500 origin-bottom stack-card-1">
+                          <img src={nested[2].mediaUrl} alt="" className="w-full h-full object-cover opacity-30" />
+                        </div>
+                      )}
+                      
+                      {/* Stack card 2 (Middle card rotated right) */}
+                      {nested[1] && (
+                        <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/10 shadow-lg transform rotate-[4deg] scale-98 transition-transform duration-500 origin-bottom stack-card-2">
+                          <img src={nested[1].mediaUrl} alt="" className="w-full h-full object-cover opacity-60" />
+                        </div>
+                      )}
 
-              <button
-                onClick={handlePrintPass}
-                className="w-full py-3 bg-teal-500 hover:bg-teal-600 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-black font-mono text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg mt-4 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Printer size={13} /> PRINT BOARDING PASS PROTOCOL
-              </button>
-            </div>
+                      {/* Stack card main (Front card) */}
+                      <div className="absolute inset-0 rounded-2xl overflow-hidden border border-white/15 shadow-2xl z-10 transition-transform duration-500 origin-bottom stack-card-main">
+                        <img src={nested[0].mediaUrl} alt="" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10" />
+                        <div className="absolute bottom-3.5 left-4 right-4 z-20 text-left font-mono">
+                          <span className="text-[8px] text-teal-400 font-bold uppercase">{nested.length} assets</span>
+                          <h4 className="text-xs font-bold text-white leading-tight mt-0.5 truncate">{albName}</h4>
+                        </div>
+                      </div>
 
-            {/* Right Passes Preview (8 cols) */}
-            <div className="lg:col-span-8 flex flex-col gap-8 w-full text-left">
-              
-              {/* Boarding Pass Ticket */}
-              <div className="bg-slate-950 rounded-3xl border border-white/5 shadow-2xl relative overflow-hidden flex flex-col md:flex-row max-w-2xl mx-auto w-full md:h-52">
-                <div className="absolute inset-0 grid-cyber opacity-15 pointer-events-none" />
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-teal-500/10 to-transparent pointer-events-none" />
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          )}
+
+          {/* TAB 3: MEMORIES MAP & PASSPORT */}
+          {activeTab === 'map' && (
+            <motion.div
+              key="map"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+            >
+              {/* Map panel */}
+              <div className="lg:col-span-8 bg-slate-950/40 border border-white/5 p-5 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden min-h-[460px]">
+                <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest font-black absolute top-3 left-4">Memory Coordinates map</span>
                 
-                {/* Left block (Main ticket details) */}
-                <div className="flex-1 p-5 flex flex-col justify-between border-b md:border-b-0 md:border-r border-dashed border-white/10 relative">
-                  {/* Outer edge cuts for ticket effect */}
-                  <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-900 border border-white/5 hidden md:block" />
-                  
-                  {/* Header */}
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <span className="text-[8.5px] font-mono font-bold text-teal-400 uppercase tracking-widest">TRAVELVERSE OS BOARDING PASS</span>
-                      <h4 className="font-display font-black text-sm text-white mt-0.5">{cabinClass.toUpperCase()} // GATE 44</h4>
-                    </div>
-                    <span className="text-xl">✈️</span>
-                  </div>
+                {/* SVG Earth styled map mesh */}
+                <svg viewBox="0 0 400 240" className="w-full max-w-lg h-auto text-teal-800/20 fill-current">
+                  <rect width="400" height="240" fill="none" />
+                  {/* Grid lines */}
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <line key={i} x1={0} y1={i * 40} x2={400} y2={i * 40} stroke="rgba(45, 212, 191, 0.05)" strokeWidth="0.5" />
+                  ))}
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <line key={i} x1={i * 40} y1={0} x2={i * 40} y2={240} stroke="rgba(45, 212, 191, 0.05)" strokeWidth="0.5" />
+                  ))}
 
-                  {/* Body Info */}
-                  <div className="grid grid-cols-3 gap-4 font-mono text-[9px] text-slate-400 mt-4">
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">TRAVELER NAME</span>
-                      <span className="text-white text-xs font-bold font-sans">{user?.name || 'Alex Mercer'}</span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">DEPARTURE HUB</span>
-                      <span className="text-white text-xs font-bold">DELHI (DEL)</span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">LANDING TARGET</span>
-                      <span className="text-white text-xs font-bold">{ticketDest.toUpperCase()}</span>
-                    </div>
-                  </div>
-
-                  {/* Footer stats */}
-                  <div className="flex justify-between font-mono text-[8.5px] text-slate-500 mt-5 border-t border-white/5 pt-2">
-                    <span>SEAT: 22A // SECURITY OVERRIDE VERIFIED</span>
-                    <span className="text-teal-400 font-bold">DATE: {new Date().toLocaleDateString()}</span>
-                  </div>
-                </div>
-
-                {/* Right stub (Tear-off portion) */}
-                <div className="w-full md:w-48 p-5 flex flex-col justify-between bg-slate-900/60 relative">
-                  {/* Outer edge cuts for ticket effect */}
-                  <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-900 border border-white/5 hidden md:block" />
-                  
-                  <div className="flex justify-between items-start font-mono text-[8.5px] text-slate-400">
-                    <span>FLIGHT STUB</span>
-                    <span className="text-teal-400 font-bold">TV-2200</span>
-                  </div>
-
-                  <div className="flex flex-col gap-1 mt-4">
-                    <span className="text-[8px] font-mono text-slate-500 font-bold">CLASS CABIN STATUS</span>
-                    <span className="text-white font-mono text-xs font-bold">{cabinClass}</span>
-                    <span className="text-[10px] text-slate-400 font-semibold">{user?.name || 'Alex Mercer'}</span>
-                  </div>
-
-                  {/* Digital Barcode */}
-                  <div className="mt-4 flex flex-col gap-1 items-center">
-                    <div className="w-full h-8 bg-slate-950 flex items-center justify-around px-2 border border-white/5 overflow-hidden">
-                      {Array.from({ length: 24 }).map((_, bIdx) => (
-                        <div 
-                          key={bIdx} 
-                          className="h-full bg-slate-100" 
-                          style={{ width: `${bIdx % 3 === 0 ? 1 : (bIdx % 4 === 0 ? 3 : 2)}px` }} 
-                        />
-                      ))}
-                    </div>
-                    <span className="text-[7.5px] font-mono text-slate-500">QR-OS-2200-VERIFIED</span>
-                  </div>
-                </div>
+                  {/* Memory Marker dots */}
+                  {memories.map((m) => (
+                    <g key={m.id} className="cursor-pointer" onClick={() => setActiveMemory(m)}>
+                      <circle cx={m.coords.x} cy={m.coords.y} r="5" fill="#2dd4bf" stroke="#000" strokeWidth="1" />
+                      <circle cx={m.coords.x} cy={m.coords.y} r="10" stroke="#2dd4bf" strokeWidth="0.8" fill="none" className="animate-ping opacity-30" />
+                      <text x={m.coords.x + 8} y={m.coords.y + 3} fill="rgba(255,255,255,0.7)" fontSize="6" fontFamily="monospace">{m.title.slice(0, 12)}...</text>
+                    </g>
+                  ))}
+                </svg>
               </div>
 
-              {/* Ranks & Explorer Certificate */}
-              <div className="bg-slate-950 p-6 rounded-3xl border border-white/5 shadow-2xl relative overflow-hidden max-w-2xl mx-auto w-full text-center">
-                <div className="absolute inset-0 grid-cyber opacity-15 pointer-events-none" />
-                <div className="absolute -left-12 -top-12 w-24 h-24 rounded-full bg-indigo-500/5 blur-xl" />
-                <div className="absolute -right-12 -bottom-12 w-24 h-24 rounded-full bg-teal-500/5 blur-xl" />
-
-                <div className="relative z-10 flex flex-col items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-teal-400 to-indigo-500 flex items-center justify-center text-white text-3xl shadow-lg border border-teal-500/10">
-                    🏆
-                  </div>
-
-                  <div>
-                    <span className="text-[8.5px] font-mono font-bold text-teal-400 uppercase tracking-widest block mb-1">TRAVELVERSE OS CERTIFICATE</span>
-                    <h3 className="font-display font-black text-xl text-white m-0">Explorer Rank Credentials</h3>
-                    <span className="text-[10px] text-slate-400 font-bold font-mono block mt-1">VERIFICATION PROTOCOL STATUS</span>
-                  </div>
-
-                  <p className="text-[11px] text-slate-400 max-w-sm leading-relaxed font-semibold mt-1">
-                    This certifies that <strong className="text-white font-bold">{user?.name || 'Alex Mercer'}</strong> has successfully scaled Level {userLevel} of the travel operating system, holding the prestigious rank of <strong className="text-teal-400 font-bold uppercase">{currentRank}</strong>.
-                  </p>
-
-                  <div className="flex gap-4 font-mono text-[9px] text-slate-500 border-t border-white/5 pt-4 w-full justify-around mt-2">
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">EXP LEVEL REACHED</span>
-                      <span className="text-white font-bold">LEVEL {userLevel}</span>
+              {/* Passport Stamps */}
+              <div className="lg:col-span-4 bg-slate-950/40 border border-white/5 p-5 rounded-3xl text-left flex flex-col gap-4">
+                <span className="text-[9px] font-mono text-teal-400 font-bold uppercase tracking-widest">Passport Stamp ledger</span>
+                <div className="grid grid-cols-2 gap-3.5 overflow-y-auto max-h-[360px] pr-1">
+                  {[
+                    { country: 'India', code: 'IN', stamp: 'Varanasi-Kashi', date: '2026-05' },
+                    { country: 'India', code: 'IN', stamp: 'Kedarnath-Himalaya', date: '2026-03' },
+                    { country: 'Japan', code: 'JP', stamp: 'Kyoto-Gion', date: '2025-11' },
+                    { country: 'Norway', code: 'NO', stamp: 'Tromso-Arctic', date: '2025-01' }
+                  ].map((st, i) => (
+                    <div key={i} className="p-3 bg-slate-950 border border-white/5 rounded-2xl flex flex-col items-center justify-center text-center gap-1.5 hover:border-teal-500/20 transition-all">
+                      <span className="text-xs font-mono text-slate-500 uppercase">{st.country}</span>
+                      <div className="w-11 h-11 rounded-full border border-teal-500/20 flex items-center justify-center font-mono text-[9px] text-teal-400 font-bold flex-col bg-teal-500/5 leading-none">
+                        <span>{st.code}</span>
+                        <span className="text-[5.5px] uppercase mt-0.5">{st.date}</span>
+                      </div>
+                      <span className="text-[7.5px] font-mono text-slate-400 uppercase tracking-tight truncate max-w-[80px]">{st.stamp}</span>
                     </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">SECURE SIGNATURE ID</span>
-                      <span className="text-indigo-400 font-bold">SIG-TV-{userLevel * 4390}-OK</span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-slate-550 font-bold">ISSUANCE DATE</span>
-                      <span className="text-white font-bold">{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
+            </motion.div>
+          )}
 
-            </div>
-          </div>
-        )}
+          {/* TAB 4: TIME CAPSULES */}
+          {activeTab === 'capsule' && (
+            <motion.div
+              key="capsules"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch"
+            >
+              {/* Sealing form */}
+              <div className="lg:col-span-4 bg-slate-950/40 border border-white/5 p-5 rounded-3xl text-left flex flex-col gap-4 shadow-xl">
+                <span className="text-[9px] font-mono text-teal-400 font-bold uppercase tracking-widest">Seal Time Capsule</span>
+                <form onSubmit={handleAddCapsule} className="flex flex-col gap-3 font-mono text-[10px]">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-slate-500 uppercase text-[8px]">Capsule Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Dream Norwegian Aurora Voyage"
+                      value={capTitle}
+                      onChange={(e) => setCapTitle(e.target.value)}
+                      className="p-2 bg-[#0c0a09] border border-white/5 rounded-xl text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-slate-500 uppercase text-[8px]">Destination Node</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Oslo, Norway"
+                      value={capDest}
+                      onChange={(e) => setCapDest(e.target.value)}
+                      className="p-2 bg-[#0c0a09] border border-white/5 rounded-xl text-white"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-slate-500 uppercase text-[8px]">Sealing Lock Date</label>
+                    <input
+                      type="date"
+                      value={capDate}
+                      onChange={(e) => setCapDate(e.target.value)}
+                      className="p-2 bg-[#0c0a09] border border-white/5 rounded-xl text-slate-300"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-slate-500 uppercase text-[8px]">Devotional Message</label>
+                    <textarea
+                      placeholder="A message to your future self..."
+                      rows="3"
+                      value={capMsg}
+                      onChange={(e) => setCapMsg(e.target.value)}
+                      className="p-2 bg-[#0c0a09] border border-white/5 rounded-xl text-white"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="py-2.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold rounded-xl uppercase tracking-wider transition-all mt-2 cursor-pointer"
+                  >
+                    SEAL CAPSULE
+                  </button>
+                </form>
+              </div>
 
+              {/* Active capsules */}
+              <div className="lg:col-span-8 bg-slate-950/40 border border-white/5 p-6 rounded-3xl flex flex-col gap-4 text-left">
+                <span className="text-[9px] font-mono text-teal-400 font-bold uppercase tracking-widest">Active Sealed Capsules</span>
+                <div className="flex flex-col gap-3 overflow-y-auto max-h-[380px] pr-1">
+                  {capsules.map(cap => {
+                    const isLocked = new Date(cap.unlockDate) > new Date();
+                    return (
+                      <div key={cap.id} className="p-4 bg-slate-950 border border-white/5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-teal-500/10 transition-all font-mono">
+                        <div>
+                          <span className="text-[8px] text-teal-400 font-bold uppercase block">{cap.destination}</span>
+                          <h4 className="text-xs font-bold text-white mt-0.5">{cap.title}</h4>
+                          <p className="text-[9.5px] text-slate-400 mt-2 leading-relaxed max-w-md">
+                            {isLocked ? '🔒 MESSAGE LOCKED UNTIL RELEASE WINDOW' : cap.message}
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0 flex flex-col gap-1">
+                          <span className="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[8px] font-bold uppercase">
+                            {isLocked ? 'SEALED LOCK' : 'UNLOCKED'}
+                          </span>
+                          <span className="text-[8.5px] text-slate-500 block mt-1">
+                            Unlock: {new Date(cap.unlockDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
       </div>
+
+      {/* Lightbox photo preview modal (Apple Photos style overlay) */}
+      <AnimatePresence>
+        {activeMemory && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveMemory(null)}
+            className="fixed inset-0 z-[9999] bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              className="w-full max-w-2xl bg-slate-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-6 relative flex flex-col md:flex-row gap-5 cursor-default text-left"
+            >
+              {/* Media pane */}
+              <div className="flex-1 rounded-2xl overflow-hidden bg-slate-950 border border-white/5 max-h-[300px] md:max-h-full">
+                <img src={activeMemory.mediaUrl} alt="" className="w-full h-full object-cover" />
+              </div>
+              
+              {/* Journal details panel */}
+              <div className="flex-1 flex flex-col justify-between gap-4 font-mono">
+                <div>
+                  <div className="flex justify-between items-start border-b border-white/5 pb-2">
+                    <div>
+                      <span className="text-[8px] text-teal-400 font-bold uppercase">{activeMemory.date}</span>
+                      <h3 className="text-base font-display font-black text-white mt-0.5 leading-tight">{activeMemory.title}</h3>
+                      <span className="text-[8.5px] text-slate-500 block mt-1">ALBUM: {activeMemory.album}</span>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteMemory(activeMemory.id, activeMemory.title)}
+                      className="p-1.5 bg-red-500/10 border border-red-500/25 text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                  <div className="mt-3.5">
+                    <span className="text-[8px] text-teal-400 font-bold uppercase block mb-1">AI Journal reflection</span>
+                    <p className="text-[10px] text-slate-300 leading-relaxed m-0 bg-slate-950 p-3 rounded-xl border border-white/5">
+                      {activeMemory.journal}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center border-t border-white/5 pt-3 mt-auto text-[9.5px]">
+                  <span className="text-slate-550 uppercase">TRAVELVERSE LEDGER SYNCED</span>
+                  <button onClick={() => setActiveMemory(null)} className="px-4 py-1.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold rounded-lg uppercase cursor-pointer">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };
