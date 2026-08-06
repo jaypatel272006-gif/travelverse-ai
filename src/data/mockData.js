@@ -2317,7 +2317,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 5430,
     price: 69000,
-    image: '',
+    image: 'https://www.guinnessworldrecords.com/records/hall-of-fame/easset_upload_file31459_12897_e.jpg',
     description: 'The tallest structure in the world. Standing at 828 meters, this architectural marvel dominates the Dubai skyline.',
     tags: ['Luxury', 'Architecture', 'Shopping'],
     coordinates: { x: 55, y: 25 },
