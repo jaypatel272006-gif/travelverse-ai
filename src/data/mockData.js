@@ -2360,7 +2360,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3120,
     price: 105000,
-    image: 'https://images.unsplash.com/photo-1476610101598-1520e5e3a8d6?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The land of fire and ice. Famous for active volcanoes, glaciers, black sand beaches, hot springs, and majestic waterfalls.',
     tags: ['Nature', 'Adventure', 'Offbeat'],
     coordinates: { x: 38, y: 15 },
