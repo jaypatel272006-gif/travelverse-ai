@@ -417,14 +417,14 @@ export const Flights = () => {
       </div>
 
       {/* Flight Search Form Panel */}
-      <form onSubmit={handleSearch} className="p-6 rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/40 shadow-sm grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
+      <form onSubmit={handleSearch} className="p-6 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/10 shadow-xl glass-neo grid grid-cols-1 sm:grid-cols-5 gap-4 items-end relative overflow-hidden">
         <div className="flex flex-col gap-1.5 col-span-1">
           <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">From</label>
           <input
             type="text"
             value={fromCity}
             onChange={(e) => setFromCity(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
+            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
             placeholder="Origin State or City"
           />
         </div>
@@ -434,7 +434,7 @@ export const Flights = () => {
             type="text"
             value={toCity}
             onChange={(e) => setToCity(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
+            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
             placeholder="Destination State or City"
           />
         </div>
@@ -444,7 +444,7 @@ export const Flights = () => {
             type="date"
             value={searchDate}
             onChange={(e) => setSearchDate(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
+            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
           />
         </div>
         <div className="flex flex-col gap-1.5 col-span-1">
@@ -452,7 +452,7 @@ export const Flights = () => {
           <select
             value={cabinClass}
             onChange={(e) => setCabinClass(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
+            className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-teal-500/20 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-900 dark:text-slate-100 placeholder-slate-400"
           >
             <option value="Economy">Economy</option>
             <option value="Premium Economy">Premium Economy</option>
@@ -469,7 +469,7 @@ export const Flights = () => {
       </form>
 
       {/* Quantum Price & Crowd Predictor (Vercel Production Upgrade) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 p-6 backdrop-blur-md text-white animate-in fade-in duration-300">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 rounded-3xl bg-slate-900/60 border border-slate-200/50 dark:border-teal-500/10 p-6 backdrop-blur-md text-white shadow-xl relative overflow-hidden">
         
         {/* Panel 1: Monthly Forecast Chart */}
         <div className="flex flex-col gap-3 md:col-span-1 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6 text-left">
@@ -586,7 +586,7 @@ export const Flights = () => {
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         
         {/* Flight Filters Panel */}
-        <aside className="w-full lg:w-64 shrink-0 p-5 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/40 shadow-sm flex flex-col gap-6">
+        <aside className="w-full lg:w-64 shrink-0 p-5 rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/10 shadow-xl glass-neo flex flex-col gap-6 text-left">
           <div className="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
             <h4 className="font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">Filters</h4>
             <button 
@@ -661,7 +661,7 @@ export const Flights = () => {
               <FlightCard key={flight.id} flight={flight} onBook={startBookingFlow} />
             ))
           ) : (
-            <div className="py-12 text-center rounded-3xl bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/40 p-6">
+            <div className="py-12 text-center rounded-3xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-teal-500/10 p-6 glass-neo">
               <p className="text-sm text-slate-400">No flights found matching your budget limits.</p>
             </div>
           )}
@@ -684,7 +684,7 @@ export const Flights = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-teal-500/10 shadow-2xl p-6 overflow-hidden max-h-[90vh] overflow-y-auto glass-neo"
             >
               {/* Header */}
               <div className="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
