@@ -448,6 +448,58 @@ export const Home = () => {
 
   // Passport stamps list
   const [unlockedStamps, setUnlockedStamps] = useState(['Agra', 'Delhi']);
+
+  // --- TRAVELVERSE OS 4K COCKPIT HERO STATE HOOKS ---
+  const [typewriterText, setTypewriterText] = useState('');
+  const phrases = [
+    "Resolving flight paths across 12,000 global lanes...",
+    "Scanning hotel rates to optimize credit ledger parameters...",
+    "Syncing regional weather with traveler walk thresholds...",
+    "Tailoring the itinerary coordinates to your exact travel genome..."
+  ];
+  useEffect(() => {
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let currentPhrase = phrases[phraseIdx];
+    let isDeleting = false;
+    let typingSpeed = 50;
+
+    const type = () => {
+      if (!isDeleting) {
+        setTypewriterText(currentPhrase.substring(0, charIdx + 1));
+        charIdx++;
+        if (charIdx === currentPhrase.length) {
+          isDeleting = true;
+          typingSpeed = 3000;
+        } else {
+          typingSpeed = 40;
+        }
+      } else {
+        setTypewriterText(currentPhrase.substring(0, charIdx - 1));
+        charIdx--;
+        if (charIdx === 0) {
+          isDeleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          currentPhrase = phrases[phraseIdx];
+          typingSpeed = 500;
+        } else {
+          typingSpeed = 15;
+        }
+      }
+      setTimeout(type, typingSpeed);
+    };
+
+    const timeoutId = setTimeout(type, 1000);
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  const [visitorCount, setVisitorCount] = useState(8642);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisitorCount(prev => prev + Math.floor(Math.random() * 3) + 1);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
   const [passportXp, setPassportXp] = useState(1200);
 
   // Discovery Feed swiper index
