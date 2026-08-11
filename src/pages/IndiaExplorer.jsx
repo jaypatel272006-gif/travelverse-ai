@@ -246,8 +246,8 @@ export const IndiaExplorer = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Sidebar Nav */}
-        <div className="lg:col-span-3 flex flex-col gap-2 bg-slate-900/60 p-4 rounded-2xl border border-white/5 text-xs font-semibold font-mono">
-          <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 border-b border-white/5 pb-1">Explorer Navigation</span>
+        <div className="lg:col-span-3 flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal gap-2 bg-slate-900/60 p-4 rounded-2xl border border-white/5 text-xs font-semibold font-mono scrollbar-none">
+          <span className="hidden lg:block text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2 border-b border-white/5 pb-1">Explorer Navigation</span>
           
           {[
             { id: 'india-360', label: '🇮🇳 LIVING INDIA 360' },
@@ -266,14 +266,14 @@ export const IndiaExplorer = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all cursor-pointer ${
+              className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all cursor-pointer shrink-0 gap-2 ${
                 activeTab === tab.id 
-                  ? 'bg-teal-500/25 text-teal-300 border-l-2 border-teal-500 pl-4 font-bold' 
+                  ? 'bg-teal-500/25 text-teal-300 border-l-2 lg:border-l-2 border-teal-500 pl-4 font-bold' 
                   : 'text-slate-400 hover:bg-slate-800/40 hover:text-white'
               }`}
             >
               <span>{tab.label}</span>
-              <ChevronRight size={12} />
+              <ChevronRight size={12} className="hidden lg:block" />
             </button>
           ))}
         </div>
