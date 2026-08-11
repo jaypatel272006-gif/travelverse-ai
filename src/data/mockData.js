@@ -61,7 +61,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 1430,
     price: 44000,
-    image: 'https://upload.wikimedia.org/wikipedia/commons/4/41/East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg',
+    image: 'https://images.openai.com/static-rsc-4/cNRT2oH99-cZll1Dqsw5aF2mfeHDU6UGLF68dwz5O_5iuwb1gDRC_aj2zkC89LY9CEuV4FfTpX1JESSux2dVwWqtGRxyxKeAsNVoWa2QVX6fmGCbiuDbSk0qyEUDjhcls5LCW7Ur9eAbaG4RnZBBmiVv_nCqz7BbgJxJOPs5IRjs6JG4CqiSPHreG5tnSeOh?purpose=fullsize',
     description: 'The Pink City of Rajasthan. Renowned for its magnificent hilltop forts, royal palaces (Hawa Mahal), vibrant textiles, and traditional culinary feasts.',
     tags: ['History', 'Culture', 'Shopping', 'Art'],
     coordinates: { x: 63, y: 31 },
