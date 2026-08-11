@@ -5,7 +5,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { AIAssistantWidget } from './components/AIAssistantWidget';
-import { CinematicLoader } from './components/CinematicLoader';
+import { TravelOSBootLoader } from './components/loading/TravelOSBootLoader';
 import ErrorBoundary from './components/ErrorBoundary';
 import RouteErrorBoundary from './components/RouteErrorBoundary';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
