@@ -157,7 +157,7 @@ export const DestinationCard = memo(({ destination }) => {
         className="group relative w-full h-[470px] rounded-[32px] overflow-hidden border border-slate-200/50 dark:border-white/5 bg-slate-950 transition-shadow duration-500 shadow-2xl select-none"
       >
         {/* Full Image Background (Cinematic Large Photography) */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-slate-950">
           <img
             src={customPhotos[id] || image}
             srcSet={getResponsiveSrcSet(customPhotos[id] || image)}
@@ -165,6 +165,11 @@ export const DestinationCard = memo(({ destination }) => {
             alt={name}
             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
             loading="lazy"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80';
+              e.target.srcset = '';
+            }}
           />
           {/* Layered cinematic gradient shadow mask */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/45 to-transparent z-10" />
