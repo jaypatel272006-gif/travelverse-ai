@@ -112,7 +112,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1980,
     price: 48000,
-    image: 'https://static.toiimg.com/photo/58490365/.jpg',
+    image: 'https://images.openai.com/static-rsc-4/wHvNwrmptr43v1elJT2xQiZdjlLtOsyfHIlPpGVu3WLFdFWhTvVF4BZ141CkUGwuV2d4JiWAitoDeR57CvTrFHmK7M_Yz1bzgphfkatwchddpiSczogrezYEf1c9t73J49dkteczACWtdn5kDimxY-nbdX4E6cR8jy6_i_77ZhabKgt7eqXhqwOHPha6qqeK?purpose=fullsize',
     description: "God's Own Country. Famed for its serene backwaters with floating houseboats, tea plantations of Munnar, and authentic Ayurveda wellness centers.",
     tags: ['Nature', 'Wellness', 'Relaxation', 'Food'],
     coordinates: { x: 65, y: 37 },
