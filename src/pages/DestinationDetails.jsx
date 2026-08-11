@@ -8,6 +8,7 @@ import { getDestinationImage } from '../data/imageRegistry';
 import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../utils/countriesApi';
 import { DestinationDetailsSkeleton } from '../components/SkeletonLoader';
 import { generateDetailedItinerary } from '../utils/itineraryEngine';
+import { logger } from '../utils/logger';
 
 const getPremiumGuideData = (name) => {
   const defaultData = {
@@ -438,7 +439,7 @@ export const DestinationDetails = () => {
           try {
             setReviews(JSON.parse(savedReviews));
           } catch (e) {
-            console.warn("Failed to parse reviews from localStorage:", e);
+            logger.warn("Failed to parse reviews from localStorage:", e);
             setReviews([
               { id: 1, name: 'Commander Alex', rating: 5, comment: 'Incredible coordinates mapping. The historical quarters are a must-see.', date: '2026-05-12' },
               { id: 2, name: 'Sora Tanaka', rating: 4, comment: 'Stunning landscapes. Weather was exactly as compiled by the forecast matrix.', date: '2026-06-01' }
@@ -454,7 +455,7 @@ export const DestinationDetails = () => {
           localStorage.setItem(`travelverse_reviews_${baseDest.id}`, JSON.stringify(seed));
         }
       } catch (err) {
-        console.error('Failed compiling destination details:', err);
+        logger.error('Failed compiling destination details:', err);
       } finally {
         setLoading(false);
       }
@@ -633,7 +634,7 @@ export const DestinationDetails = () => {
       
       osc.start();
     } catch (err) {
-      console.warn("Failed creating ambient audio context:", err);
+      logger.warn("Failed creating ambient audio context:", err);
     }
   };
 
@@ -676,7 +677,7 @@ export const DestinationDetails = () => {
           showToast('Device Gyroscope connected to Holoportal.', 'success');
         }
       } catch (err) {
-        console.error("Gyroscope permission error:", err);
+        logger.error("Gyroscope permission error:", err);
         setGyroPermission('denied');
       }
     } else {

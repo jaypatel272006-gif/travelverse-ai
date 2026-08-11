@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import { logger } from '../utils/logger';
 
 const AppContext = createContext();
 
@@ -27,7 +28,7 @@ export const AppContextProvider = ({ children }) => {
       const saved = localStorage.getItem(key);
       return saved ? JSON.parse(saved) : fallback;
     } catch (e) {
-      console.warn(`TravelVerse OS LocalStorage Warning: Failed to parse key "${key}". Reverting to factory fallbacks.`, e);
+      logger.warn(`TravelVerse OS LocalStorage Warning: Failed to parse key "${key}". Reverting to factory fallbacks.`, e);
       return fallback;
     }
   };
@@ -208,7 +209,7 @@ export const AppContextProvider = ({ children }) => {
         if (error) throw error;
         showToast('Destination photo updated in cloud database!', 'success');
       } catch (err) {
-        console.error("Supabase custom_photos Upsert Error:", err);
+        logger.error("Supabase custom_photos Upsert Error:", err);
         showToast('Destination photo updated in local memory!', 'success');
       }
     } else {
@@ -303,7 +304,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_twin_prefs', JSON.stringify(twinPreferences));
     if (supabase && user?.id) {
       supabase.from('profiles').update({ twin_preferences: twinPreferences }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase twin_preferences sync error:", error);
+        if (error) logger.error("Supabase twin_preferences sync error:", error);
       });
     }
   }, [twinPreferences, user]);
@@ -313,7 +314,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_user_xp', userXp.toString());
     if (supabase && user?.id) {
       supabase.from('profiles').update({ user_xp: userXp }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase user_xp sync error:", error);
+        if (error) logger.error("Supabase user_xp sync error:", error);
       });
     }
   }, [userXp, user]);
@@ -322,7 +323,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_user_level', userLevel.toString());
     if (supabase && user?.id) {
       supabase.from('profiles').update({ user_level: userLevel }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase user_level sync error:", error);
+        if (error) logger.error("Supabase user_level sync error:", error);
       });
     }
   }, [userLevel, user]);
@@ -332,7 +333,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_departure_hub', departureHub);
     if (supabase && user?.id) {
       supabase.from('profiles').update({ departure_hub: departureHub }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase departure_hub sync error:", error);
+        if (error) logger.error("Supabase departure_hub sync error:", error);
       });
     }
   }, [departureHub, user]);
@@ -342,7 +343,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_db_widgets', JSON.stringify(dashboardWidgets));
     if (supabase && user?.id) {
       supabase.from('profiles').update({ dashboard_widgets: dashboardWidgets }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase dashboard_widgets sync error:", error);
+        if (error) logger.error("Supabase dashboard_widgets sync error:", error);
       });
     }
   }, [dashboardWidgets, user]);
@@ -351,7 +352,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_db_preset', dashboardPreset);
     if (supabase && user?.id) {
       supabase.from('profiles').update({ dashboard_preset: dashboardPreset }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase dashboard_preset sync error:", error);
+        if (error) logger.error("Supabase dashboard_preset sync error:", error);
       });
     }
   }, [dashboardPreset, user]);
@@ -360,7 +361,7 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem('tv_ui_theme_style', JSON.stringify(uiThemeStyle));
     if (supabase && user?.id) {
       supabase.from('profiles').update({ ui_theme_style: uiThemeStyle }).eq('id', user.id).then(({ error }) => {
-        if (error) console.error("Supabase ui_theme_style sync error:", error);
+        if (error) logger.error("Supabase ui_theme_style sync error:", error);
       });
     }
   }, [uiThemeStyle, user]);
@@ -612,7 +613,7 @@ export const AppContextProvider = ({ children }) => {
         .update(dbPayload)
         .eq('id', user.id);
       if (error) {
-        console.error("Supabase Profile Sync Error:", error);
+        logger.error("Supabase Profile Sync Error:", error);
       }
     } else {
       const registeredUsers = JSON.parse(localStorage.getItem('tv_registered_users') || '[]');
@@ -656,7 +657,7 @@ export const AppContextProvider = ({ children }) => {
             .eq('item_type', type)
             .eq('item_id', item.id.toString());
         } catch (err) {
-          console.error("Supabase Wishlist Delete Error:", err);
+          logger.error("Supabase Wishlist Delete Error:", err);
         }
       }
     } else {
@@ -673,7 +674,7 @@ export const AppContextProvider = ({ children }) => {
               item_data: item
             });
         } catch (err) {
-          console.error("Supabase Wishlist Insert Error:", err);
+          logger.error("Supabase Wishlist Insert Error:", err);
         }
       }
     }
@@ -735,7 +736,7 @@ export const AppContextProvider = ({ children }) => {
           return data.id;
         }
       } catch (err) {
-        console.error("Supabase Save Itinerary Error, falling back to LocalStorage:", err);
+        logger.error("Supabase Save Itinerary Error, falling back to LocalStorage:", err);
       }
     }
 
@@ -759,7 +760,7 @@ export const AppContextProvider = ({ children }) => {
         if (error) throw error;
         showToast('Itinerary removed from cloud.');
       } catch (err) {
-        console.error("Supabase Delete Itinerary Error:", err);
+        logger.error("Supabase Delete Itinerary Error:", err);
         showToast('Itinerary deleted locally.');
       }
     } else {
@@ -792,7 +793,7 @@ export const AppContextProvider = ({ children }) => {
         if (error) throw error;
         showToast('Itinerary synced in cloud.');
       } catch (err) {
-        console.error("Supabase Update Itinerary Error:", err);
+        logger.error("Supabase Update Itinerary Error:", err);
         showToast('Itinerary updated locally.');
       }
     } else {
@@ -848,7 +849,7 @@ export const AppContextProvider = ({ children }) => {
           return;
         }
       } catch (err) {
-        console.error("Supabase Add Journal Error, falling back to LocalStorage:", err);
+        logger.error("Supabase Add Journal Error, falling back to LocalStorage:", err);
       }
     }
 

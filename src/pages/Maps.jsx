@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Map, MapPin, Compass, Navigation, Heart, Calendar, Sparkles, ChevronRight, X, Plus, Image, Eye, Award, Trash2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
+import { logger } from '../utils/logger';
 
 export const Maps = () => {
   const { mapMarkers, setMapMarkers, toggleWishlist, isInWishlist, awardXp, showToast } = useApp();
@@ -34,7 +35,7 @@ export const Maps = () => {
         { id: 'r1', startName: 'Agra, India', endName: 'Kyoto, Japan', startCoords: { x: 64, y: 31 }, endCoords: { x: 70, y: 30 } }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_drawn_routes:", e);
+      logger.warn("Failed to parse tv_drawn_routes:", e);
       return [
         { id: 'r1', startName: 'Agra, India', endName: 'Kyoto, Japan', startCoords: { x: 64, y: 31 }, endCoords: { x: 70, y: 30 } }
       ];
@@ -47,7 +48,7 @@ export const Maps = () => {
       const saved = localStorage.getItem('tv_visited_states');
       return saved ? JSON.parse(saved) : ['Delhi', 'Gujarat', 'Uttar Pradesh'];
     } catch (e) {
-      console.warn("Failed to parse tv_visited_states:", e);
+      logger.warn("Failed to parse tv_visited_states:", e);
       return ['Delhi', 'Gujarat', 'Uttar Pradesh'];
     }
   });
@@ -57,7 +58,7 @@ export const Maps = () => {
       const saved = localStorage.getItem('tv_visited_wonders');
       return saved ? JSON.parse(saved) : ['Taj Mahal'];
     } catch (e) {
-      console.warn("Failed to parse tv_visited_wonders:", e);
+      logger.warn("Failed to parse tv_visited_wonders:", e);
       return ['Taj Mahal'];
     }
   });
@@ -67,7 +68,7 @@ export const Maps = () => {
       const saved = localStorage.getItem('tv_visited_g20');
       return saved ? JSON.parse(saved) : ['India', 'Japan'];
     } catch (e) {
-      console.warn("Failed to parse tv_visited_g20:", e);
+      logger.warn("Failed to parse tv_visited_g20:", e);
       return ['India', 'Japan'];
     }
   });

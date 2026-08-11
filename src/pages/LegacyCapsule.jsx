@@ -5,6 +5,7 @@ import {
   Share2, Eye, MapPin, Film, FolderHeart, Activity, Award, ShieldAlert 
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { logger } from '../utils/logger';
 
 // High-fidelity database of memories
 const INITIAL_MEMORIES = [
@@ -70,7 +71,7 @@ export const LegacyCapsule = () => {
       const saved = localStorage.getItem('tv_travel_memories');
       return saved ? JSON.parse(saved) : INITIAL_MEMORIES;
     } catch (e) {
-      console.warn("Failed to parse tv_travel_memories from localStorage, using fallback.", e);
+      logger.warn("Failed to parse tv_travel_memories from localStorage, using fallback.", e);
       return INITIAL_MEMORIES;
     }
   });
@@ -89,7 +90,7 @@ export const LegacyCapsule = () => {
         }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_time_capsules from localStorage, using fallback.", e);
+      logger.warn("Failed to parse tv_time_capsules from localStorage, using fallback.", e);
       return [
         {
           id: 'cap-1',

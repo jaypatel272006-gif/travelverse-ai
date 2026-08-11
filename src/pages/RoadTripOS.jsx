@@ -7,6 +7,7 @@ import {
   CloudSun, Camera, Star, Info, ShieldAlert, Award as BadgeIcon, HelpCircle, ArrowUpDown
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { logger } from '../utils/logger';
 
 export const RoadTripOS = () => {
   const { awardXp, showToast, wishlist, itineraries } = useApp();
@@ -49,7 +50,7 @@ export const RoadTripOS = () => {
           }
         }
       } catch (e) {
-        console.warn("Failed fetching live fuel prices. Engaging robust local fallbacks.");
+        logger.warn("Failed fetching live fuel prices. Engaging robust local fallbacks.");
       } finally {
         setLoadingPrices(false);
       }

@@ -21,6 +21,7 @@ import { HomeSpiritualUniverseSection } from '../components/home/HomeSpiritualUn
 import { HomeMemoryVaultSection } from '../components/home/HomeMemoryVaultSection';
 import { HomeDashboardSection } from '../components/home/HomeDashboardSection';
 import { HomeTestimonials } from '../components/home/HomeTestimonials';
+import { logger } from '../utils/logger';
 
 // Procedural Audio Synthesizer Engine
 const playProceduralSound = (type, audioCtxRef, activeNodesRef) => {
@@ -177,7 +178,7 @@ const playProceduralSound = (type, audioCtxRef, activeNodesRef) => {
       nodes.interval = setInterval(chirp, 3000);
     }
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 };
 

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, CloudSun, Thermometer, Wind, Eye, Droplet, Sun, Umbrella, CloudRain, Snowflake, AlertTriangle, Sparkles, Navigation } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { WeatherSkeleton } from '../components/SkeletonLoader';
+import { logger } from '../utils/logger';
 
 // Coordinates mapping for major global cities to call keyless Open-Meteo
 const CITY_COORDINATES = {
@@ -79,7 +80,7 @@ export const Weather = () => {
         daily: data.daily
       });
     } catch (err) {
-      console.error('Weather retrieval error:', err);
+      logger.error('Weather retrieval error:', err);
       setError('Network error: Failed to retrieve weather records.');
       showToast('Could not fetch weather data.', 'error');
     } finally {

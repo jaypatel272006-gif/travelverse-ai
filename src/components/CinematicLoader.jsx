@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { logger } from '../utils/logger';
 
 export const CinematicLoader = ({ onComplete }) => {
   const containerRef = useRef(null);
@@ -264,7 +265,7 @@ export const CinematicLoader = ({ onComplete }) => {
       };
       window.addEventListener('resize', handleResize);
     } catch (e) {
-      console.warn('Three.js initialization failed or WebGL not supported, bypassing holographic animation:', e);
+      logger.warn('Three.js initialization failed or WebGL not supported, bypassing holographic animation:', e);
     }
 
     return () => {

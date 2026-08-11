@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, Compass, Heart, Sparkles, Map, Landmark, Clock, ChevronRight, CheckCircle, ShieldAlert, Star, Coffee, UtensilsCrossed } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { logger } from '../utils/logger';
 
 export const Challenges = () => {
   const { userLevel, userXp, awardXp, showToast, achievements, itineraries, wishlist } = useApp();
@@ -17,7 +18,7 @@ export const Challenges = () => {
       const saved = localStorage.getItem('tv_tried_foods');
       return saved ? JSON.parse(saved) : ['Cardamom Tea'];
     } catch (e) {
-      console.warn("Failed to parse tv_tried_foods from localStorage, using fallback.", e);
+      logger.warn("Failed to parse tv_tried_foods from localStorage, using fallback.", e);
       return ['Cardamom Tea'];
     }
   });

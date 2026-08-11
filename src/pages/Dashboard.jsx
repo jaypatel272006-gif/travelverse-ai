@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DashboardSkeleton } from '../components/SkeletonLoader';
+import { logger } from '../utils/logger';
 
 // Canvas-rendered Live Radar Animation
 const RadarCanvas = () => {
@@ -354,7 +355,7 @@ export const Dashboard = () => {
         { id: 'photography', name: 'Photography Workspace', layout: 'grid', widgets: ['memories'] }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_workspace_presets:", e);
+      logger.warn("Failed to parse tv_workspace_presets:", e);
       return [
         { id: 'planning', name: 'Planning Workspace', layout: 'split-h', widgets: ['upcoming', 'passport'] },
         { id: 'budget', name: 'Budget Workspace', layout: 'split-v', widgets: ['budget', 'currency'] },
@@ -422,7 +423,7 @@ export const Dashboard = () => {
         { id: 'p-2', name: 'Planet Nebula', type: 'ice', theme: 'extreme', cities: ['Kashmir', 'Ladakh'] }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_user_planets:", e);
+      logger.warn("Failed to parse tv_user_planets:", e);
       return [
         { id: 'p-1', name: 'Planet Oasis', type: 'ocean', theme: 'relaxing', cities: ['Goa', 'Kerala'] },
         { id: 'p-2', name: 'Planet Nebula', type: 'ice', theme: 'extreme', cities: ['Kashmir', 'Ladakh'] }
@@ -450,7 +451,7 @@ export const Dashboard = () => {
         { id: 'r-2', param: 'temp', op: '<', val: '10', action: 'recommend', target: 'Indoor Activities' }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_custom_rules:", e);
+      logger.warn("Failed to parse tv_custom_rules:", e);
       return [
         { id: 'r-1', param: 'budget', op: '>', val: '100000', action: 'recommend', target: 'Luxury Hotels' },
         { id: 'r-2', param: 'temp', op: '<', val: '10', action: 'recommend', target: 'Indoor Activities' }
@@ -474,7 +475,7 @@ export const Dashboard = () => {
         { id: 'm-4', text: 'Low walking tolerance threshold (max 3km/day)' }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_ai_memories:", e);
+      logger.warn("Failed to parse tv_ai_memories:", e);
       return [
         { id: 'm-1', text: 'Prefers window seat on flights' },
         { id: 'm-2', text: 'Jain food compliant (strictly no root vegetables)' },
@@ -508,7 +509,7 @@ export const Dashboard = () => {
         { id: 'h-2', dest: 'London', maxFlight: 45000, maxHotel: 20000 }
       ];
     } catch (e) {
-      console.warn("Failed to parse tv_active_hunts:", e);
+      logger.warn("Failed to parse tv_active_hunts:", e);
       return [
         { id: 'h-1', dest: 'Goa', maxFlight: 8000, maxHotel: 8000 },
         { id: 'h-2', dest: 'London', maxFlight: 45000, maxHotel: 20000 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { logger } from '../utils/logger';
 
 export class RouteErrorBoundary extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export class RouteErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("TravelVerse Route-Level Stability Intercept:", error, errorInfo);
+    logger.error("TravelVerse Route-Level Stability Intercept:", error, errorInfo);
   }
 
   handleRetry = () => {

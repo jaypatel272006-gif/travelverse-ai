@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BootStatus } from './BootStatus';
 import { BootProgress } from './BootProgress';
 import { Sparkles, AlertCircle, Compass } from 'lucide-react';
+import { logger } from '../../utils/logger';
 
 export const TravelOSBootLoader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
@@ -42,7 +43,7 @@ export const TravelOSBootLoader = ({ onComplete }) => {
     // 1. Safety Timeout: Loader MUST exit in 5 seconds max
     // --------------------------------------------------
     safetyTimeoutRef.current = setTimeout(() => {
-      console.warn("TravelOS Boot Loader: Safety timeout reached. Forcing startup transition.");
+      logger.warn("TravelOS Boot Loader: Safety timeout reached. Forcing startup transition.");
       handleFinishBoot();
     }, 5000);
 
@@ -66,7 +67,7 @@ export const TravelOSBootLoader = ({ onComplete }) => {
               new Promise((_, reject) => setTimeout(() => reject(new Error('Font timeout')), 800))
             ]);
           } catch (e) {
-            console.warn("Fonts check took longer than expected. Continuing with fallback system fonts.");
+            logger.warn("Fonts check took longer than expected. Continuing with fallback system fonts.");
           }
         }
         await new Promise(resolve => setTimeout(resolve, 300));
@@ -77,7 +78,7 @@ export const TravelOSBootLoader = ({ onComplete }) => {
         try {
           const testPref = localStorage.getItem('tv_twin_prefs');
         } catch (e) {
-          console.warn("Local storage check blocked or disabled. Using factory config parameters.");
+          logger.warn("Local storage check blocked or disabled. Using factory config parameters.");
         }
         await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -93,7 +94,7 @@ export const TravelOSBootLoader = ({ onComplete }) => {
         
         handleFinishBoot();
       } catch (err) {
-        console.error("TravelOS Boot Loader Error in boot sequence: ", err);
+        logger.error("TravelOS Boot Loader Error in boot sequence: ", err);
         setIsError(true);
         setErrorMessage("Some travel intelligence is taking longer than expected.");
       }

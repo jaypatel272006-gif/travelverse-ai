@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, Send, Sparkles, X, Mic, Volume2, ShieldAlert, BadgeInfo, CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { logger } from '../utils/logger';
 
 const SUGGESTIONS = [
   { label: '🛂 Visa Support', query: 'Show me visa guidelines for Indian passports' },
@@ -76,7 +77,7 @@ export const AIAssistantWidget = () => {
     if (appShowToast) {
       appShowToast(msg, type === 'error' ? 'error' : 'success');
     } else {
-      console.log(`[AI Companion] ${type.toUpperCase()}: ${msg}`);
+      logger.info(`[AI Companion] ${type.toUpperCase()}: ${msg}`);
     }
   };
 
