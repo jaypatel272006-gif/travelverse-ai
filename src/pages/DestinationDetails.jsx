@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star, MapPin, Calendar, Clock, ShieldAlert, Sparkles, Plus, Send, RefreshCw, Thermometer, Info, Heart, ArrowLeft, Save, Globe, Cpu, Camera, Volume2, VolumeX, Maximize2, Minimize2, ChevronRight, HelpCircle, Landmark } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
+import { getDestinationImage } from '../data/imageRegistry';
 import { fetchCityDetails, fetchCountryDetails, fetchWeatherForecast } from '../utils/countriesApi';
 import { DestinationDetailsSkeleton } from '../components/SkeletonLoader';
 import { generateDetailedItinerary } from '../utils/itineraryEngine';
@@ -761,7 +762,7 @@ export const DestinationDetails = () => {
   const guidePremiumData = useMemo(() => getPremiumGuideData(cityData?.name || id), [cityData, id]);
   const calculatedCosts = getCalculatedCosts();
   const isWishlisted = cityData ? isInWishlist('destinations', id) : false;
-  const displayImage = cityData ? (customPhotos[id] || cityData.image) : '';
+  const displayImage = cityData ? getDestinationImage(id, customPhotos) : '';
 
   // Save itinerary to Dashboard context
   const handleSaveItinerary = useCallback(() => {
