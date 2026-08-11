@@ -331,7 +331,7 @@ export const DestinationCard = memo(({ destination }) => {
                     </div>
                   )}
                   <img
-                    src={customPhotos[id] || image}
+                    src={finalImage}
                     alt={name}
                     className="w-full h-full object-cover"
                     onLoad={() => { if (isMounted.current) setIsImageLoading(false); }}
