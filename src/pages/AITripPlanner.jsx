@@ -1182,10 +1182,10 @@ export const AITripPlanner = () => {
 
                 {/* Sub-navigation Tabs */}
                 {!isEditingPlan && (
-                  <div className="flex border-b border-slate-200 dark:border-teal-500/10 mb-6 gap-6 font-mono text-[10px] font-black pb-0.5">
+                  <div className="flex overflow-x-auto whitespace-nowrap border-b border-slate-200 dark:border-teal-500/10 mb-6 gap-6 font-mono text-[10px] font-black pb-0.5 scrollbar-none">
                     <button
                       onClick={() => setActiveTab('schedule')}
-                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest ${
+                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest shrink-0 ${
                         activeTab === 'schedule'
                           ? 'border-teal-500 text-teal-400'
                           : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-750 dark:hover:text-slate-200'
@@ -1195,7 +1195,7 @@ export const AITripPlanner = () => {
                     </button>
                     <button
                       onClick={() => setActiveTab('roadtrip')}
-                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest ${
+                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest shrink-0 ${
                         activeTab === 'roadtrip'
                           ? 'border-teal-500 text-teal-400'
                           : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-750 dark:hover:text-slate-200'
@@ -1205,7 +1205,7 @@ export const AITripPlanner = () => {
                     </button>
                     <button
                       onClick={() => setActiveTab('documentary')}
-                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest ${
+                      className={`pb-3 border-b-2 transition-all cursor-pointer uppercase tracking-widest shrink-0 ${
                         activeTab === 'documentary'
                           ? 'border-teal-500 text-teal-400'
                           : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-750 dark:hover:text-slate-200'
