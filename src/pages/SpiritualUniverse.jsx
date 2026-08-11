@@ -314,7 +314,7 @@ export const SpiritualUniverse = () => {
       </div>
 
       {/* Tabs list with warm gold hover cues */}
-      <div className="flex flex-wrap gap-2 pb-1 border-b border-amber-500/15">
+      <div className="flex overflow-x-auto whitespace-nowrap gap-2 pb-1.5 border-b border-amber-500/15 scrollbar-none">
         {[
           { id: 'directory', label: 'Spiritual Directory', icon: <Search size={14} /> },
           { id: 'map', label: 'Route Explorer Map', icon: <Map size={14} /> },
@@ -326,7 +326,7 @@ export const SpiritualUniverse = () => {
           <button
             key={tab.id}
             onClick={() => setActiveSubTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer border ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer border shrink-0 ${
               activeSubTab === tab.id
                 ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-md shadow-amber-500/20'
                 : 'text-amber-400 border border-amber-500/10 hover:border-amber-500/25 bg-amber-950/10'
@@ -452,6 +452,7 @@ export const SpiritualUniverse = () => {
                         key={node.id}
                         onMouseEnter={() => setHoveredNode(node)}
                         onMouseLeave={() => setHoveredNode(null)}
+                        onClick={() => setHoveredNode(hoveredNode?.id === node.id ? null : node)}
                         className="cursor-pointer"
                       >
                         <circle
