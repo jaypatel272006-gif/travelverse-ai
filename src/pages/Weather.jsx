@@ -120,11 +120,16 @@ export const Weather = () => {
   return (
     <div className="py-4 text-left flex flex-col gap-8 max-w-3xl mx-auto">
       {/* Title Header */}
-      <div>
-        <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-850 dark:text-slate-100 mb-2 mt-0">
-          Global Weather Advisor
-        </h1>
-        <p className="text-sm text-slate-500">
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-3.5 flex-wrap">
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-850 dark:text-slate-100 my-0">
+            Global Weather Advisor
+          </h1>
+          <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 rounded shrink-0">
+            Live Telemetry (Open-Meteo)
+          </span>
+        </div>
+        <p className="text-sm text-slate-500 mt-2">
           Check real-time conditions pulled directly from meteorology systems. Receive packing checklists and travel suggestions instantly.
         </p>
       </div>
