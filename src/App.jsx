@@ -163,7 +163,7 @@ function App() {
       {/* Cinematic Load State */}
       <AnimatePresence>
         {appLoading && (
-          <CinematicLoader onComplete={handleLoaderComplete} />
+          <TravelOSBootLoader onComplete={handleLoaderComplete} />
         )}
       </AnimatePresence>
       
