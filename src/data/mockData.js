@@ -367,7 +367,7 @@ export const mockDestinations = [
     rating: 4.7,
     reviewsCount: 2480,
     price: 40000,
-    image: 'https://images.pexels.com/photos/9229738/pexels-photo-9229738.jpeg',
+    image: '',
     description: 'The city of dreams. A bustling coastal metropolis featuring the Gateway of India, heritage Victorian architecture, Marine Drive, and Bollywood servers.',
     tags: ['Urban', 'Food', 'Culture', 'Nightlife'],
     coordinates: { x: 63, y: 33 },
