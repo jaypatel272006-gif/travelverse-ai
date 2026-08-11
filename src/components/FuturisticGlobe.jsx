@@ -184,7 +184,6 @@ export const FuturisticGlobe = ({ selectedCountry, viewMode = 'hologram', onSele
 
     // Weather Systems Overlay
     const weatherGroup = new THREE.Group();
-    const weatherCount = 8;
     const weatherNodes = [];
     for (let i = 0; i < weatherCount; i++) {
       const stormGeo = new THREE.DodecahedronGeometry(1.8, 1);
