@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cpu, Send, Sparkles, X, Mic, Volume2, ShieldAlert, BadgeInfo, CheckCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 
 const SUGGESTIONS = [
   { label: '🛂 Visa Support', query: 'Show me visa guidelines for Indian passports' },
@@ -13,6 +14,7 @@ const SUGGESTIONS = [
 
 export const AIAssistantWidget = () => {
   const navigate = useNavigate();
+  const { showToast: appShowToast } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -71,7 +73,11 @@ export const AIAssistantWidget = () => {
 
   // Helper to show toasts (since we do not want to crash if context isn't fully loaded)
   const showToast = (msg, type = 'info') => {
-    console.log(`[AI Companion] ${type.toUpperCase()}: ${msg}`);
+    if (appShowToast) {
+      appShowToast(msg, type === 'error' ? 'error' : 'success');
+    } else {
+      console.log(`[AI Companion] ${type.toUpperCase()}: ${msg}`);
+    }
   };
 
   // ChatGPT-style Streaming Typewriter Response simulation
