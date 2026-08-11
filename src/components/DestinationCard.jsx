@@ -76,6 +76,25 @@ export const DestinationCard = memo(({ destination }) => {
     };
   }, []);
 
+  // Lock body scroll and set safety loading timeout when modal is active
+  useEffect(() => {
+    let timer = null;
+    if (showQuickView) {
+      document.body.style.overflow = 'hidden';
+      timer = setTimeout(() => {
+        if (isMounted.current) {
+          setIsImageLoading(false);
+        }
+      }, 3000);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      if (timer) clearTimeout(timer);
+    };
+  }, [showQuickView]);
+
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
