@@ -1,4 +1,4 @@
-const CACHE_NAME = 'travelverse-cache-v1';
+const CACHE_NAME = 'travelverse-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -20,7 +20,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
+          if (cache.startsWith('travelverse-') && cache !== CACHE_NAME) {
             return caches.delete(cache);
           }
         })
