@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Heart, MapPin, ArrowRight, Sparkles, Bookmark, Eye, X, Sun, Clock, DollarSign } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { getResponsiveSrcSet } from '../utils/responsiveImages';
+import { getDestinationImage } from '../data/imageRegistry';
 
 export const DestinationCard = memo(({ destination }) => {
   const { isInWishlist, toggleWishlist, customPhotos, showToast } = useApp();
   const { id, name, image, region, country, rating, reviewsCount, price, tags, description } = destination;
+  const finalImage = getDestinationImage(id, customPhotos);
   const isWishlisted = isInWishlist('destinations', id);
 
   // Compute cinematic details: AI Match, score, weather & duration
@@ -159,8 +161,8 @@ export const DestinationCard = memo(({ destination }) => {
         {/* Full Image Background (Cinematic Large Photography) */}
         <div className="absolute inset-0 z-0 bg-slate-950">
           <img
-            src={customPhotos[id] || image}
-            srcSet={getResponsiveSrcSet(customPhotos[id] || image)}
+            src={finalImage}
+            srcSet={getResponsiveSrcSet(finalImage)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             alt={name}
             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
