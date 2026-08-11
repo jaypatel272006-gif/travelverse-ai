@@ -328,12 +328,12 @@ export const RoadTripOS = () => {
                   placeholder="Enter stopover name..."
                   value={newStop}
                   onChange={(e) => setNewStop(e.target.value)}
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
+                  className="flex-1 px-4 h-11 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-semibold focus:outline-none focus:border-teal-500 text-slate-700 dark:text-slate-200"
                 />
                 <button
                   type="button"
                   onClick={handleAddStop}
-                  className="px-4 py-2.5 bg-slate-950 dark:bg-white text-white dark:text-slate-950 text-xs font-bold font-mono rounded-xl hover:scale-[1.02] cursor-pointer transition-all border border-slate-800"
+                  className="px-4 h-11 flex items-center justify-center bg-slate-950 dark:bg-white text-white dark:text-slate-950 text-xs font-bold font-mono rounded-xl hover:scale-[1.02] cursor-pointer transition-all border border-slate-800 shrink-0"
                 >
                   ADD STOP
                 </button>
@@ -348,7 +348,7 @@ export const RoadTripOS = () => {
                   <button
                     key={p}
                     onClick={() => setScenicPreference(p)}
-                    className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase rounded-lg border transition-all cursor-pointer ${
+                    className={`px-3 h-11 flex items-center justify-center text-[10px] font-mono font-bold uppercase rounded-lg border transition-all cursor-pointer ${
                       scenicPreference === p
                         ? 'bg-teal-500/10 border-teal-500 text-teal-400'
                         : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-500 hover:border-slate-300'
@@ -360,14 +360,14 @@ export const RoadTripOS = () => {
               </div>
             </div>
 
-            <div className="border-t border-slate-200 dark:border-white/5 pt-4 flex justify-between mt-2">
+            <div className="border-t border-slate-200 dark:border-white/5 pt-4 flex flex-col sm:flex-row justify-between gap-4 mt-2">
               <span className="font-mono text-[10px] text-slate-500 font-bold self-center">
                 ESTIMATED DISTANCE: <span className="text-teal-400 font-black">{totalDistance} KM</span>
               </span>
               <button
                 type="button"
                 onClick={handleSaveRoute}
-                className="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-mono font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
+                className="px-5 h-11 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white font-mono font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
               >
                 SAVE ROUTE BLUEPRINT
               </button>
