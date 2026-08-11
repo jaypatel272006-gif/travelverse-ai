@@ -136,7 +136,12 @@ export const HotelCard = memo(({ hotel, onBook }) => {
         {/* Pricing Actions */}
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4 mt-auto">
           <div>
-            <span className="text-xs text-slate-400">Starting from</span>
+            <span className="text-xs text-slate-400 flex items-center gap-1.5">
+              Starting from
+              <span className="px-1.5 py-0.2 text-[8px] font-bold font-mono uppercase bg-amber-500/10 border border-amber-500/25 text-amber-400 rounded">
+                AI Estimate
+              </span>
+            </span>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-black text-slate-800 dark:text-slate-100">₹{hotel.price.toLocaleString('en-IN')}</span>
               <span className="text-xs text-slate-400">/night</span>

@@ -90,9 +90,14 @@ export const FlightCard = memo(({ flight, onBook }) => {
         {/* Pricing / Booking Area */}
         <div className="flex items-center justify-between lg:flex-col gap-4 w-full lg:w-auto lg:border-l border-slate-100 dark:border-slate-800/80 lg:pl-6 text-right">
           <div className="flex flex-col lg:items-end gap-1">
-            <span className={`px-2 py-0.5 rounded text-[9px] font-bold border self-end tracking-wide uppercase ${getClassBadgeStyle(flight.class)}`}>
-              {flight.class}
-            </span>
+            <div className="flex gap-1.5 justify-end">
+              <span className={`px-2 py-0.5 rounded text-[9px] font-bold border self-end tracking-wide uppercase ${getClassBadgeStyle(flight.class)}`}>
+                {flight.class}
+              </span>
+              <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold border border-amber-500/20 bg-amber-500/10 text-amber-400 self-end tracking-wide uppercase">
+                AI Estimate
+              </span>
+            </div>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-2xl font-black text-slate-800 dark:text-slate-100">₹{flight.price.toLocaleString('en-IN')}</span>
               <span className="text-[10px] text-slate-400">/one-way</span>
