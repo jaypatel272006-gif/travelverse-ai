@@ -609,16 +609,16 @@ export const RoadTripOS = () => {
         {/* Right Side: OS Analyzers & Budget Dashboard */}
         <div className="lg:col-span-5 flex flex-col gap-6">
 
-          {/* Section 4: Live Budget Dashboard */}
+          {/* Section 4: Estimated Budget Dashboard */}
           <div className="p-6 rounded-3xl bg-slate-900 text-white border border-slate-800 shadow-2xl flex flex-col gap-4 text-left relative overflow-hidden">
             <div className="absolute top-0 right-0 w-36 h-36 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex justify-between items-center border-b border-white/5 pb-3">
               <div>
                 <span className="text-[8px] font-mono text-teal-400 uppercase tracking-widest font-black">BUDGET CORE: METRIC_CENTER</span>
-                <h3 className="font-display font-extrabold text-base text-white mt-0.5">Live Cost Dashboard</h3>
+                <h3 className="font-display font-extrabold text-base text-white mt-0.5">Estimated Cost Dashboard</h3>
               </div>
-              <span className="text-[9px] bg-teal-500/10 border border-teal-500/25 text-teal-400 px-2 py-0.5 rounded font-mono font-bold">SIMULATION ON</span>
+              <span className="text-[9px] bg-amber-500/10 border border-amber-500/25 text-amber-400 px-2 py-0.5 rounded font-mono font-bold">AI ESTIMATE</span>
             </div>
 
             {/* Sliders Simulator */}
