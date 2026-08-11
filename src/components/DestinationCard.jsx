@@ -19,8 +19,8 @@ export const DestinationCard = memo(({ destination }) => {
     const matchScore = Math.min(100, Math.round(baseRating * 20)); // e.g. 4.9 -> 98%
     const destScore = (baseRating * 2).toFixed(1); // e.g. 4.9 -> 9.8
 
-    let weatherText = '☀️ 24°C';
-    let durationText = '4-5 Days';
+    let weatherText;
+    let durationText;
 
     switch (targetId) {
       case 'dest-goa':
