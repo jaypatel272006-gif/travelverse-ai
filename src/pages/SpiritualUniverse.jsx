@@ -107,18 +107,27 @@ const DiyaLamp = () => (
   </div>
 );
 
+// Hoisted static seed parameters for pure rendering
+const SPARKS_DATA = Array.from({ length: 18 }).map((_, i) => ({
+  id: i,
+  left: `${(i * 7 + 13) % 100}%`,
+  top: `${80 + ((i * 13 + 5) % 20)}%`,
+  delay: `${(i * 0.23).toFixed(2)}s`,
+  duration: `${4 + ((i * 0.37) % 4).toFixed(2)}s`
+}));
+
 // Particle system sparks emitter
 const FloatingSparks = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    {Array.from({ length: 18 }).map((_, i) => (
+    {SPARKS_DATA.map((spark) => (
       <div
-        key={i}
+        key={spark.id}
         className="absolute w-1 h-1 rounded-full bg-amber-400/60 opacity-0 particle-dust"
         style={{
-          left: `${Math.random() * 100}%`,
-          top: `${80 + Math.random() * 20}%`,
-          animationDelay: `${Math.random() * 4}s`,
-          animationDuration: `${4 + Math.random() * 4}s`
+          left: spark.left,
+          top: spark.top,
+          animationDelay: spark.delay,
+          animationDuration: spark.duration
         }}
       />
     ))}
@@ -131,6 +140,15 @@ export const SpiritualUniverse = () => {
   const [selectedCircuit, setSelectedCircuit] = useState('chardham');
   const [hoveredNode, setHoveredNode] = useState(null);
   
+  const equalizerData = useMemo(() => {
+    return Array.from({ length: 16 }).map((_, i) => ({
+      id: i,
+      height: `${30 + Math.random() * 70}%`,
+      delay: `${i * 0.08}s`,
+      duration: `${0.5 + Math.random() * 0.6}s`
+    }));
+  }, []);
+
   // States
   const [dirSearch, setDirSearch] = useState('');
   const [dirFaith, setDirFaith] = useState('All');
