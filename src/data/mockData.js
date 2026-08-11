@@ -9,7 +9,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 2200,
     price: 36000,
-    image: 'https://exploreworldtrip.com/wp-content/uploads/2026/03/4-Days-Goa-Travel-Itinerary-Beaches-Forts-and-Cafes-1024x683.png',
+    image: 'https://images.openai.com/static-rsc-4/bVK4wF83P9UXJIumVZg51GT6VxWRc2lYa_wUzEzG07S3FFdMnU4VQe6kM-2qsRHfnPxuRTY61m2jCHbYUvinFTHnlS3vF0BYirLBVfo-RXja_9KkKWUJdtIq0NsPA9MCfN-y2C5Ina8zOLC14WpDE1mmCBR1WdsqUvWtFrE_hbdSBeGCg8RR_FwYUBtYmF4E?purpose=fullsize',
     description: "India's beach paradise. Known for its golden sand coastlines, active night bazaars, Portuguese heritage churches, and lush spice plantations.",
     tags: ['Beach', 'Nightlife', 'Relaxation', 'Food'],
     coordinates: { x: 64, y: 35 },
