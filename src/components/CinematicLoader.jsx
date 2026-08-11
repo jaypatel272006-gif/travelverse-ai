@@ -84,9 +84,10 @@ export const CinematicLoader = ({ onComplete }) => {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // Create a points-based holographic globe
+      const isMobile = window.innerWidth < 768;
       const radius = 60;
-      const segments = 48;
-      const rings = 48;
+      const segments = isMobile ? 24 : 48;
+      const rings = isMobile ? 24 : 48;
       
       const geometry = new THREE.BufferGeometry();
       const positions = [];
