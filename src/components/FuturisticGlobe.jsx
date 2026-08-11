@@ -102,14 +102,18 @@ export const FuturisticGlobe = ({ selectedCountry, viewMode = 'hologram', onSele
     });
     hologramMaterialRef.current = hologramMaterial;
 
+    const isMobile = window.innerWidth < 768;
+    const globeSegments = isMobile ? 32 : 64;
+    const dotsCount = isMobile ? 650 : 1800;
+    const weatherCount = isMobile ? 3 : 8;
+
     // Globe Mesh
-    const globeGeometry = new THREE.SphereGeometry(radius, 64, 64);
+    const globeGeometry = new THREE.SphereGeometry(radius, globeSegments, globeSegments);
     const globeMesh = new THREE.Mesh(globeGeometry, hologramMaterial);
     scene.add(globeMesh);
     globeMeshRef.current = globeMesh;
 
     // Dot Globe continents
-    const dotsCount = 1800;
     const dotGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(dotsCount * 3);
     const landColor = new THREE.Color(0x2dd4bf);
