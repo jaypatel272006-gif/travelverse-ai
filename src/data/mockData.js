@@ -163,7 +163,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1750,
     price: 52000,
-    image: '',
+    image: 'https://images.openai.com/static-rsc-4/UdgI52qVpJ2b-mMLUr9AqwBq6v9Ufc5hNJX9GqcoiX3fMqL7T-tH36eYjgJgPlx2fgTmIjKO_00FJdErJ2HUJeWMiuNWphI1BbQbbH7INI--grzuYO-kvGA5gCO2M9kcH2RO-nDj_QlTuHR-lvgUQF8k5el2CPc8D-2IfQyNJ-WldgjthSI2WsvKjuLd4K0G?purpose=fullsize',
     description: 'Heaven on Earth. Walk through snow-capped alpine meadows, sail in traditional shikara boats on Dal Lake, and stay in premium floating wooden houseboats.',
     tags: ['Nature', 'Romantic', 'Adventure', 'Culture'],
     coordinates: { x: 64, y: 28 },
