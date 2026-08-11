@@ -418,7 +418,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1210,
     price: 46000,
-    image: 'https://media.istockphoto.com/id/2197451137/photo/architectural-beauty-of-city-palace-in-udaipur-during-twilight.jpg?s=612x612&w=0&k=20&c=FcwhXgHTvAjOETUcXLKGyzsaBVedHnvagu0OLlB103o=',
+    image: '',
     description: 'The Venice of the East. Beautiful lakes (Lake Pichola), romantic white marble palaces, royal heritage hotels, and scenic mountain backgrounds.',
     tags: ['Romantic', 'History', 'Art', 'Heritage'],
     coordinates: { x: 62, y: 32 },
