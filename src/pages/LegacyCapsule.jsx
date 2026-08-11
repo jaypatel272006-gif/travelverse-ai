@@ -66,22 +66,41 @@ export const LegacyCapsule = () => {
   
   // Custom states
   const [memories, setMemories] = useState(() => {
-    const saved = localStorage.getItem('tv_travel_memories');
-    return saved ? JSON.parse(saved) : INITIAL_MEMORIES;
+    try {
+      const saved = localStorage.getItem('tv_travel_memories');
+      return saved ? JSON.parse(saved) : INITIAL_MEMORIES;
+    } catch (e) {
+      console.warn("Failed to parse tv_travel_memories from localStorage, using fallback.", e);
+      return INITIAL_MEMORIES;
+    }
   });
 
   const [capsules, setCapsules] = useState(() => {
-    const saved = localStorage.getItem('tv_time_capsules');
-    return saved ? JSON.parse(saved) : [
-      {
-        id: 'cap-1',
-        title: 'Arctic Solar Waves',
-        destination: 'Tromso, Norway',
-        unlockDate: '2026-12-25T00:00:00.000Z',
-        message: 'Dear Self, remember the green aurora spirals floating over the fjord. Keep seeking clean mountain valleys.',
-        sealed: true
-      }
-    ];
+    try {
+      const saved = localStorage.getItem('tv_time_capsules');
+      return saved ? JSON.parse(saved) : [
+        {
+          id: 'cap-1',
+          title: 'Arctic Solar Waves',
+          destination: 'Tromso, Norway',
+          unlockDate: '2026-12-25T00:00:00.000Z',
+          message: 'Dear Self, remember the green aurora spirals floating over the fjord. Keep seeking clean mountain valleys.',
+          sealed: true
+        }
+      ];
+    } catch (e) {
+      console.warn("Failed to parse tv_time_capsules from localStorage, using fallback.", e);
+      return [
+        {
+          id: 'cap-1',
+          title: 'Arctic Solar Waves',
+          destination: 'Tromso, Norway',
+          unlockDate: '2026-12-25T00:00:00.000Z',
+          message: 'Dear Self, remember the green aurora spirals floating over the fjord. Keep seeking clean mountain valleys.',
+          sealed: true
+        }
+      ];
+    }
   });
 
   // State for creating new memories

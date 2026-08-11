@@ -135,13 +135,23 @@ export const SpiritualUniverse = () => {
   const [dirFaith, setDirFaith] = useState('All');
   
   const [visitedJyotirlingas, setVisitedJyotirlingas] = useState(() => {
-    const saved = localStorage.getItem('tv_jyotirlinga_progress');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('tv_jyotirlinga_progress');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.warn("Failed to parse tv_jyotirlinga_progress from localStorage, using fallback.", e);
+      return [];
+    }
   });
 
   const [passportStamps, setPassportStamps] = useState(() => {
-    const saved = localStorage.getItem('tv_spiritual_stamps');
-    return saved ? JSON.parse(saved) : ['Varanasi-Kashi'];
+    try {
+      const saved = localStorage.getItem('tv_spiritual_stamps');
+      return saved ? JSON.parse(saved) : ['Varanasi-Kashi'];
+    } catch (e) {
+      console.warn("Failed to parse tv_spiritual_stamps from localStorage, using fallback.", e);
+      return ['Varanasi-Kashi'];
+    }
   });
 
   const [plannerFaith, setPlannerFaith] = useState('Hinduism');
