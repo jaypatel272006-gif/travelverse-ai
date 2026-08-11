@@ -18,7 +18,7 @@ export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
@@ -37,8 +37,8 @@ export const Register = () => {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      const result = register(name.trim(), email.trim(), password.trim());
+    try {
+      const result = await register(name.trim(), email.trim(), password.trim());
       setLoading(false);
       
       if (result.success) {
@@ -46,7 +46,10 @@ export const Register = () => {
       } else {
         showToast(result.message, 'error');
       }
-    }, 600);
+    } catch (err) {
+      setLoading(false);
+      showToast('Registration system error. Fallback activated.', 'error');
+    }
   };
 
   return (
