@@ -203,7 +203,7 @@ export const DestinationCard = memo(({ destination }) => {
         </div>
 
         {/* Sliding Apple Glass Card overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 z-25 bg-slate-950/75 backdrop-blur-lg border-t border-white/10 rounded-t-[28px] transform translate-y-[140px] group-hover:translate-y-0 transition-transform duration-500 ease-out flex flex-col gap-4 text-left">
+        <div className="absolute bottom-0 left-0 right-0 p-5 z-25 bg-slate-950/75 backdrop-blur-lg border-t border-white/10 rounded-t-[28px] transform translate-y-0 lg:translate-y-[140px] lg:group-hover:translate-y-0 transition-transform duration-500 ease-out flex flex-col gap-4 text-left">
           
           {/* Header metadata row */}
           <div>
@@ -255,14 +255,14 @@ export const DestinationCard = memo(({ destination }) => {
           <div className="grid grid-cols-2 gap-2.5 border-t border-white/5 pt-3 mt-auto">
             <button
               onClick={handleQuickViewClick}
-              className="py-2.5 rounded-xl border border-white/10 text-white font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors hover:bg-white/5 cursor-pointer"
+              className="h-11 rounded-xl border border-white/10 text-white font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors hover:bg-white/5 cursor-pointer"
             >
               <Eye size={12} />
               Quick Preview
             </button>
             <Link
               to={`/destination/${id}`}
-              className="py-2.5 rounded-xl bg-teal-500 text-slate-950 font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02] shadow-[0_0_15px_rgba(45,212,191,0.2)]"
+              className="h-11 rounded-xl bg-teal-500 text-slate-950 font-bold text-[9.5px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-transform hover:scale-[1.02] shadow-[0_0_15px_rgba(45,212,191,0.2)]"
             >
               Dossier File
               <ArrowRight size={12} />
@@ -293,7 +293,7 @@ export const DestinationCard = memo(({ destination }) => {
               >
                 <button
                   onClick={() => setShowQuickView(false)}
-                  className="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-full bg-slate-800 transition-colors cursor-pointer z-10"
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-slate-800 transition-colors cursor-pointer z-10 p-0"
                 >
                   <X size={16} />
                 </button>
@@ -340,14 +340,14 @@ export const DestinationCard = memo(({ destination }) => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setShowQuickView(false)}
-                      className="px-4 py-2 border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                      className="px-4 h-11 flex items-center justify-center border border-white/10 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl text-xs font-bold transition-all cursor-pointer"
                     >
                       Close
                     </button>
                     <Link
                       to={`/destination/${id}`}
                       onClick={() => setShowQuickView(false)}
-                      className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-xl text-xs font-bold transition-all"
+                      className="px-4 h-11 flex items-center justify-center bg-teal-500 hover:bg-teal-600 text-slate-950 rounded-xl text-xs font-bold transition-all"
                     >
                       Explore Dossier
                     </Link>
