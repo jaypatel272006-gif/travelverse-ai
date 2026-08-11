@@ -265,7 +265,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3150,
     price: 32000,
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'Home to the iconic Taj Mahal, a monument of love. Agra displays the finest Mughal architecture, royal fortresses, and heritage culinary delicacies.',
     tags: ['History', 'Culture', 'Art', 'Heritage'],
     coordinates: { x: 65, y: 31 },
