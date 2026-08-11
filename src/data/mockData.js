@@ -469,7 +469,7 @@ export const mockDestinations = [
     rating: 4.7,
     reviewsCount: 2890,
     price: 36000,
-    image: '',
+    image: 'https://images.openai.com/static-rsc-4/g7ijq6NluQ9_d4WSVlJbLi-m46G23DJFEmGbQl9FsXDxrPdFClY1cR1-G9Sf-0otd3mODSo8EfndZLpn06IjuJxWrJ2L8anBBZ6Fu6MOwf71XpnNUFjpD33TaxjsdN7QLIhWPfMath-wvNCcK6yphNGwPH1FS0EiVFbxzwuhIFnHosPKw-OiQWXB0JpNnSbR?purpose=fullsize',
     description: 'The capital territory. A historic melting pot featuring Red Fort, Qutub Minar, bustling Chandni Chowk bazaars, and world-class street cuisine.',
     tags: ['History', 'Food', 'Shopping', 'Urban'],
     coordinates: { x: 64, y: 31 },
