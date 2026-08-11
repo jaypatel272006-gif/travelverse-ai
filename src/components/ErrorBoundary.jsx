@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw, Trash2, Home } from 'lucide-react';
+import { logger } from '../utils/logger';
 
 export class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("TravelVerse OS Stability Layer Caught Error:", error, errorInfo);
+    logger.error("TravelVerse OS Stability Layer Caught Error:", error, errorInfo);
     
     // Auto-recovery for chunk loading failures on new deployments
     const errorMsg = error && error.message ? error.message.toLowerCase() : '';
@@ -25,8 +26,44 @@ export class ErrorBoundary extends React.Component {
   }
 
   handleReset = () => {
-    // Flush all local storage states that could cause corrupt state crashes
+    // 1. Backup critical user data keys
+    const backup = {};
+    const keysToPreserve = [
+      'tv_user',
+      'tv_wishlist',
+      'tv_itineraries',
+      'tv_journals',
+      'tv_custom_photos',
+      'tv_travel_memories',
+      'tv_time_capsules',
+      'tv_jyotirlinga_progress',
+      'tv_spiritual_stamps',
+      'tv_user_xp',
+      'tv_user_level',
+      'tv_registered_users',
+      'tv_theme'
+    ];
+    
+    keysToPreserve.forEach(key => {
+      try {
+        const val = localStorage.getItem(key);
+        if (val !== null) backup[key] = val;
+      } catch (e) {
+        logger.warn(`Failed backing up key ${key} during reset:`, e);
+      }
+    });
+
+    // 2. Flush other local storage states (e.g. workspace layouts, streaks, alerts, etc.)
     localStorage.clear();
+    
+    // 3. Restore backup
+    Object.keys(backup).forEach(key => {
+      try {
+        localStorage.setItem(key, backup[key]);
+      } catch (e) {
+        logger.error(`Failed restoring key ${key} during reset:`, e);
+      }
+    });
     
     // Clear all client cache buffers
     if ('caches' in window) {
@@ -34,7 +71,7 @@ export class ErrorBoundary extends React.Component {
         for (let name of names) {
           caches.delete(name);
         }
-      }).catch(err => console.error("Error clearing caches:", err));
+      }).catch(err => logger.error("Error clearing caches:", err));
     }
     
     // Unregister all active service workers
@@ -43,7 +80,7 @@ export class ErrorBoundary extends React.Component {
         for (let registration of registrations) {
           registration.unregister();
         }
-      }).catch(err => console.error("Error unregistering service workers:", err));
+      }).catch(err => logger.error("Error unregistering service workers:", err));
     }
     
     window.location.href = '/';
