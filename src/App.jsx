@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Navbar } from './components/Navbar';
+import { BottomNav } from './components/BottomNav';
 import { Footer } from './components/Footer';
 import { CustomCursor } from './components/CustomCursor';
 import { AIAssistantWidget } from './components/AIAssistantWidget';
@@ -223,6 +224,9 @@ function App() {
 
       {/* PWA Installer Overlay */}
       <PWAInstallPrompt />
+
+      {/* Mobile Navigation Dock */}
+      <BottomNav />
     </div>
   );
 }
