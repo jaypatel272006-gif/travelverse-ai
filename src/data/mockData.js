@@ -316,7 +316,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 1540,
     price: 28000,
-    image: '',
+    image: 'https://images.openai.com/static-rsc-4/_VzpibMgfLKtwoZ0MnScww276uXQDpAtcCQ8WPFayMvpNjP1WM-LE3PQsTQWfQZjbVtqtGAMI53y-8xyt3ibLd-T6R0Jiy_ayma5P348SitQw9cr79mwV7J8WuCColgk-IZThntiZRQoveU1b5HTVClylBEev8ONJMLav-DlIVFK44Fzi1NGDUKi_wgmSUnR?purpose=fullsize',
     description: 'The spiritual capital of India. Explore ancient ghats along the sacred Ganges river, watch the magical Ganga Aarti, and walk historic narrow alleys.',
     tags: ['Spiritual', 'Culture', 'History', 'Art'],
     coordinates: { x: 66, y: 31 },
