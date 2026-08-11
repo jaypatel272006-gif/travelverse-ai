@@ -367,7 +367,7 @@ export const mockDestinations = [
     rating: 4.7,
     reviewsCount: 2480,
     price: 40000,
-    image: '',
+    image: 'https://images.openai.com/static-rsc-4/F4TOzfwN-jTdMDVvyjItM6pAIE4rIxKNaJHpfiwu0nPw2VWETKjUp-ia8wNgMwr6l_PqSErFUOPttKWvTAAt0KurSFqJKtN_8WyiJzTA0QtdX3rE4zrdelQx0iIT9bfuR_p6c5jscKwFp0rSRaFy9_88_ClhWvGbrKtzwhPfoD-Q0S8wDm0Thziq-sZ2f_fV?purpose=fullsize',
     description: 'The city of dreams. A bustling coastal metropolis featuring the Gateway of India, heritage Victorian architecture, Marine Drive, and Bollywood servers.',
     tags: ['Urban', 'Food', 'Culture', 'Nightlife'],
     coordinates: { x: 63, y: 33 },
