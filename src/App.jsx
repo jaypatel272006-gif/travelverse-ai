@@ -129,18 +129,13 @@ const LoadingFallback = () => (
 
 function App() {
   const location = useLocation();
-  const [appLoading, setAppLoading] = useState(false);
-
-  // Play cinematic loader once per session
-  useEffect(() => {
-    const shown = sessionStorage.getItem('travelverse_intro_shown');
-    if (!shown) {
-      const timer = setTimeout(() => {
-        setAppLoading(true);
-      }, 0);
-      return () => clearTimeout(timer);
+  const [appLoading, setAppLoading] = useState(() => {
+    try {
+      return !sessionStorage.getItem('travelverse_intro_shown');
+    } catch (e) {
+      return true;
     }
-  }, []);
+  });
 
   // Global event listener for image loading errors (image fallbacks)
   useEffect(() => {
