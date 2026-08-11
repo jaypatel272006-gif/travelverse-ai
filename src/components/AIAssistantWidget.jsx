@@ -133,7 +133,7 @@ export const AIAssistantWidget = () => {
     setTimeout(() => {
       setIsTyping(false);
       const query = text.toLowerCase();
-      let responseText = '';
+      let responseText;
 
       if (query.includes('visa') || query.includes('passport') || query.includes('entry')) {
         responseText = '🛂 Visa & Passport Intelligence:\n• Indian Passport: 60+ countries offer visa-free or eVisa transits (e.g. Thailand, Vietnam, Malaysia).\n• Europe (Schengen): Requires tourist visa filings. Recommend starting applications 3 months prior with 6-month bank logs.\n• USA / UK: Require physical embassy appointments. Pre-book slots early to avoid holiday gridlocks.';
