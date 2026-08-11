@@ -829,14 +829,14 @@ export const SpiritualUniverse = () => {
                 <div className="w-full flex-1 flex flex-col items-center justify-center gap-6">
                   {isPlayingAudio ? (
                     <div className="flex gap-1.5 items-end h-10 justify-center">
-                      {Array.from({ length: 16 }).map((_, i) => (
+                      {equalizerData.map((bar) => (
                         <div
-                          key={i}
+                          key={bar.id}
                           className="w-1 bg-amber-400 rounded-full animate-pulse"
                           style={{
-                            height: `${30 + Math.random() * 70}%`,
-                            animationDelay: `${i * 0.08}s`,
-                            animationDuration: `${0.5 + Math.random() * 0.6}s`
+                            height: bar.height,
+                            animationDelay: bar.delay,
+                            animationDuration: bar.duration
                           }}
                         />
                       ))}
