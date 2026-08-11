@@ -116,14 +116,14 @@ export const TravelOSBootLoader = ({ onComplete }) => {
     };
   }, []);
 
-  const handleFinishBoot = () => {
+  function handleFinishBoot() {
     // Clear timeouts and fire completion
     clearTimeout(safetyTimeoutRef.current);
     clearInterval(progressIntervalRef.current);
     if (onComplete) {
       onComplete();
     }
-  };
+  }
 
   return (
     <motion.div
