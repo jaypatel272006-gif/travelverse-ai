@@ -718,7 +718,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 190,
     price: 24000,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The world\'s largest river island. Located in Assam on the Brahmaputra River, famous for its Neo-Vaishnavite culture, handmade masks, and pottery.',
     tags: ['Offbeat', 'Culture', 'Nature', 'Relaxation'],
     coordinates: { x: 71, y: 30 },
