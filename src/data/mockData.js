@@ -1352,7 +1352,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3880,
     price: 26000,
-    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The pinnacle of Dravidian architecture. Located in Madurai, Tamil Nadu, featuring 14 massive gopuram towers covered in thousands of colorful stone figures.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 65, y: 39 },
