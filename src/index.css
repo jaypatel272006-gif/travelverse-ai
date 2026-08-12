@@ -2,29 +2,38 @@
 
 @layer base {
   :root {
-    --bg-dark-brown: #1B120C;
-    --bg-walnut: #24170F;
-    --bg-charcoal: #342117;
-    --color-terracotta: #4A2E1B;
-    --color-ochre: #6B4325;
-    --color-copper: #8B5E34;
-    --color-aged-gold: #B9854F;
-    --color-sandstone: #D4A66A;
-    --color-sand-light: #E8CFA8;
-    --color-warm-ivory: #F5E7CF;
+    /* Sandstone Heritage Color Tokens */
+    --color-bg-walnut: #1B120C;
+    --color-bg-dark: #24170F;
+    --color-bg-espresso: #342117;
+    --color-bg-heritage: #4A2E1B;
+    
+    --color-[#6B4325]: #6B4325;
+    --color-[#8B5E34]: #8B5E34;
+    --color-copper: #A66A3F;
+    --color-gold-antique: #B9854F;
+    --color-gold-light: #D4A66A;
+    
+    --color-ivory: #F5E7CF;
+    --color-cream: #E8CFA8;
+    --color-sand: #EFE0C5;
+    
+    --color-[#A85D3A]: #A85D3A;
+    --color-[#596044]: #596044;
+    --color-maroon: #54261D;
   }
 
   body {
-    background-color: var(--bg-dark-brown);
-    color: var(--color-warm-ivory);
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #1B120C;
+    color: #F5E7CF;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
     selection-background-color: #8B5E34;
     selection-color: #F5E7CF;
   }
 }
 
-/* Typography Utility Classes */
+/* Typography Classes */
 .font-serif-heritage {
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
 }
@@ -37,43 +46,35 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* Architectural Sandstone Borders & Glows */
-.border-sandstone {
-  border-color: rgba(185, 133, 79, 0.25);
+/* Sandstone Layered Surface Hierarchy */
+.surface-level-1 {
+  background-color: #1B120C;
 }
 
-.border-sandstone-glow {
-  border-color: rgba(212, 166, 106, 0.4);
-  box-shadow: 0 0 20px rgba(185, 133, 79, 0.15);
+.surface-level-2 {
+  background-color: #24170F;
+  border: 1px solid rgba(212, 166, 106, 0.20);
 }
 
-.glow-sandstone {
-  box-shadow: 0 10px 30px -5px rgba(139, 94, 52, 0.3);
+.surface-level-3 {
+  background-color: #342117;
+  border: 1px solid rgba(212, 166, 106, 0.25);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
 }
 
-.glow-gold-soft {
-  box-shadow: 0 0 25px rgba(212, 166, 106, 0.2);
+.surface-level-4 {
+  background-color: #4A2E1B;
+  border: 1px solid rgba(212, 166, 106, 0.35);
 }
 
-/* Glassmorphism & Panel Fill for Heritage Theme */
-.bg-heritage-card {
-  background: linear-gradient(145deg, rgba(36, 23, 15, 0.85) 0%, rgba(27, 18, 12, 0.95) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(185, 133, 79, 0.2);
+.surface-level-5 {
+  background-color: rgba(36, 23, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 166, 106, 0.40);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8);
 }
 
-.bg-heritage-panel {
-  background: rgba(52, 33, 23, 0.4);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 166, 106, 0.18);
-}
-
-/* Subtle Architectural Motifs & Linework */
-.arch-top-notch {
-  border-top-left-radius: 2rem;
-  border-top-right-radius: 2rem;
-}
-
+/* Subtle Architectural Linework Pattern */
 .architectural-pattern-bg {
   background-image: radial-gradient(rgba(185, 133, 79, 0.12) 1px, transparent 1px);
   background-size: 24px 24px;
@@ -82,6 +83,7 @@
 /* Custom Scrollbar for Sandstone Theme */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
