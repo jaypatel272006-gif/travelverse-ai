@@ -1748,7 +1748,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 1250,
     price: 145000,
-    image: 'https://images.unsplash.com/photo-1434394354979-a235cd36269d?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The sacred cosmic peak in Tibet. Revered in Hinduism as the home of Shiva, and in Buddhism, Jainism, and Bon, surrounded by Mansarovar lake.',
     tags: ['Spiritual', 'Adventure', 'Nature', 'Offbeat'],
     coordinates: { x: 63, y: 26 },
