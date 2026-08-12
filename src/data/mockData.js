@@ -112,7 +112,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1980,
     price: 48000,
-    image: '',
+    image: 'https://trekgo.in/blog/kerala-complete-travel-guide/hero.jpg',
     description: "God's Own Country. Famed for its serene backwaters with floating houseboats, tea plantations of Munnar, and authentic Ayurveda wellness centers.",
     tags: ['Nature', 'Wellness', 'Relaxation', 'Food'],
     coordinates: { x: 65, y: 37 },
