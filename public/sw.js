@@ -1,4 +1,4 @@
-const CACHE_NAME = 'travelverse-v5';
+const CACHE_NAME = 'travelverse-clean-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
