@@ -1264,7 +1264,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 5430,
     price: 28000,
-    image: '',
+    image: 'https://assets.cntraveller.in/photos/6656f8de517f32fd1d3eab4c/4:3/w_3820,h_2865,c_limit/vaishno%20devi.jpg',
     description: 'The highly revered cave shrine of Mother Goddess Vaishno Devi in Katra, Jammu & Kashmir. Located at 5,200 ft on the holy Trikuta Hills.',
     tags: ['Spiritual', 'Adventure', 'Nature'],
     coordinates: { x: 63, y: 27 },
