@@ -1528,7 +1528,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3120,
     price: 19000,
-    image: '',
+    image: 'https://www.trawell.in/admin/images/upload/197582347Ajmer_Dargah_Main.jpg',
     description: 'The Sufi shrine of Khwaja Moinuddin Chishti in Rajasthan. Renowned for its universal message of peace, Qawwali music, and giant food cauldrons.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 30 },
