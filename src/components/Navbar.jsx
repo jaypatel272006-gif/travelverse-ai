@@ -184,10 +184,10 @@ export const Navbar = () => {
   ];
 
   const featuredDestinations = [
-    { name: 'Varanasi Gateway', sub: 'Spiritual Matrix Core', image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=120&q=80', link: '/destination/dest-varanasi' },
-    { name: 'Goa Coastline', sub: 'Atmospheric Ocean Wave', image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80', link: '/destination/dest-goa' },
-    { name: 'Jaipur Palace', sub: 'Solar Amber Heritage', image: 'https://images.unsplash.com/photo-1477587458883-4713584000a4?auto=format&fit=crop&w=120&q=80', link: '/destination/dest-jaipur' },
-    { name: 'Leh Ladakh Twin', sub: 'Glacial Heights Terminal', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=120&q=80', link: '/destination/dest-leh' }
+    { name: 'Varanasi Gateway', sub: 'Spiritual Matrix Core', image: getDestinationImage('dest-varanasi'), link: '/destination/dest-varanasi' },
+    { name: 'Goa Coastline', sub: 'Atmospheric Ocean Wave', image: getDestinationImage('dest-goa'), link: '/destination/dest-goa' },
+    { name: 'Jaipur Palace', sub: 'Solar Amber Heritage', image: getDestinationImage('dest-jaipur'), link: '/destination/dest-jaipur' },
+    { name: 'Leh Ladakh Twin', sub: 'Glacial Heights Terminal', image: getDestinationImage('dest-ladakh'), link: '/destination/dest-leh' }
   ];
 
   const handleLogout = () => {
