@@ -860,7 +860,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 5200,
     price: 18000,
-    image: 'https://images.unsplash.com/photo-1514222709107-a180c68d72b4?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The Harmandir Sahib in Amritsar. The spiritual center of Sikhism, famous for its gilded golden facade, sacred Sarovar pool, and the world\'s largest free kitchen (Langar).',
     tags: ['Spiritual', 'Culture', 'History', 'Food'],
     coordinates: { x: 62, y: 29 },
