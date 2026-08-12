@@ -1704,7 +1704,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 7120,
     price: 98000,
-    image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The sacred site of prayer in Jerusalem. The ancient limestone retaining wall of the Temple Mount, representing centuries of Jewish heritage.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 34, y: 22 },
