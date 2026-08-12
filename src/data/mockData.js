@@ -813,7 +813,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 4210,
     price: 38000,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
+    image: 'https://www.kinghillstravels.com/img/static_page/9CVr8cZADY.png',
     description: 'One of the most sacred Hindu shrines. Located high in the Garhwal Himalayas near Mandakini river, this ancient temple is dedicated to Lord Shiva.',
     tags: ['Spiritual', 'Adventure', 'Nature', 'Offbeat'],
     coordinates: { x: 64, y: 29 },
