@@ -1220,7 +1220,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3410,
     price: 23000,
-    image: '/destinations/dwarkadhish.jpg',
+    image: '',
     description: 'The ancient capital kingdom of Lord Krishna. Situated in Gujarat where the Gomti River meets the Arabian Sea, featuring a majestic 5-story sandstone spire.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 59, y: 32 },
