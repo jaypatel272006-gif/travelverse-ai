@@ -669,7 +669,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 880,
     price: 26000,
-    image: '',
+    image: 'https://i.pinimg.com/736x/04/dc/38/04dc380e270e9890908beb12a680bded.jpg',
     description: 'Tranquil beach town of Karnataka. Famous for its sacred Mahabaleshwar Temple, rocky beach treks, and quiet beaches that are clean alternatives to Goa.',
     tags: ['Beach', 'Spiritual', 'Relaxation', 'Offbeat'],
     coordinates: { x: 63, y: 35 },
