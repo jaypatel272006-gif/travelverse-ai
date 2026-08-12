@@ -205,7 +205,7 @@ const COUNTRY_DATABASE = {
     ],
     images: [
       'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1516306580123-e6502787c016?auto=format&fit=crop&w=400&q=80'
+      'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=400&q=80'
     ],
     aiSuggestions: [
       'Leverage rideshare channels rather than walking dark beach alleys at night.',
