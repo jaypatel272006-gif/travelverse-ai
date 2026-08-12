@@ -718,7 +718,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 190,
     price: 24000,
-    image: '',
+    image: 'https://media.istockphoto.com/id/1219436312/photo/golden-hour-in-majuli-assam.jpg?s=612x612&w=0&k=20&c=YnR2SWmzEboR9xa4RiwTykCVHURKGDK2JSpvdCqfsv4=',
     description: 'The world\'s largest river island. Located in Assam on the Brahmaputra River, famous for its Neo-Vaishnavite culture, handmade masks, and pottery.',
     tags: ['Offbeat', 'Culture', 'Nature', 'Relaxation'],
     coordinates: { x: 71, y: 30 },
