@@ -316,7 +316,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 1540,
     price: 28000,
-    image: '',
+    image: 'https://img.staticmb.com/mbcontent/images/crop/uploads/ver2/XIwvQlc61t8ZIpanz4mAnzU0ZyHE_2B-lOttpVmM_UbLOw/places-to-visit-in-varanasi_0_1200.jpg',
     description: 'The spiritual capital of India. Explore ancient ghats along the sacred Ganges river, watch the magical Ganga Aarti, and walk historic narrow alleys.',
     tags: ['Spiritual', 'Culture', 'History', 'Art'],
     coordinates: { x: 66, y: 31 },
