@@ -142,11 +142,13 @@ export const SpiritualUniverse = () => {
   const [hoveredNode, setHoveredNode] = useState(null);
   
   const equalizerData = useMemo(() => {
+    const heights = [40, 75, 55, 90, 60, 80, 45, 95, 50, 70, 85, 35, 65, 80, 60, 90];
+    const durations = [0.6, 0.8, 0.5, 0.9, 0.7, 0.6, 0.8, 1.0, 0.7, 0.6, 0.9, 0.5, 0.8, 0.7, 0.6, 0.9];
     return Array.from({ length: 16 }).map((_, i) => ({
       id: i,
-      height: `${30 + Math.random() * 70}%`,
+      height: `${heights[i % heights.length]}%`,
       delay: `${i * 0.08}s`,
-      duration: `${0.5 + Math.random() * 0.6}s`
+      duration: `${durations[i % durations.length]}s`
     }));
   }, []);
 

@@ -78,7 +78,7 @@ export const HomeMemoryVaultSection = () => {
 
               {/* Fanned photo container */}
               <div className="flex-1 min-h-[240px] relative flex items-center justify-center mt-6">
-                {photos.map((photo, i) => (
+                {polaroids.map((photo, i) => (
                   <motion.div
                     key={i}
                     style={{ zIndex: i }}
