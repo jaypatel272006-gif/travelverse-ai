@@ -1572,7 +1572,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 2880,
     price: 24000,
-    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The marble masterpiece of Mount Abu, Rajasthan. Built between the 11th and 13th centuries, famous for its impossibly delicate stone carvings.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 61, y: 31 },
