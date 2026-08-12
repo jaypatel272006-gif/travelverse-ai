@@ -620,7 +620,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 460,
     price: 45000,
-    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The Middle Land between India and Tibet. A cold mountain desert in Himachal Pradesh, known for its ancient monasteries and high-altitude road loops.',
     tags: ['Adventure', 'Offbeat', 'Nature', 'Road Trip'],
     coordinates: { x: 64, y: 29 },
