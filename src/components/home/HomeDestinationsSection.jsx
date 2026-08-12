@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Map, Video, ArrowUpRight, Compass, Sparkles, Navigation } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getDestinationImage } from '../../data/imageRegistry';
 
 export const HomeDestinationsSection = () => {
   const [hoveredDest, setHoveredDest] = useState(null);
@@ -12,7 +13,7 @@ export const HomeDestinationsSection = () => {
       id: 'varanasi',
       name: 'Varanasi',
       sub: 'Spiritual Matrix Core',
-      image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=600&q=80',
+      image: getDestinationImage('dest-varanasi'),
       video: 'https://assets.mixkit.co/videos/preview/mixkit-timelapse-of-a-street-in-india-at-night-42211-large.mp4',
       link: '/destination/dest-varanasi',
       match: '98%',
@@ -22,7 +23,7 @@ export const HomeDestinationsSection = () => {
       id: 'goa',
       name: 'Goa Coastline',
       sub: 'Atmospheric Ocean Wave',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      image: getDestinationImage('dest-goa'),
       video: 'https://assets.mixkit.co/videos/preview/mixkit-flying-over-a-clouds-and-sea-during-a-sunset-41486-large.mp4',
       link: '/destination/dest-goa',
       match: '94%',
@@ -32,7 +33,7 @@ export const HomeDestinationsSection = () => {
       id: 'leh',
       name: 'Leh Ladakh',
       sub: 'Glacial Heights Terminal',
-      image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80',
+      image: getDestinationImage('dest-ladakh'),
       video: 'https://assets.mixkit.co/videos/preview/mixkit-mountain-ranges-under-a-clear-blue-sky-41617-large.mp4',
       link: '/destination/dest-leh',
       match: '91%',
