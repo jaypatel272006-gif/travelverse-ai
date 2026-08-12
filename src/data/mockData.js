@@ -570,7 +570,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 290,
     price: 49000,
-    image: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'High altitude mountain sanctuary. Nestled at 10,000 ft in Arunachal Pradesh, featuring the massive Tawang Monastery, frozen lakes, and waterfalls.',
     tags: ['Adventure', 'Offbeat', 'Spiritual', 'Nature'],
     coordinates: { x: 69, y: 30 },
