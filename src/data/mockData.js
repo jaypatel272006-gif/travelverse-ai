@@ -1396,7 +1396,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 2980,
     price: 19500,
-    image: '',
+    image: 'https://indiaholidaymall.com/images/blog/Sun-Temple-Konark.jpg',
     description: 'The monumental stone chariot of the Sun God. A UNESCO World Heritage site in Odisha, carved with intricate sun wheels that act as sundials.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 69, y: 33 },
