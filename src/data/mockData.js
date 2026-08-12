@@ -418,7 +418,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1210,
     price: 46000,
-    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The Venice of the East. Beautiful lakes (Lake Pichola), romantic white marble palaces, royal heritage hotels, and scenic mountain backgrounds.',
     tags: ['Romantic', 'History', 'Art', 'Heritage'],
     coordinates: { x: 62, y: 32 },
