@@ -1572,7 +1572,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 2880,
     price: 24000,
-    image: '',
+    image: 'https://www.sterlingholidays.com/blog/wp-content/uploads/2021/09/shutterstock_165821351-1.jpg',
     description: 'The marble masterpiece of Mount Abu, Rajasthan. Built between the 11th and 13th centuries, famous for its impossibly delicate stone carvings.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 61, y: 31 },
