@@ -8,8 +8,8 @@ export const HomeMemoryVaultSection = () => {
     { date: 'DEC 2100', title: 'Varanasi Portal Walk', summary: 'Captured Ganga Aarti thermal feeds. Spiritual frequency aligned at 92Hz. Unlocked Ganga badge.', tag: 'SPIRITUAL' }
   ];
 
-  const photos = [
-    { url: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=300&q=80', rotate: -8, x: -15, y: 5 },
+  const polaroids = [
+    { url: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=300&q=80', rotate: -8, x: -15, y: 5 },
     { url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=300&q=80', rotate: 6, x: 15, y: -8 },
     { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80', rotate: -2, x: 0, y: 0 }
   ];
