@@ -521,7 +521,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 340,
     price: 34000,
-    image: '',
+    image: 'https://media.istockphoto.com/id/1178712785/photo/view-from-dura-hidden-paradise-ziro.jpg?s=612x612&w=0&k=20&c=PbWUrAVgmNcj9y5wVXDl8b7rhn_ITnI5z4ceQQpv82o=',
     description: 'Arunachal Pradesh\'s hidden pine valley. Famous for its pine hills, rice fields, and the indigenous Apatani tribe with unique tattoos and nose plugs.',
     tags: ['Nature', 'Offbeat', 'Adventure', 'Culture'],
     coordinates: { x: 70, y: 30 },
