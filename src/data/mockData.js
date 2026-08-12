@@ -1088,7 +1088,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3500,
     price: 36000,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'One of the holy Char Dhams, located along the Alaknanda River in Uttarakhand. Dedicated to Lord Vishnu and framed by the majestic snowy Nilkantha peak.',
     tags: ['Spiritual', 'Nature', 'Adventure'],
     coordinates: { x: 65, y: 28 },
