@@ -203,8 +203,8 @@ const getPremiumGuideData = (name) => {
         { q: "How many days are needed?", a: "At least 3 days to comfortably explore the major forts, palaces, and markets." }
       ],
       gallery: [
-        "https://images.unsplash.com/photo-1477587458883-471a5ed94245?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80"
       ],
       aiRecommendations: [
@@ -269,9 +269,22 @@ const getPremiumGuideData = (name) => {
         { q: "Can I take pictures of the cremation ghats?", a: "No, photography is strictly prohibited at Manikarnika and Harishchandra cremation ghats." }
       ],
       gallery: [
-        "https://images.unsplash.com/photo-1561361531-997c5d23db16?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1601999109332-542b18dbec57?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1598977123418-45f04b615967?auto=format&fit=crop&w=800&q=80"
+        "https://images.unsplash.com/photo-1518002171953-a080ee817e1f?auto=format&fit=crop&w=800&q=80"
+      ],
+      aiRecommendations: [
+        "Ghat Walks: Explore the ghat corridor during late afternoon to experience ghat actions.",
+        "Silk Sarees: Buy only from Government handloom centers (e.g. Chowk) to avoid artificial polyester replicas."
+      ]
+    },
+    'dest-varanasi': {
+      name: 'Varanasi',
+      heroSubtitle: 'The Eternal Spiritual City',
+      gallery: [
+        "https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1601999109332-542b18dbec57?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1518002171953-a080ee817e1f?auto=format&fit=crop&w=800&q=80"
       ],
       aiRecommendations: [
         "Ghat Walks: Explore the ghat corridor during late afternoon to experience ghat actions.",
