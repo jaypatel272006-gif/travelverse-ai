@@ -1308,7 +1308,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 5120,
     price: 32000,
-    image: 'https://images.unsplash.com/photo-1621849400072-f554417f7051?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The richest temple complex in the world. Located on the Seven Hills of Tirumala in Andhra Pradesh, dedicated to Lord Venkateswara.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 65, y: 37 },
