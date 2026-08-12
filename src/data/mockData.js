@@ -1132,7 +1132,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3910,
     price: 25050,
-    image: '',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqAPSDoGdOWcokhJbXM7_9t-29tY-psThHqoOhIJQmQI795Wm9v_Z_Xhl_&s=10',
     description: 'The coastal temple in Odisha. Home of the famous Rath Yatra chariot festival and the mysterious daily changing temple flag.',
     tags: ['Spiritual', 'Culture', 'History'],
     coordinates: { x: 69, y: 33 },
