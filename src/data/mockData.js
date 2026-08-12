@@ -1440,7 +1440,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 4890,
     price: 15000,
-    image: '',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Shree_Siddhivinayak_Temple_Mumbai.jpg/960px-Shree_Siddhivinayak_Temple_Mumbai.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail',
     description: 'The historic Ganesha temple in Mumbai. Visited daily by thousands of devotees seeking blessings, featuring a small sanctum with gold-plated ceilings.',
     tags: ['Spiritual', 'Culture', 'History'],
     coordinates: { x: 61, y: 34 },
