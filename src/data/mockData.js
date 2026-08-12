@@ -1616,7 +1616,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 9400,
     price: 110000,
-    image: 'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The holiest city in Islam. Located in Saudi Arabia, home to the sacred Kaaba within Masjid al-Haram and the destination of the Hajj pilgrimage.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 30, y: 25 },
