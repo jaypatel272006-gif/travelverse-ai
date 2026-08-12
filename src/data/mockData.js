@@ -1748,7 +1748,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 1250,
     price: 145000,
-    image: '',
+    image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/ce/03/fe/mount-kailash-in-western.jpg?w=1200&h=-1&s=1',
     description: 'The sacred cosmic peak in Tibet. Revered in Hinduism as the home of Shiva, and in Buddhism, Jainism, and Bon, surrounded by Mansarovar lake.',
     tags: ['Spiritual', 'Adventure', 'Nature', 'Offbeat'],
     coordinates: { x: 63, y: 26 },
