@@ -1396,7 +1396,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 2980,
     price: 19500,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop',
     description: 'The monumental stone chariot of the Sun God. A UNESCO World Heritage site in Odisha, carved with intricate sun wheels that act as sundials.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 69, y: 33 },
