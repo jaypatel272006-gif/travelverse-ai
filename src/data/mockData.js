@@ -521,7 +521,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 340,
     price: 34000,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'Arunachal Pradesh\'s hidden pine valley. Famous for its pine hills, rice fields, and the indigenous Apatani tribe with unique tattoos and nose plugs.',
     tags: ['Nature', 'Offbeat', 'Adventure', 'Culture'],
     coordinates: { x: 70, y: 30 },
