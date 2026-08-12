@@ -1660,7 +1660,7 @@ export const mockDestinations = [
     rating: 5.0,
     reviewsCount: 8120,
     price: 95000,
-    image: '',
+    image: 'https://hblimg.mmtcdn.com/content/hubble/img/medinadestimages/mmt/activities/m_Medina_1_l_665_1000.jpg',
     description: 'The Prophet\'s City. The second holiest site in Islam, housing Al-Masjid an-Nabawi (The Prophet\'s Mosque) with its iconic green dome.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 29, y: 24 },
