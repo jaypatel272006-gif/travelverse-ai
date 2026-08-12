@@ -1352,7 +1352,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3880,
     price: 26000,
-    image: '',
+    image: 'https://smarthistory.org/wp-content/uploads/2018/04/india_-_madurai_temple_-_0785.jpg',
     description: 'The pinnacle of Dravidian architecture. Located in Madurai, Tamil Nadu, featuring 14 massive gopuram towers covered in thousands of colorful stone figures.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 65, y: 39 },
