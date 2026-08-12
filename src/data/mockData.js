@@ -1176,7 +1176,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3670,
     price: 29000,
-    image: 'https://images.unsplash.com/photo-1621849400072-f554417f7051?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'Located on Pamban Island in Tamil Nadu. Consecrated by Lord Rama, it is famous for its longest corridors of carved pillars and 22 holy water wells inside the complex.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 65, y: 39 },
