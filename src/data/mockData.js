@@ -906,7 +906,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 980,
     price: 24000,
-    image: 'https://images.unsplash.com/photo-1604580864964-0462f5d5b1a8?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The cradle of Buddhism. The location where Prince Siddhartha Gautama attained supreme enlightenment under the Bodhi tree, now centered around the Mahabodhi Temple.',
     tags: ['Spiritual', 'History', 'Relaxation'],
     coordinates: { x: 67, y: 31 },
