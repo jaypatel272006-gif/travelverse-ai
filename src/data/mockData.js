@@ -1044,7 +1044,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 4120,
     price: 21000,
-    image: 'https://images.unsplash.com/photo-1600240644455-3edc55c375fe?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The south-facing shrine in Ujjain. Famous for its sacred Bhasma Aarti (ash ritual) on the banks of Shipra River.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 32 },
