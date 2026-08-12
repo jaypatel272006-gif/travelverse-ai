@@ -620,7 +620,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 460,
     price: 45000,
-    image: '',
+    image: 'https://media1.thrillophilia.com/filestore/vnsqeyap58fduz2gnnv74enhr850_1576477108_1487749794_spiti-valley-key-kibber-1.jpg.webp.jpg?w=753&h=450&dpr=2.0',
     description: 'The Middle Land between India and Tibet. A cold mountain desert in Himachal Pradesh, known for its ancient monasteries and high-altitude road loops.',
     tags: ['Adventure', 'Offbeat', 'Nature', 'Road Trip'],
     coordinates: { x: 64, y: 29 },
