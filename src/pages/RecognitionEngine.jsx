@@ -24,7 +24,7 @@ const PRESETS = [
     etiquette: 'Dress modestly (knees and shoulders covered). Cell phones and leather items are restricted inside the main shrine area.',
     bestTime: 'Morning Aarti (6:30 AM) or evening Aarti (7:00 PM).',
     stamp: '🛕 Ayodhya Stamp Unlocked',
-    image: 'https://images.unsplash.com/photo-1698299292850-8b6b060d4b29?auto=format&fit=crop&w=400&q=80'
+    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=400&q=80'
   },
   {
     name: 'Colosseum',

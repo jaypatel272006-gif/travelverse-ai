@@ -17,7 +17,7 @@ const INITIAL_MEMORIES = [
     coords: { x: 140, y: 120 },
     category: 'Cultural',
     mediaType: 'image',
-    mediaUrl: 'https://images.unsplash.com/photo-1561361513-2d000a50f0db?auto=format&fit=crop&w=600&q=80',
+    mediaUrl: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=600&q=80',
     journal: 'The sun emerged as a golden orb casting warm light across the Ganga Aarti. The smell of incense and sound of chants made me feel a deep, calm connection to the flow of time itself.',
     album: 'Cultural Trails'
   },
