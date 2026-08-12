@@ -418,7 +418,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1210,
     price: 46000,
-    image: '',
+    image: 'https://www.zingbus.com/blog/wp-content/uploads/2026/08/2567.jpg',
     description: 'The Venice of the East. Beautiful lakes (Lake Pichola), romantic white marble palaces, royal heritage hotels, and scenic mountain backgrounds.',
     tags: ['Romantic', 'History', 'Art', 'Heritage'],
     coordinates: { x: 62, y: 32 },
