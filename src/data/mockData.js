@@ -1528,7 +1528,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 3120,
     price: 19000,
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The Sufi shrine of Khwaja Moinuddin Chishti in Rajasthan. Renowned for its universal message of peace, Qawwali music, and giant food cauldrons.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 30 },
