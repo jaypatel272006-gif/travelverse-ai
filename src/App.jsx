@@ -1,15 +1,9 @@
 import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Navbar } from './components/Navbar';
-import { BottomNav } from './components/BottomNav';
-import { Footer } from './components/Footer';
-import { CustomCursor } from './components/CustomCursor';
-import { AIAssistantWidget } from './components/AIAssistantWidget';
+import AppShell from './components/shell/AppShell';
 import { TravelOSBootLoader } from './components/loading/TravelOSBootLoader';
 import ErrorBoundary from './components/ErrorBoundary';
-import RouteErrorBoundary from './components/RouteErrorBoundary';
-import PWAInstallPrompt from './components/PWAInstallPrompt';
 
 // Helper to catch dynamic chunk loading failures on new deployments and auto-retry
 const lazyWithRetry = (importFn) => {
@@ -32,202 +26,102 @@ const Home = lazyWithRetry(() => import('./pages/Home').then(m => ({ default: m.
 const Destinations = lazyWithRetry(() => import('./pages/Destinations').then(m => ({ default: m.Destinations })));
 const DestinationDetails = lazyWithRetry(() => import('./pages/DestinationDetails').then(m => ({ default: m.DestinationDetails })));
 const AITripPlanner = lazyWithRetry(() => import('./pages/AITripPlanner').then(m => ({ default: m.AITripPlanner })));
+const JourneyCockpit = lazyWithRetry(() => import('./pages/JourneyCockpit').then(m => ({ default: m.JourneyCockpit })));
+const Maps = lazyWithRetry(() => import('./pages/Maps').then(m => ({ default: m.Maps })));
+const Memories = lazyWithRetry(() => import('./pages/Memories').then(m => ({ default: m.Memories })));
+const BudgetOS = lazyWithRetry(() => import('./pages/BudgetOS').then(m => ({ default: m.BudgetOS })));
 const Flights = lazyWithRetry(() => import('./pages/Flights').then(m => ({ default: m.Flights })));
 const Hotels = lazyWithRetry(() => import('./pages/Hotels').then(m => ({ default: m.Hotels })));
 const TourPackages = lazyWithRetry(() => import('./pages/TourPackages').then(m => ({ default: m.TourPackages })));
 const Weather = lazyWithRetry(() => import('./pages/Weather').then(m => ({ default: m.Weather })));
-const Maps = lazyWithRetry(() => import('./pages/Maps').then(m => ({ default: m.Maps })));
 const Wishlist = lazyWithRetry(() => import('./pages/Wishlist').then(m => ({ default: m.Wishlist })));
 const Dashboard = lazyWithRetry(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const Contact = lazyWithRetry(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
 const Login = lazyWithRetry(() => import('./pages/Login').then(m => ({ default: m.Login })));
 const Register = lazyWithRetry(() => import('./pages/Register').then(m => ({ default: m.Register })));
 const IndiaExplorer = lazyWithRetry(() => import('./pages/IndiaExplorer').then(m => ({ default: m.IndiaExplorer })));
-const Challenges = lazyWithRetry(() => import('./pages/Challenges').then(m => ({ default: m.Challenges })));
-const AdventureRoulette = lazyWithRetry(() => import('./pages/AdventureRoulette').then(m => ({ default: m.AdventureRoulette })));
-const LegacyCapsule = lazyWithRetry(() => import('./pages/LegacyCapsule').then(m => ({ default: m.LegacyCapsule })));
 const SpiritualUniverse = lazyWithRetry(() => import('./pages/SpiritualUniverse').then(m => ({ default: m.SpiritualUniverse })));
-
-// New pages
-const LiveExplorer = lazyWithRetry(() => import('./pages/LiveExplorer').then(m => ({ default: m.LiveExplorer })));
-const DreamTripGenerator = lazyWithRetry(() => import('./pages/DreamTripGenerator').then(m => ({ default: m.DreamTripGenerator })));
-const EarthEngine = lazyWithRetry(() => import('./pages/EarthEngine').then(m => ({ default: m.EarthEngine })));
-const RecognitionEngine = lazyWithRetry(() => import('./pages/RecognitionEngine').then(m => ({ default: m.RecognitionEngine })));
-const PersonalityLab = lazyWithRetry(() => import('./pages/PersonalityLab').then(m => ({ default: m.PersonalityLab })));
-const TravelUtilities = lazyWithRetry(() => import('./pages/TravelUtilities').then(m => ({ default: m.TravelUtilities })));
-const Achievements = lazyWithRetry(() => import('./pages/Achievements').then(m => ({ default: m.Achievements })));
-const RoadTripOS = lazyWithRetry(() => import('./pages/RoadTripOS').then(m => ({ default: m.RoadTripOS })));
+const LegacyCapsule = lazyWithRetry(() => import('./pages/LegacyCapsule').then(m => ({ default: m.LegacyCapsule })));
 const NotFound = lazyWithRetry(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 
-// High-fidelity Scroll coordinate manager (restores scroll coordinates per path)
-const ScrollManager = () => {
-  const { pathname } = useLocation();
-  const scrollPositions = useRef({});
-  const lastPath = useRef(pathname);
-
-  useEffect(() => {
-    const handleScrollSave = () => {
-      scrollPositions.current[lastPath.current] = window.scrollY;
-    };
-
-    window.addEventListener('scroll', handleScrollSave);
-
-    const saved = scrollPositions.current[pathname];
-    if (saved !== undefined) {
-      window.scrollTo(0, saved);
-    } else {
-      window.scrollTo(0, 0);
-    }
-
-    lastPath.current = pathname;
-
-    return () => {
-      window.removeEventListener('scroll', handleScrollSave);
-    };
-  }, [pathname]);
-
-  return null;
-};
+// Loading Fallback
+const LoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-[500px] w-full gap-4 text-center">
+    <div className="w-10 h-10 rounded-full border-2 border-teal-400 border-t-transparent animate-spin" />
+    <span className="font-mono text-xs text-teal-400 uppercase tracking-widest animate-pulse">
+      LOADING TRAVEL OS QUANTUM MODULE...
+    </span>
+  </div>
+);
 
 // Route-based Page Transition container
 const PageTransition = ({ children }) => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   const variants = {
-    initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985, filter: 'blur(3px)' },
-    animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1, filter: 'blur(0px)' },
-    exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985, filter: 'blur(3px)' },
+    initial: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 },
+    animate: prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 },
+    exit: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 },
   };
 
   return (
-    <RouteErrorBoundary>
-      <motion.div
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        transition={prefersReducedMotion ? { duration: 0.1 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full"
-      >
-        {children}
-      </motion.div>
-    </RouteErrorBoundary>
+    <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className="w-full"
+    >
+      {children}
+    </motion.div>
   );
 };
 
-// High-fidelity Loading Fallback with animations
-const LoadingFallback = () => (
-  <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="w-full min-h-[400px] flex flex-col justify-center items-center gap-4 text-slate-500 font-mono text-xs"
-  >
-    <div className="w-10 h-10 rounded-full border-2 border-teal-500 border-t-transparent animate-spin" />
-    <span className="animate-pulse tracking-widest uppercase text-teal-400 font-bold">CALIBRATING WORKSPACE...</span>
-  </motion.div>
-);
-
-function App() {
+export function App() {
   const location = useLocation();
-  const [appLoading, setAppLoading] = useState(() => {
-    try {
-      return !sessionStorage.getItem('travelverse_intro_shown');
-    } catch (e) {
-      return true;
-    }
-  });
-
-  // Global event listener for image loading errors (image fallbacks)
-  useEffect(() => {
-    const handleImageError = (event) => {
-      if (event.target && event.target.tagName === 'IMG') {
-        const fallback = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80';
-        if (event.target.src !== fallback) {
-          event.target.src = fallback;
-        }
-      }
-    };
-    window.addEventListener('error', handleImageError, true);
-    return () => window.removeEventListener('error', handleImageError, true);
-  }, []);
-
-  const handleLoaderComplete = () => {
-    sessionStorage.setItem('travelverse_intro_shown', 'true');
-    setAppLoading(false);
-  };
+  const [booting, setBooting] = useState(true);
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-dark-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
-      <ScrollManager />
-      
-      {/* Cinematic Load State */}
+    <>
       <AnimatePresence>
-        {appLoading && (
-          <TravelOSBootLoader onComplete={handleLoaderComplete} />
-        )}
+        {booting && <TravelOSBootLoader onComplete={() => setBooting(false)} />}
       </AnimatePresence>
-      
-      {/* Custom Mouse Cursor */}
-      <CustomCursor />
-      
-      {/* Navigation Header */}
-      <Navbar />
 
-      {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28 pb-12 flex items-start">
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-                <Route path="/destinations" element={<PageTransition><Destinations /></PageTransition>} />
-                <Route path="/destination/:id" element={<PageTransition><DestinationDetails /></PageTransition>} />
-                <Route path="/planner" element={<PageTransition><AITripPlanner /></PageTransition>} />
-                <Route path="/flights" element={<PageTransition><Flights /></PageTransition>} />
-                <Route path="/hotels" element={<PageTransition><Hotels /></PageTransition>} />
-                <Route path="/packages" element={<PageTransition><TourPackages /></PageTransition>} />
-                <Route path="/weather" element={<PageTransition><Weather /></PageTransition>} />
-                <Route path="/maps" element={<PageTransition><Maps /></PageTransition>} />
-                <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
-                <Route path="/india-explorer" element={<PageTransition><IndiaExplorer /></PageTransition>} />
-                <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
-                <Route path="/challenges" element={<PageTransition><Challenges /></PageTransition>} />
-                <Route path="/roulette" element={<PageTransition><AdventureRoulette /></PageTransition>} />
-                <Route path="/legacy" element={<PageTransition><LegacyCapsule /></PageTransition>} />
-                <Route path="/spiritual" element={<PageTransition><SpiritualUniverse /></PageTransition>} />
-                <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-                <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-                <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
-
-                {/* New Routes */}
-                <Route path="/live-explorer" element={<PageTransition><LiveExplorer /></PageTransition>} />
-                <Route path="/dream-trip" element={<PageTransition><DreamTripGenerator /></PageTransition>} />
-                <Route path="/earth-engine" element={<PageTransition><EarthEngine /></PageTransition>} />
-                <Route path="/recognition" element={<PageTransition><RecognitionEngine /></PageTransition>} />
-                <Route path="/personality-lab" element={<PageTransition><PersonalityLab /></PageTransition>} />
-                <Route path="/utilities" element={<PageTransition><TravelUtilities /></PageTransition>} />
-                <Route path="/achievements" element={<PageTransition><Achievements /></PageTransition>} />
-                <Route path="/road-trip-os" element={<PageTransition><RoadTripOS /></PageTransition>} />
-                <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-              </Routes>
-            </AnimatePresence>
-          </Suspense>
-        </ErrorBoundary>
-      </main>
-
-      {/* Footer Details */}
-      <Footer />
-      
-      {/* AI Assistant Widget */}
-      <AIAssistantWidget />
-
-      {/* PWA Installer Overlay */}
-      <PWAInstallPrompt />
-
-      {/* Mobile Navigation Dock */}
-      <BottomNav />
-    </div>
+      {!booting && (
+        <AppShell>
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingFallback />}>
+              <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                  <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+                  <Route path="/destinations" element={<PageTransition><Destinations /></PageTransition>} />
+                  <Route path="/destination/:id" element={<PageTransition><DestinationDetails /></PageTransition>} />
+                  <Route path="/planner" element={<PageTransition><AITripPlanner /></PageTransition>} />
+                  <Route path="/cockpit" element={<PageTransition><JourneyCockpit /></PageTransition>} />
+                  <Route path="/maps" element={<PageTransition><Maps /></PageTransition>} />
+                  <Route path="/memories" element={<PageTransition><Memories /></PageTransition>} />
+                  <Route path="/budget" element={<PageTransition><BudgetOS /></PageTransition>} />
+                  <Route path="/india-explorer" element={<PageTransition><IndiaExplorer /></PageTransition>} />
+                  <Route path="/spiritual" element={<PageTransition><SpiritualUniverse /></PageTransition>} />
+                  <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
+                  <Route path="/flights" element={<PageTransition><Flights /></PageTransition>} />
+                  <Route path="/hotels" element={<PageTransition><Hotels /></PageTransition>} />
+                  <Route path="/packages" element={<PageTransition><TourPackages /></PageTransition>} />
+                  <Route path="/weather" element={<PageTransition><Weather /></PageTransition>} />
+                  <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
+                  <Route path="/legacy" element={<PageTransition><LegacyCapsule /></PageTransition>} />
+                  <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+                  <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+                  <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+                  <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
+          </ErrorBoundary>
+        </AppShell>
+      )}
+    </>
   );
 }
 
