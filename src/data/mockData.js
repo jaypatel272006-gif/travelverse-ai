@@ -469,7 +469,7 @@ export const mockDestinations = [
     rating: 4.7,
     reviewsCount: 2890,
     price: 36000,
-    image: '',
+    image: 'https://media.istockphoto.com/id/510795912/photo/india-gate.jpg?s=612x612&w=0&k=20&c=kZkdrEDXEtoLK6Qh8XPywc9VYV95mJXXcWLBxHftN_U=',
     description: 'The capital territory. A historic melting pot featuring Red Fort, Qutub Minar, bustling Chandni Chowk bazaars, and world-class street cuisine.',
     tags: ['History', 'Food', 'Shopping', 'Urban'],
     coordinates: { x: 64, y: 31 },
