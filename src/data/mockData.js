@@ -1176,7 +1176,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3670,
     price: 29000,
-    image: '',
+    image: 'https://captureatrip-cms-storage.s3.ap-south-1.amazonaws.com/Ramanathaswamy_Temple_c39fbd6630.webp',
     description: 'Located on Pamban Island in Tamil Nadu. Consecrated by Lord Rama, it is famous for its longest corridors of carved pillars and 22 holy water wells inside the complex.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 65, y: 39 },
