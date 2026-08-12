@@ -1484,7 +1484,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 4670,
     price: 22000,
-    image: 'https://images.unsplash.com/photo-1600240644455-3edc55c375fe?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The home of the revered saint Sai Baba. Located in Maharashtra, it attracts millions of multi-faith pilgrims celebrating universal peace and charity.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 62, y: 34 },
