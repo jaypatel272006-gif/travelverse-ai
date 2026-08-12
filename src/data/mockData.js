@@ -1440,7 +1440,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 4890,
     price: 15000,
-    image: 'https://images.unsplash.com/photo-1567157577867-05ccb1388e66?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The historic Ganesha temple in Mumbai. Visited daily by thousands of devotees seeking blessings, featuring a small sanctum with gold-plated ceilings.',
     tags: ['Spiritual', 'Culture', 'History'],
     coordinates: { x: 61, y: 34 },
