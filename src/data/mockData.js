@@ -61,7 +61,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 1430,
     price: 44000,
-    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.pexels.com/photos/33290417/pexels-photo-33290417/free-photo-of-hawa-mahal-facade-in-jaipur-india.jpeg?cs=tinysrgb&dpr=1&w=500',
     description: 'The Pink City of Rajasthan. Renowned for its magnificent hilltop forts, royal palaces (Hawa Mahal), vibrant textiles, and traditional culinary feasts.',
     tags: ['History', 'Culture', 'Shopping', 'Art'],
     coordinates: { x: 63, y: 31 },
