@@ -39,7 +39,7 @@ export const useTripPlanner = () => {
         style: plannerForm.travelStyle
       };
 
-      const result = generateSmartItinerary(input.destination, input.days, input.budget, input.style);
+      const result = generateDetailedItinerary(input.destination, input.days, 'midrange', ['Culture', 'Food'], input.style, 'moderate');
       
       // Ensure image is resolved from registry
       const destId = `dest-${input.destination.toLowerCase().replace(/\s+/g, '')}`;
