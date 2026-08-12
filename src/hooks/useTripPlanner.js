@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
-import { generateSmartItinerary } from '../utils/itineraryEngine';
+import { generateDetailedItinerary } from '../utils/itineraryEngine';
 import { getDestinationImage } from '../data/imageRegistry';
 
 export const useTripPlanner = () => {
