@@ -9,7 +9,7 @@ export const mockDestinations = [
     rating: 4.8,
     reviewsCount: 2200,
     price: 36000,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+    image: 'https://i.pinimg.com/videos/thumbnails/originals/4f/11/77/4f117797a4465265042aedcbd2e058fa.0000000.jpg',
     description: "India's beach paradise. Known for its golden sand coastlines, active night bazaars, Portuguese heritage churches, and lush spice plantations.",
     tags: ['Beach', 'Nightlife', 'Relaxation', 'Food'],
     coordinates: { x: 64, y: 35 },
