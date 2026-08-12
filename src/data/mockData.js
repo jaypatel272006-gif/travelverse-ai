@@ -163,7 +163,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1750,
     price: 52000,
-    image: 'https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'Heaven on Earth. Walk through snow-capped alpine meadows, sail in traditional shikara boats on Dal Lake, and stay in premium floating wooden houseboats.',
     tags: ['Nature', 'Romantic', 'Adventure', 'Culture'],
     coordinates: { x: 64, y: 28 },
