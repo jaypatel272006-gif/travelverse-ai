@@ -214,7 +214,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 1120,
     price: 58000,
-    image: 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The Land of High Passes. A high-altitude cold desert offering dramatic barren mountains, pristine blue lakes (Pangong Tso), and ancient Buddhist monasteries.',
     tags: ['Adventure', 'Nature', 'Culture', 'Trekking'],
     coordinates: { x: 65, y: 28 },
