@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { mockDestinations } from '../data/mockData';
+import { getDestinationImage } from '../data/imageRegistry';
 import { logger } from '../utils/logger';
 
 // Coordinate positions for spiritual nodes on the antique SVG canvas
@@ -135,7 +136,7 @@ const FloatingSparks = () => (
 );
 
 export const SpiritualUniverse = () => {
-  const { saveItinerary, awardXp, showToast, user } = useApp();
+  const { saveItinerary, awardXp, showToast, user, customPhotos } = useApp();
   const [activeSubTab, setActiveSubTab] = useState('directory'); // directory, map, jyotirlinga, planner, guides
   const [selectedCircuit, setSelectedCircuit] = useState('chardham');
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -412,7 +413,7 @@ export const SpiritualUniverse = () => {
                 {filteredDirDestinations.map(dest => (
                   <div key={dest.id} className="group bg-[#130f0c] border border-amber-500/10 rounded-2xl overflow-hidden shadow-md hover:border-amber-500/30 transition-all flex flex-col justify-between">
                     <div className="relative h-44 overflow-hidden bg-slate-950">
-                      <img src={dest.image} alt={dest.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" />
+                      <img src={getDestinationImage(dest.id, customPhotos)} alt={dest.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
                     </div>
                     <div className="p-4 flex flex-col gap-3 text-left">
