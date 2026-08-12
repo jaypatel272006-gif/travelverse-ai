@@ -1,29 +1,33 @@
 import React from 'react';
 
-/**
- * TravelVerse UI - Reusable metadata tag/badge
- */
-export const Badge = ({ 
-  children, 
-  variant = 'teal', 
-  className = '' 
+export const Badge = ({
+  children,
+  variant = 'teal', // teal, sky, purple, amber, emerald, rose, slate
+  size = 'md', // sm, md
+  icon: Icon = null,
+  className = ''
 }) => {
-  const baseStyle = "px-2.5 py-0.5 rounded-full border text-[8px] font-bold font-mono tracking-wider uppercase backdrop-blur-md inline-flex items-center gap-1 shadow-sm";
-  
+  const sizes = {
+    sm: 'px-2 py-0.5 text-[8px]',
+    md: 'px-3 py-1 text-[9.5px]'
+  };
+
   const variants = {
-    teal: "bg-teal-500/10 border-teal-500/30 text-teal-400 shadow-[0_0_15px_rgba(20,184,166,0.15)]",
-    indigo: "bg-indigo-950/90 border-indigo-500/30 text-indigo-300 shadow-[0_0_15px_rgba(99,102,241,0.2)]",
-    emerald: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
-    amber: "bg-amber-500/10 border-amber-500/30 text-amber-400",
-    rose: "bg-rose-500/10 border-rose-500/20 text-rose-400",
-    purple: "bg-purple-500/10 border-purple-500/20 text-purple-400",
-    sky: "bg-sky-500/10 border-sky-500/20 text-sky-400",
-    orange: "bg-orange-500/10 border-orange-500/20 text-orange-400"
+    teal: 'bg-teal-500/15 border-teal-500/30 text-teal-400',
+    sky: 'bg-sky-500/15 border-sky-500/30 text-sky-400',
+    purple: 'bg-purple-500/15 border-purple-500/30 text-purple-400',
+    amber: 'bg-amber-500/15 border-amber-500/30 text-amber-400',
+    emerald: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
+    rose: 'bg-rose-500/15 border-rose-500/30 text-rose-400',
+    slate: 'bg-white/5 border-white/10 text-slate-300'
   };
 
   return (
-    <span className={`${baseStyle} ${variants[variant] || variants.teal} ${className}`}>
-      {children}
+    <span className={`inline-flex items-center gap-1.5 font-mono font-bold uppercase tracking-wider rounded-full border backdrop-blur-md ${sizes[size]} ${variants[variant]} ${className}`}>
+      {Icon && <Icon size={size === 'sm' ? 9 : 11} className="shrink-0" />}
+      <span>{children}</span>
     </span>
   );
 };
+
+export default Badge;
