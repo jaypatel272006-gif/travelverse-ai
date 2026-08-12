@@ -61,34 +61,34 @@ export const SandstoneDestinations = () => {
   ];
 
   return (
-    <section id="explore" className="py-24 px-4 sm:px-8 bg-[#1B120C] relative">
+    <section id="explore" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#1B120C] relative">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Title */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-[#B9854F]/20 pb-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-4 sm:gap-6 border-b border-[#B9854F]/20 pb-6 sm:pb-8">
           <div>
-            <span className="text-xs uppercase tracking-[0.25em] text-[#D4A66A] font-semibold mb-2 block">
+            <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#D4A66A] font-semibold mb-2 block">
               Curated Destination Catalog
             </span>
-            <h2 className="font-serif-heritage text-3xl sm:text-5xl font-bold text-[#F5E7CF] tracking-tight">
+            <h2 className="font-serif-heritage text-2xl sm:text-5xl font-bold text-[#F5E7CF] tracking-tight">
               STORIES WAITING TO BE DISCOVERED
             </h2>
           </div>
-          <p className="text-sm text-[#E8CFA8]/70 max-w-md font-light">
-            Each destination holds centuries of art, philosophy, geography, and memory. Explore iconic regions shaped into bespoke journeys.
+          <p className="text-xs sm:text-sm text-[#E8CFA8]/70 max-w-md font-light">
+            Each destination holds centuries of art, philosophy, geography, and memory. Swipe or tap to explore bespoke circuits.
           </p>
         </div>
 
-        {/* Large Image-First Destination Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Responsive Mobile Horizontal Swipe Carousel & Desktop Grid */}
+        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 overflow-x-auto pb-6 sm:pb-0 snap-x snap-mandatory scrollbar-none">
           {destinations.map((dest, idx) => (
             <motion.div
               key={dest.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="group relative h-[480px] rounded-3xl overflow-hidden border border-[#B9854F]/30 bg-[#24170F] shadow-xl hover:border-[#D4A66A] transition-all duration-500 hover:shadow-2xl hover:shadow-[#8B5E34]/20 cursor-pointer"
+              transition={{ duration: 0.6, delay: idx * 0.08 }}
+              className="group relative h-[420px] sm:h-[480px] w-[285px] sm:w-auto shrink-0 snap-center rounded-3xl overflow-hidden border border-[#B9854F]/35 bg-[#24170F] shadow-xl hover:border-[#D4A66A] transition-all duration-500 hover:shadow-2xl hover:shadow-[#8B5E34]/20 cursor-pointer"
             >
               {/* Background Image */}
               <img
@@ -101,38 +101,38 @@ export const SandstoneDestinations = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#1B120C] via-[#1B120C]/40 to-transparent group-hover:via-[#1B120C]/60 transition-colors duration-500" />
 
               {/* Top Weather & Tag Badges */}
-              <div className="absolute top-5 left-5 right-5 flex justify-between items-center z-10">
+              <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
                 <div className="flex gap-1.5 flex-wrap">
                   {dest.tags.slice(0, 2).map((t) => (
-                    <span key={t} className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-[#1B120C]/70 backdrop-blur-md border border-[#B9854F]/30 text-[#E8CFA8]">
+                    <span key={t} className="text-[9px] sm:text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full bg-[#1B120C]/80 backdrop-blur-md border border-[#B9854F]/30 text-[#E8CFA8]">
                       {t}
                     </span>
                   ))}
                 </div>
-                <div className="w-9 h-9 rounded-full bg-[#24170F]/80 backdrop-blur-md border border-[#D4A66A]/40 flex items-center justify-center text-[#D4A66A] group-hover:bg-[#D4A66A] group-hover:text-[#1B120C] transition-all">
-                  <ArrowUpRight size={18} />
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#24170F]/80 backdrop-blur-md border border-[#D4A66A]/40 flex items-center justify-center text-[#D4A66A] group-hover:bg-[#D4A66A] group-hover:text-[#1B120C] transition-all">
+                  <ArrowUpRight size={16} />
                 </div>
               </div>
 
-              {/* Bottom Content Panel with Smooth Upward Shift on Hover */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 z-10 flex flex-col justify-end transform group-hover:-translate-y-2 transition-transform duration-500">
-                <span className="text-xs uppercase tracking-[0.2em] text-[#D4A66A] font-medium mb-1">
+              {/* Bottom Content Panel */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 z-10 flex flex-col justify-end transform group-hover:-translate-y-1.5 transition-transform duration-500">
+                <span className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#D4A66A] font-medium mb-1">
                   {dest.subtitle}
                 </span>
-                <h3 className="font-serif-heritage text-3xl font-bold text-[#F5E7CF] mb-2 tracking-wide">
+                <h3 className="font-serif-heritage text-2xl sm:text-3xl font-bold text-[#F5E7CF] mb-1.5 tracking-wide">
                   {dest.title}
                 </h3>
-                <p className="text-xs text-[#E8CFA8]/80 font-light leading-relaxed mb-4 line-clamp-2 opacity-90 group-hover:opacity-100 transition-opacity">
+                <p className="text-xs text-[#E8CFA8]/80 font-light leading-relaxed mb-3 line-clamp-2">
                   {dest.description}
                 </p>
 
-                <div className="pt-3 border-t border-[#B9854F]/30 flex items-center justify-between text-[11px] text-[#D4A66A] font-mono">
+                <div className="pt-2.5 border-t border-[#B9854F]/30 flex items-center justify-between text-[10px] sm:text-[11px] text-[#D4A66A] font-mono">
                   <span className="flex items-center gap-1">
-                    <MapPin size={12} />
+                    <MapPin size={11} />
                     <span>{dest.weather}</span>
                   </span>
                   <span className="uppercase tracking-widest text-[#F5E7CF] group-hover:text-[#D4A66A] transition-colors">
-                    Explore Route →
+                    Explore →
                   </span>
                 </div>
               </div>
