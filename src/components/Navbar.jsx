@@ -6,6 +6,7 @@ import {
   CloudSun, CalendarDays, Landmark, Layers, Mic, Search, ArrowRight, Bell 
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getDestinationImage } from '../data/imageRegistry';
 
 export const Navbar = () => {
   const { theme, toggleTheme, user, logout, wishlist, setActiveTheme, showToast } = useApp();
