@@ -952,7 +952,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 8400,
     price: 125000,
-    image: 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The heart of Roman Catholicism. An independent city-state located within Rome, home to St. Peter\'s Basilica, the Vatican Museums, and the Sistine Chapel.',
     tags: ['Spiritual', 'History', 'Art', 'Culture'],
     coordinates: { x: 35, y: 25 },
