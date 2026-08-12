@@ -999,7 +999,7 @@ export const mockDestinations = [
     rating: 4.9,
     reviewsCount: 3820,
     price: 24000,
-    image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
+    image: '',
     description: 'The eternal shrine on the Arabian Sea coast. It is the first of the twelve holy Shiva Jyotirlingas, reconstructed in magnificent Chalukya architecture style.',
     tags: ['Spiritual', 'History', 'Culture'],
     coordinates: { x: 60, y: 34 },
