@@ -2,19 +2,19 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AppProvider from './context/AppContext';
 
-// Pages
-import Home from './pages/Home';
+// Core Operating Pages
+import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
-import Destinations from './pages/Destinations';
-import DestinationDetails from './pages/DestinationDetails';
+import ExploreEngine from './pages/ExploreEngine';
+import DestinationDossier from './pages/DestinationDossier';
 import AITripPlanner from './pages/AITripPlanner';
-import ItineraryViewer from './pages/ItineraryViewer';
 import JourneyCockpit from './pages/JourneyCockpit';
-import RoadTripOS from './pages/RoadTripOS';
+import MapAtlas from './pages/MapAtlas';
 import BudgetOS from './pages/BudgetOS';
-import MemoriesVault from './pages/MemoriesVault';
+import MemoryVault from './pages/MemoryVault';
 import IndiaExplorer from './pages/IndiaExplorer';
 import SpiritualPassport from './pages/SpiritualPassport';
+import TravelDNALab from './pages/TravelDNALab';
 
 // Auth Pages
 import Login from './pages/Login';
@@ -26,6 +26,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Notifications from './pages/Notifications';
 import Help from './pages/Help';
+import DesignSystemShowcase from './pages/DesignSystemShowcase';
 import NotFound from './pages/NotFound';
 
 export function App() {
@@ -34,27 +35,30 @@ export function App() {
       <BrowserRouter>
         <Routes>
           {/* Main Operating Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/home" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/landing" element={<LandingPage />} />
           
           {/* Heritage Atlas & Destination Dossiers */}
-          <Route path="/explore" element={<Destinations />} />
-          <Route path="/destinations" element={<Destinations />} />
-          <Route path="/destination/:slug" element={<DestinationDetails />} />
+          <Route path="/explore" element={<ExploreEngine />} />
+          <Route path="/destinations" element={<ExploreEngine />} />
+          <Route path="/destination/:slug" element={<DestinationDossier />} />
 
           {/* AI Planning & Reality-Based Itineraries */}
           <Route path="/plan" element={<AITripPlanner />} />
           <Route path="/planner" element={<AITripPlanner />} />
-          <Route path="/itinerary" element={<ItineraryViewer />} />
+          <Route path="/itinerary" element={<AITripPlanner />} />
 
           {/* Special Travel OS Engines */}
           <Route path="/cockpit" element={<JourneyCockpit />} />
-          <Route path="/roadtrip" element={<RoadTripOS />} />
+          <Route path="/roadtrip" element={<MapAtlas />} />
+          <Route path="/map" element={<MapAtlas />} />
           <Route path="/budget" element={<BudgetOS />} />
-          <Route path="/memories" element={<MemoriesVault />} />
+          <Route path="/memories" element={<MemoryVault />} />
           <Route path="/india" element={<IndiaExplorer />} />
           <Route path="/spiritual" element={<SpiritualPassport />} />
+          <Route path="/dna" element={<TravelDNALab />} />
 
           {/* Authentication */}
           <Route path="/login" element={<Login />} />
@@ -66,6 +70,7 @@ export function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/design-system" element={<DesignSystemShowcase />} />
 
           {/* 404 Fallback */}
           <Route path="*" element={<NotFound />} />
