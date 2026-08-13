@@ -89,11 +89,14 @@ export const IndiaExplorer = () => {
         {/* Destination Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredIndia.map((dest) => (
-            <SpatialDestinationCard
+            <DestinationCard
               key={dest.id}
-              destination={dest}
-              isSaved={isInWishlist(dest.id)}
-              onToggleSave={toggleWishlistDestination}
+              title={dest.title || dest.name}
+              subtitle={dest.state || dest.category}
+              description={dest.shortDescription || dest.description}
+              image={dest.heroImage || dest.image}
+              tags={dest.tags || ['Heritage', 'India']}
+              onClick={() => navigate(`/destination/${dest.slug || dest.id}`)}
             />
           ))}
         </section>
