@@ -9,7 +9,7 @@ import PageContainer from '../components/layout/PageContainer';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import HeritageDivider from '../components/heritage/HeritageDivider';
-import SpatialDestinationCard from '../components/spatial/SpatialDestinationCard';
+import SpatialDestinationCard from '../components/cards/SpatialDestinationCard';
 import useDestinations from '../hooks/useDestinations';
 
 export const LandingPage = () => {
