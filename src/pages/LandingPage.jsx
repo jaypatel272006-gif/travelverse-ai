@@ -119,8 +119,15 @@ export const LandingPage = () => {
         {/* Featured Destinations Preview */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {filteredDestinations.slice(0, 3).map((dest) => (
-            <SpatialDestinationCard key={dest.id} destination={dest} />
-          ))}
+            <DestinationCard
+              key={dest.id}
+              title={dest.title || dest.name}
+              subtitle={dest.state || dest.category}
+              description={dest.shortDescription || dest.description}
+              image={dest.heroImage || dest.image}
+              tags={dest.tags || ['Heritage']}
+              onClick={() => navigate(`/destination/${dest.slug || dest.id}`)}
+            />  ))}
         </section>
 
         {/* Membership Tier Preview */}
