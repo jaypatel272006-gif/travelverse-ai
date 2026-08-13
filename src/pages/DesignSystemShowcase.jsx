@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
-  Sparkles, Compass, Globe, MapPin, Feather, Heart, 
-  ArrowRight, Check, Dna, DollarSign, Calendar, Layers 
+  Sparkles, Compass, Globe, MapPin, Feather, Check, Layers, 
+  DollarSign, Route, ArrowRight 
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Skeleton } from '../components/ui/Skeleton';
 import { DestinationCard } from '../components/cards/DestinationCard';
+import { JourneyCard } from '../components/cards/JourneyCard';
+import { AIInsightCard } from '../components/cards/AIInsightCard';
+import { BudgetCard } from '../components/cards/BudgetCard';
 import { AICommandBar } from '../components/ai/AICommandBar';
 import { HeritageDivider } from '../components/heritage/HeritageDivider';
 import { ArchitecturalFrame } from '../components/heritage/ArchitecturalFrame';
 import { JaliPattern } from '../components/heritage/JaliPattern';
+import { SandstoneTexture } from '../components/heritage/SandstoneTexture';
+import { HeritageCorner } from '../components/heritage/HeritageCorner';
+import { ArchFrame } from '../components/heritage/ArchFrame';
+import { MapFoundation } from '../components/maps/MapFoundation';
+import { MapMarker } from '../components/maps/MapMarker';
+import { SplitLayout } from '../components/layout/SplitLayout';
 
 export const DesignSystemShowcase = () => {
-  const [activeTab, setActiveTab] = useState('all');
-
   const colorsList = [
     { name: 'Deep Walnut', hex: '#1B120C', desc: 'Level 1: Deep Background' },
     { name: 'Dark Brown', hex: '#24170F', desc: 'Level 2: Surface Panel' },
@@ -37,6 +43,7 @@ export const DesignSystemShowcase = () => {
   return (
     <div className="min-h-screen bg-[#1B120C] text-[#F5E7CF] font-sans-ui p-4 sm:p-12 relative overflow-hidden">
       <JaliPattern opacity={0.06} />
+      <SandstoneTexture opacity={0.03} />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-16">
         
@@ -64,7 +71,7 @@ export const DesignSystemShowcase = () => {
         {/* SECTION 1: COLOR SYSTEM */}
         <section className="space-y-6">
           <div className="flex justify-between items-end border-b border-[#B9854F]/20 pb-3">
-            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">01 // COLOR TOKENS</h2>
+            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">01 // COLOR TOKENS & SURFACE HIERARCHY</h2>
             <span className="text-xs font-mono text-[#D4A66A]">15 STANDARDIZED PALETTE TOKENS</span>
           </div>
 
@@ -165,12 +172,46 @@ export const DesignSystemShowcase = () => {
           </div>
         </section>
 
-        <HeritageDivider label="CARDS & BADGES" />
+        <HeritageDivider label="HERITAGE DECORATIVE SYSTEM" />
 
-        {/* SECTION 5: CARD SYSTEM & BADGES */}
+        {/* SECTION 5: HERITAGE DECORATIVE SYSTEM */}
         <section className="space-y-6">
           <div className="flex justify-between items-end border-b border-[#B9854F]/20 pb-3">
-            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">05 // CARDS & BADGES</h2>
+            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">05 // HERITAGE DECORATIVE SYSTEM</h2>
+            <span className="text-xs font-mono text-[#D4A66A]">ARCHITECTURAL MOTIFS & JALI</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ArchitecturalFrame className="h-48 flex items-center justify-center text-center p-6">
+              <div>
+                <h4 className="font-serif-heritage text-lg font-bold text-[#F5E7CF]">Architectural Frame</h4>
+                <p className="text-xs text-[#E8CFA8]/80 font-light mt-1">Carved sandstone corner bracket frame</p>
+              </div>
+            </ArchitecturalFrame>
+
+            <ArchFrame className="h-48 flex items-center justify-center text-center">
+              <div>
+                <h4 className="font-serif-heritage text-lg font-bold text-[#F5E7CF]">Arch Frame</h4>
+                <p className="text-xs text-[#E8CFA8]/80 font-light mt-1">Rajasthani architectural silhouette</p>
+              </div>
+            </ArchFrame>
+
+            <div className="relative h-48 rounded-3xl bg-[#24170F] border border-[#B9854F]/30 p-6 overflow-hidden flex items-center justify-center text-center">
+              <JaliPattern opacity={0.12} />
+              <div className="relative z-10">
+                <h4 className="font-serif-heritage text-lg font-bold text-[#F5E7CF]">Jali Pattern Overlay</h4>
+                <p className="text-xs text-[#E8CFA8]/80 font-light mt-1">Subtle Mughal geometric lattice</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <HeritageDivider label="CARDS & DATA VISUALIZATION" />
+
+        {/* SECTION 6: CARD SYSTEM & DATA VISUALIZATION */}
+        <section className="space-y-6">
+          <div className="flex justify-between items-end border-b border-[#B9854F]/20 pb-3">
+            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">06 // CARDS & DATA VISUALIZATION</h2>
             <span className="text-xs font-mono text-[#D4A66A]">PREMIUM UI CONTAINERS</span>
           </div>
 
@@ -181,7 +222,7 @@ export const DesignSystemShowcase = () => {
             <Badge variant="dark">DARK SURFACE</Badge>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <DestinationCard
               title="Rajasthan"
               subtitle="Royal Heritage"
@@ -191,36 +232,30 @@ export const DesignSystemShowcase = () => {
               tags={['Palaces', 'Culture']}
             />
 
-            <ArchitecturalFrame className="h-[420px] p-6 flex flex-col justify-between">
-              <div>
-                <span className="text-xs font-mono text-[#D4A66A] uppercase">AI INSIGHT CARD</span>
-                <h3 className="font-serif-heritage text-xl font-bold text-[#F5E7CF] mt-2">
-                  Optimal Travel Window Detected
-                </h3>
-                <p className="text-xs text-[#E8CFA8]/80 font-light mt-3 leading-relaxed">
-                  TravelVerse AI predicts October to March as the ideal climate period for Rajasthan heritage exploration with 98.4% confidence score.
-                </p>
-              </div>
+            <JourneyCard />
 
-              <div className="pt-4 border-t border-[#B9854F]/20 flex justify-between items-center text-xs font-mono text-[#D4A66A]">
-                <span>AI MATCH: 98.4%</span>
-                <span>CALCULATED // 2100</span>
-              </div>
-            </ArchitecturalFrame>
+            <AIInsightCard />
 
-            <div className="p-6 rounded-3xl bg-[#342117] border border-[#B9854F]/40 flex flex-col justify-between">
-              <div>
-                <span className="text-xs font-mono text-[#D4A66A] uppercase">SKELETON LOADING STATE</span>
-                <div className="space-y-4 mt-4">
-                  <Skeleton height="160px" />
-                  <Skeleton height="20px" width="70%" />
-                  <Skeleton height="14px" width="90%" />
-                  <Skeleton height="14px" width="50%" />
-                </div>
-              </div>
-              <span className="text-[10px] font-mono text-[#9D8870] mt-4 block">SURFACE LEVEL 3</span>
-            </div>
+            <BudgetCard />
           </div>
+        </section>
+
+        <HeritageDivider label="MAP SYSTEM FOUNDATION" />
+
+        {/* SECTION 7: MAP SYSTEM FOUNDATION */}
+        <section className="space-y-6">
+          <div className="flex justify-between items-end border-b border-[#B9854F]/20 pb-3">
+            <h2 className="font-serif-heritage text-2xl font-bold text-[#F5E7CF]">07 // MAP SYSTEM FOUNDATION</h2>
+            <span className="text-xs font-mono text-[#D4A66A]">EXPLORER ATLAS MARKERS</span>
+          </div>
+
+          <MapFoundation>
+            <div className="relative w-full h-full flex items-center justify-center">
+              <MapMarker label="JAIPUR" active />
+              <MapMarker label="UDAIPUR" className="absolute left-1/3 top-1/4" />
+              <MapMarker label="VARANASI" className="absolute right-1/4 bottom-1/3" />
+            </div>
+          </MapFoundation>
         </section>
 
         {/* Footer info */}
