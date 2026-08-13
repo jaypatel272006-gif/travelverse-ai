@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AppProvider from './context/AppContext';
+import { AppContextProvider } from './context/AppContext';
 
 // Core Operating Pages
 import Dashboard from './pages/Dashboard';
@@ -31,7 +31,7 @@ import NotFound from './pages/NotFound';
 
 export function App() {
   return (
-    <AppProvider>
+    <AppContextProvider>
       <BrowserRouter>
         <Routes>
           {/* Main Operating Routes */}
@@ -76,7 +76,7 @@ export function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </AppProvider>
+    </AppContextProvider>
   );
 }
 
