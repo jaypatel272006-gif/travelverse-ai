@@ -23,36 +23,33 @@ export const AITripPlanner = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [itinerary, setItinerary] = useState(null);
 
-  useEffect(() => {
-    if (location.state?.destination) {
-      setDestination(location.state.destination);
-      generatePlan(location.state.destination, durationDays, budgetTier, style, pace);
-    } else if (location.state?.prompt) {
-      const promptText = location.state.prompt;
-      let extractedDest = 'Jaipur';
-      if (promptText.toLowerCase().includes('rajasthan') || promptText.toLowerCase().includes('jaipur')) extractedDest = 'Jaipur';
-      else if (promptText.toLowerCase().includes('kerala')) extractedDest = 'Kerala';
-      else if (promptText.toLowerCase().includes('varanasi') || promptText.toLowerCase().includes('kashi')) extractedDest = 'Varanasi';
-      else if (promptText.toLowerCase().includes('ladakh')) extractedDest = 'Ladakh';
-      else if (promptText.toLowerCase().includes('goa')) extractedDest = 'Goa';
-      else if (promptText.toLowerCase().includes('kashmir')) extractedDest = 'Kashmir';
-      else extractedDest = promptText.split(' ')[0] || 'Jaipur';
-      
-      setDestination(extractedDest);
-      generatePlan(extractedDest, durationDays, budgetTier, style, pace);
-    } else {
-      generatePlan('Jaipur', 5, 'Mid-range', 'Royal Heritage', 'Balanced');
-    }
-  }, [location.state]);
-
-  const generatePlan = (dest, dur, budget, st, pc) => {
+  const generatePlan = React.useCallback((dest, dur, budget, st, pc) => {
     setIsGenerating(true);
     setTimeout(() => {
       const result = generateDetailedItinerary(dest, dur, budget, ['Heritage', 'Food'], st, pc);
       setItinerary(result);
       setIsGenerating(false);
     }, 600);
-  };
+  }, []);
+
+  useEffect(() => {
+    let targetDest = 'Jaipur';
+    if (location.state?.destination) {
+      targetDest = location.state.destination;
+    } else if (location.state?.prompt) {
+      const promptText = location.state.prompt.toLowerCase();
+      if (promptText.includes('rajasthan') || promptText.includes('jaipur')) targetDest = 'Jaipur';
+      else if (promptText.includes('kerala')) targetDest = 'Kerala';
+      else if (promptText.includes('varanasi') || promptText.includes('kashi')) targetDest = 'Varanasi';
+      else if (promptText.includes('ladakh')) targetDest = 'Ladakh';
+      else if (promptText.includes('goa')) targetDest = 'Goa';
+      else if (promptText.includes('kashmir')) targetDest = 'Kashmir';
+      else targetDest = location.state.prompt.split(' ')[0] || 'Jaipur';
+    }
+
+    setDestination(targetDest);
+    generatePlan(targetDest, durationDays, budgetTier, style, pace);
+  }, [location.state, generatePlan]);
 
   const handleGenerate = (e) => {
     e.preventDefault();
