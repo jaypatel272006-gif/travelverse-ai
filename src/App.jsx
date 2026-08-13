@@ -1,53 +1,77 @@
-import React, { Suspense, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import RouteErrorBoundary from './components/RouteErrorBoundary';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import AppProvider from './context/AppContext';
 
-// Lazy loading core application pages for maximum performance
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const AITripPlanner = lazy(() => import('./pages/AITripPlanner'));
-const ExploreEngine = lazy(() => import('./pages/ExploreEngine'));
-const JourneyCockpit = lazy(() => import('./pages/JourneyCockpit'));
-const MapAtlas = lazy(() => import('./pages/MapAtlas'));
-const MemoryVault = lazy(() => import('./pages/MemoryVault'));
-const BudgetOS = lazy(() => import('./pages/BudgetOS'));
-const TravelDNALab = lazy(() => import('./pages/TravelDNALab'));
-const DesignSystemShowcase = lazy(() => import('./pages/DesignSystemShowcase'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+// Pages
+import Home from './pages/Home';
+import LandingPage from './pages/LandingPage';
+import Destinations from './pages/Destinations';
+import DestinationDetails from './pages/DestinationDetails';
+import AITripPlanner from './pages/AITripPlanner';
+import ItineraryViewer from './pages/ItineraryViewer';
+import JourneyCockpit from './pages/JourneyCockpit';
+import RoadTripOS from './pages/RoadTripOS';
+import BudgetOS from './pages/BudgetOS';
+import MemoriesVault from './pages/MemoriesVault';
+import IndiaExplorer from './pages/IndiaExplorer';
+import SpiritualPassport from './pages/SpiritualPassport';
 
-// Smooth Sandstone Heritage Loading Screen
-const PageLoader = () => (
-  <div className="min-h-screen bg-[#1B120C] flex flex-col items-center justify-center space-y-4 text-[#F5E7CF] font-sans-ui">
-    <div className="w-12 h-12 rounded-2xl bg-[#342117] border border-[#D4A66A]/40 flex items-center justify-center animate-spin duration-3000">
-      <span className="font-serif-heritage text-lg font-bold text-[#D4A66A]">TV</span>
-    </div>
-    <span className="text-xs font-mono text-[#D4A66A] tracking-widest uppercase">
-      INITIALIZING MISSION CONTROL OS...
-    </span>
-  </div>
-);
+// Auth Pages
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+
+// Account & Utility Pages
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
+import Help from './pages/Help';
+import NotFound from './pages/NotFound';
 
 export function App() {
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        {/* Core Mission Control Routes */}
-        <Route path="/" element={<RouteErrorBoundary><Dashboard /></RouteErrorBoundary>} />
-        <Route path="/dashboard" element={<Navigate to="/" replace />} />
-        <Route path="/planner" element={<RouteErrorBoundary><AITripPlanner /></RouteErrorBoundary>} />
-        <Route path="/explore" element={<RouteErrorBoundary><ExploreEngine /></RouteErrorBoundary>} />
-        <Route path="/journey" element={<RouteErrorBoundary><JourneyCockpit /></RouteErrorBoundary>} />
-        <Route path="/map" element={<RouteErrorBoundary><MapAtlas /></RouteErrorBoundary>} />
-        <Route path="/memories" element={<RouteErrorBoundary><MemoryVault /></RouteErrorBoundary>} />
-        <Route path="/budget" element={<RouteErrorBoundary><BudgetOS /></RouteErrorBoundary>} />
-        <Route path="/dna" element={<RouteErrorBoundary><TravelDNALab /></RouteErrorBoundary>} />
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Main Operating Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/landing" element={<LandingPage />} />
+          
+          {/* Heritage Atlas & Destination Dossiers */}
+          <Route path="/explore" element={<Destinations />} />
+          <Route path="/destinations" element={<Destinations />} />
+          <Route path="/destination/:slug" element={<DestinationDetails />} />
 
-        {/* Official Design System Showcase Route */}
-        <Route path="/design-system" element={<RouteErrorBoundary><DesignSystemShowcase /></RouteErrorBoundary>} />
+          {/* AI Planning & Reality-Based Itineraries */}
+          <Route path="/plan" element={<AITripPlanner />} />
+          <Route path="/planner" element={<AITripPlanner />} />
+          <Route path="/itinerary" element={<ItineraryViewer />} />
 
-        {/* 404 Fallback */}
-        <Route path="*" element={<RouteErrorBoundary><NotFound /></RouteErrorBoundary>} />
-      </Routes>
-    </Suspense>
+          {/* Special Travel OS Engines */}
+          <Route path="/cockpit" element={<JourneyCockpit />} />
+          <Route path="/roadtrip" element={<RoadTripOS />} />
+          <Route path="/budget" element={<BudgetOS />} />
+          <Route path="/memories" element={<MemoriesVault />} />
+          <Route path="/india" element={<IndiaExplorer />} />
+          <Route path="/spiritual" element={<SpiritualPassport />} />
+
+          {/* Authentication */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* Profile & Settings */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/help" element={<Help />} />
+
+          {/* 404 Fallback */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   );
 }
 
