@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
 export const AICommandBar = ({ onSearch, className = '' }) => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [promptIndex, setPromptIndex] = useState(0);
 
@@ -23,7 +25,12 @@ export const AICommandBar = ({ onSearch, className = '' }) => {
 
   const handleSubmit = (e) => {
     e?.preventDefault();
-    if (onSearch) onSearch(query || samplePrompts[promptIndex]);
+    const finalPrompt = query || samplePrompts[promptIndex];
+    if (onSearch) {
+      onSearch(finalPrompt);
+    } else {
+      navigate('/plan', { state: { prompt: finalPrompt } });
+    }
   };
 
   return (
